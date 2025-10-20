@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { LinkedinIcon } from './icons/LinkedinIcon';
+import { GithubIcon } from './icons/GithubIcon';
 import { MailIcon } from './icons/MailIcon';
 import { DownloadIcon } from './icons/DownloadIcon';
 
@@ -80,6 +81,15 @@ const Header: React.FC<HeaderProps> = ({ activeSection }) => {
                             aria-label="LinkedIn"
                         >
                             <LinkedinIcon className="w-5 h-5" />
+                        </a>
+                        <a
+                            href="https://github.com/wutcharinth"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hidden sm:flex items-center justify-center w-10 h-10 rounded-lg bg-gray-800/50 border border-gray-700/50 text-gray-400 hover:text-cyan-400 hover:border-cyan-500/50 transition-all"
+                            aria-label="GitHub"
+                        >
+                            <GithubIcon className="w-5 h-5" />
                         </a>
                         <a
                             href="/Wutcharin_Thatan_Resume.pdf"
