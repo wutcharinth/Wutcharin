@@ -89,28 +89,59 @@ const experienceData = [
 const Experience: React.FC = () => {
     return (
         <section className="py-16 md:py-24">
-            <h2 className="text-3xl font-bold text-white mb-2">Professional Experience</h2>
-            <div className="w-20 h-1 bg-cyan-500 mb-10"></div>
+            <div className="text-center mb-12">
+                <h2 className="text-3xl font-bold text-white mb-2">Professional Experience</h2>
+                <div className="w-20 h-1 bg-gradient-to-r from-cyan-500 to-blue-500 mx-auto mb-4"></div>
+                <p className="text-gray-400 max-w-2xl mx-auto">20 years across global tech platforms, startups, and transformational leadership roles</p>
+            </div>
             
-            <div className="space-y-12">
+            <div className="space-y-8">
                 {experienceData.map((exp, index) => (
                     <div key={index} className="relative group">
-                        <div className="absolute -left-4 top-0 h-full w-0.5 bg-gray-700 hidden sm:block"></div>
-                         <div className="absolute -left-6 top-2 hidden sm:block">
-                          <div className="h-4 w-4 rounded-full bg-gray-700 border-2 border-gray-900 group-hover:bg-cyan-500 transition-colors duration-300"></div>
+                        {/* Timeline connector */}
+                        <div className="absolute -left-4 top-0 h-full w-0.5 bg-gradient-to-b from-cyan-500 to-blue-500 hidden sm:block opacity-50"></div>
+                        
+                        {/* Timeline dot with pulse effect */}
+                        <div className="absolute -left-6 top-6 hidden sm:block">
+                            <div className="relative">
+                                <div className="absolute inset-0 h-4 w-4 rounded-full bg-cyan-500 animate-ping opacity-75"></div>
+                                <div className="relative h-4 w-4 rounded-full bg-cyan-500 border-4 border-gray-900 group-hover:scale-125 transition-transform duration-300"></div>
+                            </div>
                         </div>
-                        <div className="sm:pl-8">
-                            <h3 className="text-2xl font-bold text-white mb-1">{exp.company}</h3>
-                             <p className="text-md text-gray-400 font-medium mb-4">{exp.descriptor}</p>
+                        
+                        {/* Company Card */}
+                        <div className="sm:pl-8 bg-gradient-to-br from-gray-800/90 to-gray-900/90 border border-gray-700 rounded-xl p-6 hover:border-cyan-500 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10">
+                            {/* Company Header */}
+                            <div className="flex items-start justify-between mb-4 pb-4 border-b border-gray-700">
+                                <div>
+                                    <h3 className="text-2xl font-bold text-white mb-1 group-hover:text-cyan-400 transition-colors">{exp.company}</h3>
+                                    <p className="text-sm text-gray-400 font-medium uppercase tracking-wide">{exp.descriptor}</p>
+                                </div>
+                                <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-lg px-3 py-1 text-xs text-cyan-400 font-semibold whitespace-nowrap">
+                                    {exp.roles.length} {exp.roles.length > 1 ? 'Roles' : 'Role'}
+                                </div>
+                            </div>
+                            
+                            {/* Roles */}
                             {exp.roles.map((role, rIndex) => (
-                                <div key={rIndex} className={rIndex > 0 ? 'mt-6' : ''}>
-                                    <div className="flex flex-col sm:flex-row justify-between sm:items-baseline mb-2">
-                                        <h4 className="font-semibold text-cyan-400 text-lg">{role.title}</h4>
-                                        <time className="text-sm font-medium uppercase text-gray-500 whitespace-nowrap mt-1 sm:mt-0">{role.duration}</time>
+                                <div key={rIndex} className={`${rIndex > 0 ? 'mt-6 pt-6 border-t border-gray-700/50' : ''}`}>
+                                    <div className="flex flex-col sm:flex-row justify-between sm:items-center mb-3 gap-2">
+                                        <h4 className="font-bold text-cyan-400 text-lg">{role.title}</h4>
+                                        <time className="inline-flex items-center gap-2 text-xs font-bold uppercase text-gray-500 bg-gray-800 px-3 py-1 rounded-full border border-gray-700 whitespace-nowrap">
+                                            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
+                                            </svg>
+                                            {role.duration}
+                                        </time>
                                     </div>
-                                    <ul className="text-gray-300 list-disc list-inside space-y-2 marker:text-cyan-500">
+                                    <ul className="space-y-3">
                                       {role.points.map((point, pIndex) => (
-                                        <li key={pIndex} className="pl-2">{point}</li>
+                                        <li key={pIndex} className="flex items-start gap-3 text-gray-300">
+                                            <div className="flex-shrink-0 mt-1">
+                                                <div className="h-1.5 w-1.5 rounded-full bg-cyan-500"></div>
+                                            </div>
+                                            <span className="leading-relaxed">{point}</span>
+                                        </li>
                                       ))}
                                     </ul>
                                 </div>

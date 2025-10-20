@@ -1,0 +1,35 @@
+{
+  "name": "Wutcharin Thatan - Executive Leader in AI, Automation and Analytics",
+  "short_name": "Wutcharin Thatan",
+  "description": "Executive Leader specializing in AI, Automation, and Analytics with expertise in machine learning and intelligent data solutions based in Bangkok, Thailand",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111827",
+  "theme_color": "#06b6d4",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "productivity", "portfolio"],
+  "dir": "ltr",
+  "lang": "en-US",
+  "scope": "/"
+}
+
