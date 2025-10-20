@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Sidebar from './components/Sidebar';
+import Header from './components/Header';
 import ExecutiveProfile from './components/ExecutiveProfile';
 import CareerHighlights from './components/CareerHighlights';
 import Experience from './components/Experience';
@@ -54,44 +54,40 @@ const App: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-gray-900 selection:bg-cyan-500 selection:text-white">
+            <Header activeSection={activeSection} />
             <Hero />
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="lg:flex lg:gap-12 content-wrapper">
-                    <aside className="lg:w-96 lg:flex-shrink-0">
-                       <Sidebar activeSection={activeSection} />
-                    </aside>
-                    <main className="flex-1 min-w-0">
-                         <div id="profile" ref={sectionRefs.profile} className="lg:pt-24">
-                            <AnimatedSection>
-                                <ExecutiveProfile />
-                            </AnimatedSection>
-                         </div>
-                        
-                        <div id="highlights" ref={sectionRefs.highlights}>
-                            <AnimatedSection>
-                                <CareerHighlights />
-                            </AnimatedSection>
-                        </div>
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
+                <main>
+                    <div id="profile" ref={sectionRefs.profile} className="py-16">
+                        <AnimatedSection>
+                            <ExecutiveProfile />
+                        </AnimatedSection>
+                    </div>
+                    
+                    <div id="highlights" ref={sectionRefs.highlights} className="py-16">
+                        <AnimatedSection>
+                            <CareerHighlights />
+                        </AnimatedSection>
+                    </div>
 
-                        <div id="experience" ref={sectionRefs.experience}>
-                            <AnimatedSection>
-                                <Experience />
-                            </AnimatedSection>
-                        </div>
+                    <div id="experience" ref={sectionRefs.experience} className="py-16">
+                        <AnimatedSection>
+                            <Experience />
+                        </AnimatedSection>
+                    </div>
 
-                        <div id="projects" ref={sectionRefs.projects}>
-                            <AnimatedSection>
-                                <Projects />
-                            </AnimatedSection>
-                        </div>
-                        
-                        <div id="contact" ref={sectionRefs.contact}>
-                            <AnimatedSection>
-                                <Contact />
-                            </AnimatedSection>
-                        </div>
-                    </main>
-                </div>
+                    <div id="projects" ref={sectionRefs.projects} className="py-16">
+                        <AnimatedSection>
+                            <Projects />
+                        </AnimatedSection>
+                    </div>
+                    
+                    <div id="contact" ref={sectionRefs.contact} className="py-16">
+                        <AnimatedSection>
+                            <Contact />
+                        </AnimatedSection>
+                    </div>
+                </main>
             </div>
             <Footer />
         </div>
