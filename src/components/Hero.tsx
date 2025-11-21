@@ -1,3 +1,4 @@
+import Typewriter from 'typewriter-effect';
 import { motion } from 'framer-motion';
 import { ArrowRight, MapPin } from 'lucide-react';
 
@@ -22,9 +23,17 @@ export default function Hero() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.2 }}
                 >
-                    <h2 className="text-2xl md:text-3xl text-primary font-semibold mb-4">
-                        Executive Leader
-                    </h2>
+                    <div className="text-2xl md:text-3xl text-primary font-semibold mb-4 h-[40px]">
+                        <Typewriter
+                            options={{
+                                strings: ['Executive Leader', 'Data Strategist', 'AI Innovator', 'Tech Visionary'],
+                                autoStart: true,
+                                loop: true,
+                                delay: 50,
+                                deleteSpeed: 30,
+                            }}
+                        />
+                    </div>
                     <p className="text-xl md:text-2xl text-gray-400 mb-6">
                         AI, Automation and Analytics
                     </p>
