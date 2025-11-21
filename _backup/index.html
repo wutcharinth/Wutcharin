@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wutcharin Thatan - Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo">WT</a>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">Profile</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#experience" class="nav-link">Experience</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Three.js Background -->
+    <canvas id="canvas3d"></canvas>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    <span class="title-name">Wutcharin Thatan</span>
+                </h1>
+                <p class="hero-subtitle">Executive Leader</p>
+                <p class="hero-tagline">AI, Automation and Analytics</p>
+                <p class="hero-location">
+                    <svg class="location-icon" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                    </svg>
+                    Bangkok, Thailand
+                </p>
+                <p class="hero-description">
+                    Transforming businesses through AI-powered automation, advanced analytics, 
+                    and intelligent data solutions
+                </p>
+                <div class="hero-skills">
+                    <span class="skill-badge">Data Strategy</span>
+                    <span class="skill-badge">Machine Learning</span>
+                    <span class="skill-badge">BI Architecture</span>
+                    <span class="skill-badge">Python & SQL</span>
+                    <span class="skill-badge">Tableau & Power BI</span>
+                    <span class="skill-badge">Team Leadership</span>
+                    <span class="skill-badge">AI Automation (n8n)</span>
+                    <span class="skill-badge">Fast App Prototyping (LLM)</span>
+                </div>
+                <div class="hero-buttons">
+                    <a href="#projects" class="btn btn-primary">View Projects</a>
+                    <a href="#contact" class="btn btn-secondary">Let's Connect</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">Executive Profile</h2>
+            
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">20+</div>
+                    <div class="stat-label">Years Experience</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">600+</div>
+                    <div class="stat-label">Users Empowered</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">100+</div>
+                    <div class="stat-label">Dashboards Built</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">60%</div>
+                    <div class="stat-label">Process Reduction</div>
+                </div>
+            </div>
+
+            <div class="about-content">
+                <div class="about-text">
+                    <div class="profile-highlight">
+                        <p>
+                            I am a data-driven executive who architects analytics functions as revenue-generating engines for the business. With a <strong>20-year career</strong> spanning high-stakes turnarounds in aviation to hyper-growth in travel tech, I specialize in building elite teams, deploying scalable data platforms, and translating complex insights into decisive C-suite strategies.
+                        </p>
+                    </div>
+                    <div class="profile-highlight">
+                        <p>
+                            My experience spans both <strong>international tech companies</strong> and organizations undergoing digital transformation. This diverse background enables me to understand different corporate cultures, adapt to varying business needs, and connect with people across all levels of organizations. I bring a unique perspective that bridges innovation-driven tech environments with traditional businesses embracing change, ensuring data strategies that resonate with every stakeholder.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <div class="container">
+            <h2 class="section-title">My Projects</h2>
+            <p class="projects-intro">
+                Specializing in <strong>rapid prototyping</strong> and AI-first development. I build end-to-end solutions in days, not months — from <strong>AI-powered applications</strong> and <strong>full-stack websites</strong> to <strong>data-driven dashboards</strong>, <strong>interactive presentations</strong>, and <strong>research prototypes</strong>. My approach combines LLM capabilities with modern frameworks to validate ideas quickly and deliver production-ready solutions.
+            </p>
+            
+            <div class="projects-list">
+                <!-- Project 1 -->
+                <a href="https://aviationweek.com/air-transport/airports-networks/thai-startup-really-cool-airlines-plans-q2-2024-launch-airbus-a330" target="_blank" rel="noopener noreferrer" class="project-card featured">
+                    <div class="project-badge">
+                        <svg class="badge-icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        Speaker at Routes World 2023
+                    </div>
+                    <div class="project-header">
+                        <h3 class="project-title">Really Cool Airlines - Airline Startup Launch</h3>
+                        <svg class="external-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                    </div>
+                    <p class="project-description">
+                        Served as Head of Commercial for Thai aviation startup Really Cool Airlines. Speaker at Routes World 2023 in Istanbul - one of the aviation industry's largest route development conferences. Led comprehensive business plan development, fundraising initiatives, and successfully secured business license from The Civil Aviation Authority of Thailand (CAAT). Featured in Aviation Week for presenting the airline's vision to connect Bangkok with underserved global markets. Although the airline is not yet active, this venture provided invaluable hands-on experience in startup operations, regulatory compliance, aviation business development, investor relations, and international stakeholder management.
+                    </p>
+                    <div class="project-tags">
+                        <span>Business Strategy</span>
+                        <span>Fundraising</span>
+                        <span>Aviation</span>
+                        <span>Regulatory Compliance</span>
+                        <span>Commercial Leadership</span>
+                    </div>
+                </a>
+
+                <!-- Project 2 -->
+                <div class="project-card featured" data-url="https://splitbill-ai.com/">
+                    <div class="project-badge">
+                        <svg class="badge-icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        Built in 7 Days
+                    </div>
+                    <div class="project-header">
+                        <h3 class="project-title">SplitBill AI - From Idea to Live App in 7 Days</h3>
+                        <svg class="external-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                    </div>
+                    <p class="project-description">
+                        Built end-to-end in one week using AI-first approach. Features instant receipt scanning with Gemini AI, automatic item parsing including taxes and service charges, intuitive tap-to-assign interface, and clean summary sharing. Deployed on Firebase with custom domain. A real-world example of rapid AI prototyping, showcasing ability to move from concept to production quickly. Featured in LinkedIn article documenting the entire development journey.
+                    </p>
+                    <div class="project-tags">
+                        <span>Gemini AI</span>
+                        <span>Firebase</span>
+                        <span>Google AI Studio</span>
+                        <span>React</span>
+                        <span>7-Day Build</span>
+                    </div>
+                    <div class="project-article">
+                        <a href="https://www.linkedin.com/pulse/from-idea-live-app-7-days-my-journey-building-splitbill-thatan-wsugc/" target="_blank" rel="noopener noreferrer" class="article-link" onclick="event.stopPropagation()">
+                            <svg class="article-icon" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                                <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+                            </svg>
+                            Read LinkedIn Article
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <a href="https://web-production-c4714.up.railway.app/" target="_blank" rel="noopener noreferrer" class="project-card">
+                    <div class="project-badge">
+                        <svg class="badge-icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        Startup MVP
+                    </div>
+                    <div class="project-header">
+                        <h3 class="project-title">LocalGuide - Booking Platform Prototype</h3>
+                        <svg class="external-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                    </div>
+                    <p class="project-description">
+                        Full-stack prototype built for startup founder connecting travelers with local guides. Features complete user authentication system, guide profile management, booking functionality, and payment integration. Demonstrates ability to rapidly build MVPs for entrepreneurs and validate business concepts through functional prototypes.
+                    </p>
+                    <div class="project-tags">
+                        <span>Full Stack</span>
+                        <span>React</span>
+                        <span>Express.js</span>
+                        <span>PostgreSQL</span>
+                        <span>Railway</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="experience">
+        <div class="container">
+            <h2 class="section-title">Professional Experience</h2>
+            <p class="section-subtitle">20 years across global tech platforms, startups, and transformational leadership roles</p>
+            
+            <div class="timeline">
+                <!-- Agoda -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="company-header">
+                            <h3 class="company-name">Agoda</h3>
+                            <span class="company-type">Global Travel Tech Platform</span>
+                        </div>
+                        
+                        <div class="role">
+                            <div class="role-header">
+                                <h4 class="role-title">Associate Director - FinTech Data and Automation</h4>
+                                <span class="role-duration">Apr 2024 - Present</span>
+                            </div>
+                            <ul class="role-points">
+                                <li>Orchestrating the data and automation strategy for the FinTech vertical, leading a 7-person team to enhance risk management, compliance, and operational efficiency.</li>
+                                <li>Leading Finance AI Department Co-creation Roadmap and ideation, driving strategic initiatives that leverage AI to transform financial operations and decision-making processes.</li>
+                                <li>Delivering comprehensive analytics for Treasury, Tax, Credit Risk, and Collections to drive efficiency gains and resolve upstream data issues.</li>
+                                <li>Championing adoption of advanced analytics and self-service BI tools to embed data-driven decision-making across the finance organization.</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="role">
+                            <div class="role-header">
+                                <h4 class="role-title">Associate Director - Supply Analytics</h4>
+                                <span class="role-duration">Nov 2017 - Apr 2022</span>
+                            </div>
+                            <ul class="role-points">
+                                <li>Capitalized on data to drive supply strategy, developing predictive ROI and churn models that significantly grew high-value partnerships and informed C-suite decisions.</li>
+                                <li>Architected the centralized Supply department database, empowering the organization with enhanced data accessibility and analysis capabilities.</li>
+                                <li>Designed and deployed over 100 Tableau dashboards, democratizing data for 600+ weekly users and fostering a culture of self-service analytics.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Really Cool Airlines -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="company-header">
+                            <h3 class="company-name">Really Cool Airlines</h3>
+                            <span class="company-type">Airline Startup</span>
+                        </div>
+                        
+                        <div class="role">
+                            <div class="role-header">
+                                <h4 class="role-title">Head of Commercial</h4>
+                                <span class="role-duration">Apr 2023 - Feb 2024</span>
+                            </div>
+                            <ul class="role-points">
+                                <li>Pioneered the airline's commercial division from concept, establishing 6 teams (11 headcount) and securing 200M THB in seed capital by articulating a compelling market entry strategy.</li>
+                                <li>Directed all commercial functions: Route Planning, Revenue Management, Sales & Distribution, Marketing, and Product Development.</li>
+                                <li>Led provider selection and negotiation for all key systems, balancing lean startup budgets with critical capabilities.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thairath Group -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="company-header">
+                            <h3 class="company-name">Thairath Group</h3>
+                            <span class="company-type">Thai Media Conglomerate</span>
+                        </div>
+                        
+                        <div class="role">
+                            <div class="role-header">
+                                <h4 class="role-title">Head of Strategic Foresight and Planning</h4>
+                                <span class="role-duration">Apr 2022 - Apr 2023</span>
+                            </div>
+                            <ul class="role-points">
+                                <li>Engineered a group-wide data transformation, implementing KPI frameworks and analytics systems that unified strategic priorities across diverse business units.</li>
+                                <li>Advised on resource allocation, inter-departmental communication, and technology decisions to drive group-level goals.</li>
+                                <li>Launched a new business unit (Taro Media) by authoring the complete business plan to mitigate content rights risks and capture international revenue streams.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nok Air -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="company-header">
+                            <h3 class="company-name">Nok Air</h3>
+                            <span class="company-type">Low-Cost Airline</span>
+                        </div>
+                        
+                        <div class="role">
+                            <div class="role-header">
+                                <h4 class="role-title">Planning Director</h4>
+                                <span class="role-duration">Oct 2016 - Nov 2017</span>
+                            </div>
+                            <ul class="role-points">
+                                <li>Co-architected a successful corporate turnaround by deploying analytical models for network optimization, directly leading to a 15% increase in aircraft utilization and a +3 p.p. YoY gain in cabin factor.</li>
+                                <li>Authored and presented the comprehensive turnaround strategy to the Board of Directors, lessors, banks, and potential investors, securing critical new investment.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thai Smile Airways -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="company-header">
+                            <h3 class="company-name">Thai Smile Airways</h3>
+                            <span class="company-type">Regional Full-Service Airline</span>
+                        </div>
+                        
+                        <div class="role">
+                            <div class="role-header">
+                                <h4 class="role-title">Corporate Strategy & Planning Manager</h4>
+                                <span class="role-duration">Nov 2015 - Oct 2016</span>
+                            </div>
+                            <ul class="role-points">
+                                <li>Increased route profitability and expanded market share by directing data-driven network planning and capacity decisions.</li>
+                                <li>Led successful negotiations with aviation authorities and airports to secure operating permits and optimal slots for new destinations.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="contact-card">
+                <h2 class="section-title">Let's Connect</h2>
+                <p class="contact-description">
+                    I'm always open to discussing new projects, creative ideas, or opportunities to be part of an ambitious vision.
+                </p>
+                <a href="https://www.linkedin.com/in/wutcharin/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-large">
+                    Message me on LinkedIn
+                </a>
+                
+                <div class="social-links">
+                    <a href="mailto:wutcharin.th@gmail.com" class="social-link" aria-label="Email" title="Email">
+                        <svg class="social-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </a>
+                    <a href="https://linkedin.com/in/Wutcharin" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn" title="LinkedIn">
+                        <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path>
+                        </svg>
+                    </a>
+                    <a href="https://github.com/wutcharinth" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub" title="GitHub">
+                        <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Wutcharin Thatan. All rights reserved.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+
