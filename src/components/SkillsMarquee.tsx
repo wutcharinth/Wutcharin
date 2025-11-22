@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 
 const skills = [
     "AI Agents", "AI Automations", "RAG", "LLM Integration",
+    "Cursor", "Claude Code", "Antigravity", "VS Code",
     "n8n", "Python", "SQL", "Machine Learning",
     "Prompt Engineering", "Workflow Automation", "Data Strategy",
     "Tableau", "PowerBI", "React", "TypeScript",
