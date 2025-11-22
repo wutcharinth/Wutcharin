@@ -6,31 +6,60 @@ const experiences = [
         company: "Agoda",
         role: "Associate Director - FinTech Data and Automation",
         period: "Apr 2024 - Present",
-        desc: "Orchestrating data strategy for FinTech vertical. Leading Finance AI roadmap and driving adoption of advanced analytics."
+        points: [
+            "Orchestrating the data and automation strategy for the FinTech vertical, leading a 7-person team to enhance risk management, compliance, and operational efficiency.",
+            "Leading Finance AI Department Co-creation Roadmap and ideation, driving strategic initiatives that leverage AI to transform financial operations and decision-making processes.",
+            "Delivering comprehensive analytics for Treasury, Tax, Credit Risk, and Collections to drive efficiency gains and resolve upstream data issues.",
+            "Championing adoption of advanced analytics and self-service BI tools to embed data-driven decision-making across the finance organization."
+        ]
     },
     {
         company: "Agoda",
         role: "Associate Director - Supply Analytics",
         period: "Nov 2017 - Apr 2022",
-        desc: "Developed predictive ROI models and architected centralized Supply database. Deployed 100+ Tableau dashboards."
+        points: [
+            "Capitalized on data to drive supply strategy, developing predictive ROI and churn models that significantly grew high-value partnerships and informed C-suite decisions.",
+            "Architected the centralized Supply department database, empowering the organization with enhanced data accessibility and analysis capabilities.",
+            "Designed and deployed over 100 Tableau dashboards, democratizing data for 600+ weekly users and fostering a culture of self-service analytics."
+        ]
     },
     {
         company: "Really Cool Airlines",
         role: "Head of Commercial",
         period: "Apr 2023 - Feb 2024",
-        desc: "Pioneered commercial division, secured 200M THB seed capital, and directed all commercial functions."
+        points: [
+            "Pioneered the airline's commercial division from concept, establishing 6 teams (11 headcount) and securing 200M THB in seed capital by articulating a compelling market entry strategy.",
+            "Directed all commercial functions: Route Planning, Revenue Management, Sales & Distribution, Marketing, and Product Development.",
+            "Led provider selection and negotiation for all key systems, balancing lean startup budgets with critical capabilities."
+        ]
     },
     {
         company: "Thairath Group",
-        role: "Head of Strategic Foresight",
+        role: "Head of Strategic Foresight and Planning",
         period: "Apr 2022 - Apr 2023",
-        desc: "Engineered group-wide data transformation and launched new business units."
+        points: [
+            "Engineered a group-wide data transformation, implementing KPI frameworks and analytics systems that unified strategic priorities across diverse business units.",
+            "Advised on resource allocation, inter-departmental communication, and technology decisions to drive group-level goals.",
+            "Launched a new business unit (Taro Media) by authoring the complete business plan to mitigate content rights risks and capture international revenue streams."
+        ]
     },
     {
         company: "Nok Air",
         role: "Planning Director",
         period: "Oct 2016 - Nov 2017",
-        desc: "Co-architected corporate turnaround leading to 15% increase in aircraft utilization."
+        points: [
+            "Co-architected a successful corporate turnaround by deploying analytical models for network optimization, directly leading to a 15% increase in aircraft utilization and a +3 p.p. YoY gain in cabin factor.",
+            "Authored and presented the comprehensive turnaround strategy to the Board of Directors, lessors, banks, and potential investors, securing critical new investment."
+        ]
+    },
+    {
+        company: "Thai Smile Airways",
+        role: "Corporate Strategy & Planning Manager",
+        period: "Nov 2015 - Oct 2016",
+        points: [
+            "Increased route profitability and expanded market share by directing data-driven network planning and capacity decisions.",
+            "Led successful negotiations with aviation authorities and airports to secure operating permits and optimal slots for new destinations."
+        ]
     }
 ];
 
@@ -77,9 +106,14 @@ export default function Experience() {
                                             {exp.period}
                                         </div>
 
-                                        <p className="text-gray-400 text-sm leading-relaxed">
-                                            {exp.desc}
-                                        </p>
+                                        <ul className="space-y-2">
+                                            {exp.points.map((point, i) => (
+                                                <li key={i} className="text-gray-400 text-sm leading-relaxed flex gap-2">
+                                                    <span className="text-primary mt-1.5">•</span>
+                                                    <span>{point}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
                                     </div>
                                 </div>
                                 <div className="flex-1 hidden md:block" />

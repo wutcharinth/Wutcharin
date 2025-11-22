@@ -23,7 +23,7 @@ const projects = [
         role: "Full Stack Developer",
         desc: "Booking platform prototype connecting travelers with local guides. Complete auth system, profile management, and payments.",
         tags: ["React", "Express.js", "PostgreSQL", "Railway"],
-        link: "https://web-production-c4714.up.railway.app/",
+        link: "https://web-production-c4714.up.railway.app",
         featured: false
     }
 ];
