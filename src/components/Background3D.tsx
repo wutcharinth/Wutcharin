@@ -5,12 +5,13 @@ import * as random from 'maath/random/dist/maath-random.esm';
 
 function Stars(props: any) {
     const ref = useRef<any>(null);
-    const sphere = useMemo(() => random.inSphere(new Float32Array(6000), { radius: 1.2 }), []);
+    // Increased radius for more spread, fewer particles for cleaner look
+    const sphere = useMemo(() => random.inSphere(new Float32Array(3000), { radius: 2.5 }), []);
 
     useFrame((_state, delta) => {
         if (ref.current) {
-            ref.current.rotation.x -= delta / 15;
-            ref.current.rotation.y -= delta / 20;
+            ref.current.rotation.x -= delta / 20;
+            ref.current.rotation.y -= delta / 25;
         }
     });
 
@@ -20,10 +21,11 @@ function Stars(props: any) {
                 <PointMaterial
                     transparent
                     color="#06b6d4"
-                    size={0.003}
+                    size={0.004} // Slightly larger but sharper
                     sizeAttenuation={true}
                     depthWrite={false}
-                    opacity={0.8}
+                    opacity={1} // Full opacity for sharpness
+                    toneMapped={false}
                 />
             </Points>
         </group>
@@ -33,7 +35,8 @@ function Stars(props: any) {
 export default function Background3D() {
     return (
         <div className="fixed inset-0 -z-10 bg-dark">
-            <div className="absolute inset-0 bg-gradient-to-b from-dark via-transparent to-dark z-0 pointer-events-none" />
+            {/* Darker gradient overlay for better text contrast */}
+            <div className="absolute inset-0 bg-gradient-to-b from-dark/90 via-dark/50 to-dark/90 z-0 pointer-events-none" />
             <Canvas camera={{ position: [0, 0, 1] }}>
                 <Stars />
             </Canvas>
