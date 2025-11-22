@@ -5,14 +5,20 @@ I have successfully migrated your portfolio to a modern **React + Vite** applica
 ## Phase 2 Enhancements
 
 ### 1. Advanced 3D Interactivity
-- **Skills Cloud**: A fully interactive 3D sphere of your technical skills (Python, React, AI, etc.) that users can rotate and explore.
-- **Network Mesh Background**: Upgraded the background to a complex particle system with subtle rotation, symbolizing global connectivity and data networks.
+- **Skills Marquee**: Replaced the 3D sphere with a premium, infinite scrolling marquee of your technical skills.
+- **Sharper Background**: Upgraded the background to a cleaner, sharper particle system using a "Neural Network" aesthetic.
 
 ### 2. Premium UX Features
 - **Smooth Scrolling**: Implemented `lenis` for a luxurious, heavy-weight scroll feel typical of high-end agency sites.
 - **Typewriter Effect**: Dynamic text in the Hero section cycling through "Executive Leader", "Data Strategist", etc.
 
-### 3. Core Migration (Recap)
+### 3. Content Restoration
+- **Comprehensive Experience**: Restored the full, detailed bullet points for your professional experience, ensuring no information was lost from the original site.
+
+### 4. Skills Update
+- **AI Focus**: Updated the skills list to emphasize "AI Agents", "AI Automations", "RAG", and "Workflow Automation", removing less relevant tags like AWS/Supabase.
+
+### 5. Core Migration (Recap)
 - **Framework**: React 19 + Vite + TypeScript.
 - **Styling**: Tailwind CSS v4.
 - **Animations**: Framer Motion for all entrance and hover effects.
