@@ -1,30 +1,37 @@
+
 const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, BorderStyle, WidthType, Table, TableRow, TableCell } = require("docx");
 const fs = require("fs");
 
 // Resume Data
 const profile = {
     name: "WUTCHARIN THATAN",
-    title: "EXECUTIVE LEADER - AI, AUTOMATION & ANALYTICS",
+    title: "EXECUTIVE LEADER | AI, AUTOMATION & ANALYTICS",
     contact: [
-        "Bangkok, Thailand",
+        "(+66) 061-565-5969",
         "wutcharin.th@gmail.com",
-        "linkedin.com/in/wutcharin",
-        "github.com/wutcharinth"
+        "linkedin.com/in/Wutcharin"
     ],
-    summary: "Data-driven executive who architects analytics functions as revenue-generating engines. With a 20-year career spanning high-stakes turnarounds in aviation to hyper-growth in travel tech, I specialize in building elite teams, deploying scalable data platforms, and translating complex insights into decisive C-suite strategies. Proven track record in bridging innovation-driven tech environments with traditional businesses embracing change."
+    summary: "An executive leader with nearly 20 years of experience, including a decade in people management, who builds and scales high-performing AI, Automation, and Analytics functions to operate as revenue-generating engines. With a career spanning corporate turnarounds and hyper-growth tech, I specialize in translating complex data into decisive C-suite strategies, securing capital, and embedding a data-first culture to drive measurable business outcomes."
 };
 
 const coreCompetencies = [
-    "AI Strategy & Implementation", "Enterprise Automation", "Data Governance",
-    "Digital Transformation", "Team Building & Leadership", "Stakeholder Management",
-    "Cloud Architecture", "Financial Modeling", "Product Management"
+    { area: "Strategic Leadership & Vision", desc: "Corporate data strategy, AI roadmaps & vision, and C-suite advisory on AI integration." },
+    { area: "Team Leadership & Growth", desc: "Building, mentoring, and scaling high-performing teams of data and AI specialists." },
+    { area: "Business Acumen & Impact", desc: "Go-to-market strategy, venture capital acquisition, and complex corporate turnarounds." },
+    { area: "Vendor & Partner Management", desc: "Tech vendor negotiation and strategic partner management in aviation and tech industries." }
 ];
 
-const techStack = [
-    "AI/LLM: AI Agents, RAG, Claude Code, Cursor, Antigravity, OpenAI API",
-    "Tools: VS Code, n8n, Zapier, Make, Workflow Automation",
-    "Data: Python, SQL, Tableau, PowerBI, Looker",
-    "Dev: React, TypeScript, Node.js, Google Cloud, Firebase"
+const techSkills = [
+    { area: "Analytics & Machine Learning", desc: "SQL, Python (Pandas, Scikit-learn) for predictive modeling (ROI, churn, LTV) & forecasting." },
+    { area: "AI, Automation & Prototyping", desc: "RPA (Power Automate, n8n) & GenAI for process automation and rapid web app prototyping." },
+    { area: "Visualization & Communication", desc: "BI Platforms (Tableau, Metabase, SuperSet) for data storytelling & compelling visualization." }
+];
+
+const highlights = [
+    "Saved 12,000+ hours annually via targeted AI & automation initiatives in FinTech.",
+    "Secured 200M THB in seed funding by developing the business plan and investor pitch.",
+    "Increased Aircraft Utilization by 15% & boosted cabin factor by +3 p.p. in a corporate turnaround.",
+    "Empowered 600+ Users by deploying over 100 Tableau dashboards."
 ];
 
 const experience = [
@@ -32,91 +39,81 @@ const experience = [
         company: "Agoda",
         role: "Associate Director - FinTech Data and Automation",
         period: "Apr 2024 - Present",
+        desc: "Global Travel Tech",
         points: [
-            "Orchestrating the data and automation strategy for the FinTech vertical, leading a 7-person team to enhance risk management, compliance, and operational efficiency.",
-            "Leading Finance AI Department Co-creation Roadmap and ideation, driving strategic initiatives that leverage AI to transform financial operations and decision-making processes.",
-            "Delivering comprehensive analytics for Treasury, Tax, Credit Risk, and Collections to drive efficiency gains and resolve upstream data issues.",
-            "Championing adoption of advanced analytics and self-service BI tools to embed data-driven decision-making across the finance organization."
-        ]
-    },
-    {
-        company: "Agoda",
-        role: "Associate Director - Supply Analytics",
-        period: "Nov 2017 - Apr 2022",
-        points: [
-            "Capitalized on data to drive supply strategy, developing predictive ROI and churn models that significantly grew high-value partnerships and informed C-suite decisions.",
-            "Architected the centralized Supply department database, empowering the organization with enhanced data accessibility and analysis capabilities.",
-            "Designed and deployed over 100 Tableau dashboards, democratizing data for 600+ weekly users and fostering a culture of self-service analytics."
+            "Direct a cross-functional division of 10, encompassing Finance Analytics and RPA/AI teams, to identify and execute on high-impact process automation opportunities.",
+            "Crafting the departmental AI vision and roadmap; co-creating a Finance hackathon to foster innovation and identify automation opportunities from the ground up.",
+            "Achieved over 12,000 hours in annualized time savings by deploying targeted automation solutions and machine learning models for collection risk and cashback liability.",
+            "Orchestrated deep-dive variance analysis between financial statements and operational data, providing critical insights to leadership on revenue and cost drivers."
         ]
     },
     {
         company: "Really Cool Airlines",
         role: "Head of Commercial",
         period: "Apr 2023 - Feb 2024",
+        desc: "Airline Startup",
         points: [
-            "Pioneered the airline's commercial division from concept, establishing 6 teams (11 headcount) and securing 200M THB in seed capital by articulating a compelling market entry strategy.",
-            "Directed all commercial functions: Route Planning, Revenue Management, Sales & Distribution, Marketing, and Product Development.",
-            "Led provider selection and negotiation for all key systems, balancing lean startup budgets with critical capabilities."
+            "Architected and scaled the airline's entire commercial division from inception, building and mentoring a team of 11 across 6 functions including Network Planning and Revenue Management.",
+            "Developed the definitive business plan and investor pitch, leveraging data-driven market analysis to craft a compelling go-to-market strategy that successfully secured 200M THB in seed funding."
         ]
     },
     {
         company: "Thairath Group",
-        role: "Head of Strategic Foresight and Planning",
-        period: "Apr 2022 - Apr 2023",
+        role: "Head of Strategic Foresight & Planning",
+        period: "Apr 2022 - Mar 2023",
+        desc: "Thai Media Conglomerate",
         points: [
-            "Engineered a group-wide data transformation, implementing KPI frameworks and analytics systems that unified strategic priorities across diverse business units.",
-            "Advised on resource allocation, inter-departmental communication, and technology decisions to drive group-level goals.",
-            "Launched a new business unit (Taro Media) by authoring the complete business plan to mitigate content rights risks and capture international revenue streams."
+            "Led a group-wide data transformation, establishing standardized KPI frameworks and deploying analytics systems to create a unified view of performance across business units.",
+            "Launched a new media business unit by developing the complete business plan to mitigate content rights risks and capture new international revenue streams.",
+            "Functioned as a key strategic advisor to senior leadership, providing data-driven recommendations on resource allocation, operational workflows, and technology investments."
+        ]
+    },
+    {
+        company: "Agoda",
+        role: "Associate Director - Supply Analytics",
+        period: "Nov 2017 - Apr 2022",
+        desc: "Global Travel Tech",
+        points: [
+            "Directed analytics for the Partner Programs division, transforming raw data into actionable insights and strategic recommendations presented directly to C-level leadership.",
+            "Oversaw credit risk management and analytics for the Partner Prepaid Programs, mitigating financial exposure and optimizing partner payment solutions.",
+            "Developed and deployed multiple high-impact machine learning models, including partner ROI/churn prediction and a proprietary Supply Health Score.",
+            "Established comprehensive analytics frameworks for partner segmentation and evaluation, enabling more targeted and effective partner engagement strategies.",
+            "Designed and implemented a scalable, self-service BI ecosystem, launching over 100 Tableau dashboards that provided insights to more than 600 users."
         ]
     },
     {
         company: "Nok Air",
         role: "Planning Director",
         period: "Oct 2016 - Nov 2017",
+        desc: "Low-Cost Airline",
         points: [
-            "Co-architected a successful corporate turnaround by deploying analytical models for network optimization, directly leading to a 15% increase in aircraft utilization and a +3 p.p. YoY gain in cabin factor.",
-            "Authored and presented the comprehensive turnaround strategy to the Board of Directors, lessors, banks, and potential investors, securing critical new investment."
+            "Played a pivotal role in a successful corporate turnaround by developing analytical models for network and fleet optimization, leading to a 15% increase in aircraft utilization.",
+            "Conducted in-depth competitor analysis to identify market opportunities and inform strategic fleet and network decisions.",
+            "Developed and presented the full turnaround strategy to the Board of Directors, creditors, and potential investors, resulting in the acquisition of crucial new capital."
         ]
     },
     {
         company: "Thai Smile Airways",
         role: "Corporate Strategy & Planning Manager",
-        period: "Nov 2015 - Oct 2016",
+        period: "Nov 2015 - Sep 2016",
+        desc: "Regional Airline",
         points: [
-            "Increased route profitability and expanded market share by directing data-driven network planning and capacity decisions.",
-            "Led successful negotiations with aviation authorities and airports to secure operating permits and optimal slots for new destinations."
+            "Led the network planning function, a data-driven strategy to analyze route profitability and market demand, which directly contributed to increased market share.",
+            "Managed and executed successful negotiations with key external partners, including aviation authorities and airport operators, to secure vital operating permits and strategic slots."
         ]
-    }
-];
-
-const projects = [
-    {
-        title: "Really Cool Airlines Launch",
-        role: "Strategic Lead",
-        desc: "Led commercial division setup, secured 200M THB seed capital, and obtained CAAT business license. Speaker at Routes World 2023."
-    },
-    {
-        title: "SplitBill AI",
-        role: "Full Stack Developer",
-        desc: "Built end-to-end in 7 days. Features instant receipt scanning with Gemini AI, automatic item parsing, and smart assignment. (React, Firebase, Gemini AI)"
-    },
-    {
-        title: "LocalGuide Platform",
-        role: "Full Stack Developer",
-        desc: "Booking platform prototype connecting travelers with local guides. Complete auth system, profile management, and payments. (React, Node.js, PostgreSQL)"
     }
 ];
 
 const education = [
     {
-        degree: "Master of Science in Finance",
-        school: "Chulalongkorn University",
-        year: "2012 - 2014"
+        degree: "Master of Business Administration",
+        school: "Stamford International University",
+        year: ""
     },
     {
-        degree: "Bachelor of Engineering (Computer Engineering)",
-        school: "Chiang Mai University",
-        year: "2004 - 2008"
+        degree: "Bachelor of Engineering",
+        school: "Chulalongkorn University",
+        year: ""
     }
 ];
 
@@ -142,12 +139,12 @@ const createSectionHeader = (text) => {
         heading: HeadingLevel.HEADING_1,
         spacing: { before: 400, after: 200 },
         border: {
-            bottom: { color: "2e2e2e", space: 6, value: BorderStyle.SINGLE, size: 12 },
+            bottom: { color: "06b6d4", space: 6, value: BorderStyle.SINGLE, size: 12 }, // Cyan accent
         },
         run: {
             color: "2e2e2e",
             bold: true,
-            size: 28, // 14pt
+            size: 24, // 12pt
             font: "Calibri",
         },
     });
@@ -160,10 +157,10 @@ const doc = new Document({
             properties: {
                 page: {
                     margin: {
-                        top: 1000, // ~0.7 inch
-                        right: 1000,
-                        bottom: 1000,
-                        left: 1000,
+                        top: 720, // 0.5 inch
+                        right: 720,
+                        bottom: 720,
+                        left: 720,
                     },
                 },
             },
@@ -177,7 +174,7 @@ const doc = new Document({
                     run: {
                         size: 48, // 24pt
                         bold: true,
-                        color: "000000",
+                        color: "1e293b", // Slate 800
                         font: "Calibri",
                     },
                 }),
@@ -186,9 +183,10 @@ const doc = new Document({
                     alignment: AlignmentType.CENTER,
                     spacing: { after: 200 },
                     run: {
-                        size: 24, // 12pt
-                        color: "555555",
-                        tracking: 100, // Letter spacing
+                        size: 20, // 10pt
+                        color: "06b6d4", // Cyan 400
+                        bold: true,
+                        tracking: 100,
                         font: "Calibri",
                     },
                 }),
@@ -198,24 +196,33 @@ const doc = new Document({
                     spacing: { after: 400 },
                     run: {
                         size: 20, // 10pt
-                        color: "333333",
+                        color: "64748b", // Slate 500
                         font: "Calibri",
                     },
                     border: {
-                        bottom: { color: "eeeeee", space: 20, value: BorderStyle.SINGLE, size: 6 },
+                        bottom: { color: "e2e8f0", space: 20, value: BorderStyle.SINGLE, size: 6 },
                     },
                 }),
 
                 // --- SUMMARY ---
-                createSectionHeader("Executive Summary"),
+                createSectionHeader("Executive Profile"),
                 new Paragraph({
                     text: profile.summary,
                     alignment: AlignmentType.JUSTIFIED,
                     spacing: { after: 300 },
                 }),
 
-                // --- CORE COMPETENCIES (Grid Layout) ---
-                createSectionHeader("Core Competencies"),
+                // --- CAREER HIGHLIGHTS ---
+                createSectionHeader("Career Highlights"),
+                ...highlights.map(highlight => new Paragraph({
+                    text: "• " + highlight,
+                    spacing: { after: 100 },
+                    indent: { left: 400 },
+                    run: { bold: true, color: "334155" }
+                })),
+
+                // --- CORE COMPETENCIES & TECHNICAL SKILLS (Grid) ---
+                createSectionHeader("Core Competencies & Technical Skills"),
                 new Table({
                     width: { size: 100, type: WidthType.PERCENTAGE },
                     borders: {
@@ -230,70 +237,63 @@ const doc = new Document({
                         new TableRow({
                             children: [
                                 new TableCell({
-                                    children: [new Paragraph({ text: coreCompetencies.slice(0, 3).join("\n"), spacing: { line: 300 } })],
+                                    width: { size: 50, type: WidthType.PERCENTAGE },
+                                    children: [
+                                        new Paragraph({ text: "COMPETENCIES", run: { bold: true, color: "06b6d4" }, spacing: { after: 100 } }),
+                                        ...coreCompetencies.map(c => new Paragraph({
+                                            children: [
+                                                new TextRun({ text: c.area + ": ", bold: true, size: 20 }),
+                                                new TextRun({ text: c.desc, size: 20 })
+                                            ],
+                                            spacing: { after: 100 }
+                                        }))
+                                    ],
                                 }),
                                 new TableCell({
-                                    children: [new Paragraph({ text: coreCompetencies.slice(3, 6).join("\n"), spacing: { line: 300 } })],
-                                }),
-                                new TableCell({
-                                    children: [new Paragraph({ text: coreCompetencies.slice(6, 9).join("\n"), spacing: { line: 300 } })],
+                                    width: { size: 50, type: WidthType.PERCENTAGE },
+                                    children: [
+                                        new Paragraph({ text: "TECHNICAL SKILLS", run: { bold: true, color: "06b6d4" }, spacing: { after: 100 } }),
+                                        ...techSkills.map(t => new Paragraph({
+                                            children: [
+                                                new TextRun({ text: t.area + ": ", bold: true, size: 20 }),
+                                                new TextRun({ text: t.desc, size: 20 })
+                                            ],
+                                            spacing: { after: 100 }
+                                        }))
+                                    ],
                                 }),
                             ],
                         }),
                     ],
                 }),
 
-                // --- TECHNICAL ARSENAL ---
-                createSectionHeader("Technical Arsenal"),
-                ...techStack.map(tech => new Paragraph({
-                    text: "• " + tech,
-                    spacing: { after: 100 },
-                    indent: { left: 400 },
-                })),
-
                 // --- EXPERIENCE ---
                 createSectionHeader("Professional Experience"),
                 ...experience.flatMap((exp) => [
                     new Paragraph({
                         children: [
-                            new TextRun({ text: exp.company, bold: true, size: 26 }),
-                            new TextRun({ text: "\t" + exp.period, bold: true, size: 24, color: "555555" }),
+                            new TextRun({ text: exp.company, bold: true, size: 24 }),
+                            new TextRun({ text: " | " + exp.desc, italics: true, size: 22, color: "64748b" }),
+                            new TextRun({ text: "\t" + exp.period, bold: true, size: 22, color: "0f172a" }),
                         ],
-                        tabStops: [{ type: "right", position: 9500 }],
+                        tabStops: [{ type: "right", position: 10500 }],
                         spacing: { before: 300, after: 50 },
                     }),
                     new Paragraph({
                         text: exp.role,
-                        italics: true,
-                        size: 24,
-                        color: "06b6d4", // Cyan-ish accent
-                        spacing: { after: 150 },
+                        bold: true,
+                        size: 22,
+                        color: "06b6d4",
+                        spacing: { after: 100 },
                     }),
                     ...exp.points.map((point) =>
                         new Paragraph({
                             text: point,
                             bullet: { level: 0 },
-                            spacing: { after: 100 },
+                            spacing: { after: 50 },
                             alignment: AlignmentType.JUSTIFIED,
                         })
                     ),
-                ]),
-
-                // --- PROJECTS ---
-                createSectionHeader("Key Projects"),
-                ...projects.flatMap((proj) => [
-                    new Paragraph({
-                        children: [
-                            new TextRun({ text: proj.title, bold: true }),
-                            new TextRun({ text: " | " + proj.role, italics: true }),
-                        ],
-                        spacing: { before: 200, after: 50 },
-                    }),
-                    new Paragraph({
-                        text: proj.desc,
-                        spacing: { after: 150 },
-                        indent: { left: 400 },
-                    }),
                 ]),
 
                 // --- EDUCATION ---
@@ -301,15 +301,13 @@ const doc = new Document({
                 ...education.flatMap((edu) => [
                     new Paragraph({
                         children: [
-                            new TextRun({ text: edu.school, bold: true }),
-                            new TextRun({ text: "\t" + edu.year, bold: true }),
+                            new TextRun({ text: edu.degree, bold: true }),
                         ],
-                        tabStops: [{ type: "right", position: 9500 }],
                         spacing: { before: 100, after: 50 },
                     }),
                     new Paragraph({
-                        text: edu.degree,
-                        italics: true,
+                        text: edu.school,
+                        color: "64748b",
                         spacing: { after: 200 },
                     }),
                 ]),
@@ -323,3 +321,4 @@ Packer.toBuffer(doc).then((buffer) => {
     fs.writeFileSync("Wutcharin_Thatan_Resume.docx", buffer);
     console.log("Resume generated successfully!");
 });
+
