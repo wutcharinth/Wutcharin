@@ -12,10 +12,10 @@ const path = require('path');
   // Read the existing HTML
   let html = fs.readFileSync('wutcharin resume 2025.html', 'utf8');
 
-  // Modify HTML for 2-page PDF generation
-  // 1. Remove fixed height and overflow constraints
-  html = html.replace('h-[297mm]', 'min-h-[297mm]');
-  html = html.replace('overflow-hidden', '');
+  // Modify HTML for 1-page PDF generation
+  // 1. Keep fixed height and overflow constraints (do not replace them)
+  // html = html.replace('h-[297mm]', 'min-h-[297mm]'); 
+  // html = html.replace('overflow-hidden', '');
   html = html.replace('flex justify-center items-center min-h-screen p-8', ''); // Remove centering wrapper
 
   // 2. Adjust container to be full width/height for print
@@ -37,7 +37,8 @@ const path = require('path');
       }
       .print-container {
         width: 210mm;
-        min-height: 297mm; /* Allow expansion */
+        height: 297mm !important; /* Force fixed height */
+        overflow: hidden !important; /* Hide overflow */
       }
       /* Ensure the grid extends */
       .grid {
@@ -80,6 +81,7 @@ const path = require('path');
     path: 'Wutcharin_Thatan_Resume.pdf',
     format: 'A4',
     printBackground: true,
+    pageRanges: '1',
     margin: {
       top: '0px',
       right: '0px',
