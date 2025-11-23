@@ -7,10 +7,10 @@ const experiences = [
         role: "Associate Director - FinTech Data and Automation",
         period: "Apr 2024 - Present",
         points: [
-            "Orchestrating the data and automation strategy for the FinTech vertical, leading a 7-person team to enhance risk management, compliance, and operational efficiency.",
-            "Leading Finance AI Department Co-creation Roadmap and ideation, driving strategic initiatives that leverage AI to transform financial operations and decision-making processes.",
-            "Delivering comprehensive analytics for Treasury, Tax, Credit Risk, and Collections to drive efficiency gains and resolve upstream data issues.",
-            "Championing adoption of advanced analytics and self-service BI tools to embed data-driven decision-making across the finance organization."
+            "Direct a cross-functional division of 10, encompassing Finance Analytics and RPA/AI teams, to identify and execute on high-impact process automation opportunities.",
+            "Crafting the departmental AI vision and roadmap; led workshops and built AI Agents (RAG, Auto-SQL) to automate workflows.",
+            "Achieved over 12,000 hours in annualized time savings by deploying targeted automation solutions and machine learning models for collection risk and cashback liability.",
+            "Orchestrated deep-dive variance analysis between financial statements and operational data, providing critical insights to leadership on revenue and cost drivers."
         ]
     },
     {
@@ -18,9 +18,11 @@ const experiences = [
         role: "Associate Director - Supply Analytics",
         period: "Nov 2017 - Apr 2022",
         points: [
-            "Capitalized on data to drive supply strategy, developing predictive ROI and churn models that significantly grew high-value partnerships and informed C-suite decisions.",
-            "Architected the centralized Supply department database, empowering the organization with enhanced data accessibility and analysis capabilities.",
-            "Designed and deployed over 100 Tableau dashboards, democratizing data for 600+ weekly users and fostering a culture of self-service analytics."
+            "Directed analytics for the Partner Programs division, transforming raw data into actionable insights and strategic recommendations presented directly to C-level leadership.",
+            "Oversaw credit risk management and analytics for the Partner Prepaid Programs, mitigating financial exposure and optimizing partner payment solutions.",
+            "Developed and deployed multiple high-impact machine learning models, including partner ROI/churn prediction and a proprietary Supply Health Score.",
+            "Established comprehensive analytics frameworks for partner segmentation and evaluation, enabling more targeted and effective partner engagement strategies.",
+            "Designed and implemented a scalable, self-service BI ecosystem, launching over 100 Tableau dashboards that provided insights to more than 600 users."
         ]
     },
     {
@@ -28,9 +30,8 @@ const experiences = [
         role: "Head of Commercial",
         period: "Apr 2023 - Feb 2024",
         points: [
-            "Pioneered the airline's commercial division from concept, establishing 6 teams (11 headcount) and securing 200M THB in seed capital by articulating a compelling market entry strategy.",
-            "Directed all commercial functions: Route Planning, Revenue Management, Sales & Distribution, Marketing, and Product Development.",
-            "Led provider selection and negotiation for all key systems, balancing lean startup budgets with critical capabilities."
+            "Architected and scaled the airline's entire commercial division from inception, building and mentoring a team of 11 across 6 functions including Network Planning and Revenue Management.",
+            "Developed the definitive business plan and investor pitch, leveraging data-driven market analysis to craft a compelling go-to-market strategy that successfully secured 200M THB in seed funding."
         ]
     },
     {
@@ -38,9 +39,9 @@ const experiences = [
         role: "Head of Strategic Foresight and Planning",
         period: "Apr 2022 - Apr 2023",
         points: [
-            "Engineered a group-wide data transformation, implementing KPI frameworks and analytics systems that unified strategic priorities across diverse business units.",
-            "Advised on resource allocation, inter-departmental communication, and technology decisions to drive group-level goals.",
-            "Launched a new business unit (Taro Media) by authoring the complete business plan to mitigate content rights risks and capture international revenue streams."
+            "Led a group-wide data transformation, establishing standardized KPI frameworks and deploying analytics systems to create a unified view of performance across business units.",
+            "Launched a new media business unit by developing the complete business plan to mitigate content rights risks and capture new international revenue streams.",
+            "Functioned as a key strategic advisor to senior leadership, providing data-driven recommendations on resource allocation, operational workflows, and technology investments."
         ]
     },
     {
@@ -48,8 +49,9 @@ const experiences = [
         role: "Planning Director",
         period: "Oct 2016 - Nov 2017",
         points: [
-            "Co-architected a successful corporate turnaround by deploying analytical models for network optimization, directly leading to a 15% increase in aircraft utilization and a +3 p.p. YoY gain in cabin factor.",
-            "Authored and presented the comprehensive turnaround strategy to the Board of Directors, lessors, banks, and potential investors, securing critical new investment."
+            "Played a pivotal role in a successful corporate turnaround by developing analytical models for network and fleet optimization, leading to a 15% increase in aircraft utilization.",
+            "Conducted in-depth competitor analysis to identify market opportunities and inform strategic fleet and network decisions.",
+            "Developed and presented the full turnaround strategy to the Board of Directors, creditors, and potential investors, resulting in the acquisition of crucial new capital."
         ]
     },
     {
@@ -57,8 +59,8 @@ const experiences = [
         role: "Corporate Strategy & Planning Manager",
         period: "Nov 2015 - Oct 2016",
         points: [
-            "Increased route profitability and expanded market share by directing data-driven network planning and capacity decisions.",
-            "Led successful negotiations with aviation authorities and airports to secure operating permits and optimal slots for new destinations."
+            "Led data-driven network planning to analyze route profitability, directly contributing to increased market share.",
+            "Managed negotiations with aviation authorities/airports to secure vital operating permits and slots."
         ]
     }
 ];
