@@ -68,7 +68,7 @@ export default function Hero() {
                         Let's Connect
                     </a>
                     <a
-                        href="/Wutcharin_Thatan_Resume.pdf"
+                        href="/Wutcharin_CV.pdf"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="px-8 py-3 border border-primary/50 rounded-full text-white font-semibold hover:bg-primary/10 transition-all transform hover:-translate-y-1 flex items-center gap-2"

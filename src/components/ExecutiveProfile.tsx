@@ -49,11 +49,11 @@ export default function ExecutiveProfile() {
                     >
                         <div className="p-6 border-l-4 border-primary bg-dark-lighter/30 rounded-r-xl">
                             <p>
-                                I am a data-driven executive who architects analytics functions as revenue-generating engines for the business. With a <strong className="text-white">20-year career</strong> spanning high-stakes turnarounds in aviation to hyper-growth in travel tech.
+                                Executive leader with nearly 20 years of experience (10+ in people management), possessing a <strong className="text-white">unique combination of Business Strategy and Technical Execution expertise</strong>.
                             </p>
                         </div>
                         <p>
-                            I specialize in building elite teams, deploying scalable data platforms, and translating complex insights into decisive C-suite strategies. My experience spans both international tech companies and organizations undergoing digital transformation.
+                            Specialized in <strong className="text-white">scaling high-performing AI, Automation, and Analytics functions</strong>, I am a hands-on builder who translates complex data into C-suite strategies, having secured <strong className="text-white">200M THB in capital</strong> via data-driven planning. Expert in bridging the gap between Finance, Engineering, and Commercial strategy in both hyper-growth Tech (Agoda) and Aviation sectors.
                         </p>
                     </motion.div>
 
