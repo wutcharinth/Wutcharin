@@ -1,6 +1,6 @@
 import Typewriter from 'typewriter-effect';
 import { motion } from 'framer-motion';
-import { ArrowRight, MapPin } from 'lucide-react';
+import { ArrowRight, MapPin, FileText } from 'lucide-react';
 
 export default function Hero() {
     return (
@@ -66,6 +66,14 @@ export default function Hero() {
                         className="px-8 py-3 border border-primary/50 rounded-full text-white font-semibold hover:bg-primary/10 transition-all transform hover:-translate-y-1"
                     >
                         Let's Connect
+                    </a>
+                    <a
+                        href="/Wutcharin_Thatan_Resume.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-8 py-3 border border-primary/50 rounded-full text-white font-semibold hover:bg-primary/10 transition-all transform hover:-translate-y-1 flex items-center gap-2"
+                    >
+                        <FileText className="w-4 h-4" /> Resume
                     </a>
                 </motion.div>
 
