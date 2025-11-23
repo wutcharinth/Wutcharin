@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wutcharin Thatan - Resume</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: #525659;
+            /* Viewer background */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .page {
+            background-color: white;
+            width: 210mm;
+            min-height: 297mm;
+            padding: 1.2cm;
+            /* Matching geometry margins */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* Colors */
+        .text-techblue {
+            color: #2563eb;
+        }
+
+        .text-darkgray {
+            color: #0f172a;
+        }
+
+        .text-lightgray {
+            color: #64748b;
+        }
+
+        .bg-techblue {
+            background-color: #2563eb;
+        }
+
+        /* Layout */
+        .cv-section {
+            display: flex;
+            margin-bottom: 12px;
+        }
+
+        .cv-section-title {
+            width: 3.2cm;
+            /* hintscolumnwidth */
+            flex-shrink: 0;
+            color: #2563eb;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-align: right;
+            padding-right: 15px;
+            line-height: 1.2;
+        }
+
+        .cv-section-content {
+            flex-grow: 1;
+            border-left: 1px solid #e2e8f0;
+            /* Optional guide line, moderncv doesn't always have it but it looks neat */
+            padding-left: 15px;
+        }
+
+        /* ModernCV Classic doesn't usually put section titles in the hint column, 
+           it puts DATES in the hint column for cventries. 
+           Section titles usually span or are distinct. 
+           Let's mimic standard ModernCV Classic: Section Title spans, then items have left col.
+        */
+
+        .moderncv-section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            margin-top: 15px;
+        }
+
+        .moderncv-section-header h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #2563eb;
+            margin: 0;
+            width: 3.2cm;
+            /* Align with hint column */
+            text-align: right;
+            /* Or left? Classic usually has section title on left */
+            padding-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .moderncv-section-line {
+            flex-grow: 1;
+            height: 1px;
+            background-color: #2563eb;
+            opacity: 0.3;
+        }
+
+        .cv-item {
+            display: flex;
+            margin-bottom: 6px;
+        }
+
+        .cv-left {
+            width: 3.2cm;
+            flex-shrink: 0;
+            text-align: right;
+            padding-right: 15px;
+            font-size: 0.9rem;
+            color: #0f172a;
+        }
+
+        .cv-right {
+            flex-grow: 1;
+            font-size: 0.9rem;
+            color: #334155;
+            line-height: 1.4;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            position: relative;
+            padding-left: 12px;
+            margin-bottom: 2px;
+        }
+
+        li::before {
+            content: "•";
+            color: #2563eb;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        @media print {
+            body {
+                background-color: white;
+                padding: 0;
+            }
+
+            .page {
+                box-shadow: none;
+                margin: 0;
+                width: 210mm;
+                height: 297mm;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <!-- Header -->
+        <div class="flex justify-between items-start mb-6">
+            <div class="w-[70%]">
+                <h1 class="text-[28pt] font-bold text-techblue leading-none mb-2">Wutcharin Thatan</h1>
+                <div class="text-[12pt] text-lightgray mb-3">Executive Leader | AI, Automation & Analytics</div>
+                <div class="text-sm text-darkgray flex flex-wrap gap-x-4 gap-y-1">
+                    <span><i class="fas fa-map-marker-alt w-4 text-center"></i> Bangkok, Thailand</span>
+                    <span><i class="fas fa-mobile-alt w-4 text-center"></i> (+66) 061-565-5969</span>
+                    <span><i class="fas fa-envelope w-4 text-center"></i> <a href="mailto:wutcharin.th@gmail.com"
+                            class="hover:text-techblue">wutcharin.th@gmail.com</a></span>
+                    <span><i class="fab fa-linkedin w-4 text-center"></i> <a href="https://linkedin.com/in/Wutcharin"
+                            class="hover:text-techblue">Wutcharin</a></span>
+                    <span><i class="fas fa-globe w-4 text-center"></i> <a href="https://wutcharin.com"
+                            class="hover:text-techblue">https://wutcharin.com</a></span>
+                </div>
+            </div>
+            <div class="w-[28%]">
+                <!-- Photo placeholder if needed, empty in LaTeX -->
+            </div>
+        </div>
+
+        <!-- Quote -->
+        <div class="text-center italic text-techblue mb-6 border-b border-gray-100 pb-4">
+            "Transforming businesses through AI-powered automation, advanced analytics, and intelligent data solutions."
+        </div>
+
+        <!-- Executive Profile -->
+        <div class="moderncv-section-header">
+            <h2>Executive Profile</h2>
+            <div class="moderncv-section-line"></div>
+        </div>
+        <div class="cv-item">
+            <div class="cv-left"></div>
+            <div class="cv-right text-justify">
+                Executive leader with nearly 20 years of experience (10+ in people management), possessing a
+                <strong>unique combination of Business Strategy and Technical Execution expertise</strong>. Specialized
+                in <strong>scaling high-performing AI, Automation, and Analytics functions</strong>, I am a hands-on
+                builder who translates complex data into C-suite strategies, having secured <strong>200M THB in
+                    capital</strong> via data-driven planning. Expert in bridging the gap between Finance, Engineering,
+                and Commercial strategy in both hyper-growth Tech (Agoda) and Aviation sectors.
+            </div>
+        </div>
+
+        <!-- Competencies -->
+        <div class="moderncv-section-header">
+            <h2>Key Skills</h2>
+            <div class="moderncv-section-line"></div>
+        </div>
+        <div class="cv-item">
+            <div class="cv-left font-bold">Leadership</div>
+            <div class="cv-right">Corporate Data Strategy, AI Roadmaps, C-Suite Advisory, Venture Fundraising, Crisis
+                Management, Corporate Turnarounds, Team Building (Managed teams of 8-11 specialists).</div>
+        </div>
+        <div class="cv-item">
+            <div class="cv-left font-bold">AI & Dev</div>
+            <div class="cv-right">Generative AI (Gemini, Claude), RAG Architectures, AI Agents (Text-to-SQL), React,
+                Node.js, Python, n8n, Firebase.</div>
+        </div>
+        <div class="cv-item">
+            <div class="cv-left font-bold">Analytics</div>
+            <div class="cv-right">SQL, Tableau, Metabase, Predictive Modeling (<strong>Time Series, Regression,
+                    Classification, Clustering</strong>), ETL Pipelines, Financial Variance Analysis.</div>
+        </div>
+
+        <!-- Featured Projects -->
+        <div class="moderncv-section-header">
+            <h2>Featured AI Projects</h2>
+            <div class="moderncv-section-line"></div>
+        </div>
+        <div class="cv-item">
+            <div class="cv-left">SplitBill AI</div>
+            <div class="cv-right">
+                <strong>Creator & Developer</strong> | <a href="https://splitbill-ai.com"
+                    class="text-techblue">splitbill-ai.com</a><br>
+                Built a production-ready AI expense splitter end-to-end in <strong>7 days</strong>. Features instant
+                receipt scanning via <strong>Gemini AI</strong>, automatic item parsing, and smart user assignment.
+                <em>Tech Stack: React, Firebase, Google AI Studio.</em>
+            </div>
+        </div>
+        <div class="cv-item">
+            <div class="cv-left">LocalGuide</div>
+            <div class="cv-right">
+                <strong>Full Stack Developer</strong> | <a href="#" class="text-techblue">Live Prototype Link</a><br>
+                Designed and built the MVP for a friend's travel tech startup to connect tourists with local experts.
+                Engineered the full-stack architecture including secure authentication, dynamic profile management, and
+                booking workflows. <em>Tech Stack: React, Express.js, PostgreSQL, Railway.</em>
+            </div>
+        </div>
+
+        <!-- Professional Experience -->
+        <div class="moderncv-section-header">
+            <h2>Experience</h2>
+            <div class="moderncv-section-line"></div>
+        </div>
+
+        <!-- Agoda FinTech -->
+        <div class="cv-item">
+            <div class="cv-left">Apr 2024 – Present</div>
+            <div class="cv-right">
+                <div class="flex justify-between font-bold text-darkgray">
+                    <span>Associate Director - FinTech Data and Automation</span>
+                    <span>Agoda, Bangkok</span>
+                </div>
+                <ul>
+                    <li><strong>Strategic Leadership:</strong> Lead the FinTech Data and Automation (FDA) division,
+                        comprised of an <strong>8-person team</strong> across Finance Analytics and RPA/AI. Drive
+                        operational efficiencies across critical functions including <strong>Treasury, Tax, and Credit
+                            Risk</strong>.</li>
+                    <li><strong>Impact:</strong> Achieved <strong>12,000 hours in annual productivity gain</strong> by
+                        implementing targeted automation and data-driven process improvements, significantly reducing
+                        manual workload in financial reconciliation.</li>
+                    <li><strong>Vision:</strong> Define and execute the long-term AI, Automation, and Analytics vision
+                        for FinTech, championing advanced analytics and self-service BI tools to embed a data-first
+                        culture within the finance organization.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Really Cool Airlines -->
+        <div class="cv-item mt-3">
+            <div class="cv-left">Apr 2023 – Feb 2024</div>
+            <div class="cv-right">
+                <div class="flex justify-between font-bold text-darkgray">
+                    <span>Head of Commercial</span>
+                    <span>Really Cool Airlines, Bangkok</span>
+                </div>
+                <ul>
+                    <li><strong>Startup Launch:</strong> Built and mentored a high-performing commercial division of
+                        <strong>11 professionals</strong> from the ground up, establishing <strong>6 teams</strong>
+                        including Network Planning, Revenue Management, Commercial Operations, and Marketing.</li>
+                    <li><strong>Fundraising:</strong> Translated complex market data into a compelling vision and
+                        investor pitch, leveraging insights from <strong>fleet and schedule planning</strong> to secure
+                        <strong>200M THB</strong> in seed funding to launch the airline.</li>
+                    <li><strong>Strategy:</strong> Foster a culture of excellence and innovation, setting the strategic
+                        direction for route planning and business development.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Thairath -->
+        <div class="cv-item mt-3">
+            <div class="cv-left">Apr 2022 – Mar 2023</div>
+            <div class="cv-right">
+                <div class="flex justify-between font-bold text-darkgray">
+                    <span>Head of Strategic Foresight & Planning</span>
+                    <span>Thairath Group, Bangkok</span>
+                </div>
+                <ul>
+                    <li><strong>Transformation:</strong> Managed a <strong>team of PMOs</strong> and led a data-driven
+                        culture project, implementing KPI frameworks and analytics systems that unified strategic
+                        priorities across diverse business units.</li>
+                    <li><strong>Advisory:</strong> Advised on resource allocation, inter-departmental communication, and
+                        technology decisions to drive group-level goals. Launched a new media business unit by
+                        developing plans to mitigate content rights risks.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Agoda Supply -->
+        <div class="cv-item mt-3">
+            <div class="cv-left">Nov 2017 – Apr 2022</div>
+            <div class="cv-right">
+                <div class="flex justify-between font-bold text-darkgray">
+                    <span>Associate Director - Supply Analytics</span>
+                    <span>Agoda, Bangkok</span>
+                </div>
+                <div class="text-xs text-lightgray italic mb-1">Career Progression: Senior Opportunity Manager (2017) →
+                    Head of Analytics (2019) → Associate Director (2021)</div>
+                <ul>
+                    <li><strong>Analytics Leadership:</strong> Led a team of <strong>7 analysts</strong> across Partner
+                        Programs and the Agoda Display Network. Partnered with MIS on database/dashboard development and
+                        presented KPI insights to senior leaders.</li>
+                    <li><strong>Cross-Functional Collaboration:</strong> Collaborated intensively with <strong>Sales,
+                            Account Management, and Product teams</strong> on new product launches, sales strategies,
+                        and goal setting.</li>
+                    <li><strong>Innovation:</strong> Built credit risk models and protocols. Evaluated business
+                        opportunities and formulated optimization strategies to support Regional Account Management.
+                    </li>
+                    <li><strong>Scale:</strong> Oversaw the development and delivery of a comprehensive self-service
+                        analytics ecosystem, including <strong>100+ Tableau dashboards for 600+ users</strong>.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Nok Air -->
+        <div class="cv-item mt-3">
+            <div class="cv-left">Oct 2016 – Nov 2017</div>
+            <div class="cv-right">
+                <div class="flex justify-between font-bold text-darkgray">
+                    <span>Planning Director</span>
+                    <span>Nok Air, Bangkok</span>
+                </div>
+                <ul>
+                    <li><strong>Corporate Turnaround:</strong> Co-architected a successful corporate turnaround using
+                        analytical models to increase aircraft utilization by <strong>15%</strong>. Led <strong>route
+                            network planning, financial modeling</strong>, and competitive analysis to design multi-year
+                        strategic plans.</li>
+                    <li><strong>Capital Secured:</strong> Developed and presented the comprehensive turnaround strategy
+                        to the Board of Directors, lessors, banks, and potential investors, securing critical new
+                        investment.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Thai Smile -->
+        <div class="cv-item mt-3">
+            <div class="cv-left">Nov 2015 – Sep 2016</div>
+            <div class="cv-right">
+                <div class="flex justify-between font-bold text-darkgray">
+                    <span>Strategy & Planning Manager</span>
+                    <span>Thai Smile Airways, Bangkok</span>
+                </div>
+                <ul>
+                    <li><strong>Network Strategy:</strong> Managed a team of 8 on network optimization, route expansion,
+                        and strategic planning. Monitored KPIs and provided recommendations to senior leadership.</li>
+                    <li><strong>Relations:</strong> Built and maintained critical relationships with aviation
+                        authorities and government bodies to secure vital operating permits and slots.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Education -->
+        <div class="moderncv-section-header">
+            <h2>Education</h2>
+            <div class="moderncv-section-line"></div>
+        </div>
+        <div class="cv-item">
+            <div class="cv-left">2013 – 2015</div>
+            <div class="cv-right">
+                <strong>Master of Business Administration</strong>, Stamford International University
+            </div>
+        </div>
+        <div class="cv-item">
+            <div class="cv-left">2004 – 2008</div>
+            <div class="cv-right">
+                <strong>Bachelor of Engineering</strong>, Chulalongkorn University
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
