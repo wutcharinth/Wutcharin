@@ -52,7 +52,7 @@ const path = require('path');
       }
       /* Typography Improvements for 1-page layout */
       .text-xxs {
-        font-size: 8.5px !important;
+        font-size: 9.2px !important;
         line-height: 1.3 !important;
       }
       .text-\[10px\] {
