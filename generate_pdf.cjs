@@ -39,7 +39,6 @@ const path = require('path');
         width: 210mm;
         height: 297mm !important; /* Force fixed height */
         overflow: hidden !important; /* Hide overflow */
-        padding-top: 20px !important;
       }
       /* Ensure the grid extends */
       .grid {
@@ -53,8 +52,8 @@ const path = require('path');
       }
       /* Typography Improvements for 1-page layout */
       .text-xxs {
-        font-size: 8.8px !important;
-        line-height: 1.25 !important;
+        font-size: 9px !important;
+        line-height: 1.28 !important;
       }
       .text-\[10px\] {
         font-size: 10px !important;
@@ -64,10 +63,10 @@ const path = require('path');
         font-size: 20px !important;
       }
       p, li {
-        margin-bottom: 1.5px;
+        margin-bottom: 1px;
       }
       section {
-        margin-bottom: 8px !important;
+        margin-bottom: 6px !important;
       }
       /* Force page breaks if needed, or avoid them inside elements */
       article, section {
