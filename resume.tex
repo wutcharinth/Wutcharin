@@ -1,0 +1,159 @@
+\documentclass[10pt,a4paper,sans]{moderncv}
+
+% ModernCV Theme: Classic
+\moderncvstyle{classic} 
+\moderncvcolor{blue}
+
+% Font: Lato (Modern, Geometric, Clean)
+\usepackage[default]{lato} 
+
+% Icons: Upgraded to FontAwesome5 for a modern look
+\usepackage{fontawesome5}
+
+% Colors: Custom "Electric Blue" for a sharper, digital-first look
+\usepackage{xcolor}
+\definecolor{techblue}{HTML}{2563eb} % Electric Blue (Vibrant)
+\definecolor{darkgray}{HTML}{0f172a} % Slate-900 (High Contrast)
+\definecolor{lightgray}{HTML}{64748b} % Slate-500 (Soft)
+
+% Apply custom colors
+\colorlet{color1}{techblue}
+\colorlet{color2}{darkgray}
+
+% Enforce Bold Section Headers for a sharper look
+\renewcommand*{\sectionfont}{\Large\bfseries\upshape}
+
+% Adjust column width for the timeline
+\setlength{\hintscolumnwidth}{3.2cm} 
+
+% Margins: Optimized
+\usepackage[scale=0.92, top=1.2cm, bottom=1.2cm, left=1.2cm, right=1.2cm]{geometry}
+
+% Character encoding
+\usepackage[utf8]{inputenc}
+
+% Custom list spacing
+\usepackage{enumitem}
+\setlist[itemize]{label=\textcolor{techblue}{\textbullet}, nosep, leftmargin=*, before=\vspace{-0.15em}, after=\vspace{-0.15em}}
+
+% Explicitly configure hyperref to ensure links are clickable and colored correctly
+\AtBeginDocument{
+    \hypersetup{
+        colorlinks=true,
+        linkcolor=techblue,
+        urlcolor=techblue,
+        pdftitle={Wutcharin Thatan - Resume},
+        pdfauthor={Wutcharin Thatan}
+    }
+}
+
+% Personal Data
+\name{Wutcharin}{Thatan}
+\title{Executive Leader | AI, Automation \& Analytics} 
+\phone[mobile]{(+66) 061-565-5969}
+\email{wutcharin.th@gmail.com}
+\social[linkedin]{Wutcharin}
+\extrainfo{\href{https://wutcharin.com}{https://wutcharin.com}}
+
+\begin{document}
+
+% --- CUSTOM LEFT-ALIGNED HEADER ---
+\begin{minipage}[t]{0.70\textwidth}
+    \vspace*{-0.5cm}
+    % Name in single color (Tech Blue)
+    {\fontsize{28}{32}\selectfont\bfseries\textcolor{techblue}{Wutcharin Thatan}}\\[0.2cm]
+    {\fontsize{12}{14}\selectfont\textcolor{lightgray}{Executive Leader | AI, Automation \& Analytics}}\\[0.3cm]
+    {\small\textcolor{darkgray}{
+    \faMapMarker~ Bangkok, Thailand \quad
+    \faMobile~ (+66) 061-565-5969 \quad
+    \faEnvelope~ \href{mailto:wutcharin.th@gmail.com}{wutcharin.th@gmail.com} \\
+    \faLinkedin~ \href{https://linkedin.com/in/Wutcharin}{Wutcharin} \quad
+    \faGlobe~ \href{https://wutcharin.com}{https://wutcharin.com}
+    }}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.28\textwidth}
+   % Clean modern look without photo
+\end{minipage}
+
+\vspace{0.5cm}
+\begin{center}
+    \textit{\textcolor{techblue}{"Transforming businesses through AI-powered automation, advanced analytics, and intelligent data solutions."}}
+\end{center}
+\vspace{0.3cm}
+
+%--- Executive Profile ---
+\section{Executive Profile}
+\cvitem{}{
+Executive leader with nearly 20 years of experience (10+ in people management), possessing a \textbf{unique combination of Business Strategy and Technical Execution expertise}. Specialized in \textbf{scaling high-performing AI, Automation, and Analytics functions}, I am a hands-on builder who translates complex data into C-suite strategies, having secured \textbf{200M THB in capital} via data-driven planning. Expert in bridging the gap between Finance, Engineering, and Commercial strategy in both hyper-growth Tech (Agoda) and Aviation sectors.
+}
+
+%--- Competencies ---
+\section{Key Competencies \& Technical Skills}
+\cvitem{\textbf{Leadership}}{Corporate Data Strategy, AI Roadmaps, C-Suite Advisory, Venture Fundraising, Crisis Management, Corporate Turnarounds, Team Building (Managed teams of 8-11 specialists).}
+\cvitem{\textbf{AI \& Dev}}{Generative AI (Gemini, Claude), RAG Architectures, AI Agents (Text-to-SQL), React, Node.js, Python, n8n, Firebase.}
+\cvitem{\textbf{Analytics}}{SQL, Tableau, Metabase, Predictive Modeling (\textbf{Time Series, Regression, Classification, Clustering}), ETL Pipelines, Financial Variance Analysis.}
+
+%--- Featured Projects ---
+\section{Featured AI Projects}
+\cvitem{SplitBill AI}{\textbf{Creator \& Developer} | \href{https://splitbill-ai.com}{splitbill-ai.com} \newline
+Built a production-ready AI expense splitter end-to-end in \textbf{7 days}. Features instant receipt scanning via \textbf{Gemini AI}, automatic item parsing, and smart user assignment. \textit{Tech Stack: React, Firebase, Google AI Studio.}}
+
+\cvitem{LocalGuide}{\textbf{Full Stack Developer} | \href{https://web-production-c4714.up.railway.app}{Live Prototype Link} \newline
+Designed and built the MVP for a friend's travel tech startup to connect tourists with local experts. Engineered the full-stack architecture including secure authentication, dynamic profile management, and booking workflows. \textit{Tech Stack: React, Express.js, PostgreSQL, Railway.}}
+
+%--- Professional Experience ---
+\section{Professional Experience (Last 10 Years)}
+
+\cventry{Apr 2024 -- Present}{Associate Director - FinTech Data and Automation}{Agoda}{Bangkok}{}{
+\begin{itemize}
+    \item \textbf{Strategic Leadership:} Lead the FinTech Data and Automation (FDA) division, comprised of an \textbf{8-person team} across Finance Analytics and RPA/AI. Drive operational efficiencies across critical functions including \textbf{Treasury, Tax, and Credit Risk}.
+    \item \textbf{Impact:} Achieved \textbf{12,000 hours in annual productivity gain} by implementing targeted automation and data-driven process improvements, significantly reducing manual workload in financial reconciliation.
+    \item \textbf{Vision:} Define and execute the long-term AI, Automation, and Analytics vision for FinTech, championing advanced analytics and self-service BI tools to embed a data-first culture within the finance organization.
+\end{itemize}}
+\vspace{2mm} % Adjusted spacing
+
+\cventry{Apr 2023 -- Feb 2024}{Head of Commercial}{Really Cool Airlines}{Bangkok}{}{
+\begin{itemize}
+    \item \textbf{Startup Launch:} Built and mentored a high-performing commercial division of \textbf{11 professionals} from the ground up, establishing \textbf{6 teams} including Network Planning, Revenue Management, Commercial Operations, and Marketing.
+    \item \textbf{Fundraising:} Translated complex market data into a compelling vision and investor pitch, leveraging insights from \textbf{fleet and schedule planning} to secure \textbf{200M THB} in seed funding to launch the airline.
+    \item \textbf{Strategy:} Foster a culture of excellence and innovation, setting the strategic direction for route planning and business development.
+\end{itemize}}
+\vspace{2mm} % Adjusted spacing
+
+\cventry{Apr 2022 -- Mar 2023}{Head of Strategic Foresight \& Planning}{Thairath Group}{Bangkok}{}{
+\begin{itemize}
+    \item \textbf{Transformation:} Managed a \textbf{team of PMOs} and led a data-driven culture project, implementing KPI frameworks and analytics systems that unified strategic priorities across diverse business units.
+    \item \textbf{Advisory:} Advised on resource allocation, inter-departmental communication, and technology decisions to drive group-level goals. Launched a new media business unit by developing plans to mitigate content rights risks.
+\end{itemize}}
+\vspace{2mm} % Adjusted spacing
+
+\cventry{Nov 2017 -- Apr 2022}{Associate Director - Supply Analytics}{Agoda}{Bangkok}{}{
+\textit{Career Progression: Senior Opportunity Manager (2017) $\to$ Head of Analytics (2019) $\to$ Associate Director (2021)}
+\begin{itemize}
+    \item \textbf{Analytics Leadership:} Led a team of \textbf{7 analysts} across Partner Programs and the Agoda Display Network. Partnered with MIS on database/dashboard development and presented KPI insights to senior leaders.
+    \item \textbf{Cross-Functional Collaboration:} Collaborated intensively with \textbf{Sales, Account Management, and Product teams} on new product launches, sales strategies, and goal setting.
+    \item \textbf{Innovation:} Built credit risk models and protocols. Evaluated business opportunities and formulated optimization strategies to support Regional Account Management.
+    \item \textbf{Scale:} Oversaw the development and delivery of a comprehensive self-service analytics ecosystem, including \textbf{100+ Tableau dashboards for 600+ users}.
+\end{itemize}}
+\vspace{2mm} % Adjusted spacing
+
+\cventry{Oct 2016 -- Nov 2017}{Planning Director}{Nok Air}{Bangkok}{}{
+\begin{itemize}
+    \item \textbf{Corporate Turnaround:} Co-architected a successful corporate turnaround using analytical models to increase aircraft utilization by \textbf{15\%}. Led \textbf{route network planning, financial modeling}, and competitive analysis to design multi-year strategic plans.
+    \item \textbf{Capital Secured:} Developed and presented the comprehensive turnaround strategy to the Board of Directors, lessors, banks, and potential investors, securing critical new investment.
+\end{itemize}}
+\vspace{2mm} % Adjusted spacing
+
+\cventry{Nov 2015 -- Sep 2016}{Strategy \& Planning Manager}{Thai Smile Airways}{Bangkok}{}{
+\begin{itemize}
+    \item \textbf{Network Strategy:} Managed a team of 8 on network optimization, route expansion, and strategic planning. Monitored KPIs and provided recommendations to senior leadership.
+    \item \textbf{Relations:} Built and maintained critical relationships with aviation authorities and government bodies to secure vital operating permits and slots.
+\end{itemize}}
+
+%--- Education ---
+\section{Education}
+\cventry{2013 -- 2015}{Master of Business Administration}{Stamford International University}{}{}{}
+\cventry{2004 -- 2008}{Bachelor of Engineering}{Chulalongkorn University}{}{}{}
+
+\end{document}
