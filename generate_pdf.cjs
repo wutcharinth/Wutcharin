@@ -49,6 +49,21 @@ const path = require('path');
         background-color: #1e293b !important;
         -webkit-print-color-adjust: exact;
       }
+      /* Typography Improvements for 2-page layout */
+      .text-xxs {
+        font-size: 11px !important;
+        line-height: 1.5 !important;
+      }
+      .text-\[10px\] {
+        font-size: 12px !important;
+        letter-spacing: 0.1em !important;
+      }
+      h1 {
+        font-size: 24px !important;
+      }
+      p, li {
+        margin-bottom: 4px;
+      }
       /* Force page breaks if needed, or avoid them inside elements */
       article, section {
         break-inside: avoid;
