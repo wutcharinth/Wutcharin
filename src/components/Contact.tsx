@@ -39,7 +39,7 @@ export default function Contact() {
                             href="https://github.com/wutcharinth"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center justify-center gap-3 px-8 py-4 bg-secondary border-4 border-black hover:bg-white hover:text-black text-black transition-all shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px]"
+                            className="flex items-center justify-center gap-3 px-8 py-4 bg-secondary border-4 border-black hover:bg-white hover:text-black text-white transition-all shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px]"
                         >
                             <Github className="w-6 h-6" />
                             <span className="font-black text-xl uppercase tracking-widest">GitHub</span>
