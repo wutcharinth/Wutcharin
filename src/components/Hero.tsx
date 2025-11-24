@@ -4,14 +4,14 @@ import { ArrowRight, MapPin, FileText } from 'lucide-react';
 
 export default function Hero() {
     return (
-        <section className="min-h-screen flex items-center justify-center relative overflow-hidden px-4 pt-20 bg-bg">
+        <section className="min-h-screen flex items-center justify-center relative overflow-hidden px-4 pt-32 bg-bg">
             <div className="max-w-7xl mx-auto text-center z-10">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5 }}
                 >
-                    <h1 className="text-[12vw] md:text-[10vw] font-black mb-6 tracking-tighter uppercase leading-[0.8] text-black">
+                    <h1 className="text-[10vw] md:text-[8vw] font-black mb-6 tracking-tighter uppercase leading-[0.8] text-black">
                         Wutcharin<br />
                         <span className="text-primary">Thatan</span>
                     </h1>
