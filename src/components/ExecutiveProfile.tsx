@@ -3,10 +3,10 @@ import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 
 const stats = [
-    { label: "Efficiency Gain", value: "10x" },
-    { label: "AI Models Deployed", value: "50+" },
-    { label: "Value Unlocked", value: "$200M" },
-    { label: "Automation Rate", value: "95%" },
+    { label: "Years Experience", value: "20+" },
+    { label: "AI Agents Deployed", value: "20+" },
+    { label: "Annual Efficiency", value: "12k Hrs" },
+    { label: "Capital Secured", value: "200M THB" },
 ];
 
 export default function ExecutiveProfile() {
