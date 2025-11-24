@@ -12,11 +12,9 @@ const skills = [
 
 export default function SkillsMarquee() {
     return (
-        <section className="py-20 bg-dark-lighter/30 border-y border-primary/10 overflow-hidden relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-dark via-transparent to-dark z-10 pointer-events-none" />
-
+        <section className="py-20 bg-white border-y-2 border-black overflow-hidden relative">
             <div className="max-w-7xl mx-auto px-4 mb-10 text-center">
-                <h2 className="text-2xl font-bold text-gray-400 uppercase tracking-widest">Technical Expertise</h2>
+                <h2 className="text-2xl font-bold text-black uppercase tracking-widest border-2 border-black inline-block px-4 py-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">Technical Expertise</h2>
             </div>
 
             <div className="flex relative">
@@ -32,7 +30,7 @@ export default function SkillsMarquee() {
                     {[...skills, ...skills].map((skill, index) => (
                         <div
                             key={index}
-                            className="px-8 py-4 bg-dark border border-primary/20 rounded-xl text-xl font-medium text-gray-300 hover:text-primary hover:border-primary/50 transition-colors cursor-default"
+                            className="px-8 py-4 bg-white border-2 border-black text-xl font-bold text-black hover:bg-black hover:text-white transition-colors cursor-default shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                         >
                             {skill}
                         </div>
