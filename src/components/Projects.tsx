@@ -30,7 +30,7 @@ const projects = [
 
 export default function Projects() {
     return (
-        <section id="projects" className="py-20 px-4 bg-dark-lighter/30">
+        <section id="projects" className="py-20 px-4 bg-secondary/10 border-y-2 border-black">
             <div className="max-w-6xl mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -38,8 +38,8 @@ export default function Projects() {
                     viewport={{ once: true }}
                     className="text-center mb-16"
                 >
-                    <h2 className="text-4xl font-bold mb-4">Featured <span className="text-primary">Projects</span></h2>
-                    <p className="text-gray-400 max-w-2xl mx-auto">
+                    <h2 className="text-4xl font-bold mb-4 uppercase tracking-tighter">Featured <span className="text-white bg-black px-2">Projects</span></h2>
+                    <p className="text-black font-bold max-w-2xl mx-auto border-2 border-black bg-white inline-block px-4 py-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                         From rapid AI prototypes to large-scale commercial aviation strategies.
                     </p>
                 </motion.div>
@@ -55,26 +55,26 @@ export default function Projects() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1 }}
-                            className="group block bg-dark border border-primary/10 rounded-2xl p-6 hover:border-primary/50 transition-all hover:-translate-y-2 relative overflow-hidden"
+                            className="group block bg-white border-2 border-black p-6 hover:bg-primary hover:text-white transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] relative overflow-hidden"
                         >
-                            <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <ArrowUpRight className="text-primary w-6 h-6" />
+                            <div className="absolute top-0 right-0 p-4 opacity-100">
+                                <ArrowUpRight className="text-black group-hover:text-white w-6 h-6 border-2 border-black group-hover:border-white bg-white group-hover:bg-black transition-colors" />
                             </div>
 
                             <div className="mb-4">
-                                <h3 className="text-xl font-bold text-white group-hover:text-primary transition-colors">
+                                <h3 className="text-xl font-bold text-black group-hover:text-white transition-colors uppercase tracking-tight">
                                     {project.title}
                                 </h3>
-                                <span className="text-sm text-primary/80 font-medium">{project.role}</span>
+                                <span className="text-sm text-primary group-hover:text-black font-bold bg-black group-hover:bg-white px-1 inline-block mt-1">{project.role}</span>
                             </div>
 
-                            <p className="text-gray-400 text-sm mb-6 line-clamp-4">
+                            <p className="text-black group-hover:text-white text-sm mb-6 line-clamp-4 font-medium border-t-2 border-black group-hover:border-white pt-4">
                                 {project.desc}
                             </p>
 
                             <div className="flex flex-wrap gap-2 mt-auto">
                                 {project.tags.map((tag, i) => (
-                                    <span key={i} className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
+                                    <span key={i} className="text-xs px-3 py-1 bg-white border-2 border-black text-black font-bold group-hover:bg-black group-hover:text-white group-hover:border-white transition-colors">
                                         {tag}
                                     </span>
                                 ))}
