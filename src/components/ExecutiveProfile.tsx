@@ -14,15 +14,15 @@ export default function ExecutiveProfile() {
     const isInView = useInView(ref, { once: true, margin: "-100px" });
 
     return (
-        <section id="about" className="py-20 px-4 relative">
+        <section id="about" className="py-20 px-4 relative bg-secondary/10 border-y-2 border-black">
             <div className="max-w-6xl mx-auto">
                 <motion.h2
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="text-4xl font-bold text-center mb-16"
+                    className="text-4xl font-bold text-center mb-16 uppercase tracking-tighter"
                 >
-                    Executive <span className="text-primary">Profile</span>
+                    Executive <span className="text-primary bg-black px-2 text-white">Profile</span>
                 </motion.h2>
 
                 <div ref={ref} className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
@@ -32,10 +32,10 @@ export default function ExecutiveProfile() {
                             initial={{ opacity: 0, scale: 0.5 }}
                             animate={isInView ? { opacity: 1, scale: 1 } : {}}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
-                            className="p-6 bg-dark-lighter/50 backdrop-blur-sm border border-primary/20 rounded-2xl text-center hover:border-primary/50 transition-colors"
+                            className="p-6 bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
                         >
-                            <div className="text-4xl font-bold text-primary mb-2">{stat.value}</div>
-                            <div className="text-sm text-gray-400 uppercase tracking-wider">{stat.label}</div>
+                            <div className="text-4xl font-bold text-black mb-2">{stat.value}</div>
+                            <div className="text-sm text-black font-bold uppercase tracking-wider">{stat.label}</div>
                         </motion.div>
                     ))}
                 </div>
@@ -45,15 +45,15 @@ export default function ExecutiveProfile() {
                         initial={{ opacity: 0, x: -50 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
-                        className="space-y-6 text-lg text-gray-300 leading-relaxed"
+                        className="space-y-6 text-lg text-black leading-relaxed font-medium"
                     >
-                        <div className="p-6 border-l-4 border-primary bg-dark-lighter/30 rounded-r-xl">
+                        <div className="p-6 border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                             <p>
-                                Executive leader with nearly 20 years of experience (10+ in people management), possessing a <strong className="text-white">unique combination of Business Strategy and Technical Execution expertise</strong>.
+                                Executive leader with nearly 20 years of experience (10+ in people management), possessing a <strong className="bg-primary text-white px-1">unique combination of Business Strategy and Technical Execution expertise</strong>.
                             </p>
                         </div>
                         <p>
-                            Specialized in <strong className="text-white">scaling high-performing AI, Automation, and Analytics functions</strong>, I am a hands-on builder who translates complex data into C-suite strategies, having secured <strong className="text-white">200M THB in capital</strong> via data-driven planning. Expert in bridging the gap between Finance, Engineering, and Commercial strategy in both hyper-growth Tech (Agoda) and Aviation sectors.
+                            Specialized in <strong className="bg-black text-white px-1">scaling high-performing AI, Automation, and Analytics functions</strong>, I am a hands-on builder who translates complex data into C-suite strategies, having secured <strong className="bg-black text-white px-1">200M THB in capital</strong> via data-driven planning. Expert in bridging the gap between Finance, Engineering, and Commercial strategy in both hyper-growth Tech (Agoda) and Aviation sectors.
                         </p>
                     </motion.div>
 
@@ -63,17 +63,16 @@ export default function ExecutiveProfile() {
                         viewport={{ once: true }}
                         className="relative"
                     >
-                        <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-20 blur-3xl rounded-full" />
-                        <div className="relative bg-dark-lighter border border-primary/20 p-8 rounded-2xl">
-                            <h3 className="text-xl font-semibold mb-4 text-white">Core Competencies</h3>
+                        <div className="relative bg-white border-2 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+                            <h3 className="text-xl font-bold mb-6 text-black uppercase border-b-2 border-black pb-2 inline-block">Core Competencies</h3>
                             <div className="grid grid-cols-2 gap-4">
                                 {[
                                     "Strategic Planning", "Data Governance",
                                     "Cloud Architecture", "Team Building",
                                     "Process Automation", "Stakeholder Mgmt"
                                 ].map((item, i) => (
-                                    <div key={i} className="flex items-center gap-2 text-gray-400">
-                                        <div className="w-2 h-2 bg-primary rounded-full" />
+                                    <div key={i} className="flex items-center gap-2 text-black font-bold">
+                                        <div className="w-3 h-3 bg-black" />
                                         {item}
                                     </div>
                                 ))}

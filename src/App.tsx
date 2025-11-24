@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import Lenis from 'lenis';
 
-import Background3D from './components/Background3D';
+
 import Header from './components/Header';
 import Hero from './components/Hero';
 import ExecutiveProfile from './components/ExecutiveProfile';
@@ -23,8 +23,7 @@ function App() {
   }, []);
 
   return (
-    <div className="relative min-h-screen text-white overflow-x-hidden selection:bg-primary/30">
-      <Background3D />
+    <div className="relative min-h-screen text-black overflow-x-hidden selection:bg-primary selection:text-white">
       <Header />
 
       <main>
@@ -38,7 +37,7 @@ function App() {
         <Contact />
       </main>
 
-      <footer className="py-8 text-center text-gray-500 text-sm border-t border-gray-800 bg-dark/50 backdrop-blur-sm">
+      <footer className="py-8 text-center text-black text-sm border-t-2 border-black bg-white font-bold uppercase tracking-widest">
         <p>&copy; {new Date().getFullYear()} Wutcharin Thatan. All rights reserved.</p>
       </footer>
     </div>
