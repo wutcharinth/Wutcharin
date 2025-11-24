@@ -11,9 +11,9 @@ export default function Hero() {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5 }}
                 >
-                    <h1 className="text-6xl md:text-9xl font-black mb-6 tracking-tighter uppercase leading-[0.8]">
+                    <h1 className="text-[12vw] md:text-[10vw] font-black mb-6 tracking-tighter uppercase leading-[0.8] text-black">
                         Wutcharin<br />
-                        <span className="text-transparent bg-clip-text bg-black text-stroke-2 text-stroke-white">Thatan</span>
+                        <span className="text-primary">Thatan</span>
                     </h1>
                 </motion.div>
 
@@ -22,10 +22,10 @@ export default function Hero() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
                 >
-                    <div className="text-2xl md:text-4xl text-primary font-black mb-8 uppercase tracking-widest border-y-4 border-black py-4 bg-white">
+                    <div className="text-3xl md:text-5xl text-white bg-black font-black mb-12 uppercase tracking-widest inline-block px-6 py-2 transform -rotate-2">
                         <Typewriter
                             options={{
-                                strings: ['Executive Leader', 'Data Strategist', 'AI Innovator', 'Tech Visionary'],
+                                strings: ['Executive Leader', 'Data Strategist', 'AI Innovator'],
                                 autoStart: true,
                                 loop: true,
                                 delay: 50,
@@ -34,13 +34,13 @@ export default function Hero() {
                         />
                     </div>
 
-                    <div className="flex items-center justify-center gap-4 text-black font-bold mb-12 uppercase tracking-widest">
-                        <MapPin className="w-6 h-6 text-black" />
+                    <div className="flex items-center justify-center gap-4 text-black font-black mb-12 uppercase tracking-widest text-xl">
+                        <MapPin className="w-8 h-8 text-primary" />
                         <span>Bangkok, Thailand</span>
                     </div>
 
-                    <p className="text-xl md:text-3xl text-black max-w-4xl mx-auto mb-12 font-bold leading-tight">
-                        TRANSFORMING BUSINESSES THROUGH <span className="bg-primary text-white px-2">AI-POWERED AUTOMATION</span>, ADVANCED ANALYTICS, AND INTELLIGENT DATA SOLUTIONS.
+                    <p className="text-2xl md:text-4xl text-black max-w-5xl mx-auto mb-16 font-black leading-tight uppercase">
+                        Transforming businesses through <span className="bg-primary text-white px-2">AI-Powered Automation</span> and <span className="underline decoration-4 decoration-primary underline-offset-4">Intelligent Data</span>.
                     </p>
                 </motion.div>
 
@@ -48,17 +48,17 @@ export default function Hero() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.4 }}
-                    className="flex flex-wrap justify-center gap-6"
+                    className="flex flex-wrap justify-center gap-8"
                 >
                     <a
                         href="#projects"
-                        className="px-10 py-4 bg-black text-white text-xl font-black hover:bg-primary hover:text-white transition-all shadow-[8px_8px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] flex items-center gap-2 uppercase tracking-widest border-4 border-black"
+                        className="px-12 py-5 bg-black text-white text-2xl font-black hover:bg-primary hover:text-white transition-all shadow-[8px_8px_0px_0px_#FF1E1E] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] flex items-center gap-2 uppercase tracking-widest border-4 border-black"
                     >
-                        View Projects <ArrowRight className="w-6 h-6" />
+                        View Projects <ArrowRight className="w-8 h-8" />
                     </a>
                     <a
                         href="#contact"
-                        className="px-10 py-4 bg-white text-black text-xl font-black hover:bg-black hover:text-white transition-all shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] uppercase tracking-widest border-4 border-black"
+                        className="px-12 py-5 bg-white text-black text-2xl font-black hover:bg-black hover:text-white transition-all shadow-[8px_8px_0px_0px_#000000] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] uppercase tracking-widest border-4 border-black"
                     >
                         Let's Connect
                     </a>
@@ -66,9 +66,9 @@ export default function Hero() {
                         href="/Wutcharin_CV.pdf"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-10 py-4 bg-secondary text-black text-xl font-black hover:bg-white transition-all shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] flex items-center gap-2 uppercase tracking-widest border-4 border-black"
+                        className="px-12 py-5 bg-primary text-white text-2xl font-black hover:bg-black transition-all shadow-[8px_8px_0px_0px_#000000] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] flex items-center gap-2 uppercase tracking-widest border-4 border-black"
                     >
-                        <FileText className="w-6 h-6" /> Resume
+                        <FileText className="w-8 h-8" /> Resume
                     </a>
                 </motion.div>
 
@@ -76,12 +76,12 @@ export default function Hero() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 1, delay: 0.8 }}
-                    className="mt-20 flex flex-wrap justify-center gap-4"
+                    className="mt-24 flex flex-wrap justify-center gap-4"
                 >
                     {['Data Strategy', 'Machine Learning', 'BI Architecture', 'Python & SQL', 'AI Automation', 'Team Leadership'].map((skill, index) => (
                         <span
                             key={index}
-                            className="px-6 py-3 bg-white border-4 border-black text-lg font-bold text-black hover:bg-black hover:text-white transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] uppercase tracking-tighter"
+                            className="px-6 py-3 bg-white border-4 border-black text-xl font-black text-black hover:bg-primary hover:text-white transition-colors shadow-[4px_4px_0px_0px_#000000] uppercase tracking-tighter transform hover:-rotate-2"
                         >
                             {skill}
                         </span>
