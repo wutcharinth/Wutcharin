@@ -6,7 +6,7 @@ const stats = [
     { label: "Years Experience", value: "20+" },
     { label: "AI Agents Deployed", value: "20+" },
     { label: "Annual Efficiency", value: "12k Hrs" },
-    { label: "Capital Secured", value: "200M THB" },
+    { label: "Data Pros Managed", value: "50+" },
 ];
 
 export default function ExecutiveProfile() {
@@ -53,7 +53,7 @@ export default function ExecutiveProfile() {
                             </p>
                         </div>
                         <p className="uppercase">
-                            Specialized in <strong className="text-primary underline decoration-4 decoration-border underline-offset-4">scaling high-performing AI, Automation, and Analytics functions</strong>, I am a hands-on builder who translates complex data into C-suite strategies, having secured <strong className="bg-primary text-white px-2">200M THB in capital</strong> via data-driven planning. Expert in bridging the gap between Finance, Engineering, and Commercial strategy in both hyper-growth Tech (Agoda) and Aviation sectors.
+                            Specialized in <strong className="text-primary underline decoration-4 decoration-border underline-offset-4">scaling high-performing AI, Automation, and Analytics functions</strong>, I am a hands-on builder who translates complex data into C-suite strategies, having managed <strong className="bg-primary text-white px-2">50+ data professionals</strong> over my career. Expert in bridging the gap between Finance, Engineering, and Commercial strategy in both hyper-growth Tech (Agoda) and Aviation sectors.
                         </p>
                     </motion.div>
 
