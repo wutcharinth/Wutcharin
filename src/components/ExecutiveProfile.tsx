@@ -20,7 +20,7 @@ export default function ExecutiveProfile() {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="text-6xl md:text-8xl font-black text-center mb-24 uppercase tracking-tighter leading-none"
+                    className="text-6xl md:text-8xl font-black text-center mb-24 uppercase tracking-tighter leading-none text-text"
                 >
                     Executive <span className="text-inverse-text bg-inverse px-4 transform -rotate-2 inline-block">Profile</span>
                 </motion.h2>
