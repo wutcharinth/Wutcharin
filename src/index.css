@@ -1,20 +1,46 @@
 @import "tailwindcss";
 
+@layer base {
+  :root {
+    --color-primary: #FF1E1E;
+    --color-secondary: #000000;
+    --color-bg: #F2F2F2;
+    --color-text: #000000;
+    --color-border: #000000;
+    --color-inverse: #000000;
+    --color-inverse-text: #FFFFFF;
+    --shadow-color: #000000;
+  }
+
+  .dark {
+    --color-primary: #FF1E1E;
+    --color-secondary: #FFFFFF;
+    --color-bg: #050505;
+    --color-text: #FFFFFF;
+    --color-border: #FFFFFF;
+    --color-inverse: #FFFFFF;
+    --color-inverse-text: #000000;
+    --shadow-color: #FFFFFF;
+  }
+}
+
 @theme {
-  --color-primary: #FF1E1E;
+  --color-primary: var(--color-primary);
   /* Punchy Red */
-  --color-secondary: #000000;
+  --color-secondary: var(--color-secondary);
   /* Black */
-  --color-bg: #F2F2F2;
+  --color-bg: var(--color-bg);
   /* Light Gray / Off-White */
-  --color-text: #000000;
-  --color-border: #000000;
+  --color-text: var(--color-text);
+  --color-border: var(--color-border);
+  --color-inverse: var(--color-inverse);
+  --color-inverse-text: var(--color-inverse-text);
   --font-mono: 'Courier New', Courier, monospace;
   --font-sans: 'Helvetica Neue', 'Arial', sans-serif;
 
   /* Custom Utilities for Brutalism */
-  --shadow-brutal: 8px 8px 0px 0px #000000;
-  --shadow-brutal-hover: 4px 4px 0px 0px #000000;
+  --shadow-brutal: 8px 8px 0px 0px var(--shadow-color);
+  --shadow-brutal-hover: 4px 4px 0px 0px var(--shadow-color);
 }
 
 @layer base {

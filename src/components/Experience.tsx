@@ -64,7 +64,7 @@ const experiences = [
 
 export default function Experience() {
     return (
-        <section id="experience" className="py-20 px-4 bg-white">
+        <section id="experience" className="py-20 px-4 bg-bg">
             <div className="max-w-4xl mx-auto">
                 <motion.h2
                     initial={{ opacity: 0, y: 20 }}
@@ -72,12 +72,12 @@ export default function Experience() {
                     viewport={{ once: true }}
                     className="text-4xl font-bold text-center mb-16 uppercase tracking-tighter"
                 >
-                    Professional <span className="text-white bg-primary px-2 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">Experience</span>
+                    Professional <span className="text-white bg-primary px-2 border-2 border-border shadow-[4px_4px_0px_0px_var(--shadow-color)]">Experience</span>
                 </motion.h2>
 
                 <div className="relative">
                     {/* Vertical Line */}
-                    <div className="absolute left-0 md:left-1/2 h-full w-1 bg-black transform -translate-x-1/2 hidden md:block" />
+                    <div className="absolute left-0 md:left-1/2 h-full w-1 bg-border transform -translate-x-1/2 hidden md:block" />
 
                     <div className="space-y-12">
                         {experiences.map((exp, index) => (
@@ -91,15 +91,15 @@ export default function Experience() {
                                     }`}
                             >
                                 {/* Timeline Dot */}
-                                <div className="absolute left-0 md:left-1/2 w-6 h-6 bg-white border-2 border-black transform -translate-x-1/2 mt-1.5 hidden md:block z-10" />
+                                <div className="absolute left-0 md:left-1/2 w-6 h-6 bg-bg border-2 border-border transform -translate-x-1/2 mt-1.5 hidden md:block z-10" />
 
                                 <div className="flex-1">
-                                    <div className={`p-6 bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all ${index % 2 === 0 ? 'md:text-left' : 'md:text-right'
+                                    <div className={`p-6 bg-bg border-2 border-border shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] transition-all ${index % 2 === 0 ? 'md:text-left' : 'md:text-right'
                                         }`}>
-                                        <h3 className="text-xl font-bold text-black mb-1 uppercase">{exp.company}</h3>
-                                        <h4 className="text-primary font-bold mb-3 border-b-2 border-black inline-block">{exp.role}</h4>
+                                        <h3 className="text-xl font-bold text-text mb-1 uppercase">{exp.company}</h3>
+                                        <h4 className="text-primary font-bold mb-3 border-b-2 border-border inline-block">{exp.role}</h4>
 
-                                        <div className={`flex items-center gap-2 text-sm text-black font-bold mb-4 ${index % 2 === 0 ? 'md:justify-start' : 'md:justify-end'
+                                        <div className={`flex items-center gap-2 text-sm text-text font-bold mb-4 ${index % 2 === 0 ? 'md:justify-start' : 'md:justify-end'
                                             }`}>
                                             <Calendar className="w-4 h-4" />
                                             {exp.period}
@@ -107,8 +107,8 @@ export default function Experience() {
 
                                         <ul className="space-y-2">
                                             {exp.points.map((point, i) => (
-                                                <li key={i} className="text-black text-sm leading-relaxed flex gap-2 font-medium">
-                                                    <span className="text-black mt-1.5 min-w-[6px] h-[6px] bg-black block" />
+                                                <li key={i} className="text-text text-sm leading-relaxed flex gap-2 font-medium">
+                                                    <span className="text-text mt-1.5 min-w-[6px] h-[6px] bg-text block" />
                                                     <span>{point}</span>
                                                 </li>
                                             ))}
