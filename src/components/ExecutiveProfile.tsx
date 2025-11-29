@@ -14,7 +14,7 @@ export default function ExecutiveProfile() {
     const isInView = useInView(ref, { once: true, margin: "-100px" });
 
     return (
-        <section id="about" className="py-24 px-4 relative bg-white border-y-4 border-black">
+        <section id="about" className="py-24 px-4 relative bg-bg border-y-4 border-border">
             <div className="max-w-7xl mx-auto">
                 <motion.h2
                     initial={{ opacity: 0, y: 20 }}
@@ -22,7 +22,7 @@ export default function ExecutiveProfile() {
                     viewport={{ once: true }}
                     className="text-6xl md:text-8xl font-black text-center mb-24 uppercase tracking-tighter leading-none"
                 >
-                    Executive <span className="text-white bg-black px-4 transform -rotate-2 inline-block">Profile</span>
+                    Executive <span className="text-inverse-text bg-inverse px-4 transform -rotate-2 inline-block">Profile</span>
                 </motion.h2>
 
                 <div ref={ref} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-24">
@@ -32,10 +32,10 @@ export default function ExecutiveProfile() {
                             initial={{ opacity: 0, scale: 0.5 }}
                             animate={isInView ? { opacity: 1, scale: 1 } : {}}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
-                            className="p-8 bg-white border-4 border-black shadow-[8px_8px_0px_0px_#000000] text-center hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none transition-all group"
+                            className="p-8 bg-bg border-4 border-border shadow-[8px_8px_0px_0px_var(--shadow-color)] text-center hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none transition-all group"
                         >
-                            <div className="text-6xl font-black text-black mb-4 group-hover:text-primary transition-colors">{stat.value}</div>
-                            <div className="text-lg text-black font-black uppercase tracking-widest">{stat.label}</div>
+                            <div className="text-6xl font-black text-text mb-4 group-hover:text-primary transition-colors">{stat.value}</div>
+                            <div className="text-lg text-text font-black uppercase tracking-widest">{stat.label}</div>
                         </motion.div>
                     ))}
                 </div>
@@ -45,15 +45,15 @@ export default function ExecutiveProfile() {
                         initial={{ opacity: 0, x: -50 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
-                        className="space-y-8 text-xl text-black leading-relaxed font-bold"
+                        className="space-y-8 text-xl text-text leading-relaxed font-bold"
                     >
-                        <div className="p-8 border-4 border-black bg-white shadow-[12px_12px_0px_0px_#FF1E1E]">
+                        <div className="p-8 border-4 border-border bg-bg shadow-[12px_12px_0px_0px_var(--color-primary)]">
                             <p>
-                                Executive leader with nearly 20 years of experience (10+ in people management), possessing a <strong className="bg-black text-white px-2">unique combination of Business Strategy and Technical Execution expertise</strong>.
+                                Executive leader with nearly 20 years of experience (10+ in people management), possessing a <strong className="bg-inverse text-inverse-text px-2">unique combination of Business Strategy and Technical Execution expertise</strong>.
                             </p>
                         </div>
                         <p className="uppercase">
-                            Specialized in <strong className="text-primary underline decoration-4 decoration-black underline-offset-4">scaling high-performing AI, Automation, and Analytics functions</strong>, I am a hands-on builder who translates complex data into C-suite strategies, having secured <strong className="bg-primary text-white px-2">200M THB in capital</strong> via data-driven planning. Expert in bridging the gap between Finance, Engineering, and Commercial strategy in both hyper-growth Tech (Agoda) and Aviation sectors.
+                            Specialized in <strong className="text-primary underline decoration-4 decoration-border underline-offset-4">scaling high-performing AI, Automation, and Analytics functions</strong>, I am a hands-on builder who translates complex data into C-suite strategies, having secured <strong className="bg-primary text-white px-2">200M THB in capital</strong> via data-driven planning. Expert in bridging the gap between Finance, Engineering, and Commercial strategy in both hyper-growth Tech (Agoda) and Aviation sectors.
                         </p>
                     </motion.div>
 
@@ -63,12 +63,12 @@ export default function ExecutiveProfile() {
                         viewport={{ once: true }}
                         className="relative"
                     >
-                        <div className="relative bg-black p-10 shadow-[16px_16px_0px_0px_#FF1E1E]">
-                            <h3 className="text-3xl font-black mb-8 text-white uppercase border-b-4 border-white pb-4 inline-block">Core Competencies</h3>
+                        <div className="relative bg-inverse p-10 shadow-[16px_16px_0px_0px_var(--color-primary)]">
+                            <h3 className="text-3xl font-black mb-8 text-inverse-text uppercase border-b-4 border-inverse-text pb-4 inline-block">Core Competencies</h3>
                             <div className="grid grid-cols-1 gap-4">
                                 {['Strategic Planning', 'Data Governance', 'Cloud Architecture', 'Team Building', 'Process Automation', 'Stakeholder Mgmt'].map((item, i) => (
-                                    <div key={i} className="flex items-center gap-4 text-white font-bold text-xl uppercase tracking-wider group hover:translate-x-2 transition-transform">
-                                        <div className="w-4 h-4 bg-primary border-2 border-white group-hover:bg-white transition-colors"></div>
+                                    <div key={i} className="flex items-center gap-4 text-inverse-text font-bold text-xl uppercase tracking-wider group hover:translate-x-2 transition-transform">
+                                        <div className="w-4 h-4 bg-primary border-2 border-inverse-text group-hover:bg-inverse-text transition-colors"></div>
                                         {item}
                                     </div>
                                 ))}
