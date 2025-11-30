@@ -2,12 +2,16 @@
 import { motion } from 'framer-motion';
 
 const skills = [
+    "Strategic Transformation", "Startups", "Negotiation", "Commercial Operations", "Business Development",
+    "Strategic Planning", "Analytical Skills", "Business Analysis", "Artificial Intelligence (AI)", "Automation",
+    "Data Analytics", "FinTech", "Machine Learning", "Tableau", "KPI Development",
+    "Financial Modeling", "Database Management", "Credit Risk Modeling", "Business Intelligence", "Project Management",
     "AI Agents", "AI Automations", "RAG", "LLM Integration",
     "Cursor", "Claude Code", "Antigravity", "VS Code",
-    "n8n", "Python", "SQL", "Machine Learning",
+    "n8n", "Python", "SQL",
     "Prompt Engineering", "Workflow Automation", "Data Strategy",
-    "Tableau", "PowerBI", "React", "TypeScript",
-    "Team Leadership", "Strategic Planning", "Google Cloud"
+    "PowerBI", "React", "TypeScript",
+    "Team Leadership", "Google Cloud"
 ];
 
 export default function SkillsMarquee() {

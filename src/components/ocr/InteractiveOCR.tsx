@@ -55,8 +55,10 @@ export default function InteractiveOCR() {
         const formData = new FormData();
         formData.append('image', imageFile);
 
+        const API_URL = import.meta.env.VITE_API_URL || '';
+
         try {
-            const response = await fetch('/api/analyze', {
+            const response = await fetch(`${API_URL}/api/analyze`, {
                 method: 'POST',
                 body: formData,
             });
