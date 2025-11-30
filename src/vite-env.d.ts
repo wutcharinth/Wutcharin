@@ -1,5 +1,6 @@
 declare module 'lenis' {
     export default class Lenis {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         constructor(options?: any);
         raf(time: number): void;
         destroy(): void;
