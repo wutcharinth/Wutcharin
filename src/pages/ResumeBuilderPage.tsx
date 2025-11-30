@@ -95,125 +95,138 @@ const ResumeBuilderPage: React.FC = () => {
     return (
         <div className="min-h-screen bg-[#050505] pb-20 font-sans text-white print:bg-white print:pb-0 print:text-black">
             {/* Header */}
-            <header className="bg-[#050505]/80 backdrop-blur-md border-b border-zinc-800 sticky top-0 z-40 print:hidden shadow-sm">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex justify-between items-center">
-                    <div className="flex items-center gap-2">
-                        <Link to="/" className="flex items-center gap-2 text-gray-400 hover:text-blue-500 transition-colors mr-4">
-                            <ArrowLeft className="w-5 h-5" />
-                        </Link>
-                        <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-blue-900/20">
-                            <FileText size={18} />
-                        </div>
-                        <h1 className="text-xl font-bold tracking-tight text-white">AI Resume Builder</h1>
-                    </div>
+            {/* Navigation */}
+            <nav className={`fixed top-0 left-0 right-0 z-50 p-6 flex justify-between items-center print:hidden transition-all duration-300 ${step === 'upload' ? 'mix-blend-difference' : 'bg-[#050505]/90 backdrop-blur-md border-b border-zinc-800'}`}>
+                <Link to="/" className="flex items-center gap-2 text-blue-500 font-bold uppercase tracking-widest hover:text-white transition-colors">
+                    <ArrowLeft className="w-5 h-5" /> Back to Portfolio
+                </Link>
 
-                    <div className="flex gap-3 items-center">
-                        {step === 'main' && (
-                            <div className="flex bg-zinc-900 p-1 rounded-lg border border-zinc-800">
-                                <button
-                                    onClick={() => setActiveTab('editor')}
-                                    className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${activeTab === 'editor' ? 'bg-zinc-800 text-white shadow-sm' : 'text-gray-400 hover:text-gray-200'
-                                        }`}
-                                >
-                                    Edit Data
-                                </button>
-                                <button
-                                    onClick={() => setActiveTab('preview')}
-                                    className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${activeTab === 'preview' ? 'bg-zinc-800 text-blue-400 shadow-sm' : 'text-gray-400 hover:text-gray-200'
-                                        }`}
-                                >
-                                    View & Download
-                                </button>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            </header>
-
-            <main className="max-w-7xl mx-auto p-4 md:p-8">
-                {step === 'upload' ? (
-                    <div className="relative max-w-4xl mx-auto mt-16 animate-in fade-in slide-in-from-bottom-8 duration-700 px-4">
-                        {/* Background Gradients */}
-                        <div className="absolute -top-32 -left-20 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] pointer-events-none opacity-30" />
-                        <div className="absolute -bottom-32 -right-20 w-96 h-96 bg-blue-400/10 rounded-full blur-[100px] pointer-events-none opacity-30" />
-
-                        <div className="text-center mb-16 relative z-10">
-                            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-zinc-900/80 border border-zinc-800 text-blue-400 text-sm font-medium mb-8 shadow-lg backdrop-blur-sm">
-                                <Wand2 className="w-4 h-4" />
-                                <span>AI-Powered Resume Builder</span>
-                            </div>
-                            <h2 className="text-5xl md:text-6xl font-extrabold text-white mb-6 tracking-tight leading-tight">
-                                Craft your perfect resume <br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">
-                                    in seconds with AI
-                                </span>
-                            </h2>
-                            <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
-                                Transform your profile or existing resume into a professional, ATS-friendly document.
-                                Simply paste your text and let our AI handle the formatting.
-                            </p>
-                        </div>
-
-                        <div className="relative z-10">
-                            <Card className="p-1 md:p-8 shadow-2xl border-zinc-800/50 bg-[#0A0A0A]/90 backdrop-blur-xl ring-1 ring-white/5">
-                                {/* Steps Grid */}
-                                <div className="mb-8 grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    <div className="bg-zinc-900/50 p-4 rounded-xl border border-zinc-800 hover:bg-zinc-800/50 transition-colors">
-                                        <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center text-blue-400 mb-3 border border-blue-500/20">
-                                            <Download className="w-5 h-5" />
-                                        </div>
-                                        <h3 className="text-sm font-semibold text-white mb-1">1. Get Data</h3>
-                                        <p className="text-xs text-gray-400 leading-relaxed">Export your profile to PDF or copy text from your existing resume.</p>
-                                    </div>
-                                    <div className="bg-zinc-900/50 p-4 rounded-xl border border-zinc-800 hover:bg-zinc-800/50 transition-colors">
-                                        <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center text-blue-400 mb-3 border border-blue-500/20">
-                                            <FileText className="w-5 h-5" />
-                                        </div>
-                                        <h3 className="text-sm font-semibold text-white mb-1">2. Copy Text</h3>
-                                        <p className="text-xs text-gray-400 leading-relaxed">Open the document, select all text (Ctrl+A), and copy it (Ctrl+C).</p>
-                                    </div>
-                                    <div className="bg-zinc-900/50 p-4 rounded-xl border border-zinc-800 hover:bg-zinc-800/50 transition-colors">
-                                        <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center text-blue-400 mb-3 border border-blue-500/20">
-                                            <Wand2 className="w-5 h-5" />
-                                        </div>
-                                        <h3 className="text-sm font-semibold text-white mb-1">3. Paste & Generate</h3>
-                                        <p className="text-xs text-gray-400 leading-relaxed">Paste the text below and let AI structure your resume.</p>
-                                    </div>
-                                </div>
-
-                                <div className="mb-8">
-                                    <div className="relative">
-                                        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-zinc-900/5 pointer-events-none rounded-lg" />
-                                        <TextArea
-                                            placeholder="Paste your resume or LinkedIn text here..."
-                                            className="min-h-[200px] font-mono text-sm leading-relaxed bg-zinc-950/50 border-zinc-800 focus:border-blue-500/50 focus:ring-blue-500/20 transition-all resize-y"
-                                            value={rawText}
-                                            onChange={(e) => setRawText(e.target.value)}
-                                        />
-                                    </div>
-                                    <p className="text-xs text-gray-500 mt-2 text-right">
-                                        {rawText.length > 0 ? `${rawText.length} characters` : 'Ready to paste'}
-                                    </p>
-                                </div>
-
-                                <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4 border-t border-zinc-800/50">
-                                    <Button onClick={handleManualStart} variant="ghost" className="text-gray-400 hover:text-white">
-                                        Skip & Fill Manually
-                                    </Button>
-                                    <Button
-                                        onClick={handleParse}
-                                        isLoading={isParsing}
-                                        disabled={!rawText}
-                                        className="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 border-0 shadow-lg shadow-blue-900/20"
-                                    >
-                                        Generate Resume <ArrowRight className="ml-2 w-4 h-4" />
-                                    </Button>
-                                </div>
-                            </Card>
-                        </div>
+                {step === 'main' ? (
+                    <div className="flex bg-zinc-900/50 p-1 rounded-lg border border-zinc-800">
+                        <button
+                            onClick={() => setActiveTab('editor')}
+                            className={`px-4 py-1.5 text-xs font-bold uppercase tracking-wider rounded-md transition-all ${activeTab === 'editor' ? 'bg-zinc-800 text-white shadow-sm' : 'text-gray-400 hover:text-gray-200'}`}
+                        >
+                            Edit
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('preview')}
+                            className={`px-4 py-1.5 text-xs font-bold uppercase tracking-wider rounded-md transition-all ${activeTab === 'preview' ? 'bg-zinc-800 text-blue-400 shadow-sm' : 'text-gray-400 hover:text-gray-200'}`}
+                        >
+                            Preview
+                        </button>
                     </div>
                 ) : (
-                    <div>
+                    <div className="text-sm font-mono text-gray-400 hidden sm:block">AI RESUME BUILDER // 2025</div>
+                )}
+            </nav>
+
+            <main className="w-full">
+                {step === 'upload' ? (
+
+                    <>
+                        {/* Hero Section - Full Screen */}
+                        <section className="relative h-screen flex flex-col justify-center items-center px-4 overflow-hidden">
+                            {/* Background Gradients/Effects */}
+                            <div className="absolute inset-0 z-0 pointer-events-none">
+                                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[120px] opacity-40" />
+                                <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-600/10 rounded-full blur-[120px] opacity-40" />
+                                <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/50 to-[#050505] z-10" />
+                            </div>
+
+                            <div className="relative z-20 text-center max-w-5xl mx-auto mt-[-5vh]">
+                                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                                    <Wand2 className="w-4 h-4 text-blue-500" />
+                                    <span className="text-sm font-medium text-gray-300 uppercase tracking-wider">AI-Powered Professional Tools</span>
+                                </div>
+
+                                <h2 className="text-7xl md:text-9xl font-black uppercase tracking-tighter mb-8 leading-[0.9] text-white animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-100">
+                                    Resume <br className="hidden md:block" />
+                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500">Builder</span>
+                                </h2>
+
+                                <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto font-light mb-12 leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
+                                    Transform your LinkedIn profile into a polished, ATS-ready document in seconds.
+                                </p>
+                            </div>
+
+                            {/* Scroll Indicator */}
+                            <div className="absolute bottom-10 left-0 right-0 flex justify-center animate-in fade-in duration-1000 delay-500">
+                                <div className="animate-bounce text-white/30 flex flex-col items-center gap-2">
+                                    <span className="text-xs uppercase tracking-widest">Scroll to Start</span>
+                                    <ArrowRight className="w-6 h-6 rotate-90" />
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* Content Section - Below Fold */}
+                        <section className="relative z-20 py-32 bg-[#050505]">
+                            <div className="max-w-4xl mx-auto px-4">
+                                <div className="mb-16 text-center">
+                                    <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">How it works</h3>
+                                    <p className="text-gray-400">Three simple steps to your perfect resume.</p>
+                                </div>
+
+                                <Card className="p-1 md:p-8 shadow-2xl border-white/10 bg-[#0A0A0A]/80 backdrop-blur-xl ring-1 ring-white/5">
+                                    {/* Steps Grid */}
+                                    <div className="mb-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+                                        <div className="bg-white/5 p-6 rounded-2xl border border-white/5 hover:bg-white/10 transition-colors group text-left">
+                                            <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-400 mb-4 border border-blue-500/20 group-hover:scale-110 transition-transform">
+                                                <Download className="w-6 h-6" />
+                                            </div>
+                                            <h3 className="text-lg font-bold text-white mb-2 uppercase tracking-tight">1. Get Data</h3>
+                                            <p className="text-sm text-gray-400 leading-relaxed">Export your LinkedIn profile to PDF or copy text from your existing resume.</p>
+                                        </div>
+                                        <div className="bg-white/5 p-6 rounded-2xl border border-white/5 hover:bg-white/10 transition-colors group text-left">
+                                            <div className="w-12 h-12 bg-indigo-500/10 rounded-xl flex items-center justify-center text-indigo-400 mb-4 border border-indigo-500/20 group-hover:scale-110 transition-transform">
+                                                <FileText className="w-6 h-6" />
+                                            </div>
+                                            <h3 className="text-lg font-bold text-white mb-2 uppercase tracking-tight">2. Copy Text</h3>
+                                            <p className="text-sm text-gray-400 leading-relaxed">Open the document, select all text (Ctrl+A), and copy it (Ctrl+C).</p>
+                                        </div>
+                                        <div className="bg-white/5 p-6 rounded-2xl border border-white/5 hover:bg-white/10 transition-colors group text-left">
+                                            <div className="w-12 h-12 bg-blue-600/10 rounded-xl flex items-center justify-center text-blue-400 mb-4 border border-blue-600/20 group-hover:scale-110 transition-transform">
+                                                <Wand2 className="w-6 h-6" />
+                                            </div>
+                                            <h3 className="text-lg font-bold text-white mb-2 uppercase tracking-tight">3. Generate</h3>
+                                            <p className="text-sm text-gray-400 leading-relaxed">Paste below. Our AI will structure, format, and polish your resume instantly.</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="mb-8">
+                                        <div className="relative">
+                                            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-zinc-900/5 pointer-events-none rounded-lg" />
+                                            <TextArea
+                                                placeholder="Paste your resume or LinkedIn text here..."
+                                                className="min-h-[200px] font-mono text-sm leading-relaxed bg-zinc-950/50 border-zinc-800 focus:border-blue-500/50 focus:ring-blue-500/20 transition-all resize-y p-6 text-gray-300"
+                                                value={rawText}
+                                                onChange={(e) => setRawText(e.target.value)}
+                                            />
+                                        </div>
+                                        <p className="text-xs text-gray-400 mt-2 text-right font-medium">
+                                            {rawText.length > 0 ? `${rawText.length} characters` : 'Ready to paste'}
+                                        </p>
+                                    </div>
+
+                                    <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4 border-t border-zinc-800/50">
+                                        <Button onClick={handleManualStart} variant="ghost" className="text-gray-400 hover:text-white">
+                                            Skip & Fill Manually
+                                        </Button>
+                                        <Button
+                                            onClick={handleParse}
+                                            isLoading={isParsing}
+                                            disabled={!rawText}
+                                            className="w-full sm:w-auto bg-white !text-black hover:bg-gray-200 border-0 shadow-[0_0_20px_rgba(255,255,255,0.2)] font-bold tracking-wide py-3 px-8 text-base disabled:bg-zinc-800 disabled:!text-white disabled:opacity-50 disabled:shadow-none"
+                                        >
+                                            Generate Resume <ArrowRight className="ml-2 w-5 h-5" />
+                                        </Button>
+                                    </div>
+                                </Card>
+                            </div>
+                        </section>
+                    </>
+                ) : (
+                    <div className="pt-24 px-4">
                         {/* EDITOR TAB */}
                         {activeTab === 'editor' && (
                             <div className="max-w-4xl mx-auto animate-in fade-in zoom-in-95 duration-200">
