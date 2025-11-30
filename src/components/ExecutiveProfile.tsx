@@ -14,7 +14,7 @@ export default function ExecutiveProfile() {
     const isInView = useInView(ref, { once: true, margin: "-100px" });
 
     return (
-        <section id="about" className="py-24 px-4 relative bg-bg border-y-4 border-border">
+        <section id="about" className="py-24 px-4 relative bg-bg">
             <div className="max-w-7xl mx-auto">
                 <motion.h2
                     initial={{ opacity: 0, y: 20 }}
@@ -69,7 +69,7 @@ export default function ExecutiveProfile() {
                         <div className="relative bg-inverse p-10 shadow-[16px_16px_0px_0px_var(--color-primary)]">
                             <h3 className="text-3xl font-black mb-8 text-inverse-text uppercase border-b-4 border-inverse-text pb-4 inline-block">Core Competencies</h3>
                             <div className="grid grid-cols-1 gap-4">
-                                {['Strategic Planning', 'Data Governance', 'Cloud Architecture', 'Team Building', 'Process Automation', 'Stakeholder Mgmt'].map((item, i) => (
+                                {['Strategic Planning', 'Data Governance', 'Cloud Architecture', 'Team Building', 'Process Automation', 'Stakeholder Mgmt', 'Data Analytics', 'AI Automation', 'Rapid Prototyping'].map((item, i) => (
                                     <div key={i} className="flex items-center gap-4 text-inverse-text font-bold text-xl uppercase tracking-wider group hover:translate-x-2 transition-transform">
                                         <div className="w-4 h-4 bg-primary border-2 border-inverse-text group-hover:bg-inverse-text transition-colors"></div>
                                         {item}

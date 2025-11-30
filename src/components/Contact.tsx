@@ -3,7 +3,7 @@ import { Mail, Linkedin, Github } from 'lucide-react';
 
 export default function Contact() {
     return (
-        <section id="contact" className="py-20 px-4 relative overflow-hidden bg-bg border-t-4 border-border">
+        <section id="contact" className="py-20 px-4 relative overflow-hidden bg-bg">
             <div className="max-w-4xl mx-auto text-center relative z-10">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
