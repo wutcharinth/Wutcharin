@@ -1,7 +1,16 @@
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const projects = [
+    {
+        title: "PaddleOCR Extraction",
+        role: "AI Engineer",
+        desc: "High-performance OCR system using PaddlePaddle. Features multi-language support, table recognition, and real-time processing.",
+        tags: ["Python", "PaddleOCR", "Computer Vision", "AI"],
+        link: "/paddle-ocr",
+        featured: true
+    },
     {
         title: "Really Cool Airlines",
         role: "Head of Commercial",
@@ -45,44 +54,69 @@ export default function Projects() {
                 </motion.div>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {projects.map((project, index) => (
-                        <motion.a
-                            href={project.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            key={index}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
-                            className="group block bg-bg border-2 border-border p-6 hover:bg-primary hover:text-white transition-all shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-[2px] hover:translate-y-[2px] relative overflow-hidden"
-                        >
-                            <div className="absolute top-0 right-0 p-4 opacity-100">
-                                <ArrowUpRight className="text-text group-hover:text-white w-6 h-6 border-2 border-border group-hover:border-white bg-bg group-hover:bg-inverse transition-colors" />
-                            </div>
+                    {projects.map((project, index) => {
+                        const isExternal = project.link.startsWith('http');
 
-                            <div className="mb-4">
-                                <h3 className="text-xl font-bold text-text group-hover:text-white transition-colors uppercase tracking-tight">
-                                    {project.title}
-                                </h3>
-                                <span className="text-sm text-primary group-hover:text-text font-bold bg-inverse group-hover:bg-bg px-1 inline-block mt-1">{project.role}</span>
-                            </div>
-
-                            <p className="text-text group-hover:text-white text-sm mb-6 line-clamp-4 font-medium border-t-2 border-border group-hover:border-white pt-4">
-                                {project.desc}
-                            </p>
-
-                            <div className="flex flex-wrap gap-2 mt-auto">
-                                {project.tags.map((tag, i) => (
-                                    <span key={i} className="text-xs px-3 py-1 bg-bg border-2 border-border text-text font-bold group-hover:bg-inverse group-hover:text-inverse-text group-hover:border-inverse-text transition-colors">
-                                        {tag}
-                                    </span>
-                                ))}
-                            </div>
-                        </motion.a>
-                    ))}
+                        return (
+                            <motion.div
+                                key={index}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.1 }}
+                                className="h-full"
+                            >
+                                {isExternal ? (
+                                    <a
+                                        href={project.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="group block h-full bg-bg border-2 border-border p-6 hover:bg-primary hover:text-white transition-all shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-[2px] hover:translate-y-[2px] relative overflow-hidden flex flex-col"
+                                    >
+                                        <ProjectContent project={project} />
+                                    </a>
+                                ) : (
+                                    <Link
+                                        to={project.link}
+                                        className="group block h-full bg-bg border-2 border-border p-6 hover:bg-primary hover:text-white transition-all shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-[2px] hover:translate-y-[2px] relative overflow-hidden flex flex-col"
+                                    >
+                                        <ProjectContent project={project} />
+                                    </Link>
+                                )}
+                            </motion.div>
+                        );
+                    })}
                 </div>
             </div>
         </section>
+    );
+}
+
+function ProjectContent({ project }: { project: typeof projects[0] }) {
+    return (
+        <>
+            <div className="absolute top-0 right-0 p-4 opacity-100">
+                <ArrowUpRight className="text-text group-hover:text-white w-6 h-6 border-2 border-border group-hover:border-white bg-bg group-hover:bg-inverse transition-colors" />
+            </div>
+
+            <div className="mb-4">
+                <h3 className="text-xl font-bold text-text group-hover:text-white transition-colors uppercase tracking-tight">
+                    {project.title}
+                </h3>
+                <span className="text-sm text-primary group-hover:text-text font-bold bg-inverse group-hover:bg-bg px-1 inline-block mt-1">{project.role}</span>
+            </div>
+
+            <p className="text-text group-hover:text-white text-sm mb-6 line-clamp-4 font-medium border-t-2 border-border group-hover:border-white pt-4 flex-grow">
+                {project.desc}
+            </p>
+
+            <div className="flex flex-wrap gap-2 mt-auto">
+                {project.tags.map((tag, i) => (
+                    <span key={i} className="text-xs px-3 py-1 bg-bg border-2 border-border text-text font-bold group-hover:bg-inverse group-hover:text-inverse-text group-hover:border-inverse-text transition-colors">
+                        {tag}
+                    </span>
+                ))}
+            </div>
+        </>
     );
 }

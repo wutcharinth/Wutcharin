@@ -17,7 +17,7 @@ const experiences = [
         role: "Associate Director - Supply Analytics",
         period: "Nov 2017 - Apr 2022",
         points: [
-            "Analytics Leadership: Led a team of 7 analysts across Partner Programs and the Agoda Display Network. Partnered with MIS on database/dashboard development and presented KPI insights to senior leaders.",
+            "Analytics Leadership: Led a team of 7 data professionals across Partner Programs and the Agoda Display Network. Partnered with MIS on database/dashboard development and presented KPI insights to senior leaders.",
             "Cross-Functional Collaboration: Collaborated intensively with Sales, Account Management, and Product teams on new product launches, sales strategies, and goal setting.",
             "Innovation: Built credit risk models and protocols. Evaluated business opportunities and formulated optimization strategies to support Regional Account Management.",
             "Scale: Oversaw the development and delivery of a comprehensive self-service analytics ecosystem, including 100+ Tableau dashboards for 600+ users."
