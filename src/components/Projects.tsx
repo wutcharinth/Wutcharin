@@ -21,6 +21,14 @@ const projects = [
         featured: true
     },
     {
+        title: "Thai Election Result 2566",
+        role: "Data Artist",
+        desc: "Interactive 3D visualization of the 2023 Thai General Election. Features AI-powered insights and cinematic storytelling.",
+        tags: ["React", "Gemini AI", "Data Viz", "Creative Coding"],
+        link: "/thai-election",
+        featured: true
+    },
+    {
         title: "LocalGuide",
         role: "Full Stack Developer",
         desc: "Booking platform prototype connecting travelers with local guides. Complete auth system, profile management, and payments.",
