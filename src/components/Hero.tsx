@@ -40,7 +40,7 @@ export default function Hero() {
                     </div>
 
                     <p className="text-2xl md:text-4xl text-text max-w-5xl mx-auto mb-16 font-black leading-tight uppercase">
-                        Transforming businesses through <span className="bg-primary text-white px-2">AI-Powered Automation</span> and <span className="underline decoration-4 decoration-primary underline-offset-4">Intelligent Data</span>.
+                        Transforming businesses through <br className="hidden md:block" /> <span className="bg-primary text-white px-2">AI-Powered Automation</span> and <span className="underline decoration-4 decoration-primary underline-offset-4">Intelligent Data</span>.
                     </p>
                 </motion.div>
 
