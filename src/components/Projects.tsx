@@ -11,14 +11,7 @@ const projects = [
         link: "/gemini-ocr",
         featured: true
     },
-    {
-        title: "Really Cool Airlines",
-        role: "Head of Commercial",
-        desc: "Led commercial division setup, secured 200M THB seed capital, and obtained CAAT business license. Speaker at Routes World 2023.",
-        tags: ["Business Strategy", "Fundraising", "Aviation"],
-        link: "https://aviationweek.com/air-transport/airports-networks/thai-startup-really-cool-airlines-plans-q2-2024-launch-airbus-a330",
-        featured: true
-    },
+
     {
         title: "SplitBill AI",
         role: "Creator & Developer",
