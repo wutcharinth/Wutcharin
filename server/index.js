@@ -16,7 +16,14 @@ const port = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.use(cors());
+app.use(cors({
+    origin: [
+        'http://localhost:5173',
+        'https://wutcharin-portfolio-p9pg07jfy-wthatans-projects.vercel.app',
+        'https://www.wutcharin.com'
+    ],
+    credentials: true
+}));
 app.use(express.json());
 
 // Configure Multer for memory storage

@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom';
 
 const projects = [
     {
-        title: "PaddleOCR Extraction",
+        title: "Gemini OCR Extraction",
         role: "AI Engineer",
-        desc: "High-performance OCR system using PaddlePaddle. Features multi-language support, table recognition, and real-time processing.",
-        tags: ["Python", "PaddleOCR", "Computer Vision", "AI"],
-        link: "/paddle-ocr",
+        desc: "Next-generation OCR system powered by Google's Gemini 2.5 Flash. Features multimodal understanding, handwriting recognition, and structured JSON output.",
+        tags: ["Gemini AI", "Node.js", "React", "Computer Vision"],
+        link: "/gemini-ocr",
         featured: true
     },
     {
