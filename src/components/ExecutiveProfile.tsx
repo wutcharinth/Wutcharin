@@ -3,7 +3,7 @@ import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 
 const stats = [
-    { label: "Years Experience", value: "20+" },
+    { label: "People Management", value: "10+ Years" },
     { label: "AI Agents Deployed", value: "20+" },
     { label: "Annual Efficiency", value: "12k Hrs" },
     { label: "Data Pros Managed", value: "50+" },
