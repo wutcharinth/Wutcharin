@@ -59,7 +59,6 @@ app.post('/api/analyze', upload.single('image'), async (req, res) => {
 
         const prompt = `
       Perform OCR on this image. Extract all visible text.
-      Also analyze the layout and structure.
       Return the response in this JSON format:
       {
         "text": "Full extracted text here...",
@@ -69,7 +68,9 @@ app.post('/api/analyze', upload.single('image'), async (req, res) => {
           ...
         ]
       }
-      For the bounding boxes (bbox), estimate them based on the image layout if possible, or return null if not supported.
+      CRITICAL: Return precise bounding box coordinates (bbox) for EVERY single word detected.
+      The coordinates (x0, y0, x1, y1) must be in pixels relative to the image dimensions.
+      x0/y0 is top-left, x1/y1 is bottom-right.
       Ensure the JSON is valid and strictly follows the format.
     `;
 
