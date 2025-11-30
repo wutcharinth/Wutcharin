@@ -4,7 +4,7 @@ import { ArrowLeft, ExternalLink, Terminal, Cpu, Layers, Zap, Database, ScanText
 import Lenis from 'lenis';
 import InteractiveOCR from '../components/ocr/InteractiveOCR';
 
-const PaddleOCRPage = () => {
+const GeminiOCRPage = () => {
     useEffect(() => {
         const lenis = new Lenis();
         function raf(time: number) {
@@ -28,17 +28,17 @@ const PaddleOCRPage = () => {
             <main className="pt-32 px-6 pb-20 max-w-7xl mx-auto">
                 {/* Hero Section */}
                 <header className="mb-20">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 border-2 border-border bg-white text-sm font-bold mb-6 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 border-2 border-border bg-white text-black text-sm font-bold mb-6 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
                         <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
                         AI / Multimodal Vision
                     </div>
-                    <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter mb-8 leading-[0.9]">
+                    <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter mb-8 leading-[0.9] text-text">
                         Gemini Vision <br />
                         <span className="text-primary">
                             Intelligence
                         </span>
                     </h1>
-                    <p className="text-xl md:text-2xl max-w-2xl font-bold leading-relaxed border-l-4 border-primary pl-6">
+                    <p className="text-xl md:text-2xl max-w-2xl font-bold leading-relaxed border-l-4 border-primary pl-6 text-text">
                         Next-generation optical character recognition and document understanding powered by Google's Gemini 2.5 Flash multimodal model.
                     </p>
 
@@ -59,9 +59,9 @@ const PaddleOCRPage = () => {
                 <section className="mb-24">
                     <div className="flex items-center gap-3 mb-8 border-b-4 border-border pb-4">
                         <ScanText className="w-8 h-8 text-primary" />
-                        <h2 className="text-3xl font-bold uppercase tracking-tight">Interactive Simulation</h2>
+                        <h2 className="text-3xl font-bold uppercase tracking-tight text-text">Interactive Simulation</h2>
                     </div>
-                    <p className="text-lg font-medium mb-8 max-w-3xl">
+                    <p className="text-lg font-medium mb-8 max-w-3xl text-text">
                         Experience the power of multimodal AI. Upload any image—receipts, handwritten notes, or complex diagrams—and watch Gemini analyze it in real-time.
                     </p>
                     <InteractiveOCR />
@@ -74,19 +74,19 @@ const PaddleOCRPage = () => {
 
                         {/* Overview */}
                         <section>
-                            <h2 className="text-3xl font-bold uppercase tracking-tight mb-6 flex items-center gap-3 border-b-4 border-border pb-2">
+                            <h2 className="text-3xl font-bold uppercase tracking-tight mb-6 flex items-center gap-3 border-b-4 border-border pb-2 text-text">
                                 <Layers className="text-primary" />
                                 Project Overview
                             </h2>
-                            <p className="text-lg font-medium leading-relaxed mb-6">
+                            <p className="text-lg font-medium leading-relaxed mb-6 text-text">
                                 This project demonstrates the integration of <strong>Large Multimodal Models (LMMs)</strong> into web applications.
                                 Unlike traditional OCR which simply detects characters, Gemini Vision understands the <em>context</em> and <em>structure</em> of the document, allowing for semantic extraction and reasoning.
                             </p>
                             <div className="bg-bg p-6 border-2 border-border shadow-[8px_8px_0px_0px_var(--shadow-color)]">
-                                <h3 className="font-bold mb-4 uppercase tracking-wider border-b-2 border-border pb-2 inline-block">Key Capabilities</h3>
+                                <h3 className="font-bold mb-4 uppercase tracking-wider border-b-2 border-border pb-2 inline-block text-text">Key Capabilities</h3>
                                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     {['Multimodal Understanding', 'Handwriting Recognition', 'Table Parsing', 'Semantic Extraction', 'Spatial Reasoning', 'Zero-shot Classification'].map((item) => (
-                                        <li key={item} className="flex items-center gap-2 font-bold">
+                                        <li key={item} className="flex items-center gap-2 font-bold text-text">
                                             <div className="w-2 h-2 bg-primary"></div>
                                             {item}
                                         </li>
@@ -114,7 +114,7 @@ const PaddleOCRPage = () => {
                         </section>
                         {/* Technical Implementation */}
                         <section>
-                            <h2 className="text-3xl font-bold uppercase tracking-tight mb-6 flex items-center gap-3 border-b-4 border-border pb-2">
+                            <h2 className="text-3xl font-bold uppercase tracking-tight mb-6 flex items-center gap-3 border-b-4 border-border pb-2 text-text">
                                 <Terminal className="text-primary" />
                                 Technical Deep Dive
                             </h2>
@@ -126,16 +126,16 @@ const PaddleOCRPage = () => {
 
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-8">
                                     <div className="p-4 bg-white border-2 border-border shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:-translate-y-1 transition-transform">
-                                        <div className="font-black text-xl mb-2">1. Input</div>
-                                        <p className="text-sm font-medium">Image is uploaded and converted to base64 buffer on the backend.</p>
+                                        <div className="font-black text-xl mb-2 text-black">1. Input</div>
+                                        <p className="text-sm font-medium text-black">Image is uploaded and converted to base64 buffer on the backend.</p>
                                     </div>
                                     <div className="p-4 bg-white border-2 border-border shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:-translate-y-1 transition-transform">
-                                        <div className="font-black text-xl mb-2">2. Prompting</div>
-                                        <p className="text-sm font-medium">System prompt instructs the model to extract text and estimate bounding boxes.</p>
+                                        <div className="font-black text-xl mb-2 text-black">2. Prompting</div>
+                                        <p className="text-sm font-medium text-black">System prompt instructs the model to extract text and estimate bounding boxes.</p>
                                     </div>
                                     <div className="p-4 bg-white border-2 border-border shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:-translate-y-1 transition-transform">
-                                        <div className="font-black text-xl mb-2">3. Parsing</div>
-                                        <p className="text-sm font-medium">Raw text response is cleaned and parsed into structured JSON for the UI.</p>
+                                        <div className="font-black text-xl mb-2 text-black">3. Parsing</div>
+                                        <p className="text-sm font-medium text-black">Raw text response is cleaned and parsed into structured JSON for the UI.</p>
                                     </div>
                                 </div>
 
@@ -181,13 +181,13 @@ const PaddleOCRPage = () => {
                             </div>
 
                             <div className="p-6 bg-bg border-2 border-border shadow-[8px_8px_0px_0px_var(--shadow-color)]">
-                                <h3 className="text-xl font-black mb-4 flex items-center gap-2 uppercase tracking-tighter">
+                                <h3 className="text-xl font-black mb-4 flex items-center gap-2 uppercase tracking-tighter text-text">
                                     <Zap size={24} className="text-primary" />
                                     Performance
                                 </h3>
                                 <div className="space-y-6 mt-4">
                                     <div>
-                                        <div className="flex justify-between text-sm mb-1 font-bold">
+                                        <div className="flex justify-between text-sm mb-1 font-bold text-text">
                                             <span>Semantic Accuracy</span>
                                             <span>99.2%</span>
                                         </div>
@@ -196,7 +196,7 @@ const PaddleOCRPage = () => {
                                         </div>
                                     </div>
                                     <div>
-                                        <div className="flex justify-between text-sm mb-1 font-bold">
+                                        <div className="flex justify-between text-sm mb-1 font-bold text-text">
                                             <span>Handwriting Rec.</span>
                                             <span>95.5%</span>
                                         </div>
@@ -205,7 +205,7 @@ const PaddleOCRPage = () => {
                                         </div>
                                     </div>
                                     <div>
-                                        <div className="flex justify-between text-sm mb-1 font-bold">
+                                        <div className="flex justify-between text-sm mb-1 font-bold text-text">
                                             <span>Latency</span>
                                             <span>~1.2s</span>
                                         </div>
@@ -217,11 +217,11 @@ const PaddleOCRPage = () => {
                             </div>
 
                             <div className="p-6 bg-white border-2 border-border shadow-[8px_8px_0px_0px_var(--shadow-color)]">
-                                <h3 className="text-xl font-black mb-4 flex items-center gap-2 uppercase tracking-tighter">
+                                <h3 className="text-xl font-black mb-4 flex items-center gap-2 uppercase tracking-tighter text-black">
                                     <Database size={24} className="text-primary" />
                                     Model Specs
                                 </h3>
-                                <ul className="space-y-3 text-sm font-bold">
+                                <ul className="space-y-3 text-sm font-bold text-black">
                                     <li className="flex justify-between border-b border-border pb-2">
                                         <span className="opacity-70">Model</span>
                                         <span className="font-mono">gemini-2.5-flash</span>
@@ -249,4 +249,4 @@ const PaddleOCRPage = () => {
     );
 };
 
-export default PaddleOCRPage;
+export default GeminiOCRPage;

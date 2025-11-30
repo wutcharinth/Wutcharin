@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import Home from './pages/Home';
-import PaddleOCRPage from './pages/PaddleOCRPage';
+import GeminiOCRPage from './pages/GeminiOCRPage';
 
 // Component to scroll to top on route change
 const ScrollToTop = () => {
@@ -20,7 +20,7 @@ function App() {
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/paddle-ocr" element={<PaddleOCRPage />} />
+        <Route path="/gemini-ocr" element={<GeminiOCRPage />} />
       </Routes>
     </Router>
   );
