@@ -74,11 +74,11 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
     };
 
     const getHeaderStyle = () => {
-        if (isBrutal) return `p-8 border-b-2 border-${color} mb-8 break-inside-avoid`;
-        if (isCreative) return 'p-8 text-white relative overflow-hidden break-inside-avoid';
-        if (isModern) return 'bg-gray-50 border-b border-gray-200 p-8 break-inside-avoid';
-        if (template === TemplateType.SIMPLE) return 'p-8 pb-4 border-b border-gray-100 break-inside-avoid';
-        return 'p-8 border-b-2 border-gray-200 text-center break-inside-avoid';
+        if (isBrutal) return `p-8 print:pt-6 border-b-2 border-${color} mb-8 break-inside-avoid`;
+        if (isCreative) return 'p-8 print:pt-6 text-white relative overflow-hidden break-inside-avoid';
+        if (isModern) return 'bg-gray-50 border-b border-gray-200 p-8 print:pt-6 break-inside-avoid';
+        if (template === TemplateType.SIMPLE) return 'p-8 print:pt-6 pb-4 border-b border-gray-100 break-inside-avoid';
+        return 'p-8 print:pt-6 border-b-2 border-gray-200 text-center break-inside-avoid';
     };
 
     const getSectionTitleStyle = () => {
@@ -262,11 +262,11 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
                 <style>{`
                     @media print {
                         @page {
-                            margin: 20mm 6mm; /* Generous top for page 2+, tight sides */
+                            margin: 15mm 0mm 5mm 0mm; /* Top margin for 2nd+ pages, 5mm bottom footer, no side margins */
                             size: auto;
                         }
                         @page :first {
-                            margin-top: 0mm; /* Tight top for first page */
+                            margin: 0mm 0mm 5mm 0mm !important; /* No top margin for first page, 5mm bottom */
                         }
                         html, body {
                             background: white !important;
@@ -335,7 +335,7 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
 
                     {layout === LayoutType.TWO_COLUMN_LEFT && (
                         <div className="flex flex-grow items-start border-t-0" style={isBrutal ? { borderTop: `2px solid ${color}` } : {}}>
-                            <aside className={`w-[32%] flex-shrink-0 p-6 self-stretch ${isCreative || isModern ? 'bg-gray-50 print:bg-gray-50' : ''} ${isBrutal ? 'border-r-2' : 'border-r border-gray-100'}`} style={isBrutal ? { borderColor: color } : {}}>
+                            <aside className={`w-[32%] flex-shrink-0 p-6 print:pt-0 self-stretch ${isCreative || isModern ? 'bg-gray-50 print:bg-gray-50' : ''} ${isBrutal ? 'border-r-2' : 'border-r border-gray-100'}`} style={isBrutal ? { borderColor: color } : {}}>
                                 <div className="space-y-6">
                                     <EducationSection />
                                     <SkillsSection />
@@ -355,7 +355,7 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
                                 <SummarySection />
                                 <ExperienceSection />
                             </main>
-                            <aside className={`w-[32%] flex-shrink-0 p-6 ${isCreative || isModern ? 'bg-gray-50 print:bg-gray-50' : ''}`}>
+                            <aside className={`w-[32%] flex-shrink-0 p-6 print:pt-0 ${isCreative || isModern ? 'bg-gray-50 print:bg-gray-50' : ''}`}>
                                 <div className="space-y-6">
                                     <EducationSection />
                                     <SkillsSection />
