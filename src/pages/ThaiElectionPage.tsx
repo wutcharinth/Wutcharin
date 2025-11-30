@@ -278,13 +278,13 @@ export default function ThaiElectionPage() {
                                                                     {district.logo ? (
                                                                         <img src={district.logo} alt={district.winner} className="w-3/4 h-3/4 object-contain drop-shadow-md" />
                                                                     ) : (
-                                                                        <span className="text-[8px] font-bold text-white drop-shadow-md">{district.winner.substring(0, 1)}</span>
+                                                                        <span className={`text-[8px] font-bold drop-shadow-md ${['Pheu Thai', 'Thai Sang Thai'].includes(district.winner) ? '' : 'text-white'}`}>{district.winner.substring(0, 1)}</span>
                                                                     )}
                                                                 </div>
                                                                 {/* Tooltip */}
                                                                 <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max max-w-[150px] bg-black border border-white/20 p-2 rounded text-xs pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity z-50">
                                                                     <div className="font-bold text-white">{province.province}</div>
-                                                                    <div className="text-white/60">District {district.id}</div>
+                                                                    <div className="text-white">District {district.id}</div>
                                                                     <div className="text-[#F47524] mt-1">{district.winner}</div>
                                                                 </div>
                                                             </motion.button>
@@ -316,7 +316,7 @@ export default function ThaiElectionPage() {
                                                 <div className="text-sm text-[#F47524] font-mono uppercase tracking-widest mb-2">{selectedProvince.region}</div>
                                                 <h3 className="text-4xl font-black mb-1">{selectedProvince.province}</h3>
                                                 {selectedDistrict && (
-                                                    <div className="text-xl text-white/60 font-bold">District {selectedDistrict.id}</div>
+                                                    <div className="text-xl text-white font-bold">District {selectedDistrict.id}</div>
                                                 )}
                                             </div>
                                             <button
@@ -458,7 +458,7 @@ function MethodologyModal() {
                                     <MapIcon className="text-[#F47524] w-5 h-5" /> 1. The Visualization
                                 </h3>
                                 <p className="text-gray-400 leading-relaxed">
-                                    Built with <strong>React</strong> and <strong>Framer Motion</strong>. The map is a stylized abstraction using SVG paths and coordinate mapping to represent Thailand's 77 provinces. The "Neon/Dark" aesthetic is achieved using <strong>Tailwind CSS</strong> with custom utility classes for glow effects (`shadow-[0_0_15px_currentColor]`).
+                                    This interactive experience is built using <strong>React</strong> and <strong>Framer Motion</strong> to bring the 2023 Election data to life. The 'Digital Kingdom' map is a custom-built grid system that abstracts Thailand's geography into a pixelated, data-dense interface. Each cell represents a district, color-coded by the winning party. The "Neon/Dark" aesthetic is implemented with <strong>Tailwind CSS</strong>, utilizing dynamic lighting effects and glassmorphism to create an immersive, futuristic atmosphere that invites exploration.
                                 </p>
                             </div>
 
@@ -467,7 +467,7 @@ function MethodologyModal() {
                                     <BarChart2 className="text-[#F47524] w-5 h-5" /> 2. The Data
                                 </h3>
                                 <p className="text-gray-400 leading-relaxed">
-                                    Data is sourced from the <strong>ECT (Election Commission of Thailand)</strong> 2023 Report. It was processed from raw CSVs into a structured JSON format, aggregating votes by constituency to determine provincial winners.
+                                    The dataset is meticulously curated from the <strong>Election Commission of Thailand (ECT)</strong>'s official 2023 report. We processed over 40 million votes across 400 constituencies. The raw data was cleaned, normalized, and structured into a hierarchical JSON format, linking candidates, parties, and vote counts to their respective districts and provinces. This granular level of data allows for deep-diving into specific local results while maintaining a high-level national overview.
                                 </p>
                             </div>
 
@@ -476,7 +476,7 @@ function MethodologyModal() {
                                     <MessageSquare className="text-[#F47524] w-5 h-5" /> 3. The AI Analyst
                                 </h3>
                                 <p className="text-gray-400 leading-relaxed">
-                                    Powered by <strong>Google Gemini 2.5 Flash</strong>. The system injects the current view's data context (e.g., "Bangkok Voting Patterns") into the LLM prompt, allowing it to generate real-time, context-aware insights that explain *why* certain trends emerged, moving beyond simple numbers.
+                                    At the core of the insights engine is <strong>Google's Gemini 2.5 Flash</strong>. This isn't just pre-written text; the system dynamically constructs prompts based on your current interaction—whether you're looking at the national overview or a specific province like Chiang Mai. It feeds real-time data context (vote margins, party dominance, regional trends) to the LLM, which then synthesizes a narrative explanation. This allows the application to function not just as a dashboard, but as an intelligent analyst that explains the <em>story</em> behind the numbers.
                                 </p>
                             </div>
 
