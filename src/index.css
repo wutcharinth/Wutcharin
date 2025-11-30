@@ -2,7 +2,7 @@
 
 @layer base {
   :root {
-    --color-primary: #557C99;
+    --color-primary: #047857;
     --color-secondary: #000000;
     --color-bg: #F2F2F2;
     --color-text: #000000;
@@ -13,7 +13,7 @@
   }
 
   .dark {
-    --color-primary: #557C99;
+    --color-primary: #047857;
     --color-secondary: #FFFFFF;
     --color-bg: #050505;
     --color-text: #FFFFFF;
@@ -26,7 +26,7 @@
 
 @theme {
   --color-primary: var(--color-primary);
-  /* Slate Blue */
+  /* Deep Emerald */
   --color-secondary: var(--color-secondary);
   /* Black */
   --color-bg: var(--color-bg);
