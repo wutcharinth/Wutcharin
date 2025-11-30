@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Calendar } from 'lucide-react';
+import { Calendar, ArrowUpRight } from 'lucide-react';
 
 const experiences = [
     {
@@ -31,7 +31,9 @@ const experiences = [
             "Startup Launch: Built and mentored a high-performing commercial division of 11 professionals from the ground up, establishing 6 teams including Network Planning, Revenue Management, Commercial Operations, and Marketing.",
             "Fundraising: Translated complex market data into a compelling vision and investor pitch, leveraging insights from fleet and schedule planning to secure 200M THB in seed funding to launch the airline.",
             "Strategy: Foster a culture of excellence and innovation, setting the strategic direction for route planning and business development."
-        ]
+        ],
+        link: "https://aviationweek.com/air-transport/airports-networks/thai-startup-really-cool-airlines-plans-q2-2024-launch-airbus-a330",
+        linkText: "Read Coverage in Aviation Week"
     },
     {
         company: "Thairath Group",
@@ -113,6 +115,25 @@ export default function Experience() {
                                                 </li>
                                             ))}
                                         </ul>
+
+                                        {/* @ts-ignore */}
+                                        {exp.link && (
+                                            <div className="mt-4 pt-4 border-t-2 border-border">
+                                                <a
+                                                    /* @ts-ignore */
+                                                    href={exp.link}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-text transition-colors uppercase tracking-wide"
+                                                >
+                                                    <span className="border-b-2 border-primary hover:border-text">
+                                                        {/* @ts-ignore */}
+                                                        {exp.linkText || "View Related News"}
+                                                    </span>
+                                                    <ArrowUpRight className="w-4 h-4" />
+                                                </a>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                                 <div className="flex-1 hidden md:block" />
