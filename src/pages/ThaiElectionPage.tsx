@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { ParliamentGrid } from '../components/ParliamentGrid';
 import { ElectionInsights } from '../components/ElectionInsights';
 import { useState, useRef } from 'react';
-import { ArrowLeft, Map as MapIcon, BarChart2, MessageSquare, Users } from 'lucide-react';
+import { ArrowLeft, Map as MapIcon, BarChart2, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import electionDataRaw from '../data/election-2023.json';
 
@@ -111,11 +111,7 @@ export default function ThaiElectionPage() {
             <section className="relative h-screen flex items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 z-0">
                     <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black z-10"></div>
-                    <img
-                        src="https://images.unsplash.com/photo-1596627622879-19816158c736?q=80&w=2070&auto=format&fit=crop"
-                        alt="Democracy Monument"
-                        className="w-full h-full object-cover opacity-50 grayscale"
-                    />
+
                 </div>
 
                 <div className="relative z-20 text-center px-4 max-w-5xl mx-auto">
@@ -458,7 +454,7 @@ function MethodologyModal() {
                                     <MapIcon className="text-[#F47524] w-5 h-5" /> 1. The Visualization
                                 </h3>
                                 <p className="text-gray-400 leading-relaxed">
-                                    This interactive experience is built using <strong>React</strong> and <strong>Framer Motion</strong> to bring the 2023 Election data to life. The 'Digital Kingdom' map is a custom-built grid system that abstracts Thailand's geography into a pixelated, data-dense interface. Each cell represents a district, color-coded by the winning party. The "Neon/Dark" aesthetic is implemented with <strong>Tailwind CSS</strong>, utilizing dynamic lighting effects and glassmorphism to create an immersive, futuristic atmosphere that invites exploration.
+                                    Built with <strong>React</strong> and <strong>Framer Motion</strong>. The interface utilizes a <strong>hierarchical grid system</strong> to organize Thailand's 400 constituencies by Province and Region. This structure allows users to navigate the massive dataset efficiently without the complexity of a traditional geographic map. The 'Neon/Dark' aesthetic is implemented with <strong>Tailwind CSS</strong>, using dynamic colors to represent the winning party for every single district.
                                 </p>
                             </div>
 
@@ -467,16 +463,16 @@ function MethodologyModal() {
                                     <BarChart2 className="text-[#F47524] w-5 h-5" /> 2. The Data
                                 </h3>
                                 <p className="text-gray-400 leading-relaxed">
-                                    The dataset is meticulously curated from the <strong>Election Commission of Thailand (ECT)</strong>'s official 2023 report. We processed over 40 million votes across 400 constituencies. The raw data was cleaned, normalized, and structured into a hierarchical JSON format, linking candidates, parties, and vote counts to their respective districts and provinces. This granular level of data allows for deep-diving into specific local results while maintaining a high-level national overview.
+                                    Data is sourced from the <strong>Election Commission of Thailand (ECT)</strong> 2023 Report. It was processed from raw results into a structured JSON format, aggregating votes by constituency. This static dataset powers the entire application, ensuring instant load times and responsive interactions.
                                 </p>
                             </div>
 
                             <div>
                                 <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
-                                    <MessageSquare className="text-[#F47524] w-5 h-5" /> 3. The AI Analyst
+                                    <BarChart2 className="text-[#F47524] w-5 h-5" /> 3. The Insights
                                 </h3>
                                 <p className="text-gray-400 leading-relaxed">
-                                    At the core of the insights engine is <strong>Google's Gemini 2.5 Flash</strong>. This isn't just pre-written text; the system dynamically constructs prompts based on your current interaction—whether you're looking at the national overview or a specific province like Chiang Mai. It feeds real-time data context (vote margins, party dominance, regional trends) to the LLM, which then synthesizes a narrative explanation. This allows the application to function not just as a dashboard, but as an intelligent analyst that explains the <em>story</em> behind the numbers.
+                                    Key political trends are calculated in real-time within the browser. The application computes <strong>Vote Share vs. Seat Share</strong> discrepancies and identifies <strong>Regional Strongholds</strong> dynamically based on the loaded dataset, providing an immediate overview of the election's outcome without external processing.
                                 </p>
                             </div>
 
