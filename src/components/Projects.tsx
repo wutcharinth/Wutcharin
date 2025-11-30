@@ -29,6 +29,14 @@ const projects = [
         featured: true
     },
     {
+        title: "Pro Resume Builder",
+        role: "Full Stack Developer",
+        desc: "AI-powered resume builder with real-time preview, smart templates, and instant PDF export. Built for modern job seekers.",
+        tags: ["React", "OpenAI", "Tailwind", "PDF Generation"],
+        link: "/resume-builder",
+        featured: true
+    },
+    {
         title: "LocalGuide",
         role: "Full Stack Developer",
         desc: "Booking platform prototype connecting travelers with local guides. Complete auth system, profile management, and payments.",
