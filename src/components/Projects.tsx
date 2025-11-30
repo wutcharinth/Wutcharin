@@ -29,7 +29,7 @@ const projects = [
         featured: true
     },
     {
-        title: "Pro Resume Builder",
+        title: "AI Resume Builder",
         role: "Full Stack Developer",
         desc: "AI-powered resume builder with real-time preview, smart templates, and instant PDF export. Built for modern job seekers.",
         tags: ["React", "OpenAI", "Tailwind", "PDF Generation"],
