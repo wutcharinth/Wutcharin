@@ -3,9 +3,9 @@ import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 
 const stats = [
-    { label: "People Management", value: "10+ Years" },
+    { label: "Years People Management", value: "10+" },
     { label: "AI Agents Deployed", value: "20+" },
-    { label: "Annual Efficiency", value: "12k Hrs" },
+    { label: "Hours Annual Efficiency", value: "12k" },
     { label: "Data Pros Managed", value: "50+" },
 ];
 
