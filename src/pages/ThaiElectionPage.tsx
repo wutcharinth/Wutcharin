@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ParliamentGrid } from '../components/ParliamentGrid';
 import { ElectionInsights } from '../components/ElectionInsights';
 import { useState, useRef } from 'react';
@@ -81,8 +81,8 @@ export default function ThaiElectionPage() {
     const [selectedProvince, setSelectedProvince] = useState<ProvinceData | null>(null);
     const [selectedDistrict, setSelectedDistrict] = useState<District | null>(null);
     const containerRef = useRef(null);
-    const { scrollYProgress } = useScroll({ target: containerRef });
-    const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+
+
 
     // Group provinces by region
     const regions = [
