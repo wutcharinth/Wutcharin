@@ -3,7 +3,9 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { Points, PointMaterial } from '@react-three/drei';
 import * as random from 'maath/random/dist/maath-random.esm';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function Stars(props: any) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const ref = useRef<any>(null);
     // Increased radius for more spread, fewer particles for cleaner look
     const sphere = useMemo(() => random.inSphere(new Float32Array(3000), { radius: 2.5 }), []);
