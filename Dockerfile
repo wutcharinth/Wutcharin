@@ -9,10 +9,11 @@ COPY package.json package-lock.json ./
 COPY server/package.json server/package-lock.json ./server/
 
 # Install root dependencies (including devDependencies for build)
-RUN npm ci
+# Use --legacy-peer-deps because some packages don't support React 19 yet
+RUN npm ci --legacy-peer-deps
 
 # Install server dependencies
-RUN cd server && npm ci
+RUN cd server && npm ci --legacy-peer-deps
 
 # Copy source files (node_modules excluded via .dockerignore)
 COPY . .
