@@ -74,11 +74,11 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
     };
 
     const getHeaderStyle = () => {
-        if (isBrutal) return `p-8 print:pt-0 border-b-2 border-${color} mb-8 break-inside-avoid`;
-        if (isCreative) return 'p-8 print:pt-0 text-white relative overflow-hidden break-inside-avoid';
-        if (isModern) return 'bg-gray-50 border-b border-gray-200 p-8 print:pt-0 break-inside-avoid';
-        if (template === TemplateType.SIMPLE) return 'p-8 print:pt-0 pb-4 border-b border-gray-100 break-inside-avoid';
-        return 'p-8 print:pt-0 border-b-2 border-gray-200 text-center break-inside-avoid';
+        if (isBrutal) return `px-12 py-8 print:pt-0 print:px-12 border-b-2 border-${color} mb-8 break-inside-avoid`;
+        if (isCreative) return 'px-12 py-8 print:pt-0 print:px-12 text-white relative overflow-hidden break-inside-avoid';
+        if (isModern) return 'bg-gray-50 border-b border-gray-200 px-12 py-8 print:pt-0 print:px-12 break-inside-avoid';
+        if (template === TemplateType.SIMPLE) return 'px-12 py-8 print:pt-0 print:px-12 pb-4 border-b border-gray-100 break-inside-avoid';
+        return 'px-12 py-8 print:pt-0 print:px-12 border-b-2 border-gray-200 text-center break-inside-avoid';
     };
 
     const getSectionTitleStyle = () => {
@@ -354,7 +354,7 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
                     <Header />
 
                     {layout === LayoutType.SINGLE_COLUMN && (
-                        <div className="flex-grow p-8 pt-6 print:p-0">
+                        <div className="flex-grow px-12 py-8 pt-6 print:pt-0 print:px-12">
                             <SummarySection />
                             <ExperienceSection />
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-4 break-inside-avoid">
@@ -369,14 +369,14 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
 
                     {layout === LayoutType.TWO_COLUMN_LEFT && (
                         <div className="flex flex-grow items-start border-t-0" style={isBrutal ? { borderTop: `2px solid ${color}` } : {}}>
-                            <aside className={`w-[32%] flex-shrink-0 p-6 print:pt-0 self-stretch ${isCreative || isModern ? 'bg-gray-50 print:bg-gray-50' : ''} ${isBrutal ? 'border-r-2' : 'border-r border-gray-100'}`} style={isBrutal ? { borderColor: color } : {}}>
+                            <aside className={`w-[32%] flex-shrink-0 px-8 py-6 print:pt-0 print:px-12 self-stretch ${isCreative || isModern ? 'bg-gray-50 print:bg-gray-50' : ''} ${isBrutal ? 'border-r-2' : 'border-r border-gray-100'}`} style={isBrutal ? { borderColor: color } : {}}>
                                 <div className="space-y-6">
                                     <EducationSection />
                                     <SkillsSection />
                                     <CompetenciesSection />
                                 </div>
                             </aside>
-                            <main className="w-[68%] p-8 print:p-6">
+                            <main className="w-[68%] px-12 py-8 print:px-12 print:py-6">
                                 <SummarySection />
                                 <ExperienceSection />
                             </main>
@@ -385,11 +385,11 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
 
                     {layout === LayoutType.TWO_COLUMN_RIGHT && (
                         <div className="flex flex-grow items-start border-t-0" style={isBrutal ? { borderTop: `2px solid ${color}` } : {}}>
-                            <main className={`w-[68%] p-8 self-stretch print:p-6 ${isBrutal ? 'border-r-2' : 'border-r border-gray-100'}`} style={isBrutal ? { borderColor: color } : {}}>
+                            <main className={`w-[68%] px-12 py-8 self-stretch print:px-12 print:py-6 ${isBrutal ? 'border-r-2' : 'border-r border-gray-100'}`} style={isBrutal ? { borderColor: color } : {}}>
                                 <SummarySection />
                                 <ExperienceSection />
                             </main>
-                            <aside className={`w-[32%] flex-shrink-0 p-6 print:pt-0 ${isCreative || isModern ? 'bg-gray-50 print:bg-gray-50' : ''}`}>
+                            <aside className={`w-[32%] flex-shrink-0 px-8 py-6 print:pt-0 print:px-12 ${isCreative || isModern ? 'bg-gray-50 print:bg-gray-50' : ''}`}>
                                 <div className="space-y-6">
                                     <EducationSection />
                                     <SkillsSection />
