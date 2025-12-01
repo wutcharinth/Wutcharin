@@ -7,6 +7,7 @@ import { TemplateType, LayoutType, FontSize } from '../components/resume-builder
 import type { ResumeData, FontFamily } from '../components/resume-builder/types';
 import { ArrowRight, Printer, Palette, Wand2, Layout, PanelLeft, PanelRight, RectangleVertical, Type, ZoomIn, ZoomOut, FileText, ArrowLeft, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 // Start with empty data
 const INITIAL_DATA: ResumeData = {
@@ -94,6 +95,11 @@ const ResumeBuilderPage: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-[#050505] pb-20 font-sans text-white print:bg-white print:pb-0 print:text-black">
+            <SEO
+                title="AI Resume Builder"
+                description="Create a professional, ATS-optimized resume in seconds using AI. Import from LinkedIn or paste your text to get started."
+                url="https://wutcharin.com/resume-builder"
+            />
             {/* Header */}
             {/* Navigation */}
             <nav className={`fixed top-0 left-0 right-0 z-50 p-6 flex justify-between items-center print:hidden transition-all duration-300 ${step === 'upload' ? 'mix-blend-difference' : 'bg-[#050505]/90 backdrop-blur-md border-b border-zinc-800'}`}>
