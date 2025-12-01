@@ -72,9 +72,9 @@ export default function Experience() {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="text-4xl font-bold text-center mb-16 uppercase tracking-tighter"
+                    className="text-4xl font-bold text-center mb-16 uppercase tracking-tighter text-text"
                 >
-                    Professional <span className="text-white bg-primary px-2 border-2 border-border shadow-[4px_4px_0px_0px_var(--shadow-color)]">Experience</span>
+                    Professional <span className="text-inverse-text bg-inverse px-2">Experience</span>
                 </motion.h2>
 
                 <div className="relative">
