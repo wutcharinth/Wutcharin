@@ -74,11 +74,12 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
     };
 
     const getHeaderStyle = () => {
-        if (isBrutal) return `px-12 py-8 print:pt-2 print:pb-4 print:px-12 border-b-2 border-${color} mb-8 print:mb-4 break-inside-avoid`;
-        if (isCreative) return 'px-12 py-8 print:pt-2 print:pb-4 print:px-12 text-white relative overflow-hidden break-inside-avoid';
-        if (isModern) return 'bg-gray-50 border-b border-gray-200 px-12 py-8 print:pt-2 print:pb-4 print:px-12 break-inside-avoid';
-        if (template === TemplateType.SIMPLE) return 'px-12 py-8 print:pt-2 print:pb-4 print:px-12 pb-4 border-b border-gray-100 break-inside-avoid';
-        return 'px-12 py-8 print:pt-2 print:pb-4 print:px-12 border-b-2 border-gray-200 text-center break-inside-avoid';
+        // Reduced vertical padding (py-4 instead of py-8) and margin-bottom (mb-2) to minimize top white space
+        if (isBrutal) return `px-12 py-4 print:pt-2 print:pb-4 print:px-12 border-b-2 border-${color} mb-2 print:mb-2 break-inside-avoid`;
+        if (isCreative) return 'px-12 py-4 print:pt-2 print:pb-4 print:px-12 text-white relative overflow-hidden mb-2 break-inside-avoid';
+        if (isModern) return 'bg-gray-50 border-b border-gray-200 px-12 py-4 print:pt-2 print:pb-4 print:px-12 mb-2 break-inside-avoid';
+        if (template === TemplateType.SIMPLE) return 'px-12 py-4 print:pt-2 print:pb-4 print:px-12 pb-4 border-b border-gray-100 mb-2 break-inside-avoid';
+        return 'px-12 py-4 print:pt-2 print:pb-4 print:px-12 border-b-2 border-gray-200 text-center mb-2 break-inside-avoid';
     };
 
     const getSectionTitleStyle = () => {
@@ -262,13 +263,13 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
                 <style>{`
                     @media print {
                         @page {
-                            margin: 20mm 0mm 0mm 0mm !important; /* Top margin for 2nd+ pages (increased), no bottom footer, no side margins */
+                            margin: 15mm 0mm 5mm 0mm !important; /* Top margin for 2nd+ pages, small bottom, no side margins */
                             size: A4;
                             /* Remove browser headers and footers */
                             marks: none;
                         }
                         @page :first {
-                            margin: 5mm 0mm 0mm 0mm !important; /* Small top margin on first page (reduced from 0) */
+                            margin: 0mm 0mm 5mm 0mm !important; /* No top margin on first page */
                         }
                         html, body {
                             background: white !important;
@@ -335,19 +336,12 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
                         }
                     }
                     
-                    /* Additional CSS to prevent browser print headers/footers */
-                    @media print {
-                        @page {
-                            margin: 0 !important;
-                            size: A4;
-                        }
-                    }
                 `}</style>
                 <div className={`resume-preview-container mx-auto flex flex-col ${typography}`} style={a4ContainerStyles}>
                     <Header />
 
                     {layout === LayoutType.SINGLE_COLUMN && (
-                        <div className="flex-grow px-12 py-8 pt-6 print:pt-4 print:px-12">
+                        <div className="flex-grow px-12 py-4 pt-2 print:pt-2 print:px-12">
                             <SummarySection />
                             <ExperienceSection />
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-4 break-inside-avoid">
@@ -362,14 +356,14 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
 
                     {layout === LayoutType.TWO_COLUMN_LEFT && (
                         <div className="flex flex-grow items-start border-t-0" style={isBrutal ? { borderTop: `2px solid ${color}` } : {}}>
-                            <aside className={`w-[32%] flex-shrink-0 px-8 py-6 print:pt-0 print:px-12 self-stretch ${isCreative || isModern ? 'bg-gray-50 print:bg-gray-50' : ''} ${isBrutal ? 'border-r-2' : 'border-r border-gray-100'}`} style={isBrutal ? { borderColor: color } : {}}>
+                            <aside className={`w-[32%] flex-shrink-0 px-8 py-2 print:pt-0 print:px-12 self-stretch ${isCreative || isModern ? 'bg-gray-50 print:bg-gray-50' : ''} ${isBrutal ? 'border-r-2' : 'border-r border-gray-100'}`} style={isBrutal ? { borderColor: color } : {}}>
                                 <div className="space-y-6">
                                     <EducationSection />
                                     <SkillsSection />
                                     <CompetenciesSection />
                                 </div>
                             </aside>
-                            <main className="w-[68%] px-12 py-8 print:px-12 print:py-6">
+                            <main className="w-[68%] px-12 py-2 print:px-12 print:py-2">
                                 <SummarySection />
                                 <ExperienceSection />
                             </main>
@@ -378,11 +372,11 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
 
                     {layout === LayoutType.TWO_COLUMN_RIGHT && (
                         <div className="flex flex-grow items-start border-t-0" style={isBrutal ? { borderTop: `2px solid ${color}` } : {}}>
-                            <main className={`w-[68%] px-12 py-8 self-stretch print:px-12 print:py-6 ${isBrutal ? 'border-r-2' : 'border-r border-gray-100'}`} style={isBrutal ? { borderColor: color } : {}}>
+                            <main className={`w-[68%] px-12 py-2 self-stretch print:px-12 print:py-2 ${isBrutal ? 'border-r-2' : 'border-r border-gray-100'}`} style={isBrutal ? { borderColor: color } : {}}>
                                 <SummarySection />
                                 <ExperienceSection />
                             </main>
-                            <aside className={`w-[32%] flex-shrink-0 px-8 py-6 print:pt-0 print:px-12 ${isCreative || isModern ? 'bg-gray-50 print:bg-gray-50' : ''}`}>
+                            <aside className={`w-[32%] flex-shrink-0 px-8 py-2 print:pt-0 print:px-12 ${isCreative || isModern ? 'bg-gray-50 print:bg-gray-50' : ''}`}>
                                 <div className="space-y-6">
                                     <EducationSection />
                                     <SkillsSection />
