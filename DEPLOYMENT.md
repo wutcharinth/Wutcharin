@@ -13,6 +13,17 @@
    - **Value**: `AIzaSyC9FgOn0tRr8_a6PoimWFRX38LBz2aMVnY`
    - **Environment**: Production, Preview, and Development
 
+**Note**: If `VITE_GEMINI_API_KEY` doesn't work in serverless functions, also add:
+   - **Key**: `GEMINI_API_KEY`
+   - **Value**: `AIzaSyC9FgOn0tRr8_a6PoimWFRX38LBz2aMVnY`
+   - **Environment**: Production, Preview, and Development
+
+### Testing Environment Variables
+
+After deployment, test if the environment variable is accessible:
+- Visit: `https://wutcharin.com/api/test-env`
+- This will show if the API key is accessible to serverless functions
+
 ### Deployment Steps
 
 1. Push to GitHub (already done)
