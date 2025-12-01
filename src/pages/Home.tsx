@@ -9,6 +9,8 @@ import Experience from '../components/Experience';
 import Contact from '../components/Contact';
 import SkillsMarquee from '../components/SkillsMarquee';
 
+import SEO from '../components/SEO';
+
 const Home = () => {
     useEffect(() => {
         const lenis = new Lenis();
@@ -27,6 +29,10 @@ const Home = () => {
 
     return (
         <div className="relative min-h-screen text-black overflow-x-hidden selection:bg-primary selection:text-white">
+            <SEO
+                title="Executive Leader & AI Innovator"
+                description="Wutcharin Thatan is an Executive Leader and Data Strategist specializing in AI Automation, Machine Learning, and Business Intelligence."
+            />
             <Header />
 
             <main>
