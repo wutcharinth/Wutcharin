@@ -4,14 +4,13 @@ import { Link } from 'react-router-dom';
 
 const projects = [
     {
-        title: "Gemini OCR Extraction",
-        role: "AI Engineer",
-        desc: "Next-generation OCR system powered by Google's Gemini 2.5 Flash. Features multimodal understanding, handwriting recognition, and structured JSON output.",
-        tags: ["Gemini AI", "Node.js", "React", "Computer Vision"],
-        link: "/gemini-ocr",
+        title: "Thai Election Result 2566",
+        role: "Data Artist",
+        desc: "Interactive visualization of the 2023 Thai General Election. Features AI-powered insights and cinematic storytelling.",
+        tags: ["React", "Gemini AI", "Data Viz", "Creative Coding"],
+        link: "/thai-election",
         featured: true
     },
-
     {
         title: "SplitBill AI",
         role: "Creator & Developer",
@@ -21,11 +20,11 @@ const projects = [
         featured: true
     },
     {
-        title: "Thai Election Result 2566",
-        role: "Data Artist",
-        desc: "Interactive 3D visualization of the 2023 Thai General Election. Features AI-powered insights and cinematic storytelling.",
-        tags: ["React", "Gemini AI", "Data Viz", "Creative Coding"],
-        link: "/thai-election",
+        title: "Gemini OCR Extraction",
+        role: "AI Engineer",
+        desc: "Next-generation OCR system powered by Google's Gemini 2.5 Flash. Features multimodal understanding, handwriting recognition, and structured JSON output.",
+        tags: ["Gemini AI", "Node.js", "React", "Computer Vision"],
+        link: "/gemini-ocr",
         featured: true
     },
     {
