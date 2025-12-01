@@ -7,6 +7,7 @@ import CollectionsDemo from '../components/collections/CollectionsDemo';
 
 export default function CollectionsPage() {
     useEffect(() => {
+        window.scrollTo(0, 0);
         const lenis = new Lenis();
         function raf(time: number) {
             lenis.raf(time);
