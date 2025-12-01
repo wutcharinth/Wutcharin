@@ -332,7 +332,7 @@ export const ResumeEditor: React.FC<ResumeEditorProps> = ({ data, onChange }) =>
                             onDragStart={(e) => handleDragStart(e, 'experience', index)}
                             onDragOver={handleDragOver}
                             onDrop={(e) => handleDrop(e, 'experience', index)}
-                            className={`transition - all duration - 200 ${draggedItem?.type === 'experience' && draggedItem.index === index ? 'opacity-40 scale-[0.99]' : 'opacity-100'} `}
+                            className={`transition-all duration-200 ${draggedItem?.type === 'experience' && draggedItem.index === index ? 'opacity-40 scale-[0.99]' : 'opacity-100'}`}
                         >
                             <Card className="relative group">
                                 <div
@@ -418,7 +418,7 @@ export const ResumeEditor: React.FC<ResumeEditorProps> = ({ data, onChange }) =>
                             onDragStart={(e) => handleDragStart(e, 'education', index)}
                             onDragOver={handleDragOver}
                             onDrop={(e) => handleDrop(e, 'education', index)}
-                            className={`flex gap - 4 items - end bg - zinc - 900 p - 4 rounded - lg border border - zinc - 800 relative group transition - all duration - 200 ${draggedItem?.type === 'education' && draggedItem.index === index ? 'opacity-40 scale-[0.99]' : 'opacity-100'} `}
+                            className={`flex gap-4 items-end bg-zinc-900 p-4 rounded-lg border border-zinc-800 relative group transition-all duration-200 ${draggedItem?.type === 'education' && draggedItem.index === index ? 'opacity-40 scale-[0.99]' : 'opacity-100'}`}
                         >
                             <div
                                 className="absolute top-1/2 -translate-y-1/2 -left-3 cursor-move text-gray-600 hover:text-gray-400 p-1 opacity-0 group-hover:opacity-100 transition-opacity"

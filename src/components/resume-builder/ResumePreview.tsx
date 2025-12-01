@@ -74,11 +74,11 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
     };
 
     const getHeaderStyle = () => {
-        if (isBrutal) return `p-8 print:pt-6 border-b-2 border-${color} mb-8 break-inside-avoid`;
-        if (isCreative) return 'p-8 print:pt-6 text-white relative overflow-hidden break-inside-avoid';
-        if (isModern) return 'bg-gray-50 border-b border-gray-200 p-8 print:pt-6 break-inside-avoid';
-        if (template === TemplateType.SIMPLE) return 'p-8 print:pt-6 pb-4 border-b border-gray-100 break-inside-avoid';
-        return 'p-8 print:pt-6 border-b-2 border-gray-200 text-center break-inside-avoid';
+        if (isBrutal) return `p-8 print:pt-0 border-b-2 border-${color} mb-8 break-inside-avoid`;
+        if (isCreative) return 'p-8 print:pt-0 text-white relative overflow-hidden break-inside-avoid';
+        if (isModern) return 'bg-gray-50 border-b border-gray-200 p-8 print:pt-0 break-inside-avoid';
+        if (template === TemplateType.SIMPLE) return 'p-8 print:pt-0 pb-4 border-b border-gray-100 break-inside-avoid';
+        return 'p-8 print:pt-0 border-b-2 border-gray-200 text-center break-inside-avoid';
     };
 
     const getSectionTitleStyle = () => {
@@ -313,6 +313,12 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
                         .resume-preview-container::before,
                         .resume-preview-container::after {
                             display: none !important;
+                        }
+                        
+                        /* Remove top padding/margin from header on first page */
+                        .resume-preview-container > header:first-child {
+                            padding-top: 0 !important;
+                            margin-top: 0 !important;
                         }
                     }
                 `}</style>
