@@ -126,32 +126,40 @@ const SlipVerifyPage = () => {
                                 Unlike linear chatbots, SlipVerify uses a <strong>Cyclic State Graph</strong>. This allows the agent to loop, retry, and maintain state across complex workflows.
                             </p>
 
-                            <div className="space-y-6">
-                                <div className="flex gap-4">
-                                    <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center shrink-0">
+                            <div className="space-y-8">
+                                <div className="flex gap-4 group">
+                                    <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center shrink-0 group-hover:bg-blue-500/30 transition-colors">
                                         <Database className="w-6 h-6 text-blue-400" />
                                     </div>
                                     <div>
-                                        <h4 className="text-white font-bold text-lg">Shared State</h4>
-                                        <p className="text-slate-500 text-sm">A persistent JSON object that tracks the transaction status, extraction confidence, and fraud risk scores.</p>
+                                        <h4 className="text-white font-bold text-lg mb-1">1. Shared State Memory</h4>
+                                        <p className="text-slate-500 text-sm leading-relaxed">
+                                            A persistent JSON object tracks the entire transaction lifecycle. It stores the slip image, extracted data, fraud risk scores, and human review decisions.
+                                        </p>
                                     </div>
                                 </div>
-                                <div className="flex gap-4">
-                                    <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center shrink-0">
+                                <div className="flex gap-4 group">
+                                    <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center shrink-0 group-hover:bg-purple-500/30 transition-colors">
                                         <Cpu className="w-6 h-6 text-purple-400" />
                                     </div>
                                     <div>
-                                        <h4 className="text-white font-bold text-lg">Specialized Nodes</h4>
-                                        <p className="text-slate-500 text-sm">Modular functions (OCR, Fraud Check, Database Lookup) that perform specific tasks and update the state.</p>
+                                        <h4 className="text-white font-bold text-lg mb-1">2. Specialized Agent Nodes</h4>
+                                        <p className="text-slate-500 text-sm leading-relaxed">
+                                            Modular functions perform specific tasks:
+                                            <br /><span className="text-blue-400">• OCR Node:</span> Extracts amount, date, and sender using Vision AI.
+                                            <br /><span className="text-purple-400">• Fraud Node:</span> Checks for duplicate transaction IDs and blacklisted accounts.
+                                        </p>
                                     </div>
                                 </div>
-                                <div className="flex gap-4">
-                                    <div className="w-12 h-12 rounded-xl bg-yellow-500/20 flex items-center justify-center shrink-0">
+                                <div className="flex gap-4 group">
+                                    <div className="w-12 h-12 rounded-xl bg-yellow-500/20 flex items-center justify-center shrink-0 group-hover:bg-yellow-500/30 transition-colors">
                                         <GitFork className="w-6 h-6 text-yellow-400" />
                                     </div>
                                     <div>
-                                        <h4 className="text-white font-bold text-lg">Conditional Routing</h4>
-                                        <p className="text-slate-500 text-sm">Logic edges that decide the next step: Approve, Reject, or escalate to a Human-in-the-Loop.</p>
+                                        <h4 className="text-white font-bold text-lg mb-1">3. Intelligent Routing</h4>
+                                        <p className="text-slate-500 text-sm leading-relaxed">
+                                            Conditional edges decide the next step based on confidence scores. High confidence? <strong>Auto-Approve</strong>. Suspicious? <strong>Escalate to Human</strong>.
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -198,13 +206,20 @@ app = workflow.compile()`}
 
                 {/* --- Interactive Demo --- */}
                 <section id="demo" className="container mx-auto px-6">
-                    <div className="flex items-center gap-4 mb-12">
-                        <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
-                            <Receipt className="text-white w-6 h-6" />
+                    <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-12 border-b border-slate-800 pb-12">
+                        <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20 shrink-0">
+                            <Receipt className="text-white w-8 h-8" />
                         </div>
                         <div>
-                            <h2 className="text-3xl font-black uppercase tracking-tight text-white">Interactive Demo</h2>
-                            <p className="text-slate-400">Simulate real-world scenarios to see the agent in action.</p>
+                            <h2 className="text-3xl font-black uppercase tracking-tight text-white mb-2">Interactive Demo</h2>
+                            <p className="text-slate-400 max-w-2xl">
+                                Simulate real-world scenarios to see the agent in action. Watch how the data packet travels through the graph and how the agent handles different edge cases.
+                            </p>
+                            <div className="flex flex-wrap gap-4 mt-4 text-xs font-mono text-slate-500">
+                                <span className="flex items-center gap-1"><span className="w-2 h-2 bg-green-500 rounded-full"></span> Perfect Slip</span>
+                                <span className="flex items-center gap-1"><span className="w-2 h-2 bg-yellow-500 rounded-full"></span> Blurry Image (Low Confidence)</span>
+                                <span className="flex items-center gap-1"><span className="w-2 h-2 bg-red-500 rounded-full"></span> Duplicate Slip (Fraud)</span>
+                            </div>
                         </div>
                     </div>
 
