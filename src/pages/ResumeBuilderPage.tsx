@@ -4,11 +4,10 @@ import { ResumeEditor } from '../components/resume-builder/ResumeEditor';
 import { ResumePreview } from '../components/resume-builder/ResumePreview';
 import { parseLinkedInProfile } from '../components/resume-builder/geminiService';
 import { exportToWord } from '../components/resume-builder/wordExport';
-import { exportToPDF } from '../components/resume-builder/pdfExport';
 import { exportToHTML } from '../components/resume-builder/htmlExport';
 import { TemplateType, LayoutType, FontSize } from '../components/resume-builder/types';
 import type { ResumeData, FontFamily } from '../components/resume-builder/types';
-import { ArrowRight, Palette, Wand2, Layout, PanelLeft, PanelRight, RectangleVertical, Type, ZoomIn, ZoomOut, FileText, ArrowLeft, ChevronDown, Download, FileType, Code } from 'lucide-react';
+import { ArrowRight, Palette, Wand2, Layout, PanelLeft, PanelRight, RectangleVertical, Type, ZoomIn, ZoomOut, FileText, ArrowLeft, ChevronDown, Download, Code } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 
@@ -96,21 +95,6 @@ const ResumeBuilderPage: React.FC = () => {
         } catch (error) {
             console.error('Word export failed:', error);
             alert('Failed to export Word document. Please try again.');
-        } finally {
-            setIsExporting(false);
-        }
-    };
-
-    const handlePDFExport = async () => {
-        setIsExporting(true);
-        setShowExportMenu(false);
-        try {
-            const element = printRef.current?.querySelector('.resume-preview-container') as HTMLElement;
-            if (!element) throw new Error('Resume preview not found');
-            await exportToPDF(element, resumeData);
-        } catch (error) {
-            console.error('PDF export failed:', error);
-            alert('Failed to export PDF. Please try again.');
         } finally {
             setIsExporting(false);
         }
@@ -461,19 +445,6 @@ const ResumeBuilderPage: React.FC = () => {
                                                 {/* Dropdown menu */}
                                                 <div className="absolute right-0 mt-2 w-56 rounded-lg shadow-xl bg-zinc-800 border border-zinc-700 z-50 overflow-hidden">
                                                     <div className="py-1">
-                                                        <button
-                                                            onClick={handlePDFExport}
-                                                            className="w-full px-4 py-3 text-left text-sm hover:bg-zinc-700 transition-colors flex items-center gap-3 group"
-                                                        >
-                                                            <div className="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center group-hover:bg-red-500/20 transition-colors">
-                                                                <FileType size={16} className="text-red-400" />
-                                                            </div>
-                                                            <div>
-                                                                <div className="font-semibold text-white">PDF</div>
-                                                                <div className="text-xs text-gray-400">Best visual quality</div>
-                                                            </div>
-                                                        </button>
-                                                        
                                                         <button
                                                             onClick={handleHTMLExport}
                                                             className="w-full px-4 py-3 text-left text-sm hover:bg-zinc-700 transition-colors flex items-center gap-3 group"
