@@ -100,21 +100,30 @@ export default async function handler(req, res) {
         try {
             parsedData = JSON.parse(jsonStr);
         } catch (parseError) {
-            console.error("Failed to parse JSON response:", jsonStr);
-            throw new Error(`Invalid JSON response from AI: ${parseError.message}`);
+            console.error("Failed to parse JSON response from AI");
+            console.error("Response text (first 500 chars):", jsonStr.substring(0, 500));
+            console.error("Parse error:", parseError.message);
+            
+            // Try to return a helpful error with partial data if possible
+            throw new Error(`Invalid JSON response from AI. The AI might have returned non-JSON text. Error: ${parseError.message}`);
+        }
+
+        // Validate required fields
+        if (!parsedData.fullName || !parsedData.experience || !Array.isArray(parsedData.experience)) {
+            console.error("Invalid parsed data structure:", Object.keys(parsedData));
+            throw new Error('AI response missing required fields (fullName, experience)');
         }
 
         res.json(parsedData);
     } catch (error) {
         console.error("Error parsing resume data:", error);
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-        const errorStack = error instanceof Error ? error.stack : undefined;
         
-        // Return more detailed error in development
+        // Return user-friendly error
         res.status(500).json({ 
-            error: 'Failed to parse resume data', 
+            error: 'Failed to parse resume data',
             details: errorMessage,
-            ...(process.env.NODE_ENV === 'development' && { stack: errorStack })
+            suggestion: 'Please try pasting cleaner text or fill in the details manually.'
         });
     }
 }
