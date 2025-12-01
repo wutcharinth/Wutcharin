@@ -63,9 +63,11 @@ export default function ThaiElectionChatbot() {
                     parts: [{ text: m.text }]
                 }));
 
+            // Use relative URL in production, absolute in development
             const API_URL = import.meta.env.DEV ? 'http://localhost:3000' : '';
+            const apiEndpoint = `${API_URL}/api/chat`;
 
-            const response = await fetch(`${API_URL}/api/chat`, {
+            const response = await fetch(apiEndpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -77,7 +79,8 @@ export default function ThaiElectionChatbot() {
             });
 
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+                throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
             }
 
             const data = await response.json();
@@ -92,10 +95,13 @@ export default function ThaiElectionChatbot() {
             setMessages(prev => [...prev, aiMessage]);
         } catch (error) {
             console.error("Chat error:", error);
+            const errorMessage = error instanceof Error 
+                ? `I'm having trouble connecting to the server: ${error.message}. Please check if the server is running and try again.`
+                : "I'm having trouble connecting to the server. Please try again later.";
             setMessages(prev => [...prev, {
                 id: (Date.now() + 1).toString(),
                 role: 'ai',
-                text: "I'm having trouble connecting to the server. Please try again later.",
+                text: errorMessage,
                 timestamp: new Date()
             }]);
         } finally {
