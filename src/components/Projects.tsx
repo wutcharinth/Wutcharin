@@ -36,6 +36,14 @@ const projects = [
         featured: true
     },
     {
+        title: "SlipVerify AI",
+        role: "AI Engineer",
+        desc: "Autonomous revenue protection agent powered by LangGraph. Features cyclic state management, fraud detection, and human-in-the-loop verification.",
+        tags: ["LangGraph", "Python", "React", "Agentic AI"],
+        link: "/slip-verify",
+        featured: true
+    },
+    {
         title: "LocalGuide",
         role: "Full Stack Developer",
         desc: "Booking platform prototype connecting travelers with local guides. Complete auth system, profile management, and payments.",
