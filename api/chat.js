@@ -14,22 +14,31 @@ function loadElectionData() {
         const __dirname = dirname(__filename);
         try {
             // Try multiple paths for Vercel serverless functions
-            const paths = [
+            const electionPaths = [
                 join(__dirname, 'data/election-2023.json'), // api/data/
                 join(__dirname, '../src/data/election-2023.json'), // src/data/
-                join(__dirname, '../../src/data/election-2023.json'), // alternative path
+            ];
+            
+            const fullPaths = [
+                join(__dirname, 'data/full_election_results.json'), // api/data/
+                join(__dirname, '../src/data/full_election_results.json'), // src/data/
             ];
             
             let electionPath = null;
             let fullElectionPath = null;
             
-            for (const basePath of paths) {
-                const electionFile = basePath.replace('full_election_results.json', 'election-2023.json').replace('election-2023.json', 'election-2023.json');
-                const fullFile = basePath.replace('election-2023.json', 'full_election_results.json');
-                
-                if (fs.existsSync(electionFile) && fs.existsSync(fullFile)) {
-                    electionPath = electionFile;
-                    fullElectionPath = fullFile;
+            // Find election-2023.json
+            for (const path of electionPaths) {
+                if (fs.existsSync(path)) {
+                    electionPath = path;
+                    break;
+                }
+            }
+            
+            // Find full_election_results.json
+            for (const path of fullPaths) {
+                if (fs.existsSync(path)) {
+                    fullElectionPath = path;
                     break;
                 }
             }
@@ -38,15 +47,11 @@ function loadElectionData() {
                 electionDataRaw = JSON.parse(fs.readFileSync(electionPath, 'utf-8'));
                 fullElectionData = JSON.parse(fs.readFileSync(fullElectionPath, 'utf-8'));
             } else {
-                throw new Error('Election data files not found');
+                throw new Error(`Election data files not found. Tried: ${electionPaths.join(', ')}`);
             }
         } catch (error) {
             console.error('Error loading election data:', error);
             console.error('Current directory:', __dirname);
-            console.error('Tried paths:', [
-                join(__dirname, 'data/election-2023.json'),
-                join(__dirname, '../src/data/election-2023.json'),
-            ]);
             // Fallback empty data
             electionDataRaw = { parties: [], provinces: [] };
             fullElectionData = [];
