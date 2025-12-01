@@ -80,7 +80,6 @@ export default function ThaiElectionChatbot() {
                 2. "detailed_results": Candidate-level data for all 400 constituencies (Name, Party, Votes).
                 
                 TOOLS:
-                - **Google Search**: Use this to find information NOT in the dataset (e.g., specific candidate backgrounds, news events, policies).
                 - **Calculator**: Use this to perform mathematical calculations (sums, percentages, margins) to ensure accuracy.
                 
                 FORMATTING RULES:
@@ -94,12 +93,9 @@ export default function ThaiElectionChatbot() {
             `;
 
             const model = genAI.getGenerativeModel({
-                model: 'gemini-2.5-flash',
+                model: 'gemini-1.5-flash',
                 systemInstruction: systemInstruction,
                 tools: [
-                    {
-                        googleSearch: {}
-                    } as any,
                     {
                         functionDeclarations: [
                             {
