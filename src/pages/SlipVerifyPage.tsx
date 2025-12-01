@@ -17,6 +17,7 @@ import SlipVerifyDemo from '../components/slip-verify/SlipVerifyDemo';
 
 const SlipVerifyPage = () => {
     useEffect(() => {
+        window.scrollTo(0, 0);
         const lenis = new Lenis();
         function raf(time: number) {
             lenis.raf(time);
