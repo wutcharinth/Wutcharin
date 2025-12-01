@@ -1,12 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { X, Send, Sparkles, Loader2 } from 'lucide-react';
-import { GoogleGenerativeAI, SchemaType } from '@google/generative-ai';
 import { motion, AnimatePresence } from 'framer-motion';
-import electionDataRaw from '../data/election-2023.json';
-import fullElectionData from '../data/full_election_results.json';
 
 // Initialize Gemini
-const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || '');
+// Removed as we use backend API now
 
 interface Message {
     id: string;
@@ -58,67 +55,7 @@ export default function ThaiElectionChatbot() {
         setIsLoading(true);
 
         try {
-            // Prepare Context
-            const context = JSON.stringify({
-                summary: electionDataRaw,
-                detailed_results: fullElectionData
-            });
-
-            const systemInstruction = `
-                You are an expert AI Political Analyst specializing in the 2023 Thai General Election.
-                
-                CURRENT DATE: ${new Date().toLocaleDateString()}
-                
-                ROLE & TONE:
-                - You are a cinematic storyteller and a data scientist combined.
-                - Your insights must be **strictly data-driven** based ONLY on the provided JSON context or Google Search results.
-                - **NO HALLUCINATIONS**: If the answer is not in the data, explicitly state: "I do not have specific data regarding that inquiry in my current database."
-                - Do NOT assume details about candidates or policies not listed in the data.
-                
-                DATA SOURCES:
-                1. "summary": National and provincial level summaries (Parties, Seats, Turnout).
-                2. "detailed_results": Candidate-level data for all 400 constituencies (Name, Party, Votes).
-                
-                TOOLS:
-                - **Calculator**: Use this to perform mathematical calculations (sums, percentages, margins) to ensure accuracy.
-                
-                FORMATTING RULES:
-                - Use **bold** for Party Names, Key Figures, and Important Numbers.
-                - Use bullet points (•) for lists.
-                - Use newlines to separate paragraphs clearly.
-                - Keep the response visually clean and easy to read.
-                
-                DATA CONTEXT:
-                ${context}
-            `;
-
-            const model = genAI.getGenerativeModel({
-                model: 'gemini-2.5-flash',
-                systemInstruction: systemInstruction,
-                tools: [
-                    {
-                        functionDeclarations: [
-                            {
-                                name: "calculate",
-                                description: "Evaluates a mathematical expression to perform calculations.",
-                                parameters: {
-                                    type: SchemaType.OBJECT,
-                                    properties: {
-                                        expression: {
-                                            type: SchemaType.STRING,
-                                            description: "The mathematical expression to evaluate (e.g., '123 + 456', '(500 / 2000) * 100')."
-                                        }
-                                    },
-                                    required: ["expression"]
-                                }
-                            }
-                        ]
-                    }
-                ]
-            });
-
-            // Convert messages to history format
-            // We filter out the 'init' message if it's just the welcome text, or map it as model role.
+            // Convert messages to history format for the backend
             const history = messages
                 .filter(m => m.id !== 'init')
                 .map(m => ({
@@ -126,56 +63,29 @@ export default function ThaiElectionChatbot() {
                     parts: [{ text: m.text }]
                 }));
 
-            const chat = model.startChat({
-                history: history
+            const API_URL = import.meta.env.DEV ? 'http://localhost:3000' : '';
+
+            const response = await fetch(`${API_URL}/api/chat`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: userMessage.text,
+                    history: history
+                }),
             });
 
-            let result = await chat.sendMessage(userMessage.text);
-            let response = await result.response;
-            let functionCalls = response.functionCalls();
-
-            // Handle Function Calls (Calculator)
-            while (functionCalls && functionCalls.length > 0) {
-                const call = functionCalls[0]; // Handle one call at a time for simplicity
-                if (call.name === 'calculate') {
-                    const { expression } = call.args as { expression: string };
-                    console.log("Calculating:", expression);
-
-                    let calculationResult;
-                    try {
-                        // Safe evaluation: only allow numbers and math operators
-                        if (/^[0-9+\-*/().\s]+$/.test(expression)) {
-                            // eslint-disable-next-line no-new-func
-                            calculationResult = new Function('return ' + expression)();
-                        } else {
-                            calculationResult = "Error: Invalid characters in expression.";
-                        }
-                    } catch (e) {
-                        calculationResult = "Error: Calculation failed.";
-                    }
-
-                    // Send result back to model
-                    result = await chat.sendMessage([
-                        {
-                            functionResponse: {
-                                name: 'calculate',
-                                response: { result: calculationResult }
-                            }
-                        }
-                    ]);
-                    response = await result.response;
-                    functionCalls = response.functionCalls();
-                } else {
-                    break; // Unknown function
-                }
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
 
-            const text = response.text();
+            const data = await response.json();
 
             const aiMessage: Message = {
                 id: (Date.now() + 1).toString(),
                 role: 'ai',
-                text: text,
+                text: data.text,
                 timestamp: new Date()
             };
 
@@ -185,7 +95,7 @@ export default function ThaiElectionChatbot() {
             setMessages(prev => [...prev, {
                 id: (Date.now() + 1).toString(),
                 role: 'ai',
-                text: "I'm having trouble analyzing the data right now. Please try again.",
+                text: "I'm having trouble connecting to the server. Please try again later.",
                 timestamp: new Date()
             }]);
         } finally {
