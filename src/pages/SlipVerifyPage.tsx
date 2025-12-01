@@ -10,7 +10,6 @@ import {
     Zap,
     Lock,
     Cpu,
-    CheckCircle,
     ArrowDown
 } from 'lucide-react';
 import Lenis from 'lenis';
