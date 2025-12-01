@@ -12,6 +12,46 @@ const projects = [
         featured: true
     },
     {
+        title: "Enterprise Collections AI",
+        role: "AI Engineer",
+        desc: "Autonomous dispute agent for VCC overcharges. Features cognitive flow, strategy engine, and auto-rebuttal loops.",
+        tags: ["LangGraph", "React", "Agentic AI", "FinTech"],
+        link: "/collections",
+        featured: true
+    },
+    {
+        title: "SlipVerify AI",
+        role: "AI Engineer",
+        desc: "Intelligent expense verification system using ChainGraph. Features multi-agent orchestration for fraud detection and OCR.",
+        tags: ["LangGraph", "React", "Agentic AI", "OCR"],
+        link: "/slip-verify",
+        featured: true
+    },
+    {
+        title: "Thai Election Chatbot",
+        role: "AI Engineer",
+        desc: "RAG-based chatbot for Thai election data. Uses vector search and LLMs to answer complex political queries.",
+        tags: ["RAG", "Vector DB", "LLM", "React"],
+        link: "/thai-election",
+        featured: true
+    },
+    {
+        title: "Gemini OCR",
+        role: "Frontend Developer",
+        desc: "High-accuracy OCR tool powered by Google's Gemini Vision Pro. Extracts structured data from complex documents.",
+        tags: ["Gemini API", "React", "OCR", "AI"],
+        link: "/gemini-ocr",
+        featured: false
+    },
+    {
+        title: "AI Resume Builder",
+        role: "Full Stack Developer",
+        desc: "Interactive resume builder with AI-powered content suggestions and real-time preview.",
+        tags: ["React", "OpenAI API", "Tailwind CSS"],
+        link: "/resume-builder",
+        featured: false
+    },
+    {
         title: "SplitBill AI",
         role: "Creator & Developer",
         desc: "Built end-to-end in 7 days. Features instant receipt scanning with Gemini AI, automatic item parsing, and smart assignment.",
@@ -19,38 +59,6 @@ const projects = [
         link: "https://splitbill-ai.com/",
         featured: true
     },
-    {
-        title: "Gemini OCR Extraction",
-        role: "AI Engineer",
-        desc: "Next-generation OCR system powered by Google's Gemini 2.5 Flash. Features multimodal understanding, handwriting recognition, and structured JSON output.",
-        tags: ["Gemini AI", "Node.js", "React", "Computer Vision"],
-        link: "/gemini-ocr",
-        featured: true
-    },
-    {
-        title: "AI Resume Builder",
-        role: "Full Stack Developer",
-        desc: "AI-powered resume builder with real-time preview, smart templates, and instant PDF export. Built for modern job seekers.",
-        tags: ["React", "OpenAI", "Tailwind", "PDF Generation"],
-        link: "/resume-builder",
-        featured: true
-    },
-    {
-        title: "SlipVerify AI",
-        role: "AI Engineer",
-        desc: "Autonomous revenue protection agent powered by LangGraph. Features cyclic state management, fraud detection, and human-in-the-loop verification.",
-        tags: ["LangGraph", "Python", "React", "Agentic AI"],
-        link: "/slip-verify",
-        featured: true
-    },
-    {
-        title: "Enterprise Collections AI",
-        role: "AI Engineer",
-        desc: "Autonomous dispute agent for VCC overcharges. Features cognitive flow, strategy engine, and auto-rebuttal loops.",
-        tags: ["LangGraph", "React", "Agentic AI", "FinTech"],
-        link: "/collections",
-        featured: true
-    }
 ];
 
 export default function Projects() {
