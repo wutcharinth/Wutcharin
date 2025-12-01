@@ -52,9 +52,6 @@ const TreeNode = ({ node, depth = 0 }: { node: TreeNodeData; depth?: number }) =
     
     const indentPx = depth * 24;
     
-    // Calculate percentage of parent (for visual bar)
-    const parentValue = node.children?.reduce((sum, c) => sum + c.value, 0) || node.value;
-    
     return (
         <div className="select-none">
             <motion.div
@@ -138,7 +135,7 @@ const TreeNode = ({ node, depth = 0 }: { node: TreeNodeData; depth?: number }) =
                             className="border-l-2 border-gray-800 ml-6"
                             style={{ marginLeft: `${indentPx + 14}px` }}
                         >
-                            {node.children!.map((child, idx) => (
+                            {node.children!.map((child) => (
                                 <TreeNode key={child.id} node={child} depth={depth + 1} />
                             ))}
                         </div>
@@ -174,23 +171,26 @@ export const SeatDecompositionTree: React.FC<SeatDecompositionTreeProps> = ({ pa
                         // Get individual districts won by this party
                         const districtNodes: TreeNodeData[] = province.districts
                             .filter(d => d.party === party.name)
-                            .map(d => ({
-                                id: `${party.name}-${province.province}-d${d.id}`,
-                                label: `District ${d.id}`,
-                                label_th: d.winner_th,
-                                value: d.votes,
-                                color: party.color,
-                                level: 4,
-                                type: 'district' as const,
-                                children: d.top5.slice(0, 3).map((c, idx) => ({
+                            .map(d => {
+                                const candidateChildren: TreeNodeData[] = d.top5.slice(0, 3).map((c, idx) => ({
                                     id: `${party.name}-${province.province}-d${d.id}-c${idx}`,
                                     label: c.name,
                                     value: c.votes,
                                     color: c.color,
                                     level: 5,
                                     type: 'candidate' as const
-                                }))
-                            }));
+                                }));
+                                return {
+                                    id: `${party.name}-${province.province}-d${d.id}`,
+                                    label: `District ${d.id}`,
+                                    label_th: d.winner_th,
+                                    value: d.votes,
+                                    color: party.color,
+                                    level: 4,
+                                    type: 'district' as const,
+                                    children: candidateChildren
+                                };
+                            });
                         
                         return {
                             id: `${party.name}-${province.province}`,
@@ -198,11 +198,11 @@ export const SeatDecompositionTree: React.FC<SeatDecompositionTreeProps> = ({ pa
                             value: partySeatData.seats,
                             color: party.color,
                             level: 3,
-                            type: 'province' as const,
+                            type: 'province',
                             children: districtNodes.length > 0 ? districtNodes : undefined
-                        };
+                        } as TreeNodeData;
                     })
-                    .filter((n): n is TreeNodeData => n !== null);
+                    .filter((n): n is NonNullable<typeof n> => n !== null);
                 
                 const regionSeats = provinceNodes.reduce((sum, p) => sum + p.value, 0);
                 if (regionSeats === 0) return null;
@@ -213,10 +213,10 @@ export const SeatDecompositionTree: React.FC<SeatDecompositionTreeProps> = ({ pa
                     value: regionSeats,
                     color: party.color,
                     level: 2,
-                    type: 'region' as const,
+                    type: 'region',
                     children: provinceNodes
-                };
-            }).filter((n): n is TreeNodeData => n !== null);
+                } as TreeNodeData;
+            }).filter((n): n is NonNullable<typeof n> => n !== null);
             
             // Build the party tree
             const partyTree: TreeNodeData = {
@@ -295,8 +295,8 @@ export const SeatDecompositionTree: React.FC<SeatDecompositionTreeProps> = ({ pa
                             style={{ 
                                 backgroundColor: selectedParty === party.name ? party.color : undefined,
                                 color: selectedParty === party.name ? 'white' : party.color,
-                                ringColor: party.color
-                            }}
+                                '--tw-ring-color': party.color
+                            } as React.CSSProperties}
                         >
                             {party.logo && (
                                 <img src={party.logo} alt="" className="w-4 h-4 object-contain" />
