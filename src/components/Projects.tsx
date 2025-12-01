@@ -4,14 +4,6 @@ import { Link } from 'react-router-dom';
 
 const projects = [
     {
-        title: "Thai Election Result 2566",
-        role: "Data Artist",
-        desc: "Interactive visualization of the 2023 Thai General Election. Features AI-powered insights and cinematic storytelling.",
-        tags: ["React", "Gemini AI", "Data Viz", "Creative Coding"],
-        link: "/thai-election",
-        featured: true
-    },
-    {
         title: "Enterprise Collections AI",
         role: "AI Engineer",
         desc: "Autonomous dispute agent for VCC overcharges. Features cognitive flow, strategy engine, and auto-rebuttal loops.",
@@ -58,7 +50,7 @@ const projects = [
         tags: ["Gemini AI", "React", "Firebase", "Google AI Studio"],
         link: "https://splitbill-ai.com/",
         featured: true
-    },
+    }
 ];
 
 export default function Projects() {
