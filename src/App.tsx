@@ -5,6 +5,7 @@ import GeminiOCRPage from './pages/GeminiOCRPage';
 import ThaiElectionPage from './pages/ThaiElectionPage';
 import ResumeBuilderPage from './pages/ResumeBuilderPage';
 import SlipVerifyPage from './pages/SlipVerifyPage';
+import CollectionsPage from './pages/CollectionsPage';
 
 // Component to scroll to top on route change
 const ScrollToTop = () => {
@@ -27,6 +28,7 @@ function App() {
         <Route path="/thai-election" element={<ThaiElectionPage />} />
         <Route path="/resume-builder" element={<ResumeBuilderPage />} />
         <Route path="/slip-verify" element={<SlipVerifyPage />} />
+        <Route path="/collections" element={<CollectionsPage />} />
       </Routes>
     </Router>
   );

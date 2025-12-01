@@ -44,12 +44,12 @@ const projects = [
         featured: true
     },
     {
-        title: "LocalGuide",
-        role: "Full Stack Developer",
-        desc: "Booking platform prototype connecting travelers with local guides. Complete auth system, profile management, and payments.",
-        tags: ["React", "Express.js", "PostgreSQL", "Railway"],
-        link: "https://web-production-c4714.up.railway.app",
-        featured: false
+        title: "Enterprise Collections AI",
+        role: "AI Engineer",
+        desc: "Autonomous dispute agent for VCC overcharges. Features cognitive flow, strategy engine, and auto-rebuttal loops.",
+        tags: ["LangGraph", "React", "Agentic AI", "FinTech"],
+        link: "/collections",
+        featured: true
     }
 ];
 
