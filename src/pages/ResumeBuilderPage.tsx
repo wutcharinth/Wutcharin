@@ -99,7 +99,7 @@ const ResumeBuilderPage: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#050505] pb-20 font-sans text-white print:bg-white print:pb-0 print:text-black">
+        <div className="min-h-screen bg-[#050505] pb-20 font-sans text-white print:!min-h-0 print:!h-auto print:!bg-white print:!pb-0 print:!text-black print:!p-0 print:!m-0">
             <SEO
                 title="AI Resume Builder"
                 description="Create a professional, ATS-optimized resume in seconds using AI. Import from LinkedIn or paste your text to get started."
@@ -132,7 +132,7 @@ const ResumeBuilderPage: React.FC = () => {
                 )}
             </nav>
 
-            <main className="w-full">
+            <main className="w-full print:!p-0 print:!m-0">
                 {step === 'upload' ? (
 
                     <>
@@ -255,7 +255,7 @@ const ResumeBuilderPage: React.FC = () => {
 
                         {/* PREVIEW TAB */}
                         {activeTab === 'preview' && (
-                            <div className="animate-in fade-in zoom-in-95 duration-200 flex flex-col items-center">
+                            <div className="animate-in fade-in zoom-in-95 duration-200 flex flex-col items-center print:!block print:!p-0 print:!m-0">
 
                                 {/* TOOLBAR */}
                                 <div className="w-full max-w-5xl mb-6 bg-zinc-900 rounded-xl p-4 border border-zinc-800 shadow-sm flex flex-col xl:flex-row gap-6 items-start xl:items-center justify-between print:hidden sticky top-20 z-30">
@@ -379,9 +379,9 @@ const ResumeBuilderPage: React.FC = () => {
                                     </Button>
                                 </div>
 
-                                {/* Resume Page Container - Ref updated to wrap specific resume container */}
-                                <div className="w-full flex justify-center pb-20 overflow-x-auto print:pb-0 print:block print:w-full print:overflow-visible">
-                                    <div ref={printRef} className="origin-top transition-transform duration-300 print:transform-none print:w-full print:m-0">
+                                {/* Resume Page Container - Print styles ensure full page width and no transform */}
+                                <div className="w-full flex justify-center pb-20 overflow-x-auto print:!p-0 print:!m-0 print:!block print:!w-full print:!overflow-visible print:!bg-white">
+                                    <div ref={printRef} className="origin-top transition-transform duration-300 print:!transform-none print:!w-full print:!m-0 print:!p-0">
                                         {/* Note: ResumePreview now handles the container style (white pages + gray gaps) */}
                                         <ResumePreview
                                             key={fontSize} // Force re-render on font size change

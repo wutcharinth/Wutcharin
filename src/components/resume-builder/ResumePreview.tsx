@@ -262,80 +262,93 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
             <>
                 <style>{`
                     @media print {
+                        /* Page setup */
                         @page {
-                            margin: 15mm 0mm 5mm 0mm !important; /* Top margin for 2nd+ pages, small bottom, no side margins */
+                            margin: 10mm 10mm 10mm 10mm !important;
                             size: A4;
-                            /* Remove browser headers and footers */
-                            marks: none;
                         }
                         @page :first {
-                            margin: 0mm 0mm 5mm 0mm !important; /* No top margin on first page */
+                            margin: 5mm 10mm 10mm 10mm !important;
                         }
+                        
+                        /* Hide everything except resume */
+                        body * {
+                            visibility: hidden;
+                        }
+                        .resume-preview-container,
+                        .resume-preview-container * {
+                            visibility: visible !important;
+                        }
+                        
+                        /* Reset body and html */
                         html, body {
                             background: white !important;
-                            color: black !important;
-                            width: 100% !important;
                             margin: 0 !important;
                             padding: 0 !important;
+                            width: 100% !important;
+                            height: auto !important;
                             overflow: visible !important;
                         }
-                        /* Target the root app container if needed */
+                        
                         #root {
                             width: 100% !important;
+                            height: auto !important;
                             background: white !important;
+                            padding: 0 !important;
+                            margin: 0 !important;
                         }
+                        
+                        /* Critical: Reset the resume container for print */
                         .resume-preview-container {
+                            position: absolute !important;
+                            left: 0 !important;
+                            top: 0 !important;
                             width: 100% !important;
-                            max-width: none !important;
-                            min-height: auto !important;
+                            max-width: 100% !important;
+                            min-height: 0 !important;
                             height: auto !important;
                             background: white !important;
                             background-image: none !important;
                             box-shadow: none !important;
                             margin: 0 !important;
                             padding: 0 !important;
+                            padding-bottom: 0 !important;
                             border: none !important;
                             overflow: visible !important;
                             display: block !important;
                         }
-                        /* Adjust line height for print to be more compact */
+                        
+                        /* Compact line height */
                         .resume-preview-container p, 
                         .resume-preview-container div, 
                         .resume-preview-container span, 
                         .resume-preview-container li {
-                            line-height: 1.3 !important;
+                            line-height: 1.35 !important;
                         }
                         
-                        /* Ensure text is black for readability unless specific creative theme */
+                        /* Preserve colors */
                         .resume-preview-container * {
                             -webkit-print-color-adjust: exact !important;
                             print-color-adjust: exact !important;
                         }
                         
-                        /* Hide the gap simulation */
-                        .resume-preview-container::before,
-                        .resume-preview-container::after {
-                            display: none !important;
+                        /* Header styling for print */
+                        .resume-preview-container > header {
+                            padding: 0.5rem 1.5rem !important;
+                            margin: 0 !important;
                         }
                         
-                        /* Reduce top padding on header for print (first page) */
-                        .resume-preview-container > header:first-child {
-                            padding-top: 0.5rem !important;
-                            margin-top: 0 !important;
-                            margin-bottom: 1rem !important;
+                        /* Content area */
+                        .resume-preview-container > div:not(header) {
+                            padding-left: 1.5rem !important;
+                            padding-right: 1.5rem !important;
                         }
                         
-                        /* Add top margin for content starting on 2nd page */
-                        .resume-preview-container > *:not(header) {
+                        /* Page break control */
+                        .resume-preview-container section {
                             page-break-inside: avoid;
                         }
-                        
-                        /* Ensure no footer text appears */
-                        body::after {
-                            display: none !important;
-                        }
                     }
-                    
                 `}</style>
                 <div className={`resume-preview-container mx-auto flex flex-col ${typography}`} style={a4ContainerStyles}>
                     <Header />
