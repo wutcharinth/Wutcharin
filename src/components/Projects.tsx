@@ -4,6 +4,14 @@ import { Link } from 'react-router-dom';
 
 const projects = [
     {
+        title: "Thai Election 2566",
+        role: "Data Artist & AI Engineer",
+        desc: "Interactive data storytelling with an integrated RAG-based AI chatbot. Visualizes 2023 election results with deep political insights.",
+        tags: ["Data Viz", "RAG", "Gemini AI", "React"],
+        link: "/thai-election",
+        featured: true
+    },
+    {
         title: "Enterprise Collections AI",
         role: "AI Engineer",
         desc: "Autonomous dispute agent for VCC overcharges. Features cognitive flow, strategy engine, and auto-rebuttal loops.",
@@ -20,14 +28,6 @@ const projects = [
         featured: true
     },
     {
-        title: "Thai Election Chatbot",
-        role: "AI Engineer",
-        desc: "RAG-based chatbot for Thai election data. Uses vector search and LLMs to answer complex political queries.",
-        tags: ["RAG", "Vector DB", "LLM", "React"],
-        link: "/thai-election",
-        featured: true
-    },
-    {
         title: "Gemini OCR",
         role: "Frontend Developer",
         desc: "High-accuracy OCR tool powered by Google's Gemini Vision Pro. Extracts structured data from complex documents.",
@@ -39,15 +39,15 @@ const projects = [
         title: "AI Resume Builder",
         role: "Full Stack Developer",
         desc: "Interactive resume builder with AI-powered content suggestions and real-time preview.",
-        tags: ["React", "OpenAI API", "Tailwind CSS"],
+        tags: ["React", "Gemini AI", "Tailwind CSS"],
         link: "/resume-builder",
         featured: false
     },
     {
         title: "SplitBill AI",
         role: "Creator & Developer",
-        desc: "Built end-to-end in 7 days. Features instant receipt scanning with Gemini AI, automatic item parsing, and smart assignment.",
-        tags: ["Gemini AI", "React", "Firebase", "Google AI Studio"],
+        desc: "Built end-to-end. Features instant receipt scanning with Gemini AI, automatic item parsing, and smart assignment.",
+        tags: ["Gemini AI", "React", "Firebase"],
         link: "https://splitbill-ai.com/",
         featured: true
     }
@@ -65,7 +65,7 @@ export default function Projects() {
                 >
                     <h2 className="text-4xl font-bold mb-4 uppercase tracking-tighter text-text">Featured <span className="text-inverse-text bg-inverse px-2">Projects</span></h2>
                     <p className="text-text font-bold max-w-2xl mx-auto border-2 border-border bg-bg inline-block px-4 py-2 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
-                        Building rapid AI prototypes and scalable intelligent solutions.
+                        Building rapid AI prototypes (often within a day) and scalable intelligent solutions.
                     </p>
                 </motion.div>
 
