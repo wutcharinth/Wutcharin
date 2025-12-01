@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { TemplateType, LayoutType, FontSize } from './types';
 import type { ResumeData, FontFamily } from './types';
 import { Mail, Phone, Linkedin, Globe } from 'lucide-react';
@@ -20,30 +20,31 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
     fontFamily,
     fontSize
 }) => {
+    const contentRef = useRef<HTMLDivElement>(null);
+    const [pageCount, setPageCount] = useState(1);
 
     // -- A4 Dimensions & Visuals --
     const PAGE_HEIGHT_MM = 297;
-    const GAP_MM = 10;
+    const PAGE_HEIGHT_PX = PAGE_HEIGHT_MM * 3.7795275591; // mm to px conversion (96dpi)
+    const GAP_MM = 8;
+
+    // Calculate page count based on content height
+    useEffect(() => {
+        if (contentRef.current) {
+            const height = contentRef.current.scrollHeight;
+            const pages = Math.ceil(height / PAGE_HEIGHT_PX);
+            setPageCount(Math.max(1, pages));
+        }
+    }, [data, layout, template, fontSize]);
 
     const a4ContainerStyles: React.CSSProperties = {
         width: '210mm',
-        minHeight: '297mm',
+        minHeight: `${PAGE_HEIGHT_MM}mm`,
         fontFamily: `"${fontFamily}", sans-serif`,
-
-        // Multi-page simulation
-        // Creates a repeating pattern: White Page (297mm) -> Gray Gap (10mm) -> White Page...
-        backgroundColor: '#e5e7eb', // The "Gap" color
-        backgroundImage: `linear-gradient(to bottom, white ${PAGE_HEIGHT_MM}mm, transparent ${PAGE_HEIGHT_MM}mm)`,
-        backgroundSize: `100% ${PAGE_HEIGHT_MM + GAP_MM}mm`,
-        backgroundRepeat: 'repeat-y',
-
-        // Default Shadow for the "Paper" look (applied to the whole long strip)
+        position: 'relative',
+        backgroundColor: 'white',
         boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
-
-        // Important: Ensure we don't accidentally clip content, but let it flow over the gaps visually
-        // so users see where the break is.
         overflow: 'visible',
-        paddingBottom: `${GAP_MM}mm` // Ensure last page has a gap visualized if needed
     };
 
     // -- Dynamic Font Sizing --
@@ -253,7 +254,45 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
         ) : null
     );
 
-    // -- LAYOUT RENDERING --
+    // -- PAGE BREAK INDICATORS --
+    const PageBreakIndicators = () => {
+        if (pageCount <= 1) return null;
+        
+        return (
+            <>
+                {Array.from({ length: pageCount - 1 }, (_, i) => (
+                    <div
+                        key={i}
+                        className="absolute left-0 right-0 pointer-events-none print:hidden"
+                        style={{
+                            top: `${(i + 1) * PAGE_HEIGHT_MM}mm`,
+                            height: `${GAP_MM}mm`,
+                            background: 'linear-gradient(to bottom, rgba(0,0,0,0.08), rgba(0,0,0,0.02), rgba(0,0,0,0.08))',
+                            borderTop: '1px dashed rgba(0,0,0,0.2)',
+                            borderBottom: '1px dashed rgba(0,0,0,0.2)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            zIndex: 10,
+                        }}
+                    >
+                        <span className="text-[10px] text-gray-500 bg-white/80 px-2 py-0.5 rounded">
+                            Page Break
+                        </span>
+                    </div>
+                ))}
+            </>
+        );
+    };
+
+    // -- PAGE NUMBER INDICATOR --
+    const PageIndicator = () => (
+        <div className="absolute -right-16 top-4 print:hidden">
+            <div className="bg-gray-800 text-white text-xs px-2 py-1 rounded shadow-lg">
+                {pageCount} page{pageCount > 1 ? 's' : ''}
+            </div>
+        </div>
+    );
 
     // -- LAYOUT RENDERING --
 
@@ -278,6 +317,11 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
                         .resume-preview-container,
                         .resume-preview-container * {
                             visibility: visible !important;
+                        }
+                        
+                        /* Hide page break indicators in print */
+                        .page-break-indicator {
+                            display: none !important;
                         }
                         
                         /* Reset body and html */
@@ -350,7 +394,9 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
                         }
                     }
                 `}</style>
-                <div className={`resume-preview-container mx-auto flex flex-col ${typography}`} style={a4ContainerStyles}>
+                <div className={`resume-preview-container mx-auto flex flex-col ${typography}`} style={a4ContainerStyles} ref={contentRef}>
+                    <PageBreakIndicators />
+                    <PageIndicator />
                     <Header />
 
                     {layout === LayoutType.SINGLE_COLUMN && (
