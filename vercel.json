@@ -1,18 +1,6 @@
 {
     "rewrites": [
         {
-            "source": "/api/chat",
-            "destination": "/api/chat"
-        },
-        {
-            "source": "/api/resume/parse",
-            "destination": "/api/resume/parse"
-        },
-        {
-            "source": "/api/resume/improve",
-            "destination": "/api/resume/improve"
-        },
-        {
             "source": "/(.*)",
             "destination": "/index.html"
         }
