@@ -293,7 +293,7 @@ function buildHeader(
                                 }),
                                 // Contact info with icons (using Unicode symbols)
                                 new Paragraph({
-                                    children: buildContactRuns(data, style, font),
+                                    children: buildContactRuns(data, style, font, accentColor),
                                     alignment: style.headerAlignment,
                                 }),
                             ],
@@ -368,43 +368,70 @@ function buildHeader(
     return content;
 }
 
-// Build contact info with icons
-function buildContactRuns(data: ResumeData, style: StyleConfig, font: string): TextRun[] {
+// Build contact info with icons (icons use accent color)
+function buildContactRuns(data: ResumeData, style: StyleConfig, font: string, accentColor: string): TextRun[] {
     const runs: TextRun[] = [];
     const separator = '    ';
+    const iconColor = style.headerBgColor ? style.headerTextColor : accentColor.replace('#', '');
+    const textColor = style.headerTextColor;
     
     if (data.linkedinUrl) {
         runs.push(new TextRun({
-            text: `in  ${data.linkedinUrl.replace(/^https?:\/\//, '')}`,
+            text: `in `,
             size: style.smallSize,
-            color: style.headerTextColor,
+            color: iconColor,
+            font: 'Arial',
+            bold: true,
+        }));
+        runs.push(new TextRun({
+            text: data.linkedinUrl.replace(/^https?:\/\//, ''),
+            size: style.smallSize,
+            color: textColor,
             font: font,
         }));
     }
     if (data.portfolioUrl) {
         if (runs.length > 0) runs.push(new TextRun({ text: separator, size: style.smallSize }));
         runs.push(new TextRun({
-            text: `⊕  ${data.portfolioUrl.replace(/^https?:\/\//, '')}`,
+            text: `⊕ `,
             size: style.smallSize,
-            color: style.headerTextColor,
+            color: iconColor,
+            font: 'Arial',
+        }));
+        runs.push(new TextRun({
+            text: data.portfolioUrl.replace(/^https?:\/\//, ''),
+            size: style.smallSize,
+            color: textColor,
             font: font,
         }));
     }
     if (data.email) {
         if (runs.length > 0) runs.push(new TextRun({ text: separator, size: style.smallSize }));
         runs.push(new TextRun({
-            text: `✉  ${data.email}`,
+            text: `✉ `,
             size: style.smallSize,
-            color: style.headerTextColor,
+            color: iconColor,
+            font: 'Arial',
+        }));
+        runs.push(new TextRun({
+            text: data.email,
+            size: style.smallSize,
+            color: textColor,
             font: font,
         }));
     }
     if (data.phone) {
         if (runs.length > 0) runs.push(new TextRun({ text: separator, size: style.smallSize }));
         runs.push(new TextRun({
-            text: `☎  ${data.phone}`,
+            text: `☎ `,
             size: style.smallSize,
-            color: style.headerTextColor,
+            color: iconColor,
+            font: 'Arial',
+        }));
+        runs.push(new TextRun({
+            text: data.phone,
+            size: style.smallSize,
+            color: textColor,
             font: font,
         }));
     }
@@ -522,7 +549,7 @@ function buildEducation(
     return content;
 }
 
-// Build skills section with optional box styling
+// Build skills section with bubble/pill styling
 function buildSkills(
     data: ResumeData, 
     accentColor: string, 
@@ -535,40 +562,83 @@ function buildSkills(
         content.push(createSectionTitle('Skills', accentColor, font, style));
         
         if (style.skillsAsBoxes) {
-            // Create skills as a wrapped table of boxes
-            const skillsPerRow = 2;
+            // Create skills as inline bubble/pill style using a flow table
+            // Each skill gets its own row with a pill-like appearance
             const skillRows: TableRow[] = [];
             
-            for (let i = 0; i < data.skills.length; i += skillsPerRow) {
-                const rowSkills = data.skills.slice(i, i + skillsPerRow);
-                const cells: TableCell[] = rowSkills.map(skill => 
+            // Group skills in rows of 2 for better layout
+            for (let i = 0; i < data.skills.length; i += 2) {
+                const skill1 = data.skills[i];
+                const skill2 = data.skills[i + 1];
+                
+                const cells: TableCell[] = [
+                    // First skill pill
                     new TableCell({
-                        width: { size: Math.floor(100 / skillsPerRow), type: WidthType.PERCENTAGE },
+                        width: { size: 48, type: WidthType.PERCENTAGE },
                         borders: {
-                            top: { style: BorderStyle.SINGLE, size: 6, color: 'E5E7EB' },
-                            bottom: { style: BorderStyle.SINGLE, size: 6, color: 'E5E7EB' },
-                            left: { style: BorderStyle.SINGLE, size: 6, color: 'E5E7EB' },
-                            right: { style: BorderStyle.SINGLE, size: 6, color: 'E5E7EB' },
-                        },
-                        shading: { fill: 'F9FAFB', type: ShadingType.CLEAR },
-                        margins: {
-                            top: convertInchesToTwip(0.05),
-                            bottom: convertInchesToTwip(0.05),
-                            left: convertInchesToTwip(0.1),
-                            right: convertInchesToTwip(0.1),
+                            top: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+                            bottom: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+                            left: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+                            right: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
                         },
                         children: [
                             new Paragraph({
-                                children: [new TextRun({ text: skill.name, size: style.bodySize - 2, font })],
+                                children: [
+                                    new TextRun({ 
+                                        text: `  ${skill1.name}  `, 
+                                        size: style.bodySize - 2, 
+                                        font,
+                                        shading: { fill: 'F3F4F6', type: ShadingType.CLEAR },
+                                    }),
+                                ],
+                                spacing: { after: 80 },
+                                shading: { fill: 'F3F4F6', type: ShadingType.CLEAR },
                             }),
                         ],
-                    })
-                );
+                        margins: {
+                            top: convertInchesToTwip(0.03),
+                            bottom: convertInchesToTwip(0.03),
+                            left: convertInchesToTwip(0.02),
+                            right: convertInchesToTwip(0.05),
+                        },
+                    }),
+                ];
                 
-                // Fill empty cells if needed
-                while (cells.length < skillsPerRow) {
+                // Second skill pill (if exists)
+                if (skill2) {
                     cells.push(new TableCell({
-                        width: { size: Math.floor(100 / skillsPerRow), type: WidthType.PERCENTAGE },
+                        width: { size: 48, type: WidthType.PERCENTAGE },
+                        borders: {
+                            top: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+                            bottom: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+                            left: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+                            right: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+                        },
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun({ 
+                                        text: `  ${skill2.name}  `, 
+                                        size: style.bodySize - 2, 
+                                        font,
+                                        shading: { fill: 'F3F4F6', type: ShadingType.CLEAR },
+                                    }),
+                                ],
+                                spacing: { after: 80 },
+                                shading: { fill: 'F3F4F6', type: ShadingType.CLEAR },
+                            }),
+                        ],
+                        margins: {
+                            top: convertInchesToTwip(0.03),
+                            bottom: convertInchesToTwip(0.03),
+                            left: convertInchesToTwip(0.05),
+                            right: convertInchesToTwip(0.02),
+                        },
+                    }));
+                } else {
+                    // Empty cell
+                    cells.push(new TableCell({
+                        width: { size: 48, type: WidthType.PERCENTAGE },
                         borders: {
                             top: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
                             bottom: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
@@ -670,16 +740,11 @@ export async function exportToWord(
             right: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
         };
 
-        // Add separator line between columns for some styles
-        const leftBorder = layout === LayoutType.TWO_COLUMN_LEFT ? {
-            ...noBorder,
-            right: { style: BorderStyle.SINGLE, size: 6, color: 'E5E7EB' },
-        } : noBorder;
-
-        const rightBorder = layout === LayoutType.TWO_COLUMN_RIGHT ? {
-            ...noBorder,
-            left: { style: BorderStyle.SINGLE, size: 6, color: 'E5E7EB' },
-        } : noBorder;
+        // Sidebar gets subtle light gray background
+        const sidebarShading = { fill: 'F9FAFB', type: ShadingType.CLEAR };
+        
+        // Determine which column is the sidebar
+        const isSidebarLeft = layout === LayoutType.TWO_COLUMN_LEFT;
 
         const table = new Table({
             width: { size: 100, type: WidthType.PERCENTAGE },
@@ -691,11 +756,12 @@ export async function exportToWord(
                             width: { size: leftWidth, type: WidthType.PERCENTAGE },
                             children: leftContent.length > 0 ? leftContent : [new Paragraph({})],
                             verticalAlign: VerticalAlign.TOP,
-                            borders: leftBorder,
+                            borders: noBorder,
+                            shading: isSidebarLeft ? sidebarShading : undefined,
                             margins: {
-                                top: convertInchesToTwip(0),
-                                bottom: convertInchesToTwip(0),
-                                left: convertInchesToTwip(0),
+                                top: convertInchesToTwip(0.15),
+                                bottom: convertInchesToTwip(0.15),
+                                left: convertInchesToTwip(0.15),
                                 right: convertInchesToTwip(0.15),
                             },
                         }),
@@ -703,12 +769,13 @@ export async function exportToWord(
                             width: { size: rightWidth, type: WidthType.PERCENTAGE },
                             children: rightContent.length > 0 ? rightContent : [new Paragraph({})],
                             verticalAlign: VerticalAlign.TOP,
-                            borders: rightBorder,
+                            borders: noBorder,
+                            shading: !isSidebarLeft ? sidebarShading : undefined,
                             margins: {
-                                top: convertInchesToTwip(0),
-                                bottom: convertInchesToTwip(0),
+                                top: convertInchesToTwip(0.15),
+                                bottom: convertInchesToTwip(0.15),
                                 left: convertInchesToTwip(0.15),
-                                right: convertInchesToTwip(0),
+                                right: convertInchesToTwip(0.15),
                             },
                         }),
                     ],
