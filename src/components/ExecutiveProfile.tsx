@@ -56,7 +56,7 @@ export default function ExecutiveProfile() {
                             Specialized in <strong className="text-primary underline decoration-4 decoration-border underline-offset-4">scaling high-performing AI, Automation, and Analytics functions</strong>, I am a hands-on builder who translates complex data into C-suite strategies, having managed <strong className="bg-primary text-white px-2">50+ data professionals</strong> over my career. Expert in bridging the gap between Finance, Engineering, and Commercial strategy in both hyper-growth Tech (Agoda) and Aviation sectors.
                         </p>
                         <blockquote className="p-6 border-l-8 border-primary bg-inverse text-inverse-text text-lg font-bold italic shadow-[8px_8px_0px_0px_var(--shadow-color)]">
-                            "Exceptions deserve people. Patterns deserve Code. Repeatable, Scalable System."
+                            "Exceptions deserve people. Patterns deserve Code."
                         </blockquote>
                     </motion.div>
 
