@@ -65,7 +65,7 @@ export default function Projects() {
                 >
                     <h2 className="text-4xl font-bold mb-4 uppercase tracking-tighter text-text">Featured <span className="text-inverse-text bg-inverse px-2">Projects</span></h2>
                     <p className="text-text font-bold max-w-2xl mx-auto border-2 border-border bg-bg inline-block px-4 py-2 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
-                        Building rapid AI prototypes (often within a day) and scalable intelligent solutions.
+                        Building rapid AI prototypes (often within days not weeks) and scalable intelligent solutions.
                     </p>
                 </motion.div>
 
