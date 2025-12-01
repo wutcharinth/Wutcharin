@@ -347,7 +347,7 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
                     <Header />
 
                     {layout === LayoutType.SINGLE_COLUMN && (
-                        <div className="flex-grow px-12 py-8 pt-6 print:pt-0 print:px-12">
+                        <div className="flex-grow px-12 py-8 pt-6 print:pt-4 print:px-12">
                             <SummarySection />
                             <ExperienceSection />
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-4 break-inside-avoid">
