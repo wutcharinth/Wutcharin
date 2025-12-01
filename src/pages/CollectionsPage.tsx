@@ -59,9 +59,9 @@ export default function CollectionsPage() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.2 }}
-                            className="text-xl text-slate-400 mb-12 max-w-2xl mx-auto leading-relaxed"
+                            className="text-xl text-slate-400 mb-12 max-w-3xl mx-auto leading-relaxed"
                         >
-                            An intelligent agent that autonomously resolves VCC overcharges. It analyzes policies, negotiates with hotels, and executes chargebacks without human intervention.
+                            An intelligent agent that recovers lost revenue from <strong>Virtual Credit Card (VCC)</strong> overcharges. It autonomously validates cancellation policies, negotiates with hotels, and executes chargebacks at scale.
                         </motion.p>
 
                         <motion.div
@@ -71,7 +71,7 @@ export default function CollectionsPage() {
                             className="flex flex-wrap justify-center gap-4"
                         >
                             <span className="px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm font-bold text-slate-300 flex items-center gap-2">
-                                <Shield className="w-4 h-4 text-violet-400" /> Fraud Protection
+                                <Shield className="w-4 h-4 text-violet-400" /> VCC Fraud Protection
                             </span>
                             <span className="px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm font-bold text-slate-300 flex items-center gap-2">
                                 <Zap className="w-4 h-4 text-yellow-400" /> Instant Recovery
@@ -83,34 +83,50 @@ export default function CollectionsPage() {
                     </div>
                 </section>
 
-                {/* Problem / Solution Grid */}
+                {/* Context & Problem Grid */}
                 <section className="container mx-auto px-6 mb-32">
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl font-black text-white mb-4 uppercase tracking-tight">The <span className="text-red-400">Multi-Million Dollar</span> Leakage</h2>
+                        <p className="text-slate-400 max-w-2xl mx-auto">
+                            Online Travel Agencies (OTAs) pay hotels using temporary Virtual Credit Cards. When bookings are cancelled, hotels often charge these cards incorrectly, leading to massive financial losses.
+                        </p>
+                    </div>
+
                     <div className="grid md:grid-cols-3 gap-8">
-                        <div className="p-8 rounded-2xl bg-slate-900/50 border border-slate-800 hover:border-violet-500/30 transition-colors group">
-                            <div className="w-12 h-12 bg-red-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-red-500/20 transition-colors">
+                        <div className="p-8 rounded-2xl bg-slate-900/50 border border-slate-800 hover:border-violet-500/30 transition-colors group relative overflow-hidden">
+                            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                                <Building2 className="w-24 h-24 text-red-500" />
+                            </div>
+                            <div className="w-12 h-12 bg-red-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-red-500/20 transition-colors relative z-10">
                                 <Building2 className="w-6 h-6 text-red-400" />
                             </div>
-                            <h3 className="text-xl font-bold text-white mb-3">The Leakage</h3>
-                            <p className="text-slate-400 leading-relaxed">
-                                Hotels often overcharge Virtual Credit Cards (VCC) or forget to refund cancelled bookings. Recovering these small amounts manually is cost-prohibitive.
+                            <h3 className="text-xl font-bold text-white mb-3 relative z-10">Erroneous Charges</h3>
+                            <p className="text-slate-400 leading-relaxed relative z-10 text-sm">
+                                Hotels frequently charge the full VCC amount even for free-cancellation bookings, or fail to process refunds for "No-Show" waivers.
                             </p>
                         </div>
-                        <div className="p-8 rounded-2xl bg-slate-900/50 border border-slate-800 hover:border-violet-500/30 transition-colors group">
-                            <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-500/20 transition-colors">
+                        <div className="p-8 rounded-2xl bg-slate-900/50 border border-slate-800 hover:border-violet-500/30 transition-colors group relative overflow-hidden">
+                            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                                <Scale className="w-24 h-24 text-blue-500" />
+                            </div>
+                            <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-500/20 transition-colors relative z-10">
                                 <Scale className="w-6 h-6 text-blue-400" />
                             </div>
-                            <h3 className="text-xl font-bold text-white mb-3">The Bottleneck</h3>
-                            <p className="text-slate-400 leading-relaxed">
-                                Dispute teams are overwhelmed. They need to check cancellation policies, draft emails, and follow up repeatedly. It's a slow, linear process.
+                            <h3 className="text-xl font-bold text-white mb-3 relative z-10">Operational Bottleneck</h3>
+                            <p className="text-slate-400 leading-relaxed relative z-10 text-sm">
+                                Recovery is manual and slow. Agents spend 20+ minutes per case navigating language barriers, time zones, and complex cancellation policies.
                             </p>
                         </div>
-                        <div className="p-8 rounded-2xl bg-slate-900/50 border border-slate-800 hover:border-violet-500/30 transition-colors group">
-                            <div className="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-green-500/20 transition-colors">
+                        <div className="p-8 rounded-2xl bg-slate-900/50 border border-slate-800 hover:border-violet-500/30 transition-colors group relative overflow-hidden">
+                            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                                <Gavel className="w-24 h-24 text-green-500" />
+                            </div>
+                            <div className="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-green-500/20 transition-colors relative z-10">
                                 <Gavel className="w-6 h-6 text-green-400" />
                             </div>
-                            <h3 className="text-xl font-bold text-white mb-3">The Solution</h3>
-                            <p className="text-slate-400 leading-relaxed">
-                                An autonomous agent that acts immediately. It validates the claim against the PMS, negotiates with the hotel, and escalates to chargeback if ignored.
+                            <h3 className="text-xl font-bold text-white mb-3 relative z-10">Autonomous Recovery</h3>
+                            <p className="text-slate-400 leading-relaxed relative z-10 text-sm">
+                                Our AI agent integrates directly with the PMS and Payment Gateway. It detects the error, validates the policy, and recovers the funds instantly.
                             </p>
                         </div>
                     </div>
