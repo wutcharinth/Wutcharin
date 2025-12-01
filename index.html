@@ -9,15 +9,15 @@
   <style>
     @media print {
       @page {
-        margin: 0 !important;
         size: A4;
+        margin: 10mm;
       }
-      /* Hide browser print headers and footers */
-      @page {
-        margin-top: 0mm !important;
-        margin-bottom: 0mm !important;
-        margin-left: 0mm !important;
-        margin-right: 0mm !important;
+      @page :first {
+        margin-top: 5mm;
+      }
+      /* Hide all non-essential page elements during print */
+      nav, footer, .no-print, button:not(.print-visible) {
+        display: none !important;
       }
     }
   </style>
