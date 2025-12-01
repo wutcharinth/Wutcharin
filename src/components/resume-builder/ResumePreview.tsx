@@ -74,11 +74,11 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
     };
 
     const getHeaderStyle = () => {
-        if (isBrutal) return `px-12 py-8 print:pt-0 print:px-12 border-b-2 border-${color} mb-8 break-inside-avoid`;
-        if (isCreative) return 'px-12 py-8 print:pt-0 print:px-12 text-white relative overflow-hidden break-inside-avoid';
-        if (isModern) return 'bg-gray-50 border-b border-gray-200 px-12 py-8 print:pt-0 print:px-12 break-inside-avoid';
-        if (template === TemplateType.SIMPLE) return 'px-12 py-8 print:pt-0 print:px-12 pb-4 border-b border-gray-100 break-inside-avoid';
-        return 'px-12 py-8 print:pt-0 print:px-12 border-b-2 border-gray-200 text-center break-inside-avoid';
+        if (isBrutal) return `px-12 py-8 print:pt-2 print:pb-4 print:px-12 border-b-2 border-${color} mb-8 print:mb-4 break-inside-avoid`;
+        if (isCreative) return 'px-12 py-8 print:pt-2 print:pb-4 print:px-12 text-white relative overflow-hidden break-inside-avoid';
+        if (isModern) return 'bg-gray-50 border-b border-gray-200 px-12 py-8 print:pt-2 print:pb-4 print:px-12 break-inside-avoid';
+        if (template === TemplateType.SIMPLE) return 'px-12 py-8 print:pt-2 print:pb-4 print:px-12 pb-4 border-b border-gray-100 break-inside-avoid';
+        return 'px-12 py-8 print:pt-2 print:pb-4 print:px-12 border-b-2 border-gray-200 text-center break-inside-avoid';
     };
 
     const getSectionTitleStyle = () => {
@@ -262,18 +262,13 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
                 <style>{`
                     @media print {
                         @page {
-                            margin: 15mm 0mm 0mm 0mm !important; /* Top margin for 2nd+ pages, no bottom footer, no side margins */
-                            size: auto;
+                            margin: 20mm 0mm 0mm 0mm !important; /* Top margin for 2nd+ pages (increased), no bottom footer, no side margins */
+                            size: A4;
                             /* Remove browser headers and footers */
                             marks: none;
                         }
                         @page :first {
-                            margin: 0mm 0mm 0mm 0mm !important; /* No margins on first page */
-                        }
-                        /* Hide browser print headers and footers */
-                        @page {
-                            margin-top: 0mm !important;
-                            margin-bottom: 0mm !important;
+                            margin: 5mm 0mm 0mm 0mm !important; /* Small top margin on first page (reduced from 0) */
                         }
                         html, body {
                             background: white !important;
@@ -322,18 +317,16 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
                             display: none !important;
                         }
                         
-                        /* Remove top padding/margin from header on first page */
+                        /* Reduce top padding on header for print (first page) */
                         .resume-preview-container > header:first-child {
-                            padding-top: 0 !important;
+                            padding-top: 0.5rem !important;
                             margin-top: 0 !important;
+                            margin-bottom: 1rem !important;
                         }
                         
-                        /* Hide browser print headers and footers completely */
-                        @page {
-                            margin: 0mm !important;
-                        }
-                        @page :first {
-                            margin: 0mm !important;
+                        /* Add top margin for content starting on 2nd page */
+                        .resume-preview-container > *:not(header) {
+                            page-break-inside: avoid;
                         }
                         
                         /* Ensure no footer text appears */
