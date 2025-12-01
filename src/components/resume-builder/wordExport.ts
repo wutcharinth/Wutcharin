@@ -7,13 +7,20 @@ import {
     BorderStyle,
     SectionType,
     convertInchesToTwip,
+    Table,
+    TableRow,
+    TableCell,
+    WidthType,
+    VerticalAlign,
+    TableLayoutType,
 } from 'docx';
 import { saveAs } from 'file-saver';
 import type { ResumeData, FontFamily } from './types';
+import { LayoutType } from './types';
 
 // Map web fonts to Word-compatible font names
 const fontMapping: Record<FontFamily, string> = {
-    'Inter': 'Arial', // Inter is not available in Word, use Arial as closest match
+    'Inter': 'Arial',
     'Roboto': 'Arial',
     'Lora': 'Georgia',
     'Merriweather': 'Georgia',
@@ -24,10 +31,11 @@ const fontMapping: Record<FontFamily, string> = {
 interface WordExportOptions {
     accentColor?: string;
     fontFamily?: FontFamily;
+    layout?: LayoutType;
 }
 
 // Helper to create a horizontal line
-const createDivider = (_font: string) => new Paragraph({
+const createDivider = () => new Paragraph({
     border: {
         bottom: {
             color: '999999',
@@ -45,12 +53,12 @@ const createSectionTitle = (title: string, color: string, font: string) => new P
         new TextRun({
             text: title.toUpperCase(),
             bold: true,
-            size: 22, // 11pt
+            size: 22,
             color: color.replace('#', ''),
             font: font,
         }),
     ],
-    spacing: { before: 300, after: 100 },
+    spacing: { before: 200, after: 100 },
     border: {
         bottom: {
             color: color.replace('#', ''),
@@ -66,33 +74,25 @@ const createBulletPoint = (text: string, font: string) => new Paragraph({
     children: [
         new TextRun({
             text: '• ' + text,
-            size: 20, // 10pt
+            size: 20,
             font: font,
         }),
     ],
     spacing: { after: 50 },
-    indent: { left: convertInchesToTwip(0.2) },
+    indent: { left: convertInchesToTwip(0.15) },
 });
 
-export async function exportToWord(
-    data: ResumeData, 
-    options: WordExportOptions = {}
-): Promise<void> {
-    const { accentColor = '#2563EB', fontFamily = 'Inter' } = options;
-    const colorHex = accentColor.replace('#', '');
-    const font = fontMapping[fontFamily] || 'Arial';
-
-    // Build document sections
-    const children: Paragraph[] = [];
-
-    // ========== HEADER ==========
+// Build header section (common for all layouts)
+function buildHeader(data: ResumeData, colorHex: string, font: string): Paragraph[] {
+    const header: Paragraph[] = [];
+    
     // Name
-    children.push(new Paragraph({
+    header.push(new Paragraph({
         children: [
             new TextRun({
                 text: data.fullName,
                 bold: true,
-                size: 48, // 24pt
+                size: 48,
                 color: '000000',
                 font: font,
             }),
@@ -102,11 +102,11 @@ export async function exportToWord(
     }));
 
     // Title
-    children.push(new Paragraph({
+    header.push(new Paragraph({
         children: [
             new TextRun({
                 text: data.title,
-                size: 24, // 12pt
+                size: 24,
                 color: colorHex,
                 font: font,
             }),
@@ -115,7 +115,7 @@ export async function exportToWord(
         spacing: { after: 100 },
     }));
 
-    // Contact info line
+    // Contact info
     const contactParts: string[] = [];
     if (data.email) contactParts.push(data.email);
     if (data.phone) contactParts.push(data.phone);
@@ -123,11 +123,11 @@ export async function exportToWord(
     if (data.portfolioUrl) contactParts.push(data.portfolioUrl.replace(/^https?:\/\//, ''));
 
     if (contactParts.length > 0) {
-        children.push(new Paragraph({
+        header.push(new Paragraph({
             children: [
                 new TextRun({
                     text: contactParts.join(' | '),
-                    size: 18, // 9pt
+                    size: 18,
                     color: '666666',
                     font: font,
                 }),
@@ -137,146 +137,200 @@ export async function exportToWord(
         }));
     }
 
-    children.push(createDivider(font));
+    header.push(createDivider());
+    
+    return header;
+}
 
-    // ========== PROFILE/SUMMARY ==========
+// Build profile/summary section
+function buildProfile(data: ResumeData, accentColor: string, font: string): Paragraph[] {
+    const content: Paragraph[] = [];
     if (data.summary && data.summary.trim()) {
-        children.push(createSectionTitle('Profile', accentColor, font));
-        
-        // Split summary by newlines and add each as a paragraph
+        content.push(createSectionTitle('Profile', accentColor, font));
         const summaryLines = data.summary.split('\n').filter(line => line.trim());
         summaryLines.forEach(line => {
-            children.push(new Paragraph({
-                children: [
-                    new TextRun({
-                        text: line,
-                        size: 20, // 10pt
-                        font: font,
-                    }),
-                ],
+            content.push(new Paragraph({
+                children: [new TextRun({ text: line, size: 20, font })],
                 spacing: { after: 100 },
             }));
         });
     }
+    return content;
+}
 
-    // ========== EXPERIENCE ==========
+// Build experience section
+function buildExperience(data: ResumeData, accentColor: string, font: string): Paragraph[] {
+    const colorHex = accentColor.replace('#', '');
+    const content: Paragraph[] = [];
+    
     if (data.experience && data.experience.length > 0) {
-        children.push(createSectionTitle('Experience', accentColor, font));
-
+        content.push(createSectionTitle('Experience', accentColor, font));
+        
         data.experience.forEach((exp) => {
-            // Role and Period
-            children.push(new Paragraph({
+            content.push(new Paragraph({
                 children: [
-                    new TextRun({
-                        text: exp.role,
-                        bold: true,
-                        size: 22, // 11pt
-                        font: font,
-                    }),
-                    new TextRun({
-                        text: `  |  ${exp.period}`,
-                        size: 20,
-                        color: '666666',
-                        font: font,
-                    }),
+                    new TextRun({ text: exp.role, bold: true, size: 22, font }),
+                    new TextRun({ text: `  |  ${exp.period}`, size: 20, color: '666666', font }),
                 ],
                 spacing: { before: 150, after: 50 },
             }));
-
-            // Company
-            children.push(new Paragraph({
-                children: [
-                    new TextRun({
-                        text: exp.company,
-                        size: 20,
-                        color: colorHex,
-                        italics: true,
-                        font: font,
-                    }),
-                ],
+            
+            content.push(new Paragraph({
+                children: [new TextRun({ text: exp.company, size: 20, color: colorHex, italics: true, font })],
                 spacing: { after: 100 },
             }));
-
-            // Description bullets
+            
             const descLines = exp.description.split('\n').filter(line => line.trim());
             descLines.forEach(line => {
-                // Remove leading bullet/dash if present
                 const cleanLine = line.replace(/^[\s•\-\*]+/, '').trim();
-                if (cleanLine) {
-                    children.push(createBulletPoint(cleanLine, font));
-                }
+                if (cleanLine) content.push(createBulletPoint(cleanLine, font));
             });
         });
     }
+    return content;
+}
 
-    // ========== EDUCATION ==========
+// Build education section
+function buildEducation(data: ResumeData, accentColor: string, font: string): Paragraph[] {
+    const content: Paragraph[] = [];
+    
     if (data.education && data.education.length > 0) {
-        children.push(createSectionTitle('Education', accentColor, font));
-
+        content.push(createSectionTitle('Education', accentColor, font));
+        
         data.education.forEach((edu) => {
-            children.push(new Paragraph({
-                children: [
-                    new TextRun({
-                        text: edu.school,
-                        bold: true,
-                        size: 22,
-                        font: font,
-                    }),
-                ],
+            content.push(new Paragraph({
+                children: [new TextRun({ text: edu.school, bold: true, size: 22, font })],
                 spacing: { before: 100, after: 50 },
             }));
-
-            children.push(new Paragraph({
+            content.push(new Paragraph({
                 children: [
-                    new TextRun({
-                        text: edu.degree,
-                        size: 20,
-                        font: font,
-                    }),
-                    new TextRun({
-                        text: `  |  ${edu.year}`,
-                        size: 18,
-                        color: '666666',
-                        font: font,
-                    }),
+                    new TextRun({ text: edu.degree, size: 20, font }),
+                    new TextRun({ text: `  |  ${edu.year}`, size: 18, color: '666666', font }),
                 ],
                 spacing: { after: 100 },
             }));
         });
     }
+    return content;
+}
 
-    // ========== SKILLS ==========
+// Build skills section
+function buildSkills(data: ResumeData, accentColor: string, font: string): Paragraph[] {
+    const content: Paragraph[] = [];
+    
     if (data.skills && data.skills.length > 0) {
-        children.push(createSectionTitle('Skills', accentColor, font));
-
+        content.push(createSectionTitle('Skills', accentColor, font));
         const skillsList = data.skills.map(s => s.name).join(' • ');
-        children.push(new Paragraph({
-            children: [
-                new TextRun({
-                    text: skillsList,
-                    size: 20,
-                    font: font,
-                }),
-            ],
+        content.push(new Paragraph({
+            children: [new TextRun({ text: skillsList, size: 20, font })],
             spacing: { after: 100 },
         }));
     }
+    return content;
+}
 
-    // ========== COMPETENCIES ==========
+// Build competencies section
+function buildCompetencies(data: ResumeData, accentColor: string, font: string): Paragraph[] {
+    const content: Paragraph[] = [];
+    
     if (data.competencies && data.competencies.length > 0) {
-        children.push(createSectionTitle('Competencies', accentColor, font));
-
+        content.push(createSectionTitle('Competencies', accentColor, font));
         const compList = data.competencies.map(c => c.name).join(' • ');
-        children.push(new Paragraph({
-            children: [
-                new TextRun({
-                    text: compList,
-                    size: 20,
-                    font: font,
-                }),
-            ],
+        content.push(new Paragraph({
+            children: [new TextRun({ text: compList, size: 20, font })],
             spacing: { after: 100 },
         }));
+    }
+    return content;
+}
+
+export async function exportToWord(
+    data: ResumeData, 
+    options: WordExportOptions = {}
+): Promise<void> {
+    const { 
+        accentColor = '#2563EB', 
+        fontFamily = 'Inter',
+        layout = LayoutType.SINGLE_COLUMN 
+    } = options;
+    const colorHex = accentColor.replace('#', '');
+    const font = fontMapping[fontFamily] || 'Arial';
+
+    // Build all content sections
+    const header = buildHeader(data, colorHex, font);
+    const profile = buildProfile(data, accentColor, font);
+    const experience = buildExperience(data, accentColor, font);
+    const education = buildEducation(data, accentColor, font);
+    const skills = buildSkills(data, accentColor, font);
+    const competencies = buildCompetencies(data, accentColor, font);
+
+    let documentChildren: (Paragraph | Table)[] = [];
+
+    // Add header (always full width)
+    documentChildren.push(...header);
+
+    if (layout === LayoutType.SINGLE_COLUMN) {
+        // Single column: All content in sequence
+        documentChildren.push(...profile);
+        documentChildren.push(...experience);
+        documentChildren.push(...education);
+        documentChildren.push(...skills);
+        documentChildren.push(...competencies);
+    } else {
+        // Two-column layout using a table
+        const sidebarContent = [...education, ...skills, ...competencies];
+        const mainContent = [...profile, ...experience];
+        
+        // Determine column order based on layout
+        const leftContent = layout === LayoutType.TWO_COLUMN_LEFT ? sidebarContent : mainContent;
+        const rightContent = layout === LayoutType.TWO_COLUMN_LEFT ? mainContent : sidebarContent;
+        const leftWidth = layout === LayoutType.TWO_COLUMN_LEFT ? 30 : 65;
+        const rightWidth = layout === LayoutType.TWO_COLUMN_LEFT ? 65 : 30;
+
+        // Create invisible border style
+        const noBorder = {
+            top: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+            bottom: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+            left: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+            right: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+        };
+
+        const table = new Table({
+            width: { size: 100, type: WidthType.PERCENTAGE },
+            layout: TableLayoutType.FIXED,
+            rows: [
+                new TableRow({
+                    children: [
+                        new TableCell({
+                            width: { size: leftWidth, type: WidthType.PERCENTAGE },
+                            children: leftContent.length > 0 ? leftContent : [new Paragraph({})],
+                            verticalAlign: VerticalAlign.TOP,
+                            borders: noBorder,
+                            margins: {
+                                top: convertInchesToTwip(0),
+                                bottom: convertInchesToTwip(0),
+                                left: convertInchesToTwip(0),
+                                right: convertInchesToTwip(0.15),
+                            },
+                        }),
+                        new TableCell({
+                            width: { size: rightWidth, type: WidthType.PERCENTAGE },
+                            children: rightContent.length > 0 ? rightContent : [new Paragraph({})],
+                            verticalAlign: VerticalAlign.TOP,
+                            borders: noBorder,
+                            margins: {
+                                top: convertInchesToTwip(0),
+                                bottom: convertInchesToTwip(0),
+                                left: convertInchesToTwip(0.15),
+                                right: convertInchesToTwip(0),
+                            },
+                        }),
+                    ],
+                }),
+            ],
+        });
+
+        documentChildren.push(table);
     }
 
     // Create the document
@@ -294,7 +348,7 @@ export async function exportToWord(
                         },
                     },
                 },
-                children: children,
+                children: documentChildren,
             },
         ],
     });
@@ -304,4 +358,3 @@ export async function exportToWord(
     const fileName = `${data.fullName.replace(/\s+/g, '_')}_Resume.docx`;
     saveAs(blob, fileName);
 }
-
