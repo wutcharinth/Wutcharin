@@ -6,15 +6,17 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-
-dotenv.config({ path: '../.env' }); // Load from root .env
-
-const app = express();
-const port = process.env.PORT || 3000;
+import { dirname, join } from 'path';
 
 // ESM __dirname equivalent
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = dirname(__filename);
+
+// Load .env from root directory (one level up from server/)
+dotenv.config({ path: join(__dirname, '..', '.env') });
+
+const app = express();
+const port = process.env.PORT || 3000;
 
 app.use(cors({
     origin: [
@@ -279,13 +281,27 @@ app.post('/api/resume/parse', async (req, res) => {
         const responseText = response.text();
 
         // Clean markdown code blocks if present
-        const jsonStr = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
-        const parsedData = JSON.parse(jsonStr);
+        let jsonStr = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
+        
+        // Try to extract JSON if it's wrapped in other text
+        const jsonMatch = jsonStr.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+            jsonStr = jsonMatch[0];
+        }
+
+        let parsedData;
+        try {
+            parsedData = JSON.parse(jsonStr);
+        } catch (parseError) {
+            console.error("Failed to parse JSON response:", jsonStr);
+            throw new Error(`Invalid JSON response from AI: ${parseError.message}`);
+        }
 
         res.json(parsedData);
     } catch (error) {
         console.error("Error parsing resume data:", error);
-        res.status(500).json({ error: 'Failed to parse resume data', details: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        res.status(500).json({ error: 'Failed to parse resume data', details: errorMessage });
     }
 });
 

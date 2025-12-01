@@ -67,8 +67,12 @@ const ResumeBuilderPage: React.FC = () => {
 
             setStep('main');
             setActiveTab('editor');
-        } catch {
-            alert("We couldn't parse that text efficiently. Please try pasting different text or fill in the details manually.");
+        } catch (error) {
+            console.error("Parse error:", error);
+            const errorMessage = error instanceof Error 
+                ? `We couldn't parse that text: ${error.message}. Please try pasting different text or fill in the details manually.`
+                : "We couldn't parse that text efficiently. Please try pasting different text or fill in the details manually.";
+            alert(errorMessage);
         } finally {
             setIsParsing(false);
         }
