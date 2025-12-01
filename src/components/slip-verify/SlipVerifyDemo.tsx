@@ -300,28 +300,44 @@ const SlipVerifyDemo = () => {
                     </div>
                 </div>
 
-                <div className="absolute bottom-8 flex gap-2 w-full px-6 justify-center">
-                    <button
-                        onClick={() => runScenario('clean')}
-                        disabled={isSimulationRunning}
-                        className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-slate-200 text-xs font-bold rounded-lg border border-slate-700 transition-all hover:-translate-y-1 shadow-lg flex items-center justify-center"
-                    >
-                        <CheckCircle className="text-green-500 w-4 h-4 mr-1" /> Perfect
-                    </button>
-                    <button
-                        onClick={() => runScenario('blurry')}
-                        disabled={isSimulationRunning}
-                        className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-slate-200 text-xs font-bold rounded-lg border border-slate-700 transition-all hover:-translate-y-1 shadow-lg flex items-center justify-center"
-                    >
-                        <EyeOff className="text-yellow-500 w-4 h-4 mr-1" /> Blurry
-                    </button>
-                    <button
-                        onClick={() => runScenario('fraud')}
-                        disabled={isSimulationRunning}
-                        className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-slate-200 text-xs font-bold rounded-lg border border-slate-700 transition-all hover:-translate-y-1 shadow-lg flex items-center justify-center"
-                    >
-                        <TriangleAlert className="text-red-500 w-4 h-4 mr-1" /> Fraud
-                    </button>
+                <div className="absolute bottom-8 w-full px-6 flex flex-col items-center z-30">
+                    {!isSimulationRunning && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="mb-3 text-blue-400 text-[10px] font-bold uppercase tracking-widest animate-pulse flex items-center gap-2"
+                        >
+                            <span className="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                            Select a Scenario to Start
+                            <span className="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                        </motion.div>
+                    )}
+                    <div className="flex gap-2 w-full justify-center">
+                        <button
+                            onClick={() => runScenario('clean')}
+                            disabled={isSimulationRunning}
+                            className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-slate-200 text-xs font-bold rounded-lg border border-slate-700 transition-all hover:-translate-y-1 shadow-lg flex items-center justify-center relative overflow-hidden group"
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                            <CheckCircle className="text-green-500 w-4 h-4 mr-1" /> Perfect
+                        </button>
+                        <button
+                            onClick={() => runScenario('blurry')}
+                            disabled={isSimulationRunning}
+                            className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-slate-200 text-xs font-bold rounded-lg border border-slate-700 transition-all hover:-translate-y-1 shadow-lg flex items-center justify-center relative overflow-hidden group"
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                            <EyeOff className="text-yellow-500 w-4 h-4 mr-1" /> Blurry
+                        </button>
+                        <button
+                            onClick={() => runScenario('fraud')}
+                            disabled={isSimulationRunning}
+                            className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-slate-200 text-xs font-bold rounded-lg border border-slate-700 transition-all hover:-translate-y-1 shadow-lg flex items-center justify-center relative overflow-hidden group"
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                            <TriangleAlert className="text-red-500 w-4 h-4 mr-1" /> Fraud
+                        </button>
+                    </div>
                 </div>
             </section>
 
