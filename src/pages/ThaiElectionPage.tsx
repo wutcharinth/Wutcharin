@@ -6,6 +6,7 @@ import { ArrowLeft, Map as MapIcon, BarChart2, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import electionDataRaw from '../data/election-2023.json';
 import SEO from '../components/SEO';
+import ThaiElectionChatbot from '../components/ThaiElectionChatbot';
 
 // Type Definitions
 interface PartyStats {
@@ -100,7 +101,7 @@ export default function ThaiElectionPage() {
         <div ref={containerRef} className="min-h-screen bg-black text-white font-sans selection:bg-primary selection:text-white">
             <SEO
                 title="Thai Election 2023 Visualization"
-                description="Interactive 3D visualization of the 2023 Thai General Election results, featuring AI-powered insights and granular district-level data."
+                description="Interactive visualization of the 2023 Thai General Election results, featuring AI-powered insights and granular district-level data."
                 url="https://wutcharin.com/thai-election"
                 image="/thai-election-og.png"
             />
@@ -417,6 +418,9 @@ export default function ThaiElectionPage() {
                 </div>
             </section>
 
+            {/* AI Chatbot */}
+            <ThaiElectionChatbot />
+
             {/* Methodology Modal */}
             <MethodologyModal />
         </div>
@@ -430,7 +434,7 @@ function MethodologyModal() {
         <>
             <button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-6 right-6 z-50 bg-white text-black px-6 py-3 rounded-full font-bold shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:scale-105 transition-transform flex items-center gap-2"
+                className="fixed bottom-6 left-6 z-50 bg-white text-black px-6 py-3 rounded-full font-bold shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:scale-105 transition-transform flex items-center gap-2"
             >
                 <Users className="w-4 h-4" /> Behind the Code
             </button>
