@@ -60,11 +60,24 @@ function loadElectionData() {
     return { electionDataRaw, fullElectionData };
 }
 
+// Allowed origins for CORS
+const ALLOWED_ORIGINS = [
+    'https://wutcharin.com',
+    'https://www.wutcharin.com',
+    'https://wutcharin-production.up.railway.app',
+    'http://localhost:5173',
+    'http://localhost:3000'
+];
+
 export default async function handler(req, res) {
-    // Enable CORS
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    // Enable CORS with proper origin checking
+    const origin = req.headers.origin;
+    if (ALLOWED_ORIGINS.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    }
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
 
     if (req.method === 'OPTIONS') {
         return res.status(200).end();
