@@ -103,7 +103,7 @@ export default async function handler(req, res) {
         }
 
         const model = genAI.getGenerativeModel({
-            model: 'gemini-2.5-flash',
+            model: 'gemini-1.5-flash',
             systemInstruction: `
                 You are an expert AI Political Analyst specializing in the 2023 Thai General Election.
                 
