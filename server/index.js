@@ -350,6 +350,12 @@ if (process.env.NODE_ENV === 'production') {
     });
 }
 
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-});
+// Export for Vercel serverless functions
+export default app;
+
+// Only listen if not in Vercel environment
+if (process.env.VERCEL !== '1') {
+    app.listen(port, () => {
+        console.log(`Server running on port ${port}`);
+    });
+}
