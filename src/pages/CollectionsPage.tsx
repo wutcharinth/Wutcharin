@@ -46,6 +46,16 @@ export default function CollectionsPage() {
                             <span>AUTONOMOUS DISPUTE RESOLUTION AGENT</span>
                         </motion.div>
 
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.1 }}
+                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-400 text-xs font-bold uppercase tracking-widest mb-6"
+                        >
+                            <span className="w-2 h-2 rounded-full bg-violet-500 animate-pulse"></span>
+                            Interactive Simulation
+                        </motion.div>
+
                         <motion.h1
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
