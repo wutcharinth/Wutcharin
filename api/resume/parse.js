@@ -15,16 +15,18 @@ export default async function handler(req, res) {
     }
 
     try {
-        // Get API key from environment (Vercel uses process.env directly)
+        // Get API key from environment
+        // Note: Vercel exposes all env vars to serverless functions, including VITE_ prefixed ones
         const apiKey = process.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
         
         if (!apiKey) {
-            console.error('API Key missing:', {
-                VITE_GEMINI_API_KEY: !!process.env.VITE_GEMINI_API_KEY,
-                GEMINI_API_KEY: !!process.env.GEMINI_API_KEY,
-                allKeys: Object.keys(process.env).filter(k => k.includes('GEMINI'))
+            // Log available env vars for debugging (without exposing values)
+            const envKeys = Object.keys(process.env).filter(k => k.includes('GEMINI') || k.includes('API'));
+            console.error('API Key missing. Available env vars:', envKeys);
+            return res.status(500).json({ 
+                error: 'API Key missing on server',
+                debug: process.env.NODE_ENV === 'development' ? { envKeys } : undefined
             });
-            return res.status(500).json({ error: 'API Key missing on server' });
         }
 
         const genAI = new GoogleGenerativeAI(apiKey);
@@ -106,7 +108,14 @@ export default async function handler(req, res) {
     } catch (error) {
         console.error("Error parsing resume data:", error);
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-        res.status(500).json({ error: 'Failed to parse resume data', details: errorMessage });
+        const errorStack = error instanceof Error ? error.stack : undefined;
+        
+        // Return more detailed error in development
+        res.status(500).json({ 
+            error: 'Failed to parse resume data', 
+            details: errorMessage,
+            ...(process.env.NODE_ENV === 'development' && { stack: errorStack })
+        });
     }
 }
 
