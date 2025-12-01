@@ -4,12 +4,26 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+// Load election data (lazy load to avoid issues in serverless)
+let electionDataRaw = null;
+let fullElectionData = null;
 
-// Load election data
-const electionDataRaw = JSON.parse(fs.readFileSync(join(__dirname, '../src/data/election-2023.json'), 'utf-8'));
-const fullElectionData = JSON.parse(fs.readFileSync(join(__dirname, '../src/data/full_election_results.json'), 'utf-8'));
+function loadElectionData() {
+    if (!electionDataRaw || !fullElectionData) {
+        const __filename = fileURLToPath(import.meta.url);
+        const __dirname = dirname(__filename);
+        try {
+            electionDataRaw = JSON.parse(fs.readFileSync(join(__dirname, '../src/data/election-2023.json'), 'utf-8'));
+            fullElectionData = JSON.parse(fs.readFileSync(join(__dirname, '../src/data/full_election_results.json'), 'utf-8'));
+        } catch (error) {
+            console.error('Error loading election data:', error);
+            // Fallback empty data
+            electionDataRaw = { parties: [], provinces: [] };
+            fullElectionData = [];
+        }
+    }
+    return { electionDataRaw, fullElectionData };
+}
 
 export default async function handler(req, res) {
     // Enable CORS
