@@ -64,6 +64,7 @@ export default function Projects() {
                     className="text-center mb-16"
                 >
                     <h2 className="text-4xl font-bold mb-4 uppercase tracking-tighter text-text">Featured <span className="text-inverse-text bg-inverse px-2">Projects</span></h2>
+                    <p className="text-sm font-bold text-primary mb-6 uppercase tracking-widest">Personal projects that showcase my ability</p>
                     <p className="text-text font-bold max-w-4xl mx-auto border-2 border-border bg-bg inline-block px-4 py-2 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
                         Building rapid AI prototypes (often within days not weeks) and scalable intelligent solutions.
                     </p>
