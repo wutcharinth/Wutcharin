@@ -11,8 +11,6 @@ const __dirname = dirname(__filename);
 const electionDataRaw = JSON.parse(fs.readFileSync(join(__dirname, '../src/data/election-2023.json'), 'utf-8'));
 const fullElectionData = JSON.parse(fs.readFileSync(join(__dirname, '../src/data/full_election_results.json'), 'utf-8'));
 
-const genAI = new GoogleGenerativeAI(process.env.VITE_GEMINI_API_KEY || '');
-
 export default async function handler(req, res) {
     // Enable CORS
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -28,10 +26,18 @@ export default async function handler(req, res) {
     }
 
     try {
+        // Get API key from environment (Vercel uses process.env directly)
+        const apiKey = process.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
+        
+        if (!apiKey) {
+            return res.status(500).json({ error: 'API Key missing on server' });
+        }
+
+        const genAI = new GoogleGenerativeAI(apiKey);
         const { message, history } = req.body;
 
-        if (!process.env.VITE_GEMINI_API_KEY) {
-            return res.status(500).json({ error: 'API Key missing on server' });
+        if (!message) {
+            return res.status(400).json({ error: 'message is required' });
         }
 
         const model = genAI.getGenerativeModel({
@@ -61,7 +67,7 @@ export default async function handler(req, res) {
                 - Keep the response visually clean and easy to read.
                 
                 DATA CONTEXT:
-                ${JSON.stringify({ summary: electionDataRaw, detailed_results: fullElectionData })}
+                ${JSON.stringify({ summary: loadElectionData().electionDataRaw, detailed_results: loadElectionData().fullElectionData })}
             `,
             tools: [
                 {
