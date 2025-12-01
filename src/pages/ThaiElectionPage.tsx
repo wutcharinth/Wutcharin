@@ -5,6 +5,7 @@ import { useState, useRef } from 'react';
 import { ArrowLeft, Map as MapIcon, BarChart2, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import electionDataRaw from '../data/election-2023.json';
+import SEO from '../components/SEO';
 
 // Type Definitions
 interface PartyStats {
@@ -82,8 +83,6 @@ export default function ThaiElectionPage() {
     const [selectedDistrict, setSelectedDistrict] = useState<District | null>(null);
     const containerRef = useRef(null);
 
-
-
     // Group provinces by region
     const regions = [
         ["Bangkok", electionData.provinces.filter(p => p.region === "Bangkok")],
@@ -99,6 +98,12 @@ export default function ThaiElectionPage() {
 
     return (
         <div ref={containerRef} className="min-h-screen bg-black text-white font-sans selection:bg-primary selection:text-white">
+            <SEO
+                title="Thai Election 2023 Visualization"
+                description="Interactive 3D visualization of the 2023 Thai General Election results, featuring AI-powered insights and granular district-level data."
+                url="https://wutcharin.com/thai-election"
+                image="/thai-election-og.png"
+            />
             {/* Navigation */}
             <nav className="fixed top-0 left-0 right-0 z-50 p-6 flex justify-between items-center mix-blend-difference">
                 <Link to="/" className="flex items-center gap-2 text-[#F47524] font-bold uppercase tracking-widest hover:text-white transition-colors">
