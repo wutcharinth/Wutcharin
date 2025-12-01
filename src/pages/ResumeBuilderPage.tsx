@@ -85,6 +85,7 @@ const ResumeBuilderPage: React.FC = () => {
                 accentColor,
                 fontFamily,
                 layout,
+                template,
             });
         } catch (error) {
             console.error('Word export failed:', error);

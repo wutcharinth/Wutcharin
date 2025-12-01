@@ -13,10 +13,11 @@ import {
     WidthType,
     VerticalAlign,
     TableLayoutType,
+    ShadingType,
 } from 'docx';
 import { saveAs } from 'file-saver';
 import type { ResumeData, FontFamily } from './types';
-import { LayoutType } from './types';
+import { LayoutType, TemplateType } from './types';
 
 // Map web fonts to Word-compatible font names
 const fontMapping: Record<FontFamily, string> = {
@@ -32,72 +33,210 @@ interface WordExportOptions {
     accentColor?: string;
     fontFamily?: FontFamily;
     layout?: LayoutType;
+    template?: TemplateType;
 }
 
-// Helper to create a horizontal line
-const createDivider = () => new Paragraph({
-    border: {
-        bottom: {
-            color: '999999',
-            space: 1,
-            style: BorderStyle.SINGLE,
-            size: 6,
-        },
-    },
-    spacing: { after: 200 },
-});
+// Style configuration based on template
+interface StyleConfig {
+    nameSize: number;
+    titleSize: number;
+    sectionTitleSize: number;
+    bodySize: number;
+    smallSize: number;
+    nameColor: string;
+    sectionTitleStyle: 'underline' | 'box' | 'accent' | 'simple' | 'bold';
+    headerAlignment: typeof AlignmentType[keyof typeof AlignmentType];
+    useBold: boolean;
+    useItalics: boolean;
+    bulletStyle: string;
+    sectionSpacing: number;
+}
 
-// Helper to create section title
-const createSectionTitle = (title: string, color: string, font: string) => new Paragraph({
-    children: [
-        new TextRun({
-            text: title.toUpperCase(),
-            bold: true,
-            size: 22,
-            color: color.replace('#', ''),
-            font: font,
-        }),
-    ],
-    spacing: { before: 200, after: 100 },
-    border: {
-        bottom: {
-            color: color.replace('#', ''),
-            space: 1,
-            style: BorderStyle.SINGLE,
-            size: 6,
-        },
-    },
-});
+function getStyleConfig(template: TemplateType, accentColor: string): StyleConfig {
+    const colorHex = accentColor.replace('#', '');
+    
+    switch (template) {
+        case TemplateType.BRUTALISM:
+            return {
+                nameSize: 56,
+                titleSize: 24,
+                sectionTitleSize: 24,
+                bodySize: 20,
+                smallSize: 18,
+                nameColor: '000000',
+                sectionTitleStyle: 'box',
+                headerAlignment: AlignmentType.LEFT,
+                useBold: true,
+                useItalics: false,
+                bulletStyle: '■',
+                sectionSpacing: 300,
+            };
+        case TemplateType.CREATIVE:
+            return {
+                nameSize: 52,
+                titleSize: 26,
+                sectionTitleSize: 22,
+                bodySize: 20,
+                smallSize: 18,
+                nameColor: colorHex,
+                sectionTitleStyle: 'accent',
+                headerAlignment: AlignmentType.LEFT,
+                useBold: true,
+                useItalics: true,
+                bulletStyle: '→',
+                sectionSpacing: 250,
+            };
+        case TemplateType.MODERN:
+            return {
+                nameSize: 48,
+                titleSize: 24,
+                sectionTitleSize: 22,
+                bodySize: 20,
+                smallSize: 18,
+                nameColor: '333333',
+                sectionTitleStyle: 'underline',
+                headerAlignment: AlignmentType.LEFT,
+                useBold: true,
+                useItalics: true,
+                bulletStyle: '•',
+                sectionSpacing: 200,
+            };
+        case TemplateType.SIMPLE:
+            return {
+                nameSize: 44,
+                titleSize: 22,
+                sectionTitleSize: 20,
+                bodySize: 20,
+                smallSize: 18,
+                nameColor: '444444',
+                sectionTitleStyle: 'simple',
+                headerAlignment: AlignmentType.LEFT,
+                useBold: false,
+                useItalics: false,
+                bulletStyle: '•',
+                sectionSpacing: 150,
+            };
+        case TemplateType.PROFESSIONAL:
+        default:
+            return {
+                nameSize: 48,
+                titleSize: 24,
+                sectionTitleSize: 22,
+                bodySize: 20,
+                smallSize: 18,
+                nameColor: '000000',
+                sectionTitleStyle: 'underline',
+                headerAlignment: AlignmentType.CENTER,
+                useBold: true,
+                useItalics: true,
+                bulletStyle: '•',
+                sectionSpacing: 200,
+            };
+    }
+}
 
-// Helper to create bullet point
-const createBulletPoint = (text: string, font: string) => new Paragraph({
-    children: [
-        new TextRun({
-            text: '• ' + text,
-            size: 20,
-            font: font,
-        }),
-    ],
-    spacing: { after: 50 },
-    indent: { left: convertInchesToTwip(0.15) },
-});
+// Create section title based on style
+function createSectionTitle(
+    title: string, 
+    accentColor: string, 
+    font: string, 
+    style: StyleConfig
+): Paragraph {
+    const colorHex = accentColor.replace('#', '');
+    
+    // Determine text and styling based on template
+    const displayText = style.sectionTitleStyle === 'accent' 
+        ? `// ${title.toUpperCase()}` 
+        : title.toUpperCase();
+    
+    const textColor = style.sectionTitleStyle === 'simple' ? '888888' : colorHex;
+    const textSize = style.sectionTitleStyle === 'simple' ? style.smallSize : style.sectionTitleSize;
 
-// Build header section (common for all layouts)
-function buildHeader(data: ResumeData, colorHex: string, font: string): Paragraph[] {
+    // Apply different border/decoration styles
+    if (style.sectionTitleStyle === 'underline' || style.sectionTitleStyle === 'accent') {
+        return new Paragraph({
+            children: [new TextRun({
+                text: displayText,
+                bold: true,
+                size: textSize,
+                font: font,
+                color: textColor,
+            })],
+            spacing: { before: style.sectionSpacing, after: 100 },
+            border: {
+                bottom: { color: colorHex, space: 1, style: BorderStyle.SINGLE, size: 6 },
+            },
+        });
+    } else if (style.sectionTitleStyle === 'box') {
+        return new Paragraph({
+            children: [new TextRun({
+                text: displayText,
+                bold: true,
+                size: textSize,
+                font: font,
+                color: textColor,
+            })],
+            spacing: { before: style.sectionSpacing, after: 100 },
+            border: {
+                top: { color: colorHex, space: 1, style: BorderStyle.SINGLE, size: 12 },
+                bottom: { color: colorHex, space: 1, style: BorderStyle.SINGLE, size: 12 },
+                left: { color: colorHex, space: 1, style: BorderStyle.SINGLE, size: 12 },
+                right: { color: colorHex, space: 1, style: BorderStyle.SINGLE, size: 12 },
+            },
+            shading: { type: ShadingType.CLEAR, fill: 'FFFFFF' },
+        });
+    } else {
+        // Simple or bold style - no border
+        return new Paragraph({
+            children: [new TextRun({
+                text: displayText,
+                bold: style.sectionTitleStyle === 'bold',
+                size: textSize,
+                font: font,
+                color: textColor,
+            })],
+            spacing: { before: style.sectionSpacing, after: 100 },
+        });
+    }
+}
+
+// Create bullet point based on style
+function createBulletPoint(text: string, font: string, style: StyleConfig): Paragraph {
+    return new Paragraph({
+        children: [
+            new TextRun({
+                text: `${style.bulletStyle} ${text}`,
+                size: style.bodySize,
+                font: font,
+            }),
+        ],
+        spacing: { after: 50 },
+        indent: { left: convertInchesToTwip(0.15) },
+    });
+}
+
+// Build header section
+function buildHeader(
+    data: ResumeData, 
+    accentColor: string, 
+    font: string,
+    style: StyleConfig
+): Paragraph[] {
+    const colorHex = accentColor.replace('#', '');
     const header: Paragraph[] = [];
     
     // Name
     header.push(new Paragraph({
         children: [
             new TextRun({
-                text: data.fullName,
-                bold: true,
-                size: 48,
-                color: '000000',
+                text: data.fullName.toUpperCase(),
+                bold: style.useBold,
+                size: style.nameSize,
+                color: style.nameColor,
                 font: font,
             }),
         ],
-        alignment: AlignmentType.CENTER,
+        alignment: style.headerAlignment,
         spacing: { after: 100 },
     }));
 
@@ -106,12 +245,13 @@ function buildHeader(data: ResumeData, colorHex: string, font: string): Paragrap
         children: [
             new TextRun({
                 text: data.title,
-                size: 24,
+                size: style.titleSize,
                 color: colorHex,
                 font: font,
+                italics: style.useItalics,
             }),
         ],
-        alignment: AlignmentType.CENTER,
+        alignment: style.headerAlignment,
         spacing: { after: 100 },
     }));
 
@@ -123,34 +263,55 @@ function buildHeader(data: ResumeData, colorHex: string, font: string): Paragrap
     if (data.portfolioUrl) contactParts.push(data.portfolioUrl.replace(/^https?:\/\//, ''));
 
     if (contactParts.length > 0) {
+        const separator = style.sectionTitleStyle === 'box' ? ' ■ ' : ' | ';
         header.push(new Paragraph({
             children: [
                 new TextRun({
-                    text: contactParts.join(' | '),
-                    size: 18,
+                    text: contactParts.join(separator),
+                    size: style.smallSize,
                     color: '666666',
                     font: font,
                 }),
             ],
-            alignment: AlignmentType.CENTER,
+            alignment: style.headerAlignment,
             spacing: { after: 200 },
         }));
     }
 
-    header.push(createDivider());
+    // Divider (except for brutalism which uses box style)
+    if (style.sectionTitleStyle !== 'box') {
+        header.push(new Paragraph({
+            border: {
+                bottom: { color: colorHex, space: 1, style: BorderStyle.SINGLE, size: 6 },
+            },
+            spacing: { after: 200 },
+        }));
+    } else {
+        header.push(new Paragraph({
+            border: {
+                bottom: { color: '000000', space: 1, style: BorderStyle.SINGLE, size: 12 },
+            },
+            spacing: { after: 200 },
+        }));
+    }
     
     return header;
 }
 
 // Build profile/summary section
-function buildProfile(data: ResumeData, accentColor: string, font: string): Paragraph[] {
+function buildProfile(
+    data: ResumeData, 
+    accentColor: string, 
+    font: string,
+    style: StyleConfig
+): Paragraph[] {
     const content: Paragraph[] = [];
     if (data.summary && data.summary.trim()) {
-        content.push(createSectionTitle('Profile', accentColor, font));
+        content.push(createSectionTitle('Profile', accentColor, font, style));
         const summaryLines = data.summary.split('\n').filter(line => line.trim());
         summaryLines.forEach(line => {
             content.push(new Paragraph({
-                children: [new TextRun({ text: line, size: 20, font })],
+                children: [new TextRun({ text: line, size: style.bodySize, font })],
                 spacing: { after: 100 },
             }));
         });
@@ -159,31 +320,56 @@ function buildProfile(data: ResumeData, accentColor: string, font: string): Para
 }
 
 // Build experience section
-function buildExperience(data: ResumeData, accentColor: string, font: string): Paragraph[] {
+function buildExperience(
+    data: ResumeData, 
+    accentColor: string, 
+    font: string,
+    style: StyleConfig
+): Paragraph[] {
     const colorHex = accentColor.replace('#', '');
     const content: Paragraph[] = [];
     
     if (data.experience && data.experience.length > 0) {
-        content.push(createSectionTitle('Experience', accentColor, font));
+        content.push(createSectionTitle('Experience', accentColor, font, style));
         
         data.experience.forEach((exp) => {
+            // Role and Period
             content.push(new Paragraph({
                 children: [
-                    new TextRun({ text: exp.role, bold: true, size: 22, font }),
-                    new TextRun({ text: `  |  ${exp.period}`, size: 20, color: '666666', font }),
+                    new TextRun({ 
+                        text: exp.role, 
+                        bold: style.useBold, 
+                        size: style.sectionTitleSize, 
+                        font,
+                        allCaps: style.sectionTitleStyle === 'box',
+                    }),
+                    new TextRun({ 
+                        text: `  |  ${exp.period}`, 
+                        size: style.bodySize, 
+                        color: '666666', 
+                        font 
+                    }),
                 ],
                 spacing: { before: 150, after: 50 },
             }));
             
+            // Company
             content.push(new Paragraph({
-                children: [new TextRun({ text: exp.company, size: 20, color: colorHex, italics: true, font })],
+                children: [new TextRun({ 
+                    text: exp.company, 
+                    size: style.bodySize, 
+                    color: colorHex, 
+                    italics: style.useItalics, 
+                    font 
+                })],
                 spacing: { after: 100 },
             }));
             
+            // Description bullets
             const descLines = exp.description.split('\n').filter(line => line.trim());
             descLines.forEach(line => {
-                const cleanLine = line.replace(/^[\s•\-\*]+/, '').trim();
-                if (cleanLine) content.push(createBulletPoint(cleanLine, font));
+                const cleanLine = line.replace(/^[\s•\-\*→■]+/, '').trim();
+                if (cleanLine) content.push(createBulletPoint(cleanLine, font, style));
             });
         });
     }
@@ -191,21 +377,32 @@ function buildExperience(data: ResumeData, accentColor: string, font: string): P
 }
 
 // Build education section
-function buildEducation(data: ResumeData, accentColor: string, font: string): Paragraph[] {
+function buildEducation(
+    data: ResumeData, 
+    accentColor: string, 
+    font: string,
+    style: StyleConfig
+): Paragraph[] {
     const content: Paragraph[] = [];
     
     if (data.education && data.education.length > 0) {
-        content.push(createSectionTitle('Education', accentColor, font));
+        content.push(createSectionTitle('Education', accentColor, font, style));
         
         data.education.forEach((edu) => {
             content.push(new Paragraph({
-                children: [new TextRun({ text: edu.school, bold: true, size: 22, font })],
+                children: [new TextRun({ 
+                    text: edu.school, 
+                    bold: style.useBold, 
+                    size: style.sectionTitleSize, 
+                    font,
+                    allCaps: style.sectionTitleStyle === 'box',
+                })],
                 spacing: { before: 100, after: 50 },
             }));
             content.push(new Paragraph({
                 children: [
-                    new TextRun({ text: edu.degree, size: 20, font }),
-                    new TextRun({ text: `  |  ${edu.year}`, size: 18, color: '666666', font }),
+                    new TextRun({ text: edu.degree, size: style.bodySize, font }),
+                    new TextRun({ text: `  |  ${edu.year}`, size: style.smallSize, color: '666666', font }),
                 ],
                 spacing: { after: 100 },
             }));
@@ -215,14 +412,20 @@ function buildEducation(data: ResumeData, accentColor: string, font: string): Pa
 }
 
 // Build skills section
-function buildSkills(data: ResumeData, accentColor: string, font: string): Paragraph[] {
+function buildSkills(
+    data: ResumeData, 
+    accentColor: string, 
+    font: string,
+    style: StyleConfig
+): Paragraph[] {
     const content: Paragraph[] = [];
     
     if (data.skills && data.skills.length > 0) {
-        content.push(createSectionTitle('Skills', accentColor, font));
-        const skillsList = data.skills.map(s => s.name).join(' • ');
+        content.push(createSectionTitle('Skills', accentColor, font, style));
+        const separator = style.sectionTitleStyle === 'box' ? ' ■ ' : ' • ';
+        const skillsList = data.skills.map(s => s.name).join(separator);
         content.push(new Paragraph({
-            children: [new TextRun({ text: skillsList, size: 20, font })],
+            children: [new TextRun({ text: skillsList, size: style.bodySize, font })],
             spacing: { after: 100 },
         }));
     }
@@ -230,14 +433,20 @@ function buildSkills(data: ResumeData, accentColor: string, font: string): Parag
 }
 
 // Build competencies section
-function buildCompetencies(data: ResumeData, accentColor: string, font: string): Paragraph[] {
+function buildCompetencies(
+    data: ResumeData, 
+    accentColor: string, 
+    font: string,
+    style: StyleConfig
+): Paragraph[] {
     const content: Paragraph[] = [];
     
     if (data.competencies && data.competencies.length > 0) {
-        content.push(createSectionTitle('Competencies', accentColor, font));
-        const compList = data.competencies.map(c => c.name).join(' • ');
+        content.push(createSectionTitle('Competencies', accentColor, font, style));
+        const separator = style.sectionTitleStyle === 'box' ? ' ■ ' : ' • ';
+        const compList = data.competencies.map(c => c.name).join(separator);
         content.push(new Paragraph({
-            children: [new TextRun({ text: compList, size: 20, font })],
+            children: [new TextRun({ text: compList, size: style.bodySize, font })],
             spacing: { after: 100 },
         }));
     }
@@ -251,18 +460,20 @@ export async function exportToWord(
     const { 
         accentColor = '#2563EB', 
         fontFamily = 'Inter',
-        layout = LayoutType.SINGLE_COLUMN 
+        layout = LayoutType.SINGLE_COLUMN,
+        template = TemplateType.PROFESSIONAL,
     } = options;
-    const colorHex = accentColor.replace('#', '');
+    
     const font = fontMapping[fontFamily] || 'Arial';
+    const style = getStyleConfig(template, accentColor);
 
     // Build all content sections
-    const header = buildHeader(data, colorHex, font);
-    const profile = buildProfile(data, accentColor, font);
-    const experience = buildExperience(data, accentColor, font);
-    const education = buildEducation(data, accentColor, font);
-    const skills = buildSkills(data, accentColor, font);
-    const competencies = buildCompetencies(data, accentColor, font);
+    const header = buildHeader(data, accentColor, font, style);
+    const profile = buildProfile(data, accentColor, font, style);
+    const experience = buildExperience(data, accentColor, font, style);
+    const education = buildEducation(data, accentColor, font, style);
+    const skills = buildSkills(data, accentColor, font, style);
+    const competencies = buildCompetencies(data, accentColor, font, style);
 
     let documentChildren: (Paragraph | Table)[] = [];
 
@@ -295,6 +506,12 @@ export async function exportToWord(
             right: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
         };
 
+        // For brutalism, add visible border between columns
+        const separatorBorder = style.sectionTitleStyle === 'box' ? {
+            ...noBorder,
+            right: { style: BorderStyle.SINGLE, size: 12, color: accentColor.replace('#', '') },
+        } : noBorder;
+
         const table = new Table({
             width: { size: 100, type: WidthType.PERCENTAGE },
             layout: TableLayoutType.FIXED,
@@ -305,7 +522,7 @@ export async function exportToWord(
                             width: { size: leftWidth, type: WidthType.PERCENTAGE },
                             children: leftContent.length > 0 ? leftContent : [new Paragraph({})],
                             verticalAlign: VerticalAlign.TOP,
-                            borders: noBorder,
+                            borders: layout === LayoutType.TWO_COLUMN_LEFT ? separatorBorder : noBorder,
                             margins: {
                                 top: convertInchesToTwip(0),
                                 bottom: convertInchesToTwip(0),
@@ -317,7 +534,10 @@ export async function exportToWord(
                             width: { size: rightWidth, type: WidthType.PERCENTAGE },
                             children: rightContent.length > 0 ? rightContent : [new Paragraph({})],
                             verticalAlign: VerticalAlign.TOP,
-                            borders: noBorder,
+                            borders: layout === LayoutType.TWO_COLUMN_RIGHT ? {
+                                ...noBorder,
+                                left: separatorBorder.right,
+                            } : noBorder,
                             margins: {
                                 top: convertInchesToTwip(0),
                                 bottom: convertInchesToTwip(0),
