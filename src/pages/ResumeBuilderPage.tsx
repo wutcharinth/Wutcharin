@@ -185,7 +185,7 @@ const ResumeBuilderPage: React.FC = () => {
                             <div className="relative z-20 text-center max-w-5xl mx-auto">
                                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
                                     <Wand2 className="w-4 h-4 text-blue-500" />
-                                    <span className="text-sm font-medium text-gray-300 uppercase tracking-wider">Powered by Gemini 1.5 Pro</span>
+                                    <span className="text-sm font-medium text-gray-300 uppercase tracking-wider">Powered by Gemini AI</span>
                                 </div>
 
                                 <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter mb-8 leading-[0.9] text-white animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-100">
@@ -274,7 +274,7 @@ const ResumeBuilderPage: React.FC = () => {
                                         </div>
                                         <h5 className="text-xl font-bold text-white mb-3">1. Intelligent Parsing</h5>
                                         <p className="text-gray-400 leading-relaxed">
-                                            Gemini 1.5 Pro analyzes your LinkedIn PDF or raw text, identifying key entities like skills, dates, and job titles with 98% accuracy.
+                                            Gemini AI analyzes your LinkedIn PDF or raw text, identifying key entities like skills, dates, and job titles with high accuracy.
                                         </p>
                                     </Card>
                                     <Card className="p-8 bg-zinc-900/50 border-zinc-800 hover:border-blue-500/50 transition-colors group">

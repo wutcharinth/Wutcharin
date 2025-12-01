@@ -54,14 +54,24 @@ const SlipVerifyPage = () => {
                         transition={{ duration: 0.8 }}
                         className="max-w-4xl"
                     >
-                        <div className="inline-flex items-center gap-2 px-3 py-1 border border-blue-500/30 bg-blue-500/10 text-blue-400 text-xs font-bold mb-6 rounded-full">
-                            <Cpu className="w-3 h-3" />
-                            <span>Autonomous Agentic Workflow</span>
-                        </div>
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.1 }}
+                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-widest mb-6"
+                        >
+                            <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                            Interactive Simulation
+                        </motion.div>
 
-                        <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter mb-8 leading-[0.9] text-white">
-                            SlipVerify <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500">AI</span>
-                        </h1>
+                        <motion.h1
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="text-5xl md:text-7xl font-black text-white mb-6 tracking-tight"
+                        >
+                            SlipVerify <br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">AI Agent</span>
+                        </motion.h1>
 
                         <p className="text-xl md:text-2xl text-slate-400 max-w-2xl font-light leading-relaxed mb-10 border-l-4 border-blue-500 pl-6">
                             An intelligent revenue protection agent that autonomously verifies bank slips, detects fraud, and manages transaction lifecycles using <span className="text-white font-bold">LangGraph</span>.
