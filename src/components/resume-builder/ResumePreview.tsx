@@ -262,11 +262,18 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
                 <style>{`
                     @media print {
                         @page {
-                            margin: 15mm 0mm 5mm 0mm; /* Top margin for 2nd+ pages, 5mm bottom footer, no side margins */
+                            margin: 15mm 0mm 0mm 0mm !important; /* Top margin for 2nd+ pages, no bottom footer, no side margins */
                             size: auto;
+                            /* Remove browser headers and footers */
+                            marks: none;
                         }
                         @page :first {
-                            margin: 0mm 0mm 5mm 0mm !important; /* No top margin for first page, 5mm bottom */
+                            margin: 0mm 0mm 0mm 0mm !important; /* No margins on first page */
+                        }
+                        /* Hide browser print headers and footers */
+                        @page {
+                            margin-top: 0mm !important;
+                            margin-bottom: 0mm !important;
                         }
                         html, body {
                             background: white !important;
@@ -319,6 +326,27 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
                         .resume-preview-container > header:first-child {
                             padding-top: 0 !important;
                             margin-top: 0 !important;
+                        }
+                        
+                        /* Hide browser print headers and footers completely */
+                        @page {
+                            margin: 0mm !important;
+                        }
+                        @page :first {
+                            margin: 0mm !important;
+                        }
+                        
+                        /* Ensure no footer text appears */
+                        body::after {
+                            display: none !important;
+                        }
+                    }
+                    
+                    /* Additional CSS to prevent browser print headers/footers */
+                    @media print {
+                        @page {
+                            margin: 0 !important;
+                            size: A4;
                         }
                     }
                 `}</style>

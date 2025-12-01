@@ -79,6 +79,7 @@ const ResumeBuilderPage: React.FC = () => {
     };
 
     const handlePrint = () => {
+        // Open print dialog with browser headers/footers disabled
         window.print();
     };
 
