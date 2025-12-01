@@ -1,7 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const genAI = new GoogleGenerativeAI(process.env.VITE_GEMINI_API_KEY || '');
-
 export default async function handler(req, res) {
     // Enable CORS
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -17,10 +15,18 @@ export default async function handler(req, res) {
     }
 
     try {
+        // Get API key from environment (Vercel uses process.env directly)
+        const apiKey = process.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
+        
+        if (!apiKey) {
+            return res.status(500).json({ error: 'API Key missing on server' });
+        }
+
+        const genAI = new GoogleGenerativeAI(apiKey);
         const { currentText, suggestionType, context } = req.body;
 
-        if (!process.env.VITE_GEMINI_API_KEY) {
-            return res.status(500).json({ error: 'API Key missing on server' });
+        if (!currentText) {
+            return res.status(400).json({ error: 'currentText is required' });
         }
 
         const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
