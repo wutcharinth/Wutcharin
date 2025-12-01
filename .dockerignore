@@ -1,0 +1,31 @@
+# Dependencies (will be installed in container)
+node_modules
+server/node_modules
+
+# Build output (will be built in container)
+dist
+
+# Development files
+.git
+.gitignore
+.env
+.env.local
+*.log
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Documentation (not needed for runtime)
+*.md
+!README.md
+
+# Backup folder
+_backup
+

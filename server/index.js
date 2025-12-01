@@ -18,12 +18,25 @@ dotenv.config({ path: join(__dirname, '..', '.env') });
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Allowed origins for CORS
+const ALLOWED_ORIGINS = [
+    'https://wutcharin.com',
+    'https://www.wutcharin.com',
+    'https://wutcharin-production.up.railway.app',
+    'https://wutcharin-portfolio-p9pg07jfy-wthatans-projects.vercel.app',
+    'http://localhost:5173',
+    'http://localhost:3000'
+];
+
 app.use(cors({
-    origin: [
-        'http://localhost:5173',
-        'https://wutcharin-portfolio-p9pg07jfy-wthatans-projects.vercel.app',
-        'https://www.wutcharin.com'
-    ],
+    origin: function(origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        if (ALLOWED_ORIGINS.includes(origin)) {
+            return callback(null, true);
+        }
+        return callback(new Error('Not allowed by CORS'));
+    },
     credentials: true
 }));
 app.use(express.json());
