@@ -3,9 +3,10 @@ import { Button, TextArea, Card } from '../components/resume-builder/UI';
 import { ResumeEditor } from '../components/resume-builder/ResumeEditor';
 import { ResumePreview } from '../components/resume-builder/ResumePreview';
 import { parseLinkedInProfile } from '../components/resume-builder/geminiService';
+import { exportToWord } from '../components/resume-builder/wordExport';
 import { TemplateType, LayoutType, FontSize } from '../components/resume-builder/types';
 import type { ResumeData, FontFamily } from '../components/resume-builder/types';
-import { ArrowRight, Printer, Palette, Wand2, Layout, PanelLeft, PanelRight, RectangleVertical, Type, ZoomIn, ZoomOut, FileText, ArrowLeft, Download } from 'lucide-react';
+import { ArrowRight, Printer, Palette, Wand2, Layout, PanelLeft, PanelRight, RectangleVertical, Type, ZoomIn, ZoomOut, FileText, ArrowLeft, Download, FileDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 
@@ -81,6 +82,18 @@ const ResumeBuilderPage: React.FC = () => {
     const handlePrint = () => {
         // Open print dialog with browser headers/footers disabled
         window.print();
+    };
+
+    const handleWordExport = async () => {
+        try {
+            await exportToWord(resumeData, {
+                accentColor,
+                fontFamily,
+            });
+        } catch (error) {
+            console.error('Word export failed:', error);
+            alert('Failed to export Word document. Please try again.');
+        }
     };
 
     const handleManualStart = () => {
@@ -374,9 +387,14 @@ const ResumeBuilderPage: React.FC = () => {
                                         </div>
                                     </div>
 
-                                    <Button onClick={handlePrint} variant="primary" className="w-full xl:w-auto text-sm py-2.5 px-6 shadow-md font-bold tracking-wide whitespace-nowrap">
-                                        <Printer size={16} className="mr-2" /> Download PDF
-                                    </Button>
+                                    <div className="flex gap-2 w-full xl:w-auto">
+                                        <Button onClick={handlePrint} variant="primary" className="flex-1 xl:flex-initial text-sm py-2.5 px-5 shadow-md font-bold tracking-wide whitespace-nowrap">
+                                            <Printer size={16} className="mr-2" /> PDF
+                                        </Button>
+                                        <Button onClick={handleWordExport} variant="secondary" className="flex-1 xl:flex-initial text-sm py-2.5 px-5 shadow-md font-bold tracking-wide whitespace-nowrap bg-blue-600 hover:bg-blue-700 text-white border-blue-600">
+                                            <FileDown size={16} className="mr-2" /> Word
+                                        </Button>
+                                    </div>
                                 </div>
 
                                 {/* Resume Page Container - Print styles ensure full page width and no transform */}
