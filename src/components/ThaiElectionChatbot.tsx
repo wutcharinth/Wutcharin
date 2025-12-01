@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { X, Send, Sparkles, Loader2 } from 'lucide-react';
-import { GoogleGenerativeAI, DynamicRetrievalMode, SchemaType } from '@google/generative-ai';
+import { GoogleGenerativeAI, SchemaType } from '@google/generative-ai';
 import { motion, AnimatePresence } from 'framer-motion';
 import electionDataRaw from '../data/election-2023.json';
 import fullElectionData from '../data/full_election_results.json';
@@ -98,13 +98,8 @@ export default function ThaiElectionChatbot() {
                 systemInstruction: systemInstruction,
                 tools: [
                     {
-                        googleSearchRetrieval: {
-                            dynamicRetrievalConfig: {
-                                mode: DynamicRetrievalMode.MODE_DYNAMIC,
-                                dynamicThreshold: 0.7,
-                            }
-                        }
-                    },
+                        googleSearch: {}
+                    } as any,
                     {
                         functionDeclarations: [
                             {
