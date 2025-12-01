@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
+    ArrowLeft,
     Brain,
     Cpu,
     FolderOpen,
@@ -75,7 +76,7 @@ export default function CollectionsDemo() {
         setPacketState({ target: null, visible: false });
 
         // 1. Trigger
-        addLog("TRIGGER", "Webhook detected new VCC Transaction ID: 882190");
+        addLog("TRIGGER", "Webhook detected VCC Transaction #882190 charged by 'Grand Hotel Plaza'.");
         addEvidence(FileText, "VCC_Statement.csv", "SOURCE");
         setActiveNode('trigger');
         await new Promise(r => setTimeout(r, 800));
@@ -85,9 +86,9 @@ export default function CollectionsDemo() {
         await new Promise(r => setTimeout(r, 800)); // Travel time
         setActiveNode('analyst');
 
-        addLog("POLICY CHECK", "Cancellation Date: Oct 20 | Policy Deadline: Oct 21", "text-white");
-        addLog("LOGIC RESULT", "Cancellation was VALID. Charge is INVALID.", "text-green-400");
-        setConfidence("98%");
+        addLog("POLICY CHECK", "Booking #BK-99201 was cancelled on Oct 20 (24h before check-in).", "text-white");
+        addLog("LOGIC RESULT", "Cancellation Policy: 'Free cancellation until Oct 21'. Charge is INVALID.", "text-green-400");
+        setConfidence("99.8%");
         addEvidence(CalendarX, "Booking_Log.json", "PMS");
         await new Promise(r => setTimeout(r, 1200));
 
@@ -96,8 +97,8 @@ export default function CollectionsDemo() {
         await new Promise(r => setTimeout(r, 800));
         setActiveNode('strategy');
 
-        addLog("RELATIONSHIP CHECK", "Hotel Tier: Standard Partner. History: 2 previous disputes (Resolved).");
-        addLog("STRATEGY", "Select Tone: FIRM_PROFESSIONAL. Use Template B.", "text-violet-300");
+        addLog("RELATIONSHIP CHECK", "Partner Tier: Silver. Dispute History: 2 previous cases (100% Win Rate).");
+        addLog("STRATEGY", "Selected Tone: FIRM_PROFESSIONAL. Using 'Template_B_Overcharge_Notice'.", "text-violet-300");
         await new Promise(r => setTimeout(r, 1200));
 
         // 4. Action
@@ -105,7 +106,7 @@ export default function CollectionsDemo() {
         await new Promise(r => setTimeout(r, 800));
         setActiveNode('action');
 
-        addLog("GENERATION", "Drafting email with GPT-4o...");
+        addLog("GENERATION", "Drafting email to reservations@grandhotelplaza.com...");
         addEvidence(Mail, "Dispute_Email_Draft.eml", "OUTBOX");
         await new Promise(r => setTimeout(r, 1000));
 
@@ -113,23 +114,23 @@ export default function CollectionsDemo() {
         setPacketState({ target: 'hotel', visible: true });
         await new Promise(r => setTimeout(r, 800));
         setActiveNode('hotel');
-        addLog("WAITING", "Email sent. Listening for reply...", "text-slate-500 italic");
+        addLog("WAITING", "Email sent. Listening for reply via IMAP...", "text-slate-500 italic");
         await new Promise(r => setTimeout(r, 2000));
 
         // Branching
         if (type === 'success') {
-            addLog("REPLY RECEIVED", "Hotel: 'Apologies, we processed refund.'", "text-green-400");
+            addLog("REPLY RECEIVED", "Sender: reservations@grandhotelplaza.com <br/>'Apologies, this was an accounting error. Refund processed.'", "text-green-400");
             addEvidence(Reply, "Hotel_Reply.eml", "INBOX");
 
             setPacketState({ target: 'outcome-success', visible: true });
             await new Promise(r => setTimeout(r, 800));
             setActiveNode('outcome-success');
             setOutcome('success');
-            addLog("CONCLUSION", "Case Closed. Recovered $450.", "text-green-400 font-bold");
+            addLog("CONCLUSION", "Refund verified in VCC ledger. Case Closed. Recovered $450.", "text-green-400 font-bold");
 
         } else if (type === 'rebuttal') {
             setActiveNode('hotel-error'); // Visual state for negative reply
-            addLog("REPLY RECEIVED", "Hotel: 'Guest was No-Show. Charge valid.'", "text-red-400");
+            addLog("REPLY RECEIVED", "Sender: reservations@grandhotelplaza.com <br/>'Guest did not arrive. No-Show fee applies.'", "text-red-400");
 
             // Rebuttal Loop
             setShowRebuttal(true);
@@ -137,33 +138,34 @@ export default function CollectionsDemo() {
             await new Promise(r => setTimeout(r, 800));
             setActiveNode('rebuttal');
 
-            addLog("AI REBUTTAL", "Claim: 'No Show'. Action: Check Guest Flight Data.", "text-yellow-400");
+            addLog("AI REBUTTAL", "Claim: 'No Show'. Checking 'Force Majeure' conditions...", "text-yellow-400");
             await new Promise(r => setTimeout(r, 1000));
 
             addEvidence(Plane, "Flight_Status_Api.json", "EXTERNAL");
-            addLog("EVIDENCE FOUND", "Flight UA882 was cancelled. Guest could not arrive.", "text-white");
-            addLog("AUTO-REPLY", "Sending Rebuttal: 'Force Majeure policy applies due to flight cancellation.'");
+            addLog("EVIDENCE FOUND", "Flight UA882 (SFO->JFK) was cancelled due to weather.", "text-white");
+            addLog("AUTO-REPLY", "Drafting Rebuttal: 'Guest unable to arrive due to flight cancellation. Waiver applies per contract clause 4.2.'");
 
             // Loop back
             setPacketState({ target: 'hotel-return', visible: true }); // Special target for return trip
             await new Promise(r => setTimeout(r, 800));
             setActiveNode('hotel');
 
-            addLog("HOTEL RESPONSE", "Hotel: 'Understood. Refund processed.'", "text-green-400");
+            addLog("HOTEL RESPONSE", "'Understood. We have waived the fee.'", "text-green-400");
             await new Promise(r => setTimeout(r, 1000));
 
             setPacketState({ target: 'outcome-success', visible: true });
             await new Promise(r => setTimeout(r, 800));
             setActiveNode('outcome-success');
             setOutcome('success');
+            addLog("CONCLUSION", "Waiver confirmed. Case Closed.", "text-green-400 font-bold");
 
         } else { // Fail
-            addLog("TIMEOUT", "No response for 48 hours.", "text-red-400");
+            addLog("TIMEOUT", "No response received for 48 hours. Escalation required.", "text-red-400");
             setPacketState({ target: 'outcome-fail', visible: true });
             await new Promise(r => setTimeout(r, 800));
             setActiveNode('outcome-fail');
             setOutcome('fail');
-            addLog("ESCALATION", "Initiating VCC Chargeback (Code 4837).", "text-red-400 font-bold");
+            addLog("ESCALATION", "Initiating VCC Chargeback (Reason Code 4837 - No Credit Processed).", "text-red-400 font-bold");
         }
 
         setIsRunning(false);
@@ -390,27 +392,48 @@ export default function CollectionsDemo() {
             </section>
 
             {/* RIGHT: Controls */}
-            <aside className="w-[250px] bg-[#0B1120] border-l border-slate-700 p-6 flex flex-col justify-center z-20 pt-16">
+            <aside className="w-[280px] bg-[#0B1120] border-l border-slate-700 p-6 flex flex-col justify-center z-20 pt-16 relative">
+
+                {/* CTA Overlay */}
+                {!isRunning && (
+                    <motion.div
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="absolute top-24 left-0 w-full flex justify-center pointer-events-none z-30"
+                    >
+                        <div className="bg-violet-600 text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-lg shadow-violet-500/50 animate-bounce flex items-center gap-2">
+                            <span>Start Here</span>
+                            <ArrowLeft className="w-3 h-3 rotate-180" />
+                        </div>
+                    </motion.div>
+                )}
+
                 <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6 text-center">Run Simulation</h3>
 
                 <div className="space-y-4">
                     <button
                         onClick={() => runScenario('success')}
                         disabled={isRunning}
-                        className="w-full py-4 bg-slate-800 hover:bg-green-900/20 border border-slate-700 hover:border-green-500 rounded-xl transition-all group disabled:opacity-50 disabled:cursor-not-allowed text-left px-4 relative overflow-hidden"
+                        className={`w-full py-4 bg-slate-800 border border-slate-700 rounded-xl transition-all group disabled:opacity-50 disabled:cursor-not-allowed text-left px-4 relative overflow-hidden ${!isRunning ? 'hover:bg-green-900/20 hover:border-green-500 hover:scale-[1.02] shadow-lg' : ''}`}
                     >
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-                        <div className="text-[10px] text-slate-400 group-hover:text-green-400 font-bold mb-1">SCENARIO A</div>
+                        <div className="flex justify-between items-start mb-1">
+                            <div className="text-[10px] text-slate-400 group-hover:text-green-400 font-bold">SCENARIO A</div>
+                            {!isRunning && <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>}
+                        </div>
                         <div className="text-xs font-bold text-white">Hotel Agrees</div>
+                        <div className="text-[9px] text-slate-500 mt-1">Full Refund Processed</div>
                     </button>
 
                     <button
                         onClick={() => runScenario('rebuttal')}
                         disabled={isRunning}
-                        className="w-full py-4 bg-slate-800 hover:bg-yellow-900/20 border border-slate-700 hover:border-yellow-500 rounded-xl transition-all group disabled:opacity-50 disabled:cursor-not-allowed text-left px-4 relative overflow-hidden"
+                        className={`w-full py-4 bg-slate-800 border border-slate-700 rounded-xl transition-all group disabled:opacity-50 disabled:cursor-not-allowed text-left px-4 relative overflow-hidden ${!isRunning ? 'hover:bg-yellow-900/20 hover:border-yellow-500 hover:scale-[1.02] shadow-lg' : ''}`}
                     >
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-                        <div className="text-[10px] text-slate-400 group-hover:text-yellow-400 font-bold mb-1">SCENARIO B</div>
+                        <div className="flex justify-between items-start mb-1">
+                            <div className="text-[10px] text-slate-400 group-hover:text-yellow-400 font-bold">SCENARIO B</div>
+                        </div>
                         <div className="text-xs font-bold text-white">Hotel Denies (No Show)</div>
                         <div className="text-[9px] text-violet-400 mt-1 flex items-center gap-1"><RotateCcw className="w-3 h-3" /> Triggers AI Rebuttal</div>
                     </button>
@@ -418,10 +441,12 @@ export default function CollectionsDemo() {
                     <button
                         onClick={() => runScenario('fail')}
                         disabled={isRunning}
-                        className="w-full py-4 bg-slate-800 hover:bg-red-900/20 border border-slate-700 hover:border-red-500 rounded-xl transition-all group disabled:opacity-50 disabled:cursor-not-allowed text-left px-4 relative overflow-hidden"
+                        className={`w-full py-4 bg-slate-800 border border-slate-700 rounded-xl transition-all group disabled:opacity-50 disabled:cursor-not-allowed text-left px-4 relative overflow-hidden ${!isRunning ? 'hover:bg-red-900/20 hover:border-red-500 hover:scale-[1.02] shadow-lg' : ''}`}
                     >
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-                        <div className="text-[10px] text-slate-400 group-hover:text-red-400 font-bold mb-1">SCENARIO C</div>
+                        <div className="flex justify-between items-start mb-1">
+                            <div className="text-[10px] text-slate-400 group-hover:text-red-400 font-bold">SCENARIO C</div>
+                        </div>
                         <div className="text-xs font-bold text-white">Hotel Ignores</div>
                         <div className="text-[9px] text-red-400 mt-1 flex items-center gap-1"><AlertTriangle className="w-3 h-3" /> Auto-Chargeback</div>
                     </button>
