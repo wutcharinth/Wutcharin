@@ -1,26 +1,30 @@
-# Use Node.js 18 (Railway's default, proven to work)
+# Use Node.js 18 LTS
 FROM node:18-alpine
 
+# Set working directory
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+# Copy all package files first (for better Docker caching)
+COPY package.json package-lock.json ./
+COPY server/package.json server/package-lock.json ./server/
 
-# Install dependencies
-RUN npm ci --only=production=false
+# Install root dependencies (including devDependencies for build)
+RUN npm ci
 
-# Copy server directory
-COPY server/ ./server/
+# Install server dependencies
+RUN cd server && npm ci
 
-# Copy rest of the application
+# Copy source files (node_modules excluded via .dockerignore)
 COPY . .
 
-# Build the frontend
+# Build the frontend (TypeScript + Vite)
 RUN npm run build
 
-# Expose port
+# Set production environment
+ENV NODE_ENV=production
+
+# Expose port (Railway uses PORT env var)
 EXPOSE 3000
 
 # Start the server
-CMD ["npm", "start"]
-
+CMD ["node", "server/index.js"]
