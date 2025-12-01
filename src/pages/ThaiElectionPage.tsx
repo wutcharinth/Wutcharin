@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { ParliamentGrid } from '../components/ParliamentGrid';
 import { ElectionInsights } from '../components/ElectionInsights';
+import { SeatDecompositionTree } from '../components/SeatDecompositionTree';
 import { useState, useRef } from 'react';
 import { ArrowLeft, Map as MapIcon, BarChart2, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -233,6 +234,12 @@ export default function ThaiElectionPage() {
             {/* Insights Section */}
             <ElectionInsights
                 nationalParties={electionData.national.parties}
+                provinces={electionData.provinces}
+            />
+
+            {/* Seat Decomposition Tree */}
+            <SeatDecompositionTree
+                parties={electionData.national.parties}
                 provinces={electionData.provinces}
             />
 
