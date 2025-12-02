@@ -69,20 +69,23 @@ const experiences = [
 
 export default function Experience() {
     return (
-        <section id="experience" className="py-20 px-4 bg-bg">
+        <section id="experience" className="py-20 px-4 relative">
             <div className="max-w-4xl mx-auto">
-                <motion.h2
+                <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="text-4xl font-bold text-center mb-16 uppercase tracking-tighter text-text"
+                    className="text-center mb-16"
                 >
-                    Professional <span className="text-inverse-text bg-inverse px-2">Experience</span>
-                </motion.h2>
+                    <h2 className="text-4xl md:text-6xl font-black text-white mb-4 uppercase tracking-tight">
+                        Professional <span className="text-violet-500">Experience</span>
+                    </h2>
+                    <div className="w-24 h-1 bg-violet-600 mx-auto rounded-full"></div>
+                </motion.div>
 
                 <div className="relative">
                     {/* Vertical Line */}
-                    <div className="absolute left-0 md:left-1/2 h-full w-1 bg-border transform -translate-x-1/2 hidden md:block" />
+                    <div className="absolute left-0 md:left-1/2 h-full w-px bg-slate-800 transform -translate-x-1/2 hidden md:block" />
 
                     <div className="space-y-12">
                         {experiences.map((exp, index) => (
@@ -96,24 +99,24 @@ export default function Experience() {
                                     }`}
                             >
                                 {/* Timeline Dot */}
-                                <div className="absolute left-0 md:left-1/2 w-6 h-6 bg-bg border-2 border-border transform -translate-x-1/2 mt-1.5 hidden md:block z-10" />
+                                <div className="absolute left-0 md:left-1/2 w-4 h-4 bg-violet-500 rounded-full border-4 border-[#020617] transform -translate-x-1/2 mt-1.5 hidden md:block z-10 shadow-[0_0_10px_rgba(139,92,246,0.5)]" />
 
                                 <div className="flex-1">
-                                    <div className={`p-6 bg-bg border-2 border-border shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] transition-all ${index % 2 === 0 ? 'md:text-left' : 'md:text-right'
+                                    <div className={`p-6 bg-slate-900/50 border border-slate-800 rounded-2xl hover:border-violet-500/30 transition-all ${index % 2 === 0 ? 'md:text-left' : 'md:text-right'
                                         }`}>
-                                        <h3 className="text-xl font-bold text-text mb-1 uppercase">{exp.company}</h3>
-                                        <h4 className="text-primary font-bold mb-3 border-b-2 border-border inline-block">{exp.role}</h4>
+                                        <h3 className="text-xl font-bold text-white mb-1 uppercase tracking-tight">{exp.company}</h3>
+                                        <h4 className="text-violet-400 font-bold mb-3 text-sm uppercase tracking-wide">{exp.role}</h4>
 
-                                        <div className={`flex items-center gap-2 text-sm text-text font-bold mb-4 ${index % 2 === 0 ? 'md:justify-start' : 'md:justify-end'
+                                        <div className={`flex items-center gap-2 text-xs text-slate-500 font-mono mb-4 ${index % 2 === 0 ? 'md:justify-start' : 'md:justify-end'
                                             }`}>
-                                            <Calendar className="w-4 h-4" />
+                                            <Calendar className="w-3 h-3" />
                                             {exp.period}
                                         </div>
 
                                         <ul className="space-y-2">
                                             {exp.points.map((point, i) => (
-                                                <li key={i} className="text-text text-sm leading-relaxed flex gap-2 font-medium">
-                                                    <span className="text-text mt-1.5 min-w-[6px] h-[6px] bg-text block" />
+                                                <li key={i} className={`text-slate-400 text-sm leading-relaxed flex gap-2 ${index % 2 === 0 ? 'flex-row' : 'md:flex-row-reverse'}`}>
+                                                    <span className="text-violet-500 mt-1.5 min-w-[6px] h-[6px] rounded-full bg-violet-500 block shrink-0" />
                                                     <span>{point}</span>
                                                 </li>
                                             ))}
@@ -121,15 +124,15 @@ export default function Experience() {
 
                                         {/* @ts-ignore */}
                                         {exp.link && (
-                                            <div className="mt-4 pt-4 border-t-2 border-border">
+                                            <div className={`mt-4 pt-4 border-t border-slate-800 ${index % 2 === 0 ? 'text-left' : 'md:text-right'}`}>
                                                 <a
                                                     /* @ts-ignore */
                                                     href={exp.link}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-text transition-colors uppercase tracking-wide"
+                                                    className="inline-flex items-center gap-2 text-sm font-bold text-violet-400 hover:text-white transition-colors uppercase tracking-wide"
                                                 >
-                                                    <span className="border-b-2 border-primary hover:border-text">
+                                                    <span className="border-b border-violet-500/30 hover:border-white">
                                                         {/* @ts-ignore */}
                                                         {exp.linkText || "View Related News"}
                                                     </span>
