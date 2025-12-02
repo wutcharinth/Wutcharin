@@ -1,0 +1,114 @@
+@keyframes pulse-border {
+    0% {
+        border-color: #F59E0B;
+    }
+
+    50% {
+        border-color: #fbbf24;
+    }
+
+    100% {
+        border-color: #F59E0B;
+    }
+}
+
+.project-flow-scroll::-webkit-scrollbar {
+    width: 4px;
+}
+
+.project-flow-scroll::-webkit-scrollbar-track {
+    background: #0F172A;
+}
+
+.project-flow-scroll::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 2px;
+}
+
+.node-card {
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid #334155;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.node-active {
+    border-color: #3B82F6;
+    background: rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+    transform: translateY(-2px);
+}
+
+.node-warning {
+    border-color: #F59E0B;
+    background: rgba(245, 158, 11, 0.1);
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+}
+
+.node-hitl {
+    border-color: #F59E0B;
+    background: rgba(245, 158, 11, 0.1);
+    box-shadow: 0 0 25px rgba(245, 158, 11, 0.4);
+    animation: pulse-border 2s infinite;
+}
+
+.flow-line {
+    position: absolute;
+    left: 24px;
+    top: 40px;
+    bottom: -24px;
+    width: 2px;
+    background: #334155;
+    z-index: 0;
+}
+
+.flow-line.active {
+    background: #3B82F6;
+    box-shadow: 0 0 8px #3B82F6;
+}
+
+.kanban-col {
+    background: #1E293B;
+    border-radius: 8px;
+    min-height: 200px;
+}
+
+.kanban-card {
+    background: #334155;
+    border-left-width: 3px;
+    border-radius: 4px;
+    padding: 8px;
+    margin-bottom: 8px;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.card-moving {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    z-index: 50;
+    border-color: #F59E0B;
+}
+
+.role-btn.active {
+    background-color: #334155;
+    color: white;
+    border-color: #475569;
+}
+
+.mobile-tab.active {
+    color: #3B82F6;
+    border-top: 2px solid #3B82F6;
+}
+
+.json-key {
+    color: #93c5fd;
+}
+
+.json-str {
+    color: #86efac;
+}
+
+.json-num {
+    color: #fca5a5;
+}
