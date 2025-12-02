@@ -28,7 +28,7 @@ const Home = () => {
     }, []);
 
     return (
-        <div className="relative min-h-screen text-black overflow-x-hidden selection:bg-primary selection:text-white">
+        <div className="relative min-h-screen bg-[#020617] text-slate-200 font-sans selection:bg-violet-500/30">
             <SEO
                 title="Executive Leader & AI Innovator"
                 description="Wutcharin Thatan is an Executive Leader and Data Strategist specializing in AI Automation, Machine Learning, and Business Intelligence."
@@ -46,7 +46,7 @@ const Home = () => {
                 <Contact />
             </main>
 
-            <footer className="py-8 text-center text-black text-sm border-t-2 border-black bg-white font-bold uppercase tracking-widest">
+            <footer className="py-8 text-center text-slate-600 text-sm border-t border-slate-800 bg-[#020617]">
                 <p>&copy; {new Date().getFullYear()} Wutcharin Thatan. All rights reserved.</p>
             </footer>
         </div>
