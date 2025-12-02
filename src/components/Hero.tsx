@@ -15,10 +15,7 @@ export default function Hero() {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5 }}
                 >
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-400 text-xs font-bold uppercase tracking-widest mb-8">
-                        <span className="w-2 h-2 rounded-full bg-violet-500 animate-pulse"></span>
-                        Available for Hire
-                    </div>
+
 
                     <h1 className="text-6xl md:text-8xl font-black mb-6 tracking-tight leading-tight text-white">
                         Wutcharin<br />
