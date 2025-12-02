@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import Lenis from 'lenis';
 import SlipVerifyDemo from '../components/slip-verify/SlipVerifyDemo';
+import ProjectNavigation from '../components/ProjectNavigation';
 
 const SlipVerifyPage = () => {
     useEffect(() => {
@@ -238,6 +239,9 @@ app = workflow.compile()`}
                 </section>
 
             </main>
+
+            {/* --- Navigation Footer --- */}
+            <ProjectNavigation currentId="slip-verify" />
 
             {/* --- Footer --- */}
             <footer className="py-12 border-t border-slate-800 bg-[#020617] text-center">
