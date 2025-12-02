@@ -4,6 +4,7 @@ import { ArrowLeft, Brain, Shield, Zap, Scale, Building2, Gavel } from 'lucide-r
 import { Link } from 'react-router-dom';
 import Lenis from 'lenis';
 import CollectionsDemo from '../components/collections/CollectionsDemo';
+import ProjectNavigation from '../components/ProjectNavigation';
 
 export default function CollectionsPage() {
     useEffect(() => {
@@ -229,6 +230,9 @@ export default function CollectionsPage() {
                 </section>
 
             </main>
+
+            {/* --- Navigation Footer --- */}
+            <ProjectNavigation currentId="collections" />
 
             {/* Footer */}
             <footer className="py-8 text-center text-slate-600 text-sm border-t border-slate-800">

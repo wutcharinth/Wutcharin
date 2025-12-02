@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import electionDataRaw from '../data/election-2023.json';
 import SEO from '../components/SEO';
 import ThaiElectionChatbot from '../components/ThaiElectionChatbot';
+import ProjectNavigation from '../components/ProjectNavigation';
 
 // Type Definitions
 interface PartyStats {
@@ -427,6 +428,9 @@ export default function ThaiElectionPage() {
 
             {/* AI Chatbot */}
             <ThaiElectionChatbot />
+
+            {/* --- Navigation Footer --- */}
+            <ProjectNavigation currentId="thai-election" />
 
             {/* Methodology Modal */}
             <MethodologyModal />
