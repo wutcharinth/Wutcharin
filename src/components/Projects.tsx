@@ -4,6 +4,30 @@ import { Link } from 'react-router-dom';
 
 const projects = [
     {
+        title: "RiskGuard AI",
+        role: "AI Engineer",
+        desc: "Internal Control System that audits transactions in real-time. Features Policy Checks, Entity Resolution (COI), and Market Benchmarking.",
+        tags: ["LangGraph", "React", "Risk", "Audit"],
+        link: "/risk-guard",
+        featured: true
+    },
+    {
+        title: "ProjectFlow AI",
+        role: "AI Engineer",
+        desc: "Autonomous Scrum Master that manages Jira boards. Features Scope Creep detection, Auto-Grooming, and Definition of Done checks.",
+        tags: ["Jira API", "React", "Agentic AI", "DevOps"],
+        link: "/project-flow",
+        featured: true
+    },
+    {
+        title: "ReviewFlow AI",
+        role: "AI Engineer",
+        desc: "Reputation Engine that turns feedback into action. Features Sentiment Analysis, Intelligent Routing, and Automated Operational Triggers.",
+        tags: ["NLP", "React", "Automation", "Reputation"],
+        link: "/review-flow",
+        featured: true
+    },
+    {
         title: "Thai Election 2566",
         role: "Data Artist & AI Engineer",
         desc: "Interactive data storytelling with an integrated RAG-based AI chatbot. Visualizes 2023 election results with deep political insights.",

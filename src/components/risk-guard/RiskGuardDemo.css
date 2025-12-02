@@ -1,0 +1,91 @@
+@keyframes scanLine {
+    0% { top: 0%; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+}
+
+@keyframes flashRed {
+    0%, 100% { background-color: rgba(244, 63, 94, 0.1); border-color: rgba(244, 63, 94, 0.5); }
+    50% { background-color: rgba(244, 63, 94, 0.3); border-color: rgba(244, 63, 94, 1); }
+}
+
+.animate-scan-line {
+    animation: scanLine 2s linear infinite;
+}
+
+.animate-flash-red {
+    animation: flashRed 1s ease-in-out infinite;
+}
+
+.node-card {
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid #334155;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.node-active {
+    border-color: #F43F5E;
+    background: rgba(244, 63, 94, 0.1);
+    box-shadow: 0 0 20px rgba(244, 63, 94, 0.2);
+    transform: translateY(-2px);
+}
+
+.node-risk {
+    border-color: #EF4444;
+    background: rgba(239, 68, 68, 0.1);
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
+}
+
+.flow-line {
+    position: absolute;
+    left: 24px;
+    top: 40px;
+    bottom: -24px;
+    width: 2px;
+    background: #334155;
+    z-index: 0;
+}
+
+.flow-line.active {
+    background: #F43F5E;
+    box-shadow: 0 0 8px #F43F5E;
+}
+
+.doc-preview {
+    font-family: 'Times New Roman', serif;
+    line-height: 1.4;
+    color: #333;
+    background: #f8fafc;
+}
+
+.highlight {
+    background-color: #fef08a;
+}
+
+.highlight-risk {
+    background-color: #fca5a5;
+    border: 2px solid #ef4444;
+}
+
+.role-btn.active {
+    background-color: #334155;
+    color: white;
+    border-color: #475569;
+}
+
+.mobile-tab.active {
+    color: #F43F5E;
+    border-top: 2px solid #F43F5E;
+}
+
+.json-key { color: #93c5fd; }
+.json-str { color: #86efac; }
+.json-num { color: #fca5a5; }
+.json-bool { color: #c4b5fd; }
+
+/* Custom Scrollbar for this component */
+.risk-guard-scroll::-webkit-scrollbar { width: 4px; }
+.risk-guard-scroll::-webkit-scrollbar-track { background: #0F172A; }
+.risk-guard-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }
