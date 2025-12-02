@@ -6,6 +6,9 @@ import ThaiElectionPage from './pages/ThaiElectionPage';
 import ResumeBuilderPage from './pages/ResumeBuilderPage';
 import SlipVerifyPage from './pages/SlipVerifyPage';
 import CollectionsPage from './pages/CollectionsPage';
+import RiskGuardPage from './pages/RiskGuardPage';
+import ProjectFlowPage from './pages/ProjectFlowPage';
+import ReviewFlowPage from './pages/ReviewFlowPage';
 
 // Component to scroll to top on route change
 const ScrollToTop = () => {
@@ -29,6 +32,9 @@ function App() {
         <Route path="/resume-builder" element={<ResumeBuilderPage />} />
         <Route path="/slip-verify" element={<SlipVerifyPage />} />
         <Route path="/collections" element={<CollectionsPage />} />
+        <Route path="/risk-guard" element={<RiskGuardPage />} />
+        <Route path="/project-flow" element={<ProjectFlowPage />} />
+        <Route path="/review-flow" element={<ReviewFlowPage />} />
       </Routes>
     </Router>
   );

@@ -1,0 +1,105 @@
+@keyframes pulse-slow {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+.review-flow-scroll::-webkit-scrollbar {
+    width: 4px;
+}
+
+.review-flow-scroll::-webkit-scrollbar-track {
+    background: #0F172A;
+}
+
+.review-flow-scroll::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 2px;
+}
+
+.stars {
+    color: #FBBC05;
+}
+
+.node-card {
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid #334155;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.node-active {
+    border-color: #F59E0B;
+    background: rgba(245, 158, 11, 0.1);
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+    transform: translateY(-2px);
+}
+
+.node-danger {
+    border-color: #EA4335;
+    background: rgba(234, 67, 53, 0.1);
+    box-shadow: 0 0 20px rgba(234, 67, 53, 0.3);
+}
+
+.node-success {
+    border-color: #34A853;
+    background: rgba(52, 168, 83, 0.1);
+    box-shadow: 0 0 20px rgba(52, 168, 83, 0.3);
+}
+
+.review-enter {
+    animation: slideIn 0.5s ease-out forwards;
+}
+
+.role-btn.active {
+    background-color: #334155;
+    color: white;
+    border-color: #475569;
+}
+
+.typing-cursor::after {
+    content: '|';
+    animation: blink 1s infinite;
+}
