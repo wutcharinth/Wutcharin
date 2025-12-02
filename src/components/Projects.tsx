@@ -62,8 +62,8 @@ const projects = [
     {
         title: "Local Guide",
         role: "Full Stack Developer",
-        desc: "AI-powered travel companion that creates personalized itineraries and provides local insights.",
-        tags: ["React", "AI", "Maps API", "Travel"],
+        desc: "End-to-end booking platform POC. Demonstrates full-stack development capabilities including real-time availability and booking management.",
+        tags: ["React", "Full Stack", "Booking System", "POC"],
         link: "https://web-production-c4714.up.railway.app/",
         featured: true
     },
