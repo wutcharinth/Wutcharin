@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import Lenis from 'lenis';
 import ReviewFlowDemo from '../components/review-flow/ReviewFlowDemo';
+import ProjectNavigation from '../components/ProjectNavigation';
 
 const ReviewFlowPage = () => {
     useEffect(() => {
@@ -222,6 +223,9 @@ elif analysis.sentiment == "POSITIVE" and "service" in analysis.topics:
                 </section>
 
             </main>
+
+            {/* --- Navigation Footer --- */}
+            <ProjectNavigation currentId="review-flow" />
 
             {/* --- Footer --- */}
             <footer className="py-12 border-t border-slate-800 bg-[#020617] text-center">

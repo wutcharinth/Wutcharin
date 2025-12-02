@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import Lenis from 'lenis';
 import RiskGuardDemo from '../components/risk-guard/RiskGuardDemo';
+import ProjectNavigation from '../components/ProjectNavigation';
 
 const RiskGuardPage = () => {
     useEffect(() => {
@@ -231,6 +232,9 @@ app = workflow.compile()`}
                 </section>
 
             </main>
+
+            {/* --- Navigation Footer --- */}
+            <ProjectNavigation currentId="risk-guard" />
 
             {/* --- Footer --- */}
             <footer className="py-12 border-t border-slate-800 bg-[#020617] text-center">

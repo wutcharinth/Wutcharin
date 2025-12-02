@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import Lenis from 'lenis';
 import ProjectFlowDemo from '../components/project-flow/ProjectFlowDemo';
+import ProjectNavigation from '../components/ProjectNavigation';
 
 const ProjectFlowPage = () => {
     useEffect(() => {
@@ -231,6 +232,9 @@ agent.run(template.format(velocity=32, capacity=team_stats))`}
                 </section>
 
             </main>
+
+            {/* --- Navigation Footer --- */}
+            <ProjectNavigation currentId="project-flow" />
 
             {/* --- Footer --- */}
             <footer className="py-12 border-t border-slate-800 bg-[#020617] text-center">
