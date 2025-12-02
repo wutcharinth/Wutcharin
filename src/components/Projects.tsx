@@ -87,7 +87,7 @@ const projects = [
 
 export default function Projects() {
     return (
-        <section id="projects" className="py-20 px-4 bg-bg">
+        <section id="projects" className="py-20 px-4 relative">
             <div className="max-w-6xl mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -95,14 +95,16 @@ export default function Projects() {
                     viewport={{ once: true }}
                     className="text-center mb-16"
                 >
-                    <h2 className="text-4xl font-bold mb-4 uppercase tracking-tighter text-text">Featured <span className="text-inverse-text bg-inverse px-2">Projects</span></h2>
-                    <p className="text-sm font-bold text-primary mb-6 uppercase tracking-widest">Personal projects that showcase my ability</p>
-                    <p className="text-text font-bold max-w-4xl mx-auto border-2 border-border bg-bg inline-block px-4 py-2 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
+                    <h2 className="text-4xl md:text-6xl font-black text-white mb-4 uppercase tracking-tight">
+                        Featured <span className="text-violet-500">Projects</span>
+                    </h2>
+                    <p className="text-sm font-bold text-violet-400 mb-6 uppercase tracking-widest">Personal projects that showcase my ability</p>
+                    <p className="text-slate-300 max-w-3xl mx-auto leading-relaxed">
                         Building rapid AI prototypes (often within days not weeks) and scalable intelligent solutions.
                     </p>
                 </motion.div>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {projects.map((project, index) => {
                         const isExternal = project.link.startsWith('http');
 
@@ -120,14 +122,14 @@ export default function Projects() {
                                         href={project.link}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="group block h-full bg-bg border-2 border-border p-6 hover:bg-primary hover:text-white transition-all shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-[2px] hover:translate-y-[2px] relative overflow-hidden flex flex-col"
+                                        className="group block h-full bg-slate-900/50 border border-slate-800 p-6 hover:border-violet-500/50 hover:bg-slate-800/50 transition-all rounded-2xl relative overflow-hidden flex flex-col"
                                     >
                                         <ProjectContent project={project} />
                                     </a>
                                 ) : (
                                     <Link
                                         to={project.link}
-                                        className="group block h-full bg-bg border-2 border-border p-6 hover:bg-primary hover:text-white transition-all shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-[2px] hover:translate-y-[2px] relative overflow-hidden flex flex-col"
+                                        className="group block h-full bg-slate-900/50 border border-slate-800 p-6 hover:border-violet-500/50 hover:bg-slate-800/50 transition-all rounded-2xl relative overflow-hidden flex flex-col"
                                     >
                                         <ProjectContent project={project} />
                                     </Link>
@@ -145,23 +147,23 @@ function ProjectContent({ project }: { project: typeof projects[0] }) {
     return (
         <>
             <div className="absolute top-0 right-0 p-4 opacity-100">
-                <ArrowUpRight className="text-text group-hover:text-white w-6 h-6 border-2 border-border group-hover:border-white bg-bg group-hover:bg-inverse transition-colors" />
+                <ArrowUpRight className="text-slate-500 group-hover:text-violet-400 w-6 h-6 transition-colors" />
             </div>
 
             <div className="mb-4">
-                <h3 className="text-xl font-bold text-text group-hover:text-white transition-colors uppercase tracking-tight">
+                <h3 className="text-xl font-bold text-white group-hover:text-violet-400 transition-colors uppercase tracking-tight pr-8">
                     {project.title}
                 </h3>
-                <span className="text-sm text-primary group-hover:text-text font-bold bg-inverse group-hover:bg-bg px-1 inline-block mt-1">{project.role}</span>
+                <span className="text-xs text-violet-400 font-mono mt-1 inline-block">{project.role}</span>
             </div>
 
-            <p className="text-text group-hover:text-white text-sm mb-6 line-clamp-4 font-medium border-t-2 border-border group-hover:border-white pt-4 flex-grow">
+            <p className="text-slate-400 text-sm mb-6 line-clamp-4 leading-relaxed flex-grow">
                 {project.desc}
             </p>
 
             <div className="flex flex-wrap gap-2 mt-auto">
                 {project.tags.map((tag, i) => (
-                    <span key={i} className="text-xs px-3 py-1 bg-bg border-2 border-border text-text font-bold group-hover:bg-inverse group-hover:text-inverse-text group-hover:border-inverse-text transition-colors">
+                    <span key={i} className="text-xs px-3 py-1 bg-slate-800/50 border border-slate-700 rounded-full text-slate-300 group-hover:border-violet-500/30 group-hover:text-violet-200 transition-colors">
                         {tag}
                     </span>
                 ))}
