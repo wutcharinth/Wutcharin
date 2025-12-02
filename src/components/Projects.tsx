@@ -28,6 +28,14 @@ const projects = [
         featured: true
     },
     {
+        title: "QueryFlow AI",
+        role: "Data Engineer",
+        desc: "Enterprise Data Agent that bridges natural language and SQL. Features Metadata Scouting, Federated Execution, and Lineage Tracking.",
+        tags: ["Text-to-SQL", "React", "Trino", "Data"],
+        link: "/query-flow",
+        featured: true
+    },
+    {
         title: "Thai Election 2566",
         role: "Data Artist & AI Engineer",
         desc: "Interactive data storytelling with an integrated RAG-based AI chatbot. Visualizes 2023 election results with deep political insights.",
