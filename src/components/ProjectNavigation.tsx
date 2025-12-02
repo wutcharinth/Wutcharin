@@ -33,6 +33,16 @@ const projects = [
         link: "/review-flow"
     },
     {
+        id: 'query-flow',
+        title: "QueryFlow AI",
+        desc: "Enterprise Data Agent",
+        icon: Database,
+        color: "text-violet-500",
+        bg: "bg-violet-500/10",
+        border: "border-violet-500/20",
+        link: "/query-flow"
+    },
+    {
         id: 'collections',
         title: "Collections AI",
         desc: "Autonomous Finance Recovery Agent",
