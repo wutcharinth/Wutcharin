@@ -63,18 +63,18 @@
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 12px;
-  border-left: 2px solid black;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-white;
+  background: #020617;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-primary border-2 border-black;
+  background: #4c1d95;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-secondary;
+  background: #6d28d9;
 }
