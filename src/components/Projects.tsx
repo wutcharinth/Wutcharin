@@ -4,6 +4,22 @@ import { Link } from 'react-router-dom';
 
 const projects = [
     {
+        title: "Thai Election 2566",
+        role: "Data Artist & AI Engineer",
+        desc: "Interactive data storytelling with an integrated RAG-based AI chatbot. Visualizes 2023 election results with deep political insights.",
+        tags: ["Data Viz", "RAG", "Gemini AI", "React"],
+        link: "/thai-election",
+        featured: true
+    },
+    {
+        title: "QueryFlow AI",
+        role: "Data Engineer",
+        desc: "Enterprise Data Agent that bridges natural language and SQL. Features Metadata Scouting, Federated Execution, and Lineage Tracking.",
+        tags: ["Text-to-SQL", "React", "Trino", "Data"],
+        link: "/query-flow",
+        featured: true
+    },
+    {
         title: "RiskGuard AI",
         role: "AI Engineer",
         desc: "Internal Control System that audits transactions in real-time. Features Policy Checks, Entity Resolution (COI), and Market Benchmarking.",
@@ -28,22 +44,6 @@ const projects = [
         featured: true
     },
     {
-        title: "QueryFlow AI",
-        role: "Data Engineer",
-        desc: "Enterprise Data Agent that bridges natural language and SQL. Features Metadata Scouting, Federated Execution, and Lineage Tracking.",
-        tags: ["Text-to-SQL", "React", "Trino", "Data"],
-        link: "/query-flow",
-        featured: true
-    },
-    {
-        title: "Thai Election 2566",
-        role: "Data Artist & AI Engineer",
-        desc: "Interactive data storytelling with an integrated RAG-based AI chatbot. Visualizes 2023 election results with deep political insights.",
-        tags: ["Data Viz", "RAG", "Gemini AI", "React"],
-        link: "/thai-election",
-        featured: true
-    },
-    {
         title: "Enterprise Collections AI",
         role: "AI Engineer",
         desc: "Autonomous dispute agent for VCC overcharges. Features cognitive flow, strategy engine, and auto-rebuttal loops.",
@@ -57,6 +57,14 @@ const projects = [
         desc: "Intelligent expense verification system using ChainGraph. Features multi-agent orchestration for fraud detection and OCR.",
         tags: ["LangGraph", "React", "Agentic AI", "OCR"],
         link: "/slip-verify",
+        featured: true
+    },
+    {
+        title: "Local Guide",
+        role: "Full Stack Developer",
+        desc: "AI-powered travel companion that creates personalized itineraries and provides local insights.",
+        tags: ["React", "AI", "Maps API", "Travel"],
+        link: "https://web-production-c4714.up.railway.app/",
         featured: true
     },
     {
