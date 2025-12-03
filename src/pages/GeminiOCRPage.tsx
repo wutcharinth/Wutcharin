@@ -1,11 +1,14 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ExternalLink, Terminal, Cpu, Layers, Zap, Database, ScanText, Sparkles } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Terminal, Cpu, Layers, Zap, Database, ScanText, Sparkles, ArrowDown } from 'lucide-react';
+import { motion } from 'framer-motion';
 import Lenis from 'lenis';
 import InteractiveOCR from '../components/ocr/InteractiveOCR';
+import ProjectNavigation from '../components/ProjectNavigation';
 
 const GeminiOCRPage = () => {
     useEffect(() => {
+        window.scrollTo(0, 0);
         const lenis = new Lenis();
         function raf(time: number) {
             lenis.raf(time);
@@ -16,147 +19,187 @@ const GeminiOCRPage = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-bg text-text selection:bg-primary selection:text-white font-sans">
+        <div className="min-h-screen bg-[#020617] text-slate-200 font-sans selection:bg-blue-500/30">
             {/* Navigation */}
-            <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-6 flex justify-between items-center bg-bg border-b-4 border-border">
-                <Link to="/" className="flex items-center gap-2 text-lg font-bold uppercase tracking-widest hover:text-primary transition-colors group">
-                    <ArrowLeft size={24} className="group-hover:-translate-x-1 transition-transform" />
+            <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-6 flex justify-between items-center bg-[#020617]/80 backdrop-blur border-b border-slate-800">
+                <Link to="/" className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-slate-400 hover:text-white transition-colors group">
+                    <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                     Back to Portfolio
                 </Link>
+                <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
+                    <span className="text-xs font-mono text-blue-500 uppercase">System Online</span>
+                </div>
             </nav>
 
-            <main className="pt-32 px-6 pb-20 max-w-7xl mx-auto">
+            <main className="pt-32 pb-20">
                 {/* Hero Section */}
-                <header className="mb-20">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 border-2 border-border bg-white text-black text-sm font-bold mb-6 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
-                        <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                        AI / Multimodal Vision
-                    </div>
-                    <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter mb-8 leading-[0.9] text-text">
-                        Gemini Vision <br />
-                        <span className="text-primary">
-                            Intelligence
-                        </span>
-                    </h1>
-                    <p className="text-xl md:text-2xl max-w-2xl font-bold leading-relaxed border-l-4 border-primary pl-6 text-text">
-                        Next-generation optical character recognition and document understanding powered by Google's Gemini 2.5 Flash multimodal model.
-                    </p>
+                <section className="container mx-auto px-6 mb-32 relative">
+                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] -z-10"></div>
 
-                    <div className="flex flex-wrap gap-4 mt-8">
-                        <a href="https://deepmind.google/technologies/gemini/" target="_blank" rel="noopener noreferrer"
-                            className="flex items-center gap-2 px-6 py-3 bg-inverse text-inverse-text border-2 border-transparent hover:bg-bg hover:text-text hover:border-border font-bold transition-all shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-[2px] hover:translate-y-[2px]">
-                            <Sparkles size={20} />
-                            Gemini Model
-                        </a>
-                        <button className="flex items-center gap-2 px-6 py-3 bg-bg text-text border-2 border-border font-bold hover:bg-primary hover:text-white transition-all shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-[2px] hover:translate-y-[2px]">
-                            <ExternalLink size={20} />
-                            Live Demo Below
-                        </button>
-                    </div>
-                </header>
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8 }}
+                        className="max-w-4xl"
+                    >
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.1 }}
+                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-widest mb-6"
+                        >
+                            <Sparkles className="w-3 h-3" />
+                            AI / Multimodal Vision
+                        </motion.div>
+
+                        <motion.h1
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="text-5xl md:text-7xl font-black text-white mb-6 tracking-tight"
+                        >
+                            Gemini Vision <br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+                                Intelligence
+                            </span>
+                        </motion.h1>
+
+                        <p className="text-xl md:text-2xl text-slate-400 max-w-2xl font-light leading-relaxed mb-10 border-l-4 border-blue-500 pl-6">
+                            Next-generation optical character recognition and document understanding powered by Google's <span className="text-white font-bold">Gemini 2.5 Flash</span> multimodal model.
+                        </p>
+
+                        <div className="flex flex-wrap gap-4">
+                            <a href="https://deepmind.google/technologies/gemini/" target="_blank" rel="noopener noreferrer"
+                                className="px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] flex items-center gap-2">
+                                <Sparkles className="w-5 h-5" /> Gemini Model
+                            </a>
+                            <button onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })} className="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-lg transition-all border border-slate-700 flex items-center gap-2">
+                                <ExternalLink className="w-5 h-5" /> Live Demo Below
+                            </button>
+                        </div>
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 1, duration: 1 }}
+                        className="absolute bottom-0 right-10 hidden lg:block"
+                    >
+                        <div className="text-slate-600 font-mono text-xs rotate-90 origin-right flex items-center gap-2">
+                            SCROLL TO EXPLORE <ArrowDown className="w-4 h-4 -rotate-90" />
+                        </div>
+                    </motion.div>
+                </section>
 
                 {/* Interactive Demo Section */}
-                <section className="mb-24">
-                    <div className="flex items-center gap-3 mb-8 border-b-4 border-border pb-4">
-                        <ScanText className="w-8 h-8 text-primary" />
-                        <h2 className="text-3xl font-bold uppercase tracking-tight text-text">Interactive Simulation</h2>
+                <section id="demo" className="container mx-auto px-6 mb-32">
+                    <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-12 border-b border-slate-800 pb-12">
+                        <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20 shrink-0">
+                            <ScanText className="text-white w-8 h-8" />
+                        </div>
+                        <div>
+                            <h2 className="text-3xl font-black uppercase tracking-tight text-white mb-2">Interactive Simulation</h2>
+                            <p className="text-slate-400 max-w-2xl">
+                                Experience the power of multimodal AI. Upload any image—receipts, handwritten notes, or complex diagrams—and watch Gemini analyze it in real-time.
+                            </p>
+                        </div>
                     </div>
-                    <p className="text-lg font-medium mb-8 max-w-3xl text-text">
-                        Experience the power of multimodal AI. Upload any image—receipts, handwritten notes, or complex diagrams—and watch Gemini analyze it in real-time.
-                    </p>
                     <InteractiveOCR />
                 </section>
 
                 {/* Content Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
+                <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-12">
                     {/* Left Column - Details */}
-                    <div className="md:col-span-8 space-y-16">
+                    <div className="md:col-span-8 space-y-24">
 
                         {/* Overview */}
                         <section>
-                            <h2 className="text-3xl font-bold uppercase tracking-tight mb-6 flex items-center gap-3 border-b-4 border-border pb-2 text-text">
-                                <Layers className="text-primary" />
+                            <h2 className="text-3xl font-bold uppercase tracking-tight mb-8 flex items-center gap-3 text-white">
+                                <Layers className="text-blue-500" />
                                 Project Overview
                             </h2>
-                            <p className="text-lg font-medium leading-relaxed mb-6 text-text">
-                                This project demonstrates the integration of <strong>Large Multimodal Models (LMMs)</strong> into web applications.
-                                Unlike traditional OCR which simply detects characters, Gemini Vision understands the <em>context</em> and <em>structure</em> of the document, allowing for semantic extraction and reasoning.
+                            <p className="text-lg text-slate-300 leading-relaxed mb-8">
+                                This project demonstrates the integration of <strong className="text-white">Large Multimodal Models (LMMs)</strong> into web applications.
+                                Unlike traditional OCR which simply detects characters, Gemini Vision understands the <em className="text-blue-400">context</em> and <em className="text-blue-400">structure</em> of the document, allowing for semantic extraction and reasoning.
                             </p>
-                            <div className="bg-bg p-6 border-2 border-border shadow-[8px_8px_0px_0px_var(--shadow-color)]">
-                                <h3 className="font-bold mb-4 uppercase tracking-wider border-b-2 border-border pb-2 inline-block text-text">Key Capabilities</h3>
-                                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    {['Multimodal Understanding', 'Handwriting Recognition', 'Table Parsing', 'Semantic Extraction', 'Spatial Reasoning', 'Zero-shot Classification'].map((item) => (
-                                        <li key={item} className="flex items-center gap-2 font-bold text-text">
-                                            <div className="w-2 h-2 bg-primary"></div>
-                                            {item}
-                                        </li>
-                                    ))}
-                                </ul>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                {['Multimodal Understanding', 'Handwriting Recognition', 'Table Parsing', 'Semantic Extraction', 'Spatial Reasoning', 'Zero-shot Classification'].map((item) => (
+                                    <div key={item} className="flex items-center gap-3 p-4 bg-slate-900/50 border border-slate-800 rounded-xl">
+                                        <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                                        <span className="font-medium text-slate-200">{item}</span>
+                                    </div>
+                                ))}
                             </div>
 
                             {/* Architecture Advantages */}
-                            <div className="mt-8 bg-gray-900 p-6 border-l-4 border-green-500 shadow-lg">
-                                <h3 className="text-xl font-bold text-green-400 mb-3 flex items-center gap-2">
-                                    <Database size={20} />
+                            <div className="mt-12 bg-slate-900/80 p-8 rounded-2xl border border-emerald-500/30 relative overflow-hidden">
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl -z-10"></div>
+                                <h3 className="text-xl font-bold text-emerald-400 mb-6 flex items-center gap-2">
+                                    <Database className="w-5 h-5" />
                                     SECURE ARCHITECTURE
                                 </h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
                                     <div>
-                                        <h4 className="font-bold text-white mb-1">BACKEND PROXY</h4>
-                                        <p className="text-gray-400">Requests are routed through a secure Node.js/Express server. API keys are never exposed to the client.</p>
+                                        <h4 className="font-bold text-white mb-2 text-base">BACKEND PROXY</h4>
+                                        <p className="text-slate-400 leading-relaxed">Requests are routed through a secure Node.js/Express server. API keys are never exposed to the client.</p>
                                     </div>
                                     <div>
-                                        <h4 className="font-bold text-white mb-1">RAILWAY DEPLOYMENT</h4>
-                                        <p className="text-gray-400">Full-stack deployment on Railway ensures scalability and environment variable protection.</p>
+                                        <h4 className="font-bold text-white mb-2 text-base">RAILWAY DEPLOYMENT</h4>
+                                        <p className="text-slate-400 leading-relaxed">Full-stack deployment on Railway ensures scalability and environment variable protection.</p>
                                     </div>
                                 </div>
                             </div>
                         </section>
+
                         {/* Technical Implementation */}
                         <section>
-                            <h2 className="text-3xl font-bold uppercase tracking-tight mb-6 flex items-center gap-3 border-b-4 border-border pb-2 text-text">
-                                <Terminal className="text-primary" />
+                            <h2 className="text-3xl font-bold uppercase tracking-tight mb-8 flex items-center gap-3 text-white">
+                                <Terminal className="text-blue-500" />
                                 Technical Deep Dive
                             </h2>
-                            <div className="prose prose-lg max-w-none text-text">
-                                <p className="font-medium">
-                                    The application leverages the <strong>Gemini 2.5 Flash</strong> model via the Google Generative AI SDK.
+                            <div className="text-slate-300">
+                                <p className="font-medium text-lg mb-8">
+                                    The application leverages the <strong className="text-white">Gemini 2.5 Flash</strong> model via the Google Generative AI SDK.
                                     The pipeline handles image encoding, prompt engineering for structured JSON output, and response parsing.
                                 </p>
 
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-8">
-                                    <div className="p-4 bg-white border-2 border-border shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:-translate-y-1 transition-transform">
-                                        <div className="font-black text-xl mb-2 text-black">1. Input</div>
-                                        <p className="text-sm font-medium text-black">Image is uploaded and converted to base64 buffer on the backend.</p>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                                    <div className="p-6 bg-slate-900 border border-slate-800 rounded-xl hover:border-blue-500/30 transition-colors">
+                                        <div className="font-black text-4xl mb-4 text-slate-700">01</div>
+                                        <div className="font-bold text-white mb-2">Input Processing</div>
+                                        <p className="text-sm text-slate-400">Image is uploaded and converted to base64 buffer on the backend.</p>
                                     </div>
-                                    <div className="p-4 bg-white border-2 border-border shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:-translate-y-1 transition-transform">
-                                        <div className="font-black text-xl mb-2 text-black">2. Prompting</div>
-                                        <p className="text-sm font-medium text-black">System prompt instructs the model to extract text and estimate bounding boxes.</p>
+                                    <div className="p-6 bg-slate-900 border border-slate-800 rounded-xl hover:border-blue-500/30 transition-colors">
+                                        <div className="font-black text-4xl mb-4 text-slate-700">02</div>
+                                        <div className="font-bold text-white mb-2">Prompt Engineering</div>
+                                        <p className="text-sm text-slate-400">System prompt instructs the model to extract text and estimate bounding boxes.</p>
                                     </div>
-                                    <div className="p-4 bg-white border-2 border-border shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:-translate-y-1 transition-transform">
-                                        <div className="font-black text-xl mb-2 text-black">3. Parsing</div>
-                                        <p className="text-sm font-medium text-black">Raw text response is cleaned and parsed into structured JSON for the UI.</p>
+                                    <div className="p-6 bg-slate-900 border border-slate-800 rounded-xl hover:border-blue-500/30 transition-colors">
+                                        <div className="font-black text-4xl mb-4 text-slate-700">03</div>
+                                        <div className="font-bold text-white mb-2">Response Parsing</div>
+                                        <p className="text-sm text-slate-400">Raw text response is cleaned and parsed into structured JSON for the UI.</p>
                                     </div>
                                 </div>
 
-                                <div className="mockup-code bg-gray-900 text-gray-100 p-6 rounded-xl overflow-x-auto font-mono text-sm my-6 shadow-xl">
-                                    <div className="flex items-center gap-2 mb-4 border-b border-gray-700 pb-2">
+                                <div className="bg-[#0f172a] p-6 rounded-xl border border-slate-800 font-mono text-sm shadow-2xl overflow-x-auto">
+                                    <div className="flex items-center gap-2 mb-4 border-b border-slate-800 pb-4">
                                         <div className="w-3 h-3 rounded-full bg-red-500"></div>
                                         <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
                                         <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                                        <span className="ml-2 text-gray-500">server/index.js</span>
+                                        <span className="ml-auto text-slate-500 text-xs">server/index.js</span>
                                     </div>
-                                    <pre><code><span className="text-pink-400">const</span> model = genAI.getGenerativeModel({`{ model: `}<span className="text-green-400">'gemini-2.5-flash'</span>{` }`});</code></pre>
+                                    <pre><code><span className="text-purple-400">const</span> model = genAI.getGenerativeModel({`{ model: `}<span className="text-green-400">'gemini-2.5-flash'</span>{` }`});</code></pre>
                                     <pre><code></code></pre>
-                                    <pre><code><span className="text-gray-500">// Construct multimodal prompt</span></code></pre>
-                                    <pre><code><span className="text-pink-400">const</span> result = <span className="text-pink-400">await</span> model.generateContent([</code></pre>
+                                    <pre><code><span className="text-slate-500">// Construct multimodal prompt</span></code></pre>
+                                    <pre><code><span className="text-purple-400">const</span> result = <span className="text-purple-400">await</span> model.generateContent([</code></pre>
                                     <pre><code>  <span className="text-green-400">"Extract all text and return as JSON with bounding boxes..."</span>,</code></pre>
                                     <pre><code>  {`{ inlineData: { data: buffer, mimeType: mimetype } }`}</code></pre>
                                     <pre><code>]);</code></pre>
                                     <pre><code></code></pre>
-                                    <pre><code><span className="text-gray-500">// Parse response</span></code></pre>
-                                    <pre><code><span className="text-pink-400">const</span> response = <span className="text-pink-400">await</span> result.response;</code></pre>
-                                    <pre><code><span className="text-pink-400">const</span> text = response.text();</code></pre>
+                                    <pre><code><span className="text-slate-500">// Parse response</span></code></pre>
+                                    <pre><code><span className="text-purple-400">const</span> response = <span className="text-purple-400">await</span> result.response;</code></pre>
+                                    <pre><code><span className="text-purple-400">const</span> text = response.text();</code></pre>
                                 </div>
                             </div>
                         </section>
@@ -165,74 +208,74 @@ const GeminiOCRPage = () => {
 
                     {/* Right Column - Sidebar */}
                     <div className="md:col-span-4 space-y-8">
-                        <div className="sticky top-32">
-                            <div className="p-6 bg-inverse text-inverse-text border-2 border-border shadow-[8px_8px_0px_0px_var(--shadow-color)]">
-                                <h3 className="text-xl font-black mb-4 flex items-center gap-2 uppercase tracking-tighter">
-                                    <Cpu size={24} />
+                        <div className="sticky top-32 space-y-8">
+                            <div className="p-8 bg-slate-900/50 border border-slate-800 rounded-2xl backdrop-blur-sm">
+                                <h3 className="text-lg font-bold mb-6 flex items-center gap-2 uppercase tracking-widest text-white">
+                                    <Cpu className="w-5 h-5 text-blue-500" />
                                     Tech Stack
                                 </h3>
                                 <div className="flex flex-wrap gap-2">
                                     {['Gemini 2.5 Flash', 'Node.js', 'Express', 'React', 'Vite', 'Railway'].map((tag) => (
-                                        <span key={tag} className="px-3 py-1 bg-bg text-text border-2 border-transparent hover:border-white font-bold text-sm transition-colors cursor-default">
+                                        <span key={tag} className="px-3 py-1 bg-slate-800 border border-slate-700 rounded-full text-slate-300 text-xs font-medium">
                                             {tag}
                                         </span>
                                     ))}
                                 </div>
                             </div>
 
-                            <div className="p-6 bg-bg border-2 border-border shadow-[8px_8px_0px_0px_var(--shadow-color)]">
-                                <h3 className="text-xl font-black mb-4 flex items-center gap-2 uppercase tracking-tighter text-text">
-                                    <Zap size={24} className="text-primary" />
+                            <div className="p-8 bg-slate-900/50 border border-slate-800 rounded-2xl backdrop-blur-sm">
+                                <h3 className="text-lg font-bold mb-6 flex items-center gap-2 uppercase tracking-widest text-white">
+                                    <Zap className="w-5 h-5 text-yellow-500" />
                                     Performance
                                 </h3>
-                                <div className="space-y-6 mt-4">
+                                <div className="space-y-6">
                                     <div>
-                                        <div className="flex justify-between text-sm mb-1 font-bold text-text">
+                                        <div className="flex justify-between text-sm mb-2 font-medium text-slate-300">
                                             <span>Semantic Accuracy</span>
-                                            <span>99.2%</span>
+                                            <span className="text-white">99.2%</span>
                                         </div>
-                                        <div className="w-full bg-white border-2 border-border h-4">
-                                            <div className="bg-primary h-full" style={{ width: '99.2%' }}></div>
+                                        <div className="w-full bg-slate-800 rounded-full h-2">
+                                            <div className="bg-blue-500 h-full rounded-full" style={{ width: '99.2%' }}></div>
                                         </div>
                                     </div>
                                     <div>
-                                        <div className="flex justify-between text-sm mb-1 font-bold text-text">
+                                        <div className="flex justify-between text-sm mb-2 font-medium text-slate-300">
                                             <span>Handwriting Rec.</span>
-                                            <span>95.5%</span>
+                                            <span className="text-white">95.5%</span>
                                         </div>
-                                        <div className="w-full bg-white border-2 border-border h-4">
-                                            <div className="bg-primary h-full" style={{ width: '95.5%' }}></div>
+                                        <div className="w-full bg-slate-800 rounded-full h-2">
+                                            <div className="bg-blue-500 h-full rounded-full" style={{ width: '95.5%' }}></div>
                                         </div>
                                     </div>
                                     <div>
-                                        <div className="flex justify-between text-sm mb-1 font-bold text-text">
+                                        <div className="flex justify-between text-sm mb-2 font-medium text-slate-300">
                                             <span>Latency</span>
-                                            <span>~1.2s</span>
+                                            <span className="text-white">~1.2s</span>
                                         </div>
-                                        <div className="w-full bg-white border-2 border-border h-4">
-                                            <div className="bg-black h-full" style={{ width: '60%' }}></div>
+                                        <div className="w-full bg-slate-800 rounded-full h-2">
+                                            <div className="bg-emerald-500 h-full rounded-full" style={{ width: '85%' }}></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="p-6 bg-white border-2 border-border shadow-[8px_8px_0px_0px_var(--shadow-color)]">
-                                <h3 className="text-xl font-black mb-4 flex items-center gap-2 uppercase tracking-tighter text-black">
-                                    <Database size={24} className="text-primary" />
+                            <div className="p-8 bg-slate-900/50 border border-slate-800 rounded-2xl backdrop-blur-sm">
+                                <h3 className="text-lg font-bold mb-6 flex items-center gap-2 uppercase tracking-widest text-white">
+                                    <Database className="w-5 h-5 text-purple-500" />
                                     Model Specs
                                 </h3>
-                                <ul className="space-y-3 text-sm font-bold text-black">
-                                    <li className="flex justify-between border-b border-border pb-2">
-                                        <span className="opacity-70">Model</span>
-                                        <span className="font-mono">gemini-2.5-flash</span>
+                                <ul className="space-y-4 text-sm text-slate-300">
+                                    <li className="flex justify-between border-b border-slate-800 pb-3">
+                                        <span className="text-slate-500">Model</span>
+                                        <span className="font-mono text-white">gemini-2.5-flash</span>
                                     </li>
-                                    <li className="flex justify-between border-b border-border pb-2">
-                                        <span className="opacity-70">Context Window</span>
-                                        <span className="font-mono">1M Tokens</span>
+                                    <li className="flex justify-between border-b border-slate-800 pb-3">
+                                        <span className="text-slate-500">Context Window</span>
+                                        <span className="font-mono text-white">1M Tokens</span>
                                     </li>
                                     <li className="flex justify-between">
-                                        <span className="opacity-70">Input</span>
-                                        <span className="font-mono">Text + Image</span>
+                                        <span className="text-slate-500">Input</span>
+                                        <span className="font-mono text-white">Text + Image</span>
                                     </li>
                                 </ul>
                             </div>
@@ -242,8 +285,12 @@ const GeminiOCRPage = () => {
                 </div>
             </main>
 
-            <footer className="py-8 text-center text-text text-sm border-t-4 border-border bg-bg font-bold uppercase tracking-widest">
-                <p>&copy; {new Date().getFullYear()} Wutcharin Thatan. All rights reserved.</p>
+            <ProjectNavigation currentId="gemini-ocr" />
+
+            <footer className="py-12 border-t border-slate-800 bg-[#020617] text-center">
+                <p className="text-slate-500 text-sm font-bold uppercase tracking-widest">
+                    &copy; {new Date().getFullYear()} Wutcharin Thatan. All rights reserved.
+                </p>
             </footer>
         </div>
     );

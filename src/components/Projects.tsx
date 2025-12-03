@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, ShieldCheck, SquareKanban, StarHalf, Database, MessageSquare, FileText, ScanText, Code, Receipt, Map } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const projects = [
@@ -9,7 +9,11 @@ const projects = [
         desc: "Interactive data storytelling with an integrated RAG-based AI chatbot. Visualizes 2023 election results with deep political insights.",
         tags: ["Data Viz", "RAG", "Gemini AI", "React"],
         link: "/thai-election",
-        featured: true
+        featured: true,
+        icon: MessageSquare,
+        color: "text-orange-500",
+        bg: "bg-orange-500/10",
+        border: "border-orange-500/20"
     },
     {
         title: "QueryFlow AI",
@@ -17,7 +21,11 @@ const projects = [
         desc: "Enterprise Data Agent that bridges natural language and SQL. Features Metadata Scouting, Federated Execution, and Lineage Tracking.",
         tags: ["Text-to-SQL", "React", "Trino", "Data"],
         link: "/query-flow",
-        featured: true
+        featured: true,
+        icon: Database,
+        color: "text-violet-500",
+        bg: "bg-violet-500/10",
+        border: "border-violet-500/20"
     },
     {
         title: "RiskGuard AI",
@@ -25,7 +33,11 @@ const projects = [
         desc: "Internal Control System that audits transactions in real-time. Features Policy Checks, Entity Resolution (COI), and Market Benchmarking.",
         tags: ["LangGraph", "React", "Risk", "Audit"],
         link: "/risk-guard",
-        featured: true
+        featured: true,
+        icon: ShieldCheck,
+        color: "text-rose-500",
+        bg: "bg-rose-500/10",
+        border: "border-rose-500/20"
     },
     {
         title: "ProjectFlow AI",
@@ -33,7 +45,11 @@ const projects = [
         desc: "Autonomous Scrum Master that manages Jira boards. Features Scope Creep detection, Auto-Grooming, and Definition of Done checks.",
         tags: ["Jira API", "React", "Agentic AI", "DevOps"],
         link: "/project-flow",
-        featured: true
+        featured: true,
+        icon: SquareKanban,
+        color: "text-blue-500",
+        bg: "bg-blue-500/10",
+        border: "border-blue-500/20"
     },
     {
         title: "ReviewFlow AI",
@@ -41,7 +57,11 @@ const projects = [
         desc: "Reputation Engine that turns feedback into action. Features Sentiment Analysis, Intelligent Routing, and Automated Operational Triggers.",
         tags: ["NLP", "React", "Automation", "Reputation"],
         link: "/review-flow",
-        featured: true
+        featured: true,
+        icon: StarHalf,
+        color: "text-amber-500",
+        bg: "bg-amber-500/10",
+        border: "border-amber-500/20"
     },
     {
         title: "Enterprise Collections AI",
@@ -49,7 +69,11 @@ const projects = [
         desc: "Autonomous dispute agent for VCC overcharges. Features cognitive flow, strategy engine, and auto-rebuttal loops.",
         tags: ["LangGraph", "React", "Agentic AI", "FinTech"],
         link: "/collections",
-        featured: true
+        featured: true,
+        icon: Database,
+        color: "text-emerald-500",
+        bg: "bg-emerald-500/10",
+        border: "border-emerald-500/20"
     },
     {
         title: "SlipVerify AI",
@@ -57,7 +81,11 @@ const projects = [
         desc: "Intelligent expense verification system using ChainGraph. Features multi-agent orchestration for fraud detection and OCR.",
         tags: ["LangGraph", "React", "Agentic AI", "OCR"],
         link: "/slip-verify",
-        featured: true
+        featured: true,
+        icon: FileText,
+        color: "text-purple-500",
+        bg: "bg-purple-500/10",
+        border: "border-purple-500/20"
     },
     {
         title: "Local Guide",
@@ -65,7 +93,11 @@ const projects = [
         desc: "End-to-end booking platform POC. Demonstrates full-stack development capabilities including real-time availability and booking management.",
         tags: ["React", "Full Stack", "Booking System", "POC"],
         link: "https://web-production-c4714.up.railway.app/",
-        featured: true
+        featured: true,
+        icon: Map,
+        color: "text-cyan-500",
+        bg: "bg-cyan-500/10",
+        border: "border-cyan-500/20"
     },
     {
         title: "Gemini OCR",
@@ -73,7 +105,11 @@ const projects = [
         desc: "High-accuracy OCR tool powered by Google's Gemini Vision Pro. Extracts structured data from complex documents.",
         tags: ["Gemini API", "React", "OCR", "AI"],
         link: "/gemini-ocr",
-        featured: false
+        featured: false,
+        icon: ScanText,
+        color: "text-indigo-500",
+        bg: "bg-indigo-500/10",
+        border: "border-indigo-500/20"
     },
     {
         title: "AI Resume Builder",
@@ -81,7 +117,11 @@ const projects = [
         desc: "Interactive resume builder with AI-powered content suggestions and real-time preview.",
         tags: ["React", "Gemini AI", "Tailwind CSS"],
         link: "/resume-builder",
-        featured: false
+        featured: false,
+        icon: Code,
+        color: "text-teal-500",
+        bg: "bg-teal-500/10",
+        border: "border-teal-500/20"
     },
     {
         title: "SplitBill AI",
@@ -89,14 +129,18 @@ const projects = [
         desc: "Built end-to-end. Features instant receipt scanning with Gemini AI, automatic item parsing, and smart assignment.",
         tags: ["Gemini AI", "React", "Firebase"],
         link: "https://splitbill-ai.com/",
-        featured: true
+        featured: true,
+        icon: Receipt,
+        color: "text-pink-500",
+        bg: "bg-pink-500/10",
+        border: "border-pink-500/20"
     }
 ];
 
 export default function Projects() {
     return (
         <section id="projects" className="py-20 px-4 relative">
-            <div className="max-w-6xl mx-auto">
+            <div className="max-w-7xl mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -115,6 +159,39 @@ export default function Projects() {
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {projects.map((project, index) => {
                         const isExternal = project.link.startsWith('http');
+                        const CardContent = () => (
+                            <>
+                                <div className={`absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity ${project.color}`}>
+                                    <project.icon className="w-32 h-32 -mr-8 -mt-8 transform rotate-12" />
+                                </div>
+
+                                <div className="relative z-10 flex flex-col h-full">
+                                    <div className="flex justify-between items-start mb-4">
+                                        <div className={`w-12 h-12 rounded-xl ${project.bg} ${project.border} border flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                                            <project.icon className={`w-6 h-6 ${project.color}`} />
+                                        </div>
+                                        <ArrowUpRight className="text-slate-600 group-hover:text-white w-5 h-5 transition-colors" />
+                                    </div>
+
+                                    <h3 className="text-xl font-bold text-white mb-1 group-hover:text-violet-400 transition-colors">
+                                        {project.title}
+                                    </h3>
+                                    <p className="text-xs font-mono text-slate-500 mb-4 uppercase tracking-wide">{project.role}</p>
+
+                                    <p className="text-slate-400 text-sm mb-6 line-clamp-3 leading-relaxed flex-grow">
+                                        {project.desc}
+                                    </p>
+
+                                    <div className="flex flex-wrap gap-2 mt-auto">
+                                        {project.tags.map((tag, i) => (
+                                            <span key={i} className="text-xs px-2.5 py-1 bg-slate-800/50 border border-slate-700 rounded-md text-slate-300 group-hover:border-slate-600 transition-colors">
+                                                {tag}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                            </>
+                        );
 
                         return (
                             <motion.div
@@ -130,16 +207,16 @@ export default function Projects() {
                                         href={project.link}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="group block h-full bg-slate-900/50 border border-slate-800 p-6 hover:border-violet-500/50 hover:bg-slate-800/50 transition-all rounded-2xl relative overflow-hidden flex flex-col"
+                                        className="group block h-full bg-slate-900 border border-slate-800 p-6 hover:border-slate-600 transition-all rounded-2xl relative overflow-hidden hover:-translate-y-1 hover:shadow-xl"
                                     >
-                                        <ProjectContent project={project} />
+                                        <CardContent />
                                     </a>
                                 ) : (
                                     <Link
                                         to={project.link}
-                                        className="group block h-full bg-slate-900/50 border border-slate-800 p-6 hover:border-violet-500/50 hover:bg-slate-800/50 transition-all rounded-2xl relative overflow-hidden flex flex-col"
+                                        className="group block h-full bg-slate-900 border border-slate-800 p-6 hover:border-slate-600 transition-all rounded-2xl relative overflow-hidden hover:-translate-y-1 hover:shadow-xl"
                                     >
-                                        <ProjectContent project={project} />
+                                        <CardContent />
                                     </Link>
                                 )}
                             </motion.div>
@@ -148,34 +225,5 @@ export default function Projects() {
                 </div>
             </div>
         </section>
-    );
-}
-
-function ProjectContent({ project }: { project: typeof projects[0] }) {
-    return (
-        <>
-            <div className="absolute top-0 right-0 p-4 opacity-100">
-                <ArrowUpRight className="text-slate-500 group-hover:text-violet-400 w-6 h-6 transition-colors" />
-            </div>
-
-            <div className="mb-4">
-                <h3 className="text-xl font-bold text-white group-hover:text-violet-400 transition-colors uppercase tracking-tight pr-8">
-                    {project.title}
-                </h3>
-                <span className="text-xs text-violet-400 font-mono mt-1 inline-block">{project.role}</span>
-            </div>
-
-            <p className="text-slate-400 text-sm mb-6 line-clamp-4 leading-relaxed flex-grow">
-                {project.desc}
-            </p>
-
-            <div className="flex flex-wrap gap-2 mt-auto">
-                {project.tags.map((tag, i) => (
-                    <span key={i} className="text-xs px-3 py-1 bg-slate-800/50 border border-slate-700 rounded-full text-slate-300 group-hover:border-violet-500/30 group-hover:text-violet-200 transition-colors">
-                        {tag}
-                    </span>
-                ))}
-            </div>
-        </>
     );
 }
