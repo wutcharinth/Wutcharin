@@ -1,5 +1,4 @@
-import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
     AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
     RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend, Cell,
@@ -7,7 +6,7 @@ import {
 } from 'recharts';
 import {
     Cpu, Coins, Rocket, Trophy, Brain, TrendingUp, Zap, Briefcase, GitBranch, Battery,
-    ArrowDown, CheckCircle2, Info, ExternalLink
+    Info, ExternalLink
 } from 'lucide-react';
 
 // --- Data Constants (Sourced & Verified) ---
@@ -379,7 +378,7 @@ export default function AIEvolution() {
                     <YAxis scale="log" domain={['auto', 'auto']} stroke="#64748b" />
                     <Tooltip content={<CustomTooltip />} />
                     <Bar dataKey="tokens" fill="#8b5cf6" radius={[6, 6, 0, 0]} name="Context Window">
-                        {contextData.map((entry, index) => (
+                        {contextData.map((_, index) => (
                             <Cell key={`cell-${index}`} fill={index >= 3 ? '#ec4899' : '#8b5cf6'} />
                         ))}
                     </Bar>
