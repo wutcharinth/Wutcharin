@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, ShieldCheck, SquareKanban, StarHalf, Database, FileText, MessageSquare } from 'lucide-react';
+import { ArrowRight, ShieldCheck, SquareKanban, StarHalf, Database, FileText, MessageSquare, TrendingUp } from 'lucide-react';
 
 const projects = [
     {
@@ -71,6 +71,16 @@ const projects = [
         bg: "bg-orange-500/10",
         border: "border-orange-500/20",
         link: "/thai-election"
+    },
+    {
+        id: 'ai-evolution',
+        title: "AI Evolution Stats",
+        desc: "The Rise of Intelligence",
+        icon: TrendingUp,
+        color: "text-fuchsia-500",
+        bg: "bg-fuchsia-500/10",
+        border: "border-fuchsia-500/20",
+        link: "/ai-evolution"
     }
 ];
 

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowUpRight, ShieldCheck, SquareKanban, StarHalf, Database, MessageSquare, FileText, ScanText, Code, Receipt, Map } from 'lucide-react';
+import { ArrowUpRight, ShieldCheck, SquareKanban, StarHalf, Database, MessageSquare, FileText, ScanText, Code, Receipt, Map, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const projects = [
@@ -14,6 +14,18 @@ const projects = [
         color: "text-orange-500",
         bg: "bg-orange-500/10",
         border: "border-orange-500/20"
+    },
+    {
+        title: "AI Evolution Stats",
+        role: "Data Storyteller",
+        desc: "Interactive visualization of the exponential rise of AI. From Parameter Explosions to the Context Revolution.",
+        tags: ["Data Storytelling", "Recharts", "React", "AI Trends"],
+        link: "/ai-evolution",
+        featured: true,
+        icon: TrendingUp,
+        color: "text-fuchsia-500",
+        bg: "bg-fuchsia-500/10",
+        border: "border-fuchsia-500/20"
     },
     {
         title: "QueryFlow AI",
