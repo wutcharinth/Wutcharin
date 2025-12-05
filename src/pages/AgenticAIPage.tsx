@@ -1,14 +1,13 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     ArrowLeft, ArrowDown, Brain, TrendingUp, CheckCircle2, AlertTriangle,
-    MousePointerClick, MessageSquareCode, Sparkles, User, FileText, Binary,
+    User, FileText,
     Search, Bot, Play, Hammer, Eye, MessageSquare, Youtube, BookOpen,
-    Layers, RefreshCw, Target, Zap, Code2, Terminal, GitBranch,
-    Cpu, ShieldCheck, Share2, ChevronRight, Layout, Settings, Database,
-    Lightbulb, Clock, Check, Thermometer, Lock, Network, BarChart, Shield,
-    Send, ArrowRight, X, Plus, Minus
+    Layers, Target, Zap, Terminal, Database,
+    Lightbulb, Clock, Thermometer, Lock, Network, BarChart,
+    X
 } from 'lucide-react';
 import Lenis from 'lenis';
 import ProjectNavigation from '../components/ProjectNavigation';
@@ -290,97 +289,6 @@ const SimplifiedJaggedFrontierViz = () => {
 };
 
 // ==========================================
-// VISUALIZATION 3: REFLECTION PATTERN
-// ==========================================
-const ReflectionViz = () => {
-    const [step, setStep] = useState(0);
-
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setStep((s) => (s + 1) % 3);
-        }, 3500);
-        return () => clearInterval(timer);
-    }, []);
-
-    return (
-        <div className="p-8 bg-slate-900/50 rounded-3xl border border-slate-800/50 relative overflow-hidden hover:border-slate-700 transition-colors group">
-            <div className="absolute -right-10 -top-10 p-4 opacity-5 group-hover:opacity-10 transition-opacity rotate-12">
-                <RefreshCw size={150} className="text-orange-500" />
-            </div>
-            
-            <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2 relative z-10">
-                <div className="p-2 bg-orange-500/20 rounded-lg"><RefreshCw className="text-orange-400" size={20} /></div>
-                Pattern 1: Reflection
-            </h3>
-            
-            <div className="relative z-10 h-48 flex items-center justify-center">
-                <div className="absolute w-40 h-40 rounded-full border-2 border-slate-800 border-dashed animate-spin-slow opacity-50" style={{ animationDuration: '20s' }}></div>
-
-                <AnimatePresence mode='wait'>
-                    {step === 0 && (
-                        <motion.div 
-                            key="draft"
-                            initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.8, opacity: 0 }}
-                            className="absolute"
-                        >
-                            <div className="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-xl w-64 text-center">
-                                <div className="text-xs font-bold text-slate-500 uppercase mb-2">Phase 1: Draft</div>
-                                <div className="font-mono text-sm bg-slate-950 p-2 rounded text-red-300 border border-red-900/30">
-                                    def add(a,b):<br/>
-                                    &nbsp;&nbsp;return a - b ❌
-                                </div>
-                                <div className="mt-2 text-xs text-red-400 flex items-center justify-center gap-1"><AlertTriangle size={12}/> Bug Introduced</div>
-                            </div>
-                        </motion.div>
-                    )}
-                    {step === 1 && (
-                        <motion.div 
-                            key="critique"
-                            initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.8, opacity: 0 }}
-                            className="absolute"
-                        >
-                            <div className="bg-orange-900/20 p-4 rounded-xl border border-orange-500/30 shadow-xl w-64 text-center backdrop-blur-md">
-                                <div className="text-xs font-bold text-orange-400 uppercase mb-2">Phase 2: Self-Critique</div>
-                                <div className="text-sm text-slate-200 italic">
-                                    "Wait, the user asked for addition, but I used subtraction (-)."
-                                </div>
-                                <div className="mt-2 text-xs text-orange-300 flex items-center justify-center gap-1"><Brain size={12}/> Reasoning...</div>
-                            </div>
-                        </motion.div>
-                    )}
-                    {step === 2 && (
-                        <motion.div 
-                            key="revise"
-                            initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.8, opacity: 0 }}
-                            className="absolute"
-                        >
-                            <div className="bg-emerald-900/20 p-4 rounded-xl border border-emerald-500/30 shadow-xl w-64 text-center backdrop-blur-md">
-                                <div className="text-xs font-bold text-emerald-400 uppercase mb-2">Phase 3: Revise</div>
-                                <div className="font-mono text-sm bg-slate-950 p-2 rounded text-emerald-300 border border-emerald-900/30">
-                                    def add(a,b):<br/>
-                                    &nbsp;&nbsp;return a + b ✅
-                                </div>
-                                <div className="mt-2 text-xs text-emerald-400 flex items-center justify-center gap-1"><CheckCircle2 size={12}/> Bug Fixed</div>
-                            </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </div>
-            
-            <div className="flex justify-center gap-2 mt-4">
-                {[0,1,2].map(i => (
-                    <div key={i} className={`w-2 h-2 rounded-full transition-colors ${step === i ? 'bg-orange-500' : 'bg-slate-700'}`} />
-                ))}
-            </div>
-            
-            <p className="mt-4 text-sm text-slate-400 text-center px-4">
-                The agent <span className="text-orange-400">loops</span> over its own output to catch errors before the user sees them.
-            </p>
-        </div>
-    );
-};
-
-// ==========================================
 // VISUALIZATION 4: TOOL USE PATTERN (NEW)
 // ==========================================
 const ToolUseViz = () => {
@@ -460,87 +368,6 @@ const ToolUseViz = () => {
             <p className="mt-4 text-sm text-slate-400 relative z-10">
                 Agents can call external APIs (calculators, web search, databases) to get real-time information and take actions.
             </p>
-        </div>
-    );
-};
-
-// ==========================================
-// VISUALIZATION 5: PLANNING PATTERN
-// ==========================================
-const PlanningViz = () => {
-    const [activeStep, setActiveStep] = useState<number | null>(null);
-    
-    const steps = [
-        { title: "Design Logic", desc: "Define Snake class, Food class, and GameBoard grid." },
-        { title: "Write UI", desc: "Create PyGame window and render loop." },
-        { title: "Input Handler", desc: "Map arrow keys to snake direction changes." },
-        { title: "Game Loop", desc: "Update positions, check collisions, render frame." }
-    ];
-
-    return (
-        <div className="p-8 bg-slate-900/50 rounded-3xl border border-slate-800/50 hover:border-slate-700 transition-colors group relative overflow-hidden">
-            <div className="absolute -right-10 -top-10 p-4 opacity-5 group-hover:opacity-10 transition-opacity rotate-12">
-                <GitBranch size={150} className="text-purple-500" />
-            </div>
-
-            <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2 relative z-10">
-                <div className="p-2 bg-purple-500/20 rounded-lg"><GitBranch className="text-purple-400" size={20} /></div>
-                Pattern 3: Planning
-            </h3>
-
-            <div className="flex flex-col gap-6 relative z-10">
-                <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center shrink-0">
-                        <Target className="text-purple-400" size={20} />
-                    </div>
-                    <div>
-                        <div className="text-xs text-slate-500 uppercase font-bold">User Goal</div>
-                        <div className="text-white font-medium">"Code a Snake Game in Python"</div>
-                    </div>
-                </div>
-                
-                <div className="h-8 flex items-center justify-center">
-                    <ArrowDown className="text-slate-600 animate-bounce" />
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                    {steps.map((s, i) => (
-                        <motion.div 
-                            key={i}
-                            whileHover={{ scale: 1.02 }}
-                            onClick={() => setActiveStep(activeStep === i ? null : i)}
-                            className={`p-3 rounded-lg border cursor-pointer transition-all relative overflow-hidden ${
-                                activeStep === i 
-                                ? 'bg-purple-900/30 border-purple-500 ring-1 ring-purple-500/50' 
-                                : 'bg-slate-800/50 border-slate-700 hover:bg-slate-800'
-                            }`}
-                        >
-                            <div className="flex justify-between items-center mb-1">
-                                <div className="text-[10px] font-mono text-slate-500 uppercase">Step {i+1}</div>
-                                {activeStep === i && <motion.div layoutId="activeIndicator" className="w-1.5 h-1.5 rounded-full bg-purple-400" />}
-                            </div>
-                            <div className="text-sm font-bold text-white">{s.title}</div>
-                            
-                            <AnimatePresence>
-                                {activeStep === i && (
-                                    <motion.div 
-                                        initial={{ height: 0, opacity: 0 }} 
-                                        animate={{ height: 'auto', opacity: 1 }} 
-                                        exit={{ height: 0, opacity: 0 }}
-                                        className="text-xs text-purple-200 mt-2 pt-2 border-t border-purple-500/20"
-                                    >
-                                        {s.desc}
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
-                        </motion.div>
-                    ))}
-                </div>
-            </div>
-            
-            <div className="mt-6 text-sm text-slate-400 text-center relative z-10">
-                <span className="text-purple-400 animate-pulse">Click tasks</span> to see how the agent breaks down complexity.
-            </div>
         </div>
     );
 };
@@ -867,81 +694,6 @@ const EvalMatrixViz = () => {
 
             <p className="mt-4 text-sm text-slate-400 relative z-10">
                 Hover over each quadrant to see examples. We test AI systems using both hard metrics (does it work?) and soft metrics (does it feel right?).
-            </p>
-        </div>
-    );
-};
-
-const HumanLoopViz = () => {
-    const [state, setState] = useState<'idle' | 'thinking' | 'waiting' | 'approved' | 'rejected'>('idle');
-
-    const startWorkflow = () => {
-        setState('thinking');
-        setTimeout(() => setState('waiting'), 2000);
-    };
-
-    return (
-        <div className="p-8 bg-slate-900/50 rounded-3xl border border-slate-800/50 relative overflow-hidden group">
-            <div className="absolute -right-10 -top-10 p-4 opacity-5 group-hover:opacity-10 transition-opacity rotate-12">
-                <Shield size={150} className="text-green-500" />
-            </div>
-
-            <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2 relative z-10">
-                <div className="p-2 bg-green-500/20 rounded-lg"><Shield className="text-green-400" size={20} /></div>
-                Human-in-the-Loop Safety
-            </h3>
-
-            <div className="flex flex-col items-center gap-6 relative z-10">
-                <div className="flex items-center gap-4 w-full">
-                    <div className={`relative p-6 rounded-xl border-2 transition-all duration-500 flex-1 text-center ${
-                        state === 'thinking' ? 'border-blue-500 bg-blue-900/20' : 'border-slate-700 bg-slate-800/50'
-                    }`}>
-                        <div className="absolute -top-3 left-4 bg-slate-900 px-2 text-xs font-bold text-slate-500">The Agent</div>
-                        <Cpu className={`w-10 h-10 mx-auto mb-3 ${state === 'thinking' ? 'text-blue-400 animate-pulse' : 'text-slate-500'}`} />
-                        <div className="text-sm text-slate-300">
-                            {state === 'idle' && "Waiting for task..."}
-                            {state === 'thinking' && "Drafting refund email..."}
-                            {state === 'waiting' && "Draft ready. Paused."}
-                            {state === 'approved' && "Email Sent! ✅"}
-                            {state === 'rejected' && "Draft discarded. ❌"}
-                        </div>
-                    </div>
-
-                    <ArrowRight className={`w-6 h-6 text-slate-600 ${state === 'waiting' ? 'animate-pulse text-yellow-500' : ''}`} />
-
-                    <div className={`relative p-6 rounded-xl border-2 transition-all duration-500 flex-1 text-center ${
-                        state === 'waiting' ? 'border-yellow-500 bg-yellow-900/20 ring-4 ring-yellow-500/20' : 'border-slate-700 bg-slate-800/50'
-                    }`}>
-                        <div className="absolute -top-3 left-4 bg-slate-900 px-2 text-xs font-bold text-slate-500">Human Gate</div>
-                        <User className={`w-10 h-10 mx-auto mb-3 ${state === 'waiting' ? 'text-yellow-400' : 'text-slate-500'}`} />
-                        
-                        {state === 'waiting' ? (
-                            <div className="flex gap-2 justify-center mt-2">
-                                <button onClick={() => setState('approved')} className="bg-green-500 hover:bg-green-600 text-white p-2 rounded-full transition-all hover:scale-110">
-                                    <CheckCircle2 className="w-5 h-5"/>
-                                </button>
-                                <button onClick={() => setState('rejected')} className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full transition-all hover:scale-110">
-                                    <X className="w-5 h-5"/>
-                                </button>
-                            </div>
-                        ) : (
-                            <div className="text-xs text-slate-500 mt-2">Gate Closed</div>
-                        )}
-                    </div>
-                </div>
-
-                <div className="w-full bg-slate-800 p-4 rounded-lg text-sm font-mono flex justify-between items-center border border-slate-700">
-                    <span>Status: <strong className="uppercase text-slate-300">{state}</strong></span>
-                    {(state === 'idle' || state === 'approved' || state === 'rejected') && (
-                        <button onClick={startWorkflow} className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-500 font-sans font-bold transition-all">
-                            Start Task
-                        </button>
-                    )}
-                </div>
-            </div>
-
-            <p className="mt-4 text-sm text-slate-400 relative z-10">
-                For high-stakes actions (refunds, deletions), the agent drafts but waits for human approval before executing.
             </p>
         </div>
     );
