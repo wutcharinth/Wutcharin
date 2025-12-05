@@ -25,6 +25,7 @@ const ALLOWED_ORIGINS = [
     'https://wutcharin-production.up.railway.app',
     'https://wutcharin-portfolio-p9pg07jfy-wthatans-projects.vercel.app',
     'http://localhost:5173',
+    'http://localhost:5174',
     'http://localhost:3000'
 ];
 
@@ -66,7 +67,7 @@ app.post('/api/analyze', upload.single('image'), async (req, res) => {
             return res.status(500).json({ error: 'Server configuration error: API Key missing' });
         }
 
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+        const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
         const imagePart = {
             inlineData: {
@@ -132,7 +133,7 @@ app.post('/api/chat', async (req, res) => {
         }
 
         const model = genAI.getGenerativeModel({
-            model: 'gemini-2.5-flash',
+            model: 'gemini-2.0-flash',
             systemInstruction: `
                 You are an expert AI Political Analyst specializing in the 2023 Thai General Election.
                 
@@ -242,7 +243,7 @@ app.post('/api/resume/parse', async (req, res) => {
             return res.status(500).json({ error: 'API Key missing on server' });
         }
 
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+        const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
         const prompt = `You are an expert Resume Writer and Data Extractor.
       
@@ -327,7 +328,7 @@ app.post('/api/resume/improve', async (req, res) => {
             return res.status(500).json({ error: 'API Key missing on server' });
         }
 
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+        const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
         const prompt = `Rewrite the following text for a resume.
       

@@ -272,12 +272,12 @@ const ReviewFlowDemo = () => {
                                         <div className={`w-6 h-6 rounded-full ${review.avatar} flex items-center justify-center text-[10px] text-white font-bold`}>{review.user[0]}</div>
                                         <span className="text-xs font-bold text-slate-200">{review.user}</span>
                                     </div>
-                                    <div className="flex text-[8px] stars gap-0.5">
-                                        {Array(review.rating).fill(0).map((_, i) => <Star key={i} className="w-2 h-2 fill-current" />)}
+                                    <div className="flex text-xs stars gap-0.5">
+                                        {Array(review.rating).fill(0).map((_, i) => <Star key={i} className="w-3 h-3 fill-current" />)}
                                     </div>
                                 </div>
-                                <p className="text-[10px] text-slate-400 leading-snug">{review.text}</p>
-                                <div className="mt-2 text-[8px] text-slate-500 flex justify-between">
+                                <p className="text-xs text-slate-400 leading-snug">{review.text}</p>
+                                <div className="mt-2 text-[10px] text-slate-500 flex justify-between">
                                     <span>Google Maps</span>
                                     <span>Just Now</span>
                                 </div>
@@ -309,7 +309,7 @@ const ReviewFlowDemo = () => {
                                 <h3 className="text-sm font-bold text-white">Ingestion</h3>
                                 <span className="text-[9px] font-mono text-slate-500">Google API</span>
                             </div>
-                            <p className="text-[11px] text-slate-400 mt-1">Reading text & star rating.</p>
+                            <p className="text-xs text-slate-400 mt-1">Reading text & star rating.</p>
                         </div>
 
                         {/* Node 2: Analysis */}
@@ -341,7 +341,7 @@ const ReviewFlowDemo = () => {
                                     <MessageCircle className="w-3 h-3 text-blue-400" />
                                     <h3 className="text-xs font-bold text-white">Draft Reply</h3>
                                 </div>
-                                <div className="text-[10px] text-slate-400 italic bg-slate-900/50 p-2 rounded min-h-[60px] typing-cursor">
+                                <div className="text-xs text-slate-400 italic bg-slate-900/50 p-2 rounded min-h-[60px] typing-cursor">
                                     {replyText}
                                 </div>
                             </div>
@@ -352,7 +352,7 @@ const ReviewFlowDemo = () => {
                                     <Settings className="w-3 h-3 text-amber-400" />
                                     <h3 className="text-xs font-bold text-white">Internal Ops</h3>
                                 </div>
-                                <div className="text-[10px] text-slate-400 font-mono">
+                                <div className="text-xs text-slate-400 font-mono">
                                     {opsText}
                                 </div>
                             </div>
