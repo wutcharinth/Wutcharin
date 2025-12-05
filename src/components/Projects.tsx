@@ -1,20 +1,22 @@
 import { motion } from 'framer-motion';
-import { ArrowUpRight, ShieldCheck, SquareKanban, StarHalf, Database, MessageSquare, FileText, ScanText, Code, Receipt, Map, TrendingUp } from 'lucide-react';
+import { ArrowUpRight, ShieldCheck, SquareKanban, StarHalf, Database, MessageSquare, FileText, ScanText, Code, Receipt, Map, TrendingUp, Brain, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const projects = [
+    // 1. Agentic AI Article (NEW - Featured)
     {
-        title: "Thai Election 2566",
-        role: "Data Artist & AI Engineer",
-        desc: "Interactive data storytelling with an integrated RAG-based AI chatbot. Visualizes 2023 election results with deep political insights.",
-        tags: ["Data Viz", "RAG", "Gemini AI", "React"],
-        link: "/thai-election",
+        title: "Agentic AI Deep Dive",
+        role: "Technical Writer & Educator",
+        desc: "Interactive article exploring Stanford CS230's lecture on Agentic AI. Features visualizations of the Jagged Frontier, Prompt Engineering, HyDE, and ReAct patterns.",
+        tags: ["Stanford CS230", "Agentic AI", "Interactive", "Education"],
+        link: "/agentic-ai",
         featured: true,
-        icon: MessageSquare,
-        color: "text-orange-500",
-        bg: "bg-orange-500/10",
-        border: "border-orange-500/20"
+        icon: Brain,
+        color: "text-violet-500",
+        bg: "bg-violet-500/10",
+        border: "border-violet-500/20"
     },
+    // 2. AI Evolution Stats
     {
         title: "AI Evolution Stats",
         role: "Data Storyteller",
@@ -27,6 +29,20 @@ const projects = [
         bg: "bg-fuchsia-500/10",
         border: "border-fuchsia-500/20"
     },
+    // 3. Thai Election 2566
+    {
+        title: "Thai Election 2566",
+        role: "Data Artist & AI Engineer",
+        desc: "Interactive data storytelling with an integrated RAG-based AI chatbot. Visualizes 2023 election results with deep political insights.",
+        tags: ["Data Viz", "RAG", "Gemini AI", "React"],
+        link: "/thai-election",
+        featured: true,
+        icon: MessageSquare,
+        color: "text-orange-500",
+        bg: "bg-orange-500/10",
+        border: "border-orange-500/20"
+    },
+    // 4. QueryFlow AI
     {
         title: "QueryFlow AI",
         role: "Data Engineer",
@@ -35,34 +51,24 @@ const projects = [
         link: "/query-flow",
         featured: true,
         icon: Database,
-        color: "text-violet-500",
-        bg: "bg-violet-500/10",
-        border: "border-violet-500/20"
+        color: "text-sky-500",
+        bg: "bg-sky-500/10",
+        border: "border-sky-500/20"
     },
+    // 5. AI Resume Builder
     {
-        title: "RiskGuard AI",
-        role: "AI Engineer",
-        desc: "Internal Control System that audits transactions in real-time. Features Policy Checks, Entity Resolution (COI), and Market Benchmarking.",
-        tags: ["LangGraph", "React", "Risk", "Audit"],
-        link: "/risk-guard",
+        title: "AI Resume Builder",
+        role: "Full Stack Developer",
+        desc: "Interactive resume builder with AI-powered content suggestions and real-time preview.",
+        tags: ["React", "Gemini AI", "Tailwind CSS"],
+        link: "/resume-builder",
         featured: true,
-        icon: ShieldCheck,
-        color: "text-rose-500",
-        bg: "bg-rose-500/10",
-        border: "border-rose-500/20"
+        icon: Code,
+        color: "text-teal-500",
+        bg: "bg-teal-500/10",
+        border: "border-teal-500/20"
     },
-    {
-        title: "ProjectFlow AI",
-        role: "AI Engineer",
-        desc: "Autonomous Scrum Master that manages Jira boards. Features Scope Creep detection, Auto-Grooming, and Definition of Done checks.",
-        tags: ["Jira API", "React", "Agentic AI", "DevOps"],
-        link: "/project-flow",
-        featured: true,
-        icon: SquareKanban,
-        color: "text-blue-500",
-        bg: "bg-blue-500/10",
-        border: "border-blue-500/20"
-    },
+    // 6. ReviewFlow AI
     {
         title: "ReviewFlow AI",
         role: "AI Engineer",
@@ -75,6 +81,7 @@ const projects = [
         bg: "bg-amber-500/10",
         border: "border-amber-500/20"
     },
+    // 7. Enterprise Collections AI
     {
         title: "Enterprise Collections AI",
         role: "AI Engineer",
@@ -82,11 +89,25 @@ const projects = [
         tags: ["LangGraph", "React", "Agentic AI", "FinTech"],
         link: "/collections",
         featured: true,
-        icon: Database,
+        icon: Sparkles,
         color: "text-emerald-500",
         bg: "bg-emerald-500/10",
         border: "border-emerald-500/20"
     },
+    // 8. Gemini OCR
+    {
+        title: "Gemini OCR",
+        role: "Frontend Developer",
+        desc: "High-accuracy OCR tool powered by Google's Gemini Vision Pro. Extracts structured data from complex documents.",
+        tags: ["Gemini API", "React", "OCR", "AI"],
+        link: "/gemini-ocr",
+        featured: true,
+        icon: ScanText,
+        color: "text-indigo-500",
+        bg: "bg-indigo-500/10",
+        border: "border-indigo-500/20"
+    },
+    // 9. SlipVerify AI
     {
         title: "SlipVerify AI",
         role: "AI Engineer",
@@ -99,42 +120,33 @@ const projects = [
         bg: "bg-purple-500/10",
         border: "border-purple-500/20"
     },
+    // 10. ProjectFlow AI
     {
-        title: "Local Guide",
-        role: "Full Stack Developer",
-        desc: "End-to-end booking platform POC. Demonstrates full-stack development capabilities including real-time availability and booking management.",
-        tags: ["React", "Full Stack", "Booking System", "POC"],
-        link: "https://web-production-c4714.up.railway.app/",
+        title: "ProjectFlow AI",
+        role: "AI Engineer",
+        desc: "Autonomous Scrum Master that manages Jira boards. Features Scope Creep detection, Auto-Grooming, and Definition of Done checks.",
+        tags: ["Jira API", "React", "Agentic AI", "DevOps"],
+        link: "/project-flow",
         featured: true,
-        icon: Map,
-        color: "text-cyan-500",
-        bg: "bg-cyan-500/10",
-        border: "border-cyan-500/20"
+        icon: SquareKanban,
+        color: "text-blue-500",
+        bg: "bg-blue-500/10",
+        border: "border-blue-500/20"
     },
+    // 11. RiskGuard AI
     {
-        title: "Gemini OCR",
-        role: "Frontend Developer",
-        desc: "High-accuracy OCR tool powered by Google's Gemini Vision Pro. Extracts structured data from complex documents.",
-        tags: ["Gemini API", "React", "OCR", "AI"],
-        link: "/gemini-ocr",
-        featured: false,
-        icon: ScanText,
-        color: "text-indigo-500",
-        bg: "bg-indigo-500/10",
-        border: "border-indigo-500/20"
+        title: "RiskGuard AI",
+        role: "AI Engineer",
+        desc: "Internal Control System that audits transactions in real-time. Features Policy Checks, Entity Resolution (COI), and Market Benchmarking.",
+        tags: ["LangGraph", "React", "Risk", "Audit"],
+        link: "/risk-guard",
+        featured: true,
+        icon: ShieldCheck,
+        color: "text-rose-500",
+        bg: "bg-rose-500/10",
+        border: "border-rose-500/20"
     },
-    {
-        title: "AI Resume Builder",
-        role: "Full Stack Developer",
-        desc: "Interactive resume builder with AI-powered content suggestions and real-time preview.",
-        tags: ["React", "Gemini AI", "Tailwind CSS"],
-        link: "/resume-builder",
-        featured: false,
-        icon: Code,
-        color: "text-teal-500",
-        bg: "bg-teal-500/10",
-        border: "border-teal-500/20"
-    },
+    // 12. SplitBill AI
     {
         title: "SplitBill AI",
         role: "Creator & Developer",
@@ -146,6 +158,19 @@ const projects = [
         color: "text-pink-500",
         bg: "bg-pink-500/10",
         border: "border-pink-500/20"
+    },
+    // 13. Local Guide
+    {
+        title: "Local Guide",
+        role: "Full Stack Developer",
+        desc: "End-to-end booking platform POC. Demonstrates full-stack development capabilities including real-time availability and booking management.",
+        tags: ["React", "Full Stack", "Booking System", "POC"],
+        link: "https://web-production-c4714.up.railway.app/",
+        featured: true,
+        icon: Map,
+        color: "text-cyan-500",
+        bg: "bg-cyan-500/10",
+        border: "border-cyan-500/20"
     }
 ];
 

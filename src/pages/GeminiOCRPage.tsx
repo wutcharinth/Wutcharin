@@ -189,7 +189,7 @@ const GeminiOCRPage = () => {
                                         <div className="w-3 h-3 rounded-full bg-green-500"></div>
                                         <span className="ml-auto text-slate-500 text-xs">server/index.js</span>
                                     </div>
-                                    <pre><code><span className="text-purple-400">const</span> model = genAI.getGenerativeModel({`{ model: `}<span className="text-green-400">'gemini-2.5-flash'</span>{` }`});</code></pre>
+                                    <pre><code><span className="text-purple-400">const</span> model = genAI.getGenerativeModel({`{ model: `}<span className="text-green-400">'gemini-2.0-flash'</span>{` }`});</code></pre>
                                     <pre><code></code></pre>
                                     <pre><code><span className="text-slate-500">// Construct multimodal prompt</span></code></pre>
                                     <pre><code><span className="text-purple-400">const</span> result = <span className="text-purple-400">await</span> model.generateContent([</code></pre>
@@ -267,7 +267,7 @@ const GeminiOCRPage = () => {
                                 <ul className="space-y-4 text-sm text-slate-300">
                                     <li className="flex justify-between border-b border-slate-800 pb-3">
                                         <span className="text-slate-500">Model</span>
-                                        <span className="font-mono text-white">gemini-2.5-flash</span>
+                                        <span className="font-mono text-white">gemini-2.0-flash</span>
                                     </li>
                                     <li className="flex justify-between border-b border-slate-800 pb-3">
                                         <span className="text-slate-500">Context Window</span>
