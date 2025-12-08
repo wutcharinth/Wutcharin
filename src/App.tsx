@@ -10,6 +10,7 @@ import RiskGuardPage from './pages/RiskGuardPage';
 import ProjectFlowPage from './pages/ProjectFlowPage';
 import ReviewFlowPage from './pages/ReviewFlowPage';
 import QueryFlowPage from './pages/QueryFlowPage';
+import FutureOfWorkPage from './pages/FutureOfWorkPage';
 import AIEvolutionPage from './pages/AIEvolutionPage';
 
 // Component to scroll to top on route change
@@ -39,6 +40,7 @@ function App() {
         <Route path="/review-flow" element={<ReviewFlowPage />} />
         <Route path="/query-flow" element={<QueryFlowPage />} />
         <Route path="/ai-evolution" element={<AIEvolutionPage />} />
+        <Route path="/future-of-work" element={<FutureOfWorkPage />} />
       </Routes>
     </Router>
   );

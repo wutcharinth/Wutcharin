@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, ShieldCheck, SquareKanban, StarHalf, Database, FileText, MessageSquare, TrendingUp } from 'lucide-react';
+import { ArrowRight, ShieldCheck, SquareKanban, StarHalf, Database, FileText, MessageSquare, TrendingUp, Briefcase } from 'lucide-react';
 
 const projects = [
     {
@@ -81,6 +81,16 @@ const projects = [
         bg: "bg-fuchsia-500/10",
         border: "border-fuchsia-500/20",
         link: "/ai-evolution"
+    },
+    {
+        id: 'future-of-work',
+        title: "Future of Work",
+        desc: "AI & Workforce Data Story",
+        icon: Briefcase,
+        color: "text-cyan-500",
+        bg: "bg-cyan-500/10",
+        border: "border-cyan-500/20",
+        link: "/future-of-work"
     }
 ];
 
