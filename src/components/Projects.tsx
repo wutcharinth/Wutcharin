@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowUpRight, ShieldCheck, SquareKanban, StarHalf, Database, MessageSquare, FileText, ScanText, Code, Receipt, Map, TrendingUp, Briefcase } from 'lucide-react';
+import { ArrowUpRight, ShieldCheck, SquareKanban, StarHalf, Database, MessageSquare, FileText, ScanText, Code, Receipt, Map, TrendingUp, Briefcase, Brain, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const projectSections = [
@@ -42,6 +42,18 @@ const projectSections = [
                 color: "text-cyan-500",
                 bg: "bg-cyan-500/10",
                 border: "border-cyan-500/20"
+            },
+            {
+                title: "Agentic AI Deep Dive",
+                role: "Technical Writer & Educator",
+                desc: "Interactive article exploring Stanford CS230's lecture on Agentic AI. Features visualizations of the Jagged Frontier, Prompt Engineering, HyDE, and ReAct patterns.",
+                tags: ["Stanford CS230", "Agentic AI", "Interactive", "Education"],
+                link: "/agentic-ai",
+                featured: true,
+                icon: Brain,
+                color: "text-violet-500",
+                bg: "bg-violet-500/10",
+                border: "border-violet-500/20"
             }
         ]
     },
