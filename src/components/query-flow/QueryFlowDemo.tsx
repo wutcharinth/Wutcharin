@@ -260,10 +260,10 @@ const QueryFlowDemo = () => {
                                 </div>
                                 <div>
                                     <h3 className="text-xs font-bold text-white">Metadata Scout</h3>
-                                    <div className="text-[9px] text-slate-500 font-mono">Tool: Data Catalog Search</div>
+                                    <div className="text-[10px] text-slate-500 font-mono">Tool: Data Catalog Search</div>
                                 </div>
                             </div>
-                            <div className="bg-black/30 p-2 rounded border border-slate-700/50 text-[9px] font-mono text-slate-400 truncate">{metaLog}</div>
+                            <div className="bg-black/30 p-2 rounded border border-slate-700/50 text-[11px] font-mono text-slate-400 truncate">{metaLog}</div>
                         </div>
 
                         {/* Node 2: Source Validation */}
@@ -275,7 +275,7 @@ const QueryFlowDemo = () => {
                                 </div>
                                 <div>
                                     <h3 className="text-xs font-bold text-white">Security & Lineage</h3>
-                                    <div className="text-[9px] text-slate-500 font-mono">Policy Check</div>
+                                    <div className="text-[10px] text-slate-500 font-mono">Policy Check</div>
                                 </div>
                             </div>
                             <div className="flex gap-2">
