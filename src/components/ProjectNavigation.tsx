@@ -1,7 +1,17 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, ShieldCheck, SquareKanban, StarHalf, Database, FileText, MessageSquare, TrendingUp, Briefcase } from 'lucide-react';
+import { ArrowRight, ShieldCheck, SquareKanban, StarHalf, Database, FileText, MessageSquare, TrendingUp, Briefcase, Brain } from 'lucide-react';
 
 const projects = [
+    {
+        id: 'agentic-ai',
+        title: "Agentic AI",
+        desc: "Stanford CS230 Lecture Deep Dive",
+        icon: Brain,
+        color: "text-blue-500",
+        bg: "bg-blue-500/10",
+        border: "border-blue-500/20",
+        link: "/agentic-ai"
+    },
     {
         id: 'risk-guard',
         title: "RiskGuard AI",
