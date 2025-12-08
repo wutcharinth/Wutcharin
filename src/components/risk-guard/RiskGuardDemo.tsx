@@ -93,21 +93,21 @@ const RiskGuardDemo = () => {
             setRiskReason("Low Risk. Approved automatically.");
             setCheckCoi("Clean");
             setCheckPrice("Within 5% Range");
-            setAuditLog([
-                <div key="1" className="text-[9px] text-green-700">[INFO] Policy Check Passed</div>,
-                <div key="2" className="text-[9px] text-green-700">[INFO] No Entity Match</div>,
-                <div key="3" className="text-[9px] font-bold text-slate-800">ACTION: AUTO-APPROVE</div>
-            ]);
+                            setAuditLog([
+                                <div key="1" className="text-xs text-green-700">[INFO] Policy Check Passed</div>,
+                                <div key="2" className="text-xs text-green-700">[INFO] No Entity Match</div>,
+                                <div key="3" className="text-xs font-bold text-slate-800">ACTION: AUTO-APPROVE</div>
+                            ]);
         } else {
             setRiskScore("98");
             setRiskReason("CRITICAL: Conflict of Interest Detected.");
             setCheckCoi("FAIL");
             setCheckPrice("25% Above Market");
-            setAuditLog([
-                <div key="1" className="text-[9px] text-green-700">[INFO] Policy Check Passed</div>,
-                <div key="2" className="text-[9px] text-red-600 font-bold">[ALERT] Address Match: 128 Maple St</div>,
-                <div key="3" className="text-[9px] font-bold text-red-700">ACTION: BLOCK & ESCALATE</div>
-            ]);
+                            setAuditLog([
+                                <div key="1" className="text-xs text-green-700">[INFO] Policy Check Passed</div>,
+                                <div key="2" className="text-xs text-red-600 font-bold">[ALERT] Address Match: 128 Maple St</div>,
+                                <div key="3" className="text-xs font-bold text-red-700">ACTION: BLOCK & ESCALATE</div>
+                            ]);
         }
 
         setIsRunning(false);
@@ -208,7 +208,7 @@ const RiskGuardDemo = () => {
                                         {stepStatus[0] === 'idle' ? 'Idle' : stepStatus[0] === 'risk' ? 'Risk' : 'Active'}
                                     </span>
                                 </div>
-                                <p className="text-[11px] text-slate-400 node-desc">Validating PO limits, budget codes, and authorization levels.</p>
+                                <p className="text-xs text-slate-400 node-desc">Validating PO limits, budget codes, and authorization levels.</p>
                             </div>
                         </div>
 
@@ -222,11 +222,11 @@ const RiskGuardDemo = () => {
                             </div>
                             <div className={`node-card p-4 rounded-xl ${stepStatus[1] === 'active' ? 'node-active' : stepStatus[1] === 'risk' ? 'node-risk' : ''}`}>
                                 <h3 className="text-sm font-bold text-white mb-1">Entity Resolution</h3>
-                                <p className="text-[11px] text-slate-400 node-desc">Cross-referencing Vendor Master Data vs. HR Employee DB.</p>
+                                <p className="text-xs text-slate-400 node-desc">Cross-referencing Vendor Master Data vs. HR Employee DB.</p>
                                 {showCoiAlert && (
                                     <div className="mt-2 p-2 bg-red-900/20 border border-red-500/30 rounded flex items-center gap-2">
-                                        <Fingerprint className="text-red-400 w-3 h-3" />
-                                        <span className="text-[10px] text-red-200">Identity Match Found</span>
+                                        <Fingerprint className="text-red-400 w-4 h-4" />
+                                        <span className="text-xs text-red-200">Identity Match Found</span>
                                     </div>
                                 )}
                             </div>
@@ -242,7 +242,7 @@ const RiskGuardDemo = () => {
                             </div>
                             <div className={`node-card p-4 rounded-xl ${stepStatus[2] === 'active' ? 'node-active' : stepStatus[2] === 'risk' ? 'node-risk' : ''}`}>
                                 <h3 className="text-sm font-bold text-white mb-1">Market Benchmark</h3>
-                                <p className="text-[11px] text-slate-400 node-desc">Comparing unit pricing against historical averages.</p>
+                                <p className="text-xs text-slate-400 node-desc">Comparing unit pricing against historical averages.</p>
                             </div>
                         </div>
 
@@ -255,7 +255,7 @@ const RiskGuardDemo = () => {
                             </div>
                             <div className={`node-card p-4 rounded-xl ${stepStatus[3] === 'active' ? 'node-active' : stepStatus[3] === 'risk' ? 'node-risk' : ''}`}>
                                 <h3 className="text-sm font-bold text-white mb-1">Control Decision</h3>
-                                <p className="text-[11px] text-slate-400 node-desc">Final Risk Score Calculation & Action.</p>
+                                <p className="text-xs text-slate-400 node-desc">Final Risk Score Calculation & Action.</p>
                             </div>
                         </div>
                     </div>

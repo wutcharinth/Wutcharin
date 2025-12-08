@@ -51,9 +51,9 @@ export default function CollectionsDemo() {
 
     const logsEndRef = useRef<HTMLDivElement>(null);
 
-    // Auto-scroll logs
+    // Auto-scroll logs within container only (prevent page jump)
     useEffect(() => {
-        logsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        logsEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }, [logs]);
 
     const addLog = (title: string, desc: string, colorClass: string = "text-slate-300") => {
@@ -239,8 +239,8 @@ export default function CollectionsDemo() {
                                 animate={{ opacity: 1, x: 0 }}
                                 className="border-l-2 border-violet-500 pl-2 mb-2"
                             >
-                                <div className="text-[10px] font-bold text-violet-400 uppercase mb-1">{log.title}</div>
-                                <div className={`text-xs ${log.colorClass}`} dangerouslySetInnerHTML={{ __html: log.desc }}></div>
+                                <div className="text-xs font-bold text-violet-400 uppercase mb-1">{log.title}</div>
+                                <div className={`text-sm ${log.colorClass}`} dangerouslySetInnerHTML={{ __html: log.desc }}></div>
                             </motion.div>
                         ))}
                     </AnimatePresence>
@@ -265,7 +265,7 @@ export default function CollectionsDemo() {
                                     <div className="flex-1 min-w-0">
                                         <div className="text-xs text-white truncate">{item.name}</div>
                                     </div>
-                                    <span className="text-[9px] bg-slate-700 px-1 rounded text-slate-300">{item.tag}</span>
+                                    <span className="text-[10px] bg-slate-700 px-1 rounded text-slate-300">{item.tag}</span>
                                 </motion.div>
                             ))}
                         </AnimatePresence>
