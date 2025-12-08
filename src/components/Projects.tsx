@@ -116,7 +116,7 @@ const projectSections = [
                 tags: ["LangGraph", "React", "Agentic AI", "FinTech"],
                 link: "/collections",
                 featured: true,
-                icon: Database,
+                icon: Sparkles,
                 color: "text-emerald-500",
                 bg: "bg-emerald-500/10",
                 border: "border-emerald-500/20"
