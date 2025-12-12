@@ -45,24 +45,30 @@ const useCountUp = (endValue: number, duration = 1000) => {
     const startTimeRef = useRef<number | null>(null);
 
     useEffect(() => {
+        setCount(0);
         startTimeRef.current = null;
+        let animationFrameId: number;
+
         const animateCount = (timestamp: number) => {
             if (!startTimeRef.current) startTimeRef.current = timestamp;
             const progress = timestamp - startTimeRef.current;
             const percentage = Math.min(progress / duration, 1);
             const currentValue = percentage * endValue;
-            setCount(parseFloat(currentValue.toFixed(1)));
+
+            if (progress >= 0) {
+                setCount(parseFloat(currentValue.toFixed(1)));
+            }
 
             if (percentage < 1) {
-                requestAnimationFrame(animateCount);
+                animationFrameId = requestAnimationFrame(animateCount);
             } else {
                 setCount(endValue);
             }
         };
 
-        setCount(0);
-        const handle = requestAnimationFrame(animateCount);
-        return () => cancelAnimationFrame(handle);
+        animationFrameId = requestAnimationFrame(animateCount);
+        return () => cancelAnimationFrame(animationFrameId);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [endValue, duration]);
 
     return count;
@@ -74,6 +80,7 @@ interface StatBoxProps {
     number: number;
     unit: string;
     label: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     icon: any;
     color: string;
     source: string;
@@ -183,6 +190,7 @@ const ProgressVisual = ({ label, value, color, context, type = 'bar', subValue =
 
 interface Sector {
     name: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     icon: any;
     risk?: number;
     growth?: number;
@@ -227,7 +235,7 @@ const SectorCard = ({ sector, type, decimals = 0 }: { sector: Sector, type: 'vul
     );
 };
 
-const CompanyLayoffCard = ({ company }: { company: any }) => (
+const CompanyLayoffCard = ({ company }: { company: { name: string, color: string, year: string, layoffs: string, context: string } }) => (
     <div className={`p-5 rounded-xl shadow-xl ${company.color}/30 border-l-4 border-red-500 bg-gray-800/70 h-full`}>
         <div className="flex justify-between items-start mb-3">
             <h4 className="text-xl font-bold text-white">{company.name}</h4>
@@ -352,8 +360,8 @@ const FutureOfWorkPage = () => {
                             <button
                                 onClick={() => setActiveTab('disruption')}
                                 className={`px-8 py-3 rounded-full text-sm font-medium transition duration-300 ${activeTab === 'disruption'
-                                        ? 'bg-red-700 text-white shadow-xl shadow-red-700/40'
-                                        : 'text-gray-400 hover:bg-gray-700'
+                                    ? 'bg-red-700 text-white shadow-xl shadow-red-700/40'
+                                    : 'text-gray-400 hover:bg-gray-700'
                                     }`}
                             >
                                 <TrendingDown className="inline w-4 h-4 mr-2" />
@@ -362,8 +370,8 @@ const FutureOfWorkPage = () => {
                             <button
                                 onClick={() => setActiveTab('transformation')}
                                 className={`px-8 py-3 rounded-full text-sm font-medium transition duration-300 ${activeTab === 'transformation'
-                                        ? 'bg-green-700 text-white shadow-xl shadow-green-700/40'
-                                        : 'text-gray-400 hover:bg-gray-700'
+                                    ? 'bg-green-700 text-white shadow-xl shadow-green-700/40'
+                                    : 'text-gray-400 hover:bg-gray-700'
                                     }`}
                             >
                                 <TrendingUp className="inline w-4 h-4 mr-2" />

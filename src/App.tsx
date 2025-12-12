@@ -13,6 +13,7 @@ import QueryFlowPage from './pages/QueryFlowPage';
 import FutureOfWorkPage from './pages/FutureOfWorkPage';
 import AIEvolutionPage from './pages/AIEvolutionPage';
 import AgenticAIPage from './pages/AgenticAIPage';
+import HumanEdgePage from './pages/HumanEdgePage';
 
 // Component to scroll to top on route change
 const ScrollToTop = () => {
@@ -43,6 +44,7 @@ function App() {
         <Route path="/ai-evolution" element={<AIEvolutionPage />} />
         <Route path="/future-of-work" element={<FutureOfWorkPage />} />
         <Route path="/agentic-ai" element={<AgenticAIPage />} />
+        <Route path="/human-edge" element={<HumanEdgePage />} />
       </Routes>
     </Router>
   );
