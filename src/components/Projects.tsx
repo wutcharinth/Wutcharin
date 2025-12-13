@@ -4,78 +4,6 @@ import { Link } from 'react-router-dom';
 
 const projectSections = [
     {
-        category: "Interactive Lecture Insights",
-        description: "Transforming profound lectures into interactive visual experiences",
-        items: [
-            {
-                title: "The Human Edge",
-                role: "Interactive Article",
-                desc: "Based on Po-Shen Loh's philosophy. Features a 'Mental Fitness' simulation and visualizations of the new survival skills in the AI era.",
-                tags: ["Philosophy", "React", "Interactive", "Mental Fitness"],
-                link: "/human-edge",
-                featured: true,
-                icon: Heart,
-                color: "text-cyan-500",
-                bg: "bg-cyan-500/10",
-                border: "border-cyan-500/20"
-            },
-            {
-                title: "Agentic AI Deep Dive",
-                role: "Technical Writer & Educator",
-                desc: "Interactive article exploring Stanford CS230's lecture on Agentic AI. Features visualizations of the Jagged Frontier, Prompt Engineering, HyDE, and ReAct patterns.",
-                tags: ["Stanford CS230", "Agentic AI", "Interactive", "Education"],
-                link: "/agentic-ai",
-                featured: true,
-                icon: Brain,
-                color: "text-violet-500",
-                bg: "bg-violet-500/10",
-                border: "border-violet-500/20"
-            }
-        ]
-    },
-    {
-        category: "Data Visualizations & Articles",
-        description: "Interactive data storytelling, visual analytics, and deep dives into technology",
-        items: [
-            {
-                title: "Thai Election 2566",
-                role: "Data Artist & AI Engineer",
-                desc: "Interactive data storytelling with an integrated RAG-based AI chatbot. Visualizes 2023 election results with deep political insights.",
-                tags: ["Data Viz", "RAG", "Gemini AI", "React"],
-                link: "/thai-election",
-                featured: true,
-                icon: MessageSquare,
-                color: "text-orange-500",
-                bg: "bg-orange-500/10",
-                border: "border-orange-500/20"
-            },
-            {
-                title: "AI Evolution Stats",
-                role: "Data Storyteller",
-                desc: "Interactive visualization of the exponential rise of AI. From Parameter Explosions to the Context Revolution.",
-                tags: ["Data Storytelling", "Recharts", "React", "AI Trends"],
-                link: "/ai-evolution",
-                featured: true,
-                icon: TrendingUp,
-                color: "text-fuchsia-500",
-                bg: "bg-fuchsia-500/10",
-                border: "border-fuchsia-500/20"
-            },
-            {
-                title: "Future of Work",
-                role: "Data Journalist",
-                desc: "A data-driven view on global job disruption and the emerging roles of tomorrow. Automation vs Transformation.",
-                tags: ["Data Journalism", "React", "Labor Stats"],
-                link: "/future-of-work",
-                featured: true,
-                icon: Briefcase,
-                color: "text-cyan-500",
-                bg: "bg-cyan-500/10",
-                border: "border-cyan-500/20"
-            }
-        ]
-    },
-    {
         category: "AI Agents & Agentic Simulations",
         description: "Autonomous agents solving complex enterprise workflows",
         items: [
@@ -201,6 +129,78 @@ const projectSections = [
                 link: "https://web-production-c4714.up.railway.app/",
                 featured: true,
                 icon: Map,
+                color: "text-cyan-500",
+                bg: "bg-cyan-500/10",
+                border: "border-cyan-500/20"
+            }
+        ]
+    },
+    {
+        category: "Interactive Lecture Insights",
+        description: "Transforming profound lectures into interactive visual experiences",
+        items: [
+            {
+                title: "The Human Edge",
+                role: "Interactive Article",
+                desc: "Based on Po-Shen Loh's philosophy. Features a 'Mental Fitness' simulation and visualizations of the new survival skills in the AI era.",
+                tags: ["Philosophy", "React", "Interactive", "Mental Fitness"],
+                link: "/human-edge",
+                featured: true,
+                icon: Heart,
+                color: "text-cyan-500",
+                bg: "bg-cyan-500/10",
+                border: "border-cyan-500/20"
+            },
+            {
+                title: "Agentic AI Deep Dive",
+                role: "Technical Writer & Educator",
+                desc: "Interactive article exploring Stanford CS230's lecture on Agentic AI. Features visualizations of the Jagged Frontier, Prompt Engineering, HyDE, and ReAct patterns.",
+                tags: ["Stanford CS230", "Agentic AI", "Interactive", "Education"],
+                link: "/agentic-ai",
+                featured: true,
+                icon: Brain,
+                color: "text-violet-500",
+                bg: "bg-violet-500/10",
+                border: "border-violet-500/20"
+            }
+        ]
+    },
+    {
+        category: "Data Visualizations & Articles",
+        description: "Interactive data storytelling, visual analytics, and deep dives into technology",
+        items: [
+            {
+                title: "Thai Election 2566",
+                role: "Data Artist & AI Engineer",
+                desc: "Interactive data storytelling with an integrated RAG-based AI chatbot. Visualizes 2023 election results with deep political insights.",
+                tags: ["Data Viz", "RAG", "Gemini AI", "React"],
+                link: "/thai-election",
+                featured: true,
+                icon: MessageSquare,
+                color: "text-orange-500",
+                bg: "bg-orange-500/10",
+                border: "border-orange-500/20"
+            },
+            {
+                title: "AI Evolution Stats",
+                role: "Data Storyteller",
+                desc: "Interactive visualization of the exponential rise of AI. From Parameter Explosions to the Context Revolution.",
+                tags: ["Data Storytelling", "Recharts", "React", "AI Trends"],
+                link: "/ai-evolution",
+                featured: true,
+                icon: TrendingUp,
+                color: "text-fuchsia-500",
+                bg: "bg-fuchsia-500/10",
+                border: "border-fuchsia-500/20"
+            },
+            {
+                title: "Future of Work",
+                role: "Data Journalist",
+                desc: "A data-driven view on global job disruption and the emerging roles of tomorrow. Automation vs Transformation.",
+                tags: ["Data Journalism", "React", "Labor Stats"],
+                link: "/future-of-work",
+                featured: true,
+                icon: Briefcase,
                 color: "text-cyan-500",
                 bg: "bg-cyan-500/10",
                 border: "border-cyan-500/20"
