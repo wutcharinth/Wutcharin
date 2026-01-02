@@ -1,99 +1,97 @@
-import Typewriter from 'typewriter-effect';
-import { motion } from 'framer-motion';
-import { ArrowRight, MapPin, Download } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
+
+import FishBackground from './FishBackground';
 
 export default function Hero() {
+    const { scrollY } = useScroll();
+    const y1 = useTransform(scrollY, [0, 500], [0, 150]);
+    const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+
     return (
-        <section className="min-h-screen flex items-center justify-center relative overflow-hidden px-4 pt-20">
-            {/* Background Effects */}
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-violet-600/20 rounded-full blur-[120px] -z-10"></div>
-            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] -z-10"></div>
+        <section className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden px-4">
+            <FishBackground />
 
-            <div className="max-w-7xl mx-auto text-center z-10">
+            {/* Content - Z-Index 30 to sit above vignette */}
+            <div className="relative z-30 max-w-5xl mx-auto w-full text-center">
+
+                {/* Minimal Status Text */}
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5, duration: 1 }}
+                    className="mb-12 flex justify-center"
                 >
+                    <div className="flex items-center gap-2 bg-slate-800/50 backdrop-blur-sm border border-slate-700 px-3 py-1.5 rounded-full">
+                        <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        <span className="text-[10px] md:text-xs font-mono text-emerald-400 uppercase tracking-widest">
+                            Constantly Evolving
+                        </span>
+                    </div>
+                </motion.div>
 
-
-                    <h1 className="text-6xl md:text-8xl font-black mb-6 tracking-tight leading-tight text-white">
-                        Wutcharin<br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-indigo-400">Thatan</span>
+                {/* Massive, Clean Typography */}
+                <motion.div style={{ y: y1, opacity }} className="mb-16">
+                    <h1 className="text-6xl sm:text-8xl md:text-9xl font-medium tracking-tighter text-white leading-none mb-2">
+                        Wutcharin
+                    </h1>
+                    <h1 className="text-6xl sm:text-8xl md:text-9xl font-medium tracking-tighter text-slate-600 leading-none">
+                        Thatan
                     </h1>
                 </motion.div>
 
+                {/* Minimal Role Descriptor */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
+                    transition={{ delay: 0.2, duration: 0.8 }}
+                    className="flex flex-col md:flex-row items-center justify-center gap-4 text-slate-400 font-light text-lg md:text-xl tracking-wide mb-16"
                 >
-                    <div className="text-2xl md:text-4xl text-slate-400 font-light mb-8 h-12">
-                        <Typewriter
-                            options={{
-                                strings: ['Executive Leader', 'Data Strategist', 'AI Innovator'],
-                                autoStart: true,
-                                loop: true,
-                                delay: 50,
-                                deleteSpeed: 30,
-                            }}
-                        />
-                    </div>
-
-                    <div className="flex items-center justify-center gap-2 text-slate-500 font-mono text-sm mb-12 uppercase tracking-widest">
-                        <MapPin className="w-4 h-4 text-violet-500" />
-                        <span>Bangkok, Thailand</span>
-                    </div>
-
-                    <p className="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto mb-12 leading-relaxed font-light">
-                        Transforming businesses through <span className="text-white font-bold">AI-Powered Automation</span> and <span className="text-white font-bold">Intelligent Data Strategy</span>.
-                    </p>
+                    <span className="text-white">AI</span>
+                    <span className="hidden md:inline w-px h-6 bg-slate-800"></span>
+                    <span className="text-white">Automation</span>
+                    <span className="hidden md:inline w-px h-6 bg-slate-800"></span>
+                    <span className="text-white">Analytics</span>
                 </motion.div>
 
+                {/* Ultra-Minimal Actions */}
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.4 }}
-                    className="flex flex-wrap justify-center gap-6"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.6, duration: 0.8 }}
+                    className="flex items-center justify-center gap-8"
                 >
                     <a
                         href="#projects"
-                        className="px-8 py-4 bg-violet-600 hover:bg-violet-500 text-white font-bold rounded-full transition-all shadow-[0_0_20px_rgba(139,92,246,0.3)] hover:shadow-[0_0_30px_rgba(139,92,246,0.5)] flex items-center gap-2"
+                        className="text-white border-b border-transparent hover:border-white transition-colors pb-1 flex items-center gap-2 group"
                     >
-                        View Projects <ArrowRight className="w-5 h-5" />
+                        Projects <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-white transition-colors" />
                     </a>
-                    <a
-                        href="#contact"
-                        className="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-full transition-all border border-slate-700 flex items-center gap-2"
-                    >
-                        Let's Connect
-                    </a>
+
                     <a
                         href="/Wutcharin_CV_2025.pdf"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-full transition-all border border-slate-700 flex items-center gap-2"
+                        className="text-slate-500 hover:text-white transition-colors pb-1"
                     >
-                        <Download className="w-5 h-5" /> Resume
+                        Resume
                     </a>
                 </motion.div>
 
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 1, delay: 0.8 }}
-                    className="mt-24 flex flex-wrap justify-center gap-4 max-w-4xl mx-auto"
-                >
-                    {['Data Strategy', 'Machine Learning', 'BI Architecture', 'Python & SQL', 'AI Automation', 'Team Leadership'].map((skill, index) => (
-                        <span
-                            key={index}
-                            className="px-4 py-2 bg-slate-900/50 border border-slate-800 rounded-full text-sm font-medium text-slate-400 hover:text-violet-400 hover:border-violet-500/30 transition-colors"
-                        >
-                            {skill}
-                        </span>
-                    ))}
-                </motion.div>
             </div>
+
+            {/* Subtle Scroll Hint */}
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.5, duration: 1 }}
+                className="absolute bottom-10 left-1/2 -translate-x-1/2"
+            >
+                <div className="w-[1px] h-12 bg-gradient-to-b from-slate-800 to-transparent"></div>
+            </motion.div>
         </section>
     );
 }
