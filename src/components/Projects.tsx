@@ -1,8 +1,93 @@
+
 import { motion } from 'framer-motion';
 import { ArrowUpRight, ShieldCheck, SquareKanban, StarHalf, Database, MessageSquare, FileText, ScanText, Code, Receipt, Map, TrendingUp, Briefcase, Brain, Sparkles, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const projectSections = [
+    {
+        category: "Interactive Lecture Insights",
+        description: "Transforming profound lectures and data into interactive visual experiences",
+        items: [
+            {
+                title: "Karpathy LLM Guide",
+                role: "Interactive Article",
+                badge: "Lecture Insight",
+                desc: "A definitive technical and strategic synthesis of Andrej Karpathy's masterclass on professional LLM utilization. Features Token visualizers and Model ELO charts.",
+                tags: ["Andrej Karpathy", "LLM", "Interactive", "Education"],
+                link: "/karpathy-deep-dive",
+                featured: true,
+                icon: Brain,
+                color: "text-indigo-500",
+                bg: "bg-indigo-500/10",
+                border: "border-indigo-500/20"
+            },
+            {
+                title: "The Human Edge",
+                role: "Interactive Article",
+                badge: "Lecture Insight",
+                desc: "Based on Po-Shen Loh's philosophy. Features a 'Mental Fitness' simulation and visualizations of the new survival skills in the AI era.",
+                tags: ["Philosophy", "React", "Interactive", "Mental Fitness"],
+                link: "/human-edge",
+                featured: true,
+                icon: Heart,
+                color: "text-cyan-500",
+                bg: "bg-cyan-500/10",
+                border: "border-cyan-500/20"
+            },
+            {
+                title: "Agentic AI Deep Dive",
+                role: "Technical Writer & Educator",
+                badge: "Lecture Insight",
+                desc: "Interactive article exploring Stanford CS230's lecture on Agentic AI. Features visualizations of the Jagged Frontier, Prompt Engineering, HyDE, and ReAct patterns.",
+                tags: ["Stanford CS230", "Agentic AI", "Interactive", "Education"],
+                link: "/agentic-ai",
+                featured: true,
+                icon: Brain,
+                color: "text-violet-500",
+                bg: "bg-violet-500/10",
+                border: "border-violet-500/20"
+            },
+            {
+                title: "Thai Election 2566",
+                role: "Data Artist & AI Engineer",
+                badge: "Data Story",
+                desc: "Interactive data storytelling with an integrated RAG-based AI chatbot. Visualizes 2023 election results with deep political insights.",
+                tags: ["Data Viz", "RAG", "Gemini AI", "React"],
+                link: "/thai-election",
+                featured: true,
+                icon: MessageSquare,
+                color: "text-orange-500",
+                bg: "bg-orange-500/10",
+                border: "border-orange-500/20"
+            },
+            {
+                title: "AI Evolution Stats",
+                role: "Data Storyteller",
+                badge: "Data Story",
+                desc: "Interactive visualization of the exponential rise of AI. From Parameter Explosions to the Context Revolution.",
+                tags: ["Data Storytelling", "Recharts", "React", "AI Trends"],
+                link: "/ai-evolution",
+                featured: true,
+                icon: TrendingUp,
+                color: "text-fuchsia-500",
+                bg: "bg-fuchsia-500/10",
+                border: "border-fuchsia-500/20"
+            },
+            {
+                title: "Future of Work",
+                role: "Data Journalist",
+                badge: "Data Story",
+                desc: "A data-driven view on global job disruption and the emerging roles of tomorrow. Automation vs Transformation.",
+                tags: ["Data Journalism", "React", "Labor Stats"],
+                link: "/future-of-work",
+                featured: true,
+                icon: Briefcase,
+                color: "text-cyan-500",
+                bg: "bg-cyan-500/10",
+                border: "border-cyan-500/20"
+            }
+        ]
+    },
     {
         category: "AI Agents & Agentic Simulations",
         description: "Autonomous agents solving complex enterprise workflows",
@@ -134,78 +219,6 @@ const projectSections = [
                 border: "border-cyan-500/20"
             }
         ]
-    },
-    {
-        category: "Interactive Lecture Insights",
-        description: "Transforming profound lectures into interactive visual experiences",
-        items: [
-            {
-                title: "The Human Edge",
-                role: "Interactive Article",
-                desc: "Based on Po-Shen Loh's philosophy. Features a 'Mental Fitness' simulation and visualizations of the new survival skills in the AI era.",
-                tags: ["Philosophy", "React", "Interactive", "Mental Fitness"],
-                link: "/human-edge",
-                featured: true,
-                icon: Heart,
-                color: "text-cyan-500",
-                bg: "bg-cyan-500/10",
-                border: "border-cyan-500/20"
-            },
-            {
-                title: "Agentic AI Deep Dive",
-                role: "Technical Writer & Educator",
-                desc: "Interactive article exploring Stanford CS230's lecture on Agentic AI. Features visualizations of the Jagged Frontier, Prompt Engineering, HyDE, and ReAct patterns.",
-                tags: ["Stanford CS230", "Agentic AI", "Interactive", "Education"],
-                link: "/agentic-ai",
-                featured: true,
-                icon: Brain,
-                color: "text-violet-500",
-                bg: "bg-violet-500/10",
-                border: "border-violet-500/20"
-            }
-        ]
-    },
-    {
-        category: "Data Visualizations & Articles",
-        description: "Interactive data storytelling, visual analytics, and deep dives into technology",
-        items: [
-            {
-                title: "Thai Election 2566",
-                role: "Data Artist & AI Engineer",
-                desc: "Interactive data storytelling with an integrated RAG-based AI chatbot. Visualizes 2023 election results with deep political insights.",
-                tags: ["Data Viz", "RAG", "Gemini AI", "React"],
-                link: "/thai-election",
-                featured: true,
-                icon: MessageSquare,
-                color: "text-orange-500",
-                bg: "bg-orange-500/10",
-                border: "border-orange-500/20"
-            },
-            {
-                title: "AI Evolution Stats",
-                role: "Data Storyteller",
-                desc: "Interactive visualization of the exponential rise of AI. From Parameter Explosions to the Context Revolution.",
-                tags: ["Data Storytelling", "Recharts", "React", "AI Trends"],
-                link: "/ai-evolution",
-                featured: true,
-                icon: TrendingUp,
-                color: "text-fuchsia-500",
-                bg: "bg-fuchsia-500/10",
-                border: "border-fuchsia-500/20"
-            },
-            {
-                title: "Future of Work",
-                role: "Data Journalist",
-                desc: "A data-driven view on global job disruption and the emerging roles of tomorrow. Automation vs Transformation.",
-                tags: ["Data Journalism", "React", "Labor Stats"],
-                link: "/future-of-work",
-                featured: true,
-                icon: Briefcase,
-                color: "text-cyan-500",
-                bg: "bg-cyan-500/10",
-                border: "border-cyan-500/20"
-            }
-        ]
     }
 ];
 
@@ -244,6 +257,9 @@ export default function Projects() {
                             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {section.items.map((project, index) => {
                                     const isExternal = project.link.startsWith('http');
+                                    // @ts-ignore - Dynamic badge property
+                                    const badge = project.badge;
+
                                     const CardContent = () => (
                                         <>
                                             <div className={`absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity ${project.color}`}>
@@ -255,7 +271,15 @@ export default function Projects() {
                                                     <div className={`w-12 h-12 rounded-xl ${project.bg} ${project.border} border flex items-center justify-center group-hover:scale-110 transition-transform`}>
                                                         <project.icon className={`w-6 h-6 ${project.color}`} />
                                                     </div>
-                                                    <ArrowUpRight className="text-slate-600 group-hover:text-white w-5 h-5 transition-colors" />
+                                                    {badge && (
+                                                        <span className={`px-2 py-1 rounded-md text-[10px] uppercase font-bold tracking-wider border ${badge === 'Lecture Insight'
+                                                                ? 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30'
+                                                                : 'bg-fuchsia-500/20 text-fuchsia-300 border-fuchsia-500/30'
+                                                            }`}>
+                                                            {badge}
+                                                        </span>
+                                                    )}
+                                                    {!badge && <ArrowUpRight className="text-slate-600 group-hover:text-white w-5 h-5 transition-colors" />}
                                                 </div>
 
                                                 <h3 className="text-xl font-bold text-white mb-1 group-hover:text-violet-400 transition-colors">
