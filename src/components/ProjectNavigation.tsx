@@ -101,6 +101,16 @@ const projects = [
         bg: "bg-cyan-500/10",
         border: "border-cyan-500/20",
         link: "/future-of-work"
+    },
+    {
+        id: 'karpathy-deep-dive',
+        title: "Karpathy LLM Guide",
+        desc: "The Probabilistic OS",
+        icon: Brain,
+        color: "text-indigo-500",
+        bg: "bg-indigo-500/10",
+        border: "border-indigo-500/20",
+        link: "/karpathy-deep-dive"
     }
 ];
 
