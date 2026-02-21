@@ -158,6 +158,7 @@ padding:.9rem 1.1rem;margin-top:1rem;font-size:.8rem;color:var(--d);line-height:
 <nav>
   <span class="logo">🗳 ผลเลือกตั้ง 2569</span>
   <div class="nav-links">
+    <a href="#executive-summary" class="i18n" data-en="Executive Summary" data-th="สรุปผู้บริหาร"></a>
     <a href="#context" class="i18n" data-en="Investigation Brief" data-th="บทนำการสืบสวน"></a>
     <a href="#kpis" class="i18n" data-en="National Stats" data-th="สถิติระดับชาติ"></a>
     <a href="#variance" class="i18n" data-en="Variance Analysis" data-th="วิเคราะห์ความแตกต่าง"></a>
@@ -170,6 +171,92 @@ padding:.9rem 1.1rem;margin-top:1rem;font-size:.8rem;color:var(--d);line-height:
   </div>
   <button id="lang-btn" aria-label="Switch language / เปลี่ยนภาษา">TH 🇹🇭</button>
 </nav>
+
+<!-- EXECUTIVE SUMMARY -->
+<div class="context-wrap" id="executive-summary" style="border-bottom:1px solid rgba(255,255,255,0.06);padding-bottom:2.5rem;margin-bottom:0">
+  <div class="alert-badge" style="background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.3)">
+    <span class="dot" style="background:#f59e0b;box-shadow:0 0 8px #f59e0b"></span>
+    <span class="i18n" data-en="EXECUTIVE SUMMARY — Key Findings at a Glance" data-th="สรุปผู้บริหาร — ข้อค้นพบสำคัญโดยย่อ"></span>
+  </div>
+  <h1 class="report-title i18n" style="font-size:clamp(1.6rem,4vw,2.4rem)"
+    data-en="Thailand 2569 Election&#10;Statistical Investigation"
+    data-th="รายงานสืบสวนสถิติ&#10;การเลือกตั้ง 2569"></h1>
+
+  <!-- Key numbers strip -->
+  <div style="display:flex;flex-wrap:wrap;gap:.75rem;margin:1.25rem 0 1.75rem">
+    <div style="background:rgba(244,63,94,0.1);border:1px solid rgba(244,63,94,0.25);border-radius:.75rem;padding:.65rem 1.1rem;min-width:130px">
+      <div style="font-size:1.5rem;font-weight:800;color:#f43f5e;line-height:1">1,280,974</div>
+      <div style="font-size:.72rem;color:var(--muted);margin-top:.2rem" class="i18n" data-en="Spoiled constituency ballots" data-th="บัตรเสียแบ่งเขต"></div>
+    </div>
+    <div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);border-radius:.75rem;padding:.65rem 1.1rem;min-width:130px">
+      <div style="font-size:1.5rem;font-weight:800;color:#f59e0b;line-height:1">143 / 382</div>
+      <div style="font-size:.72rem;color:var(--muted);margin-top:.2rem" class="i18n" data-en="Districts with deviation &gt;2%" data-th="เขตที่เบี่ยงเบนเกิน 2%"></div>
+    </div>
+    <div style="background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.25);border-radius:.75rem;padding:.65rem 1.1rem;min-width:130px">
+      <div style="font-size:1.5rem;font-weight:800;color:#a78bfa;line-height:1">37</div>
+      <div style="font-size:.72rem;color:var(--muted);margin-top:.2rem" class="i18n" data-en="Seats where spoiled &gt; win margin" data-th="เขตที่บัตรเสียเกินคะแนนห่าง"></div>
+    </div>
+    <div style="background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.2);border-radius:.75rem;padding:.65rem 1.1rem;min-width:130px">
+      <div style="font-size:1.5rem;font-weight:800;color:#4ade80;line-height:1">+146,485</div>
+      <div style="font-size:.72rem;color:var(--muted);margin-top:.2rem" class="i18n" data-en="Net national ballot gap (party − const)" data-th="ส่วนต่างสุทธิระดับชาติ (บช − แบ่งเขต)"></div>
+    </div>
+    <div style="background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);border-radius:.75rem;padding:.65rem 1.1rem;min-width:130px">
+      <div style="font-size:1.5rem;font-weight:800;color:#60a5fa;line-height:1">28+</div>
+      <div style="font-size:.72rem;color:var(--muted);margin-top:.2rem" class="i18n" data-en="Petitions to Ombudsman filed" data-th="คำร้องต่อผู้ตรวจการแผ่นดิน"></div>
+    </div>
+  </div>
+
+  <!-- Finding cards -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-bottom:1.5rem">
+
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-left:3px solid #f43f5e;border-radius:.75rem;padding:1rem 1.1rem">
+      <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;color:#f43f5e;margin-bottom:.4rem" class="i18n" data-en="FINDING 1 — SPOILED BALLOT ANOMALY" data-th="ข้อค้นพบ 1 — ความผิดปกติบัตรเสีย"></div>
+      <p style="font-size:.85rem;line-height:1.55;color:#cbd5e1;margin:0" class="i18n"
+        data-en="1,280,974 constituency ballots were spoiled — 3.56% average — dwarfing the official net gap of 146,485. Only 11.4% of those spoiled ballots need to have been selective (constituency spoiled, party-list kept valid) to fully account for the national 1:1 imbalance. The 16,632 reported party-list spoiled figure is forensically implausible — a 22:1 ratio against constituency — pointing to a data reporting failure."
+        data-th="บัตรเสียแบ่งเขต 1,280,974 ใบ — อัตราเฉลี่ย 3.56% — มากกว่าส่วนต่างสุทธิอย่างเป็นทางการ 146,485 อย่างมีนัยสำคัญ จำเป็นต้องมีบัตรเสียแบบเลือกเพียง 11.4% (เสียเฉพาะแบ่งเขต ใช้บัญชีรายชื่อได้ตามปกติ) เพื่ออธิบายความไม่สมดุล 1:1 ของประเทศได้ทั้งหมด ตัวเลขบัตรเสียบัญชีรายชื่อที่รายงาน 16,632 ใบไม่น่าเป็นไปได้ทางนิติวิทยาศาสตร์ — อัตราส่วน 22:1 เทียบกับแบ่งเขต — ชี้ให้เห็นว่ามีความล้มเหลวในการรายงานข้อมูล"></p>
+    </div>
+
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-left:3px solid #f59e0b;border-radius:.75rem;padding:1rem 1.1rem">
+      <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;color:#f59e0b;margin-bottom:.4rem" class="i18n" data-en="FINDING 2 — SYSTEMATIC DIRECTIONAL BIAS" data-th="ข้อค้นพบ 2 — อคติทิศทางอย่างเป็นระบบ"></div>
+      <p style="font-size:.85rem;line-height:1.55;color:#cbd5e1;margin:0" class="i18n"
+        data-en="206 of 382 districts (53.9%) show party-list exceeding constituency — borderline significant (z=1.54, p≈0.06). The pattern is geographic: Bangkok (+132,828 surplus) and the South (+63,940) push party&gt;constituency, while Isan runs the opposite (−50,841). This concentration in urban and opposition-leaning regions suggests voter behaviour — QR-code-driven constituency ballot spoiling — not random clerical error."
+        data-th="206 จาก 382 เขต (53.9%) พบว่าบัญชีรายชื่อเกินแบ่งเขต — มีนัยสำคัญกึ่งหนึ่ง (z=1.54, p≈0.06) รูปแบบเป็นไปตามภูมิศาสตร์: กรุงเทพฯ (+132,828 ส่วนเกิน) และภาคใต้ (+63,940) ขับเคลื่อนบัญชีรายชื่อ &gt; แบ่งเขต ขณะที่อีสานเป็นตรงข้าม (−50,841) การกระจุกตัวในเขตเมืองและพื้นที่ฝ่ายค้านชี้ว่าเป็นพฤติกรรมผู้ลงคะแนน — การทำบัตรแบ่งเขตเสียโดยเจตนาจากเรื่อง QR Code — ไม่ใช่ข้อผิดพลาดในการบันทึกแบบสุ่ม"></p>
+    </div>
+
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-left:3px solid #60a5fa;border-radius:.75rem;padding:1rem 1.1rem">
+      <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;color:#60a5fa;margin-bottom:.4rem" class="i18n" data-en="FINDING 3 — CANDIDATE SURGE: WHO BENEFITS" data-th="ข้อค้นพบ 3 — บัตรเขย่ง: ใครได้ประโยชน์"></div>
+      <p style="font-size:.85rem;line-height:1.55;color:#cbd5e1;margin:0" class="i18n"
+        data-en="176 districts show constituency exceeding party-list — a &ldquo;candidate surge&rdquo; where local candidates outran their party brand. Phumjaithai (ภูมิใจไทย) dominates: 108 of 176 surge districts (61%), with 146,478 combined surplus votes. กล้าธรรม wins 31 (18%) and เพื่อไทย 27 (15%). People's Party (ประชาชน) appears in only 1 surge district — confirming their wins are entirely party-brand driven, not candidate-driven."
+        data-th="176 เขตพบว่าแบ่งเขตเกินบัญชีรายชื่อ — &ldquo;บัตรเขย่ง&rdquo; ที่ผู้สมัครท้องถิ่นได้คะแนนเกินแบรนด์พรรค ภูมิใจไทยครองอยู่: 108 จาก 176 เขต (61%) รวมคะแนนส่วนเกิน 146,478 คะแนน กล้าธรรมชนะ 31 เขต (18%) และเพื่อไทย 27 เขต (15%) พรรคประชาชนปรากฏในเขตบัตรเขย่งเพียง 1 เขต — ยืนยันว่าชัยชนะของพวกเขาขับเคลื่อนด้วยแบรนด์พรรคล้วน ๆ ไม่ใช่ตัวผู้สมัคร"></p>
+    </div>
+
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-left:3px solid #a78bfa;border-radius:.75rem;padding:1rem 1.1rem">
+      <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;color:#a78bfa;margin-bottom:.4rem" class="i18n" data-en="FINDING 4 — WHO LOSES: THE RUNNER-UP PATTERN" data-th="ข้อค้นพบ 4 — ใครเสียประโยชน์: รูปแบบอันดับ 2"></div>
+      <p style="font-size:.85rem;line-height:1.55;color:#cbd5e1;margin:0" class="i18n"
+        data-en="In 76 high-spoiled districts (&gt;5% rate), People's Party (ประชาชน) is runner-up in 45 of them — 59.2%. They won only 6. In the 28 double-anomaly districts (high spoiled AND deviation &gt;2%), ประชาชน is runner-up in 50% of cases. เพื่อไทย is runner-up most often in deviation &gt;2% districts (43 seats, 30.1%). The data shows ประชาชน candidates narrowly lost in the most anomalous districts repeatedly — raising the question of how many seats were outcome-determinative."
+        data-th="ใน 76 เขตที่มีบัตรเสียสูง (อัตรา &gt;5%) พรรคประชาชนเป็นอันดับ 2 ใน 45 เขต — 59.2% — แต่ชนะเพียง 6 เขต ใน 28 เขตที่มีความผิดปกติสองด้าน (บัตรเสียสูงและความเบี่ยงเบน &gt;2%) ประชาชนเป็นอันดับ 2 ใน 50% ของกรณี เพื่อไทยเป็นอันดับ 2 บ่อยที่สุดในเขตที่มีความเบี่ยงเบน &gt;2% (43 เขต 30.1%) ข้อมูลแสดงให้เห็นว่าผู้สมัครพรรคประชาชนแพ้ฉิวเฉียดซ้ำแล้วซ้ำเล่าในเขตที่ผิดปกติมากที่สุด — ตั้งคำถามว่ามีกี่เขตที่ความผิดปกตินั้นกำหนดผลลัพธ์"></p>
+    </div>
+
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-left:3px solid #f43f5e;border-radius:.75rem;padding:1rem 1.1rem">
+      <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;color:#f43f5e;margin-bottom:.4rem" class="i18n" data-en="FINDING 5 — 37 OUTCOME-DETERMINATIVE SEATS" data-th="ข้อค้นพบ 5 — 37 เขตที่อาจพลิกผล"></div>
+      <p style="font-size:.85rem;line-height:1.55;color:#cbd5e1;margin:0" class="i18n"
+        data-en="In 37 districts, spoiled constituency ballots alone exceed the winner&rsquo;s margin. The most extreme: นราธิวาส เขต 3 won by just 266 votes with 2,416 spoiled ballots; ศรีสะเกษ เขต 6 won by 273 with 3,411 spoiled; นครราชสีมา เขต 3 won by 299 with 3,626 spoiled. In 68 districts, the combined spoiled + 1:1 deviation exceeds the margin. This does not prove fraud — but it identifies the seats where a full ballot-level audit would most directly determine whether the result should stand."
+        data-th="ใน 37 เขต บัตรเสียแบ่งเขตเพียงอย่างเดียวเกินคะแนนห่างของผู้ชนะ กรณีสุดขีด: นราธิวาส เขต 3 ชนะด้วยเพียง 266 คะแนน มีบัตรเสีย 2,416 ใบ; ศรีสะเกษ เขต 6 ชนะ 273 คะแนน มีบัตรเสีย 3,411 ใบ; นครราชสีมา เขต 3 ชนะ 299 คะแนน มีบัตรเสีย 3,626 ใบ ใน 68 เขต ผลรวมของบัตรเสียและความเบี่ยงเบน 1:1 เกินคะแนนห่าง สิ่งนี้ไม่ได้พิสูจน์การทุจริต แต่ระบุเขตที่การตรวจสอบข้อมูลระดับบัตรทั้งหมดจะกำหนดโดยตรงว่าผลลัพธ์ควรยืนอยู่หรือไม่"></p>
+    </div>
+
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-left:3px solid #34d399;border-radius:.75rem;padding:1rem 1.1rem">
+      <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;color:#34d399;margin-bottom:.4rem" class="i18n" data-en="LEGAL STATUS — ACTIVE PROCEEDINGS" data-th="สถานะทางกฎหมาย — กระบวนการที่ยังดำเนินอยู่"></div>
+      <p style="font-size:.85rem;line-height:1.55;color:#cbd5e1;margin:0" class="i18n"
+        data-en="Administrative Court case 304/2569 filed Feb 13–14. Ombudsman issued 7-day demand letter to ECT on Feb 16. 28+ petitions received. A prosecutor warned ECT risks a 5-year criminal sentence. The Ombudsman has a 60-day window to decide on Constitutional Court referral. 36 civil society organizations and 200+ academics have issued formal accountability demands. ANFREL expressed serious concern. All findings in this dashboard use official ECT data — the same data the Ombudsman investigation is examining."
+        data-th="ยื่นฟ้องศาลปกครอง คดีที่ 304/2569 เมื่อ 13–14 ก.พ. ผู้ตรวจการแผ่นดินมีหนังสือให้ กกต. ชี้แจงภายใน 7 วัน เมื่อ 16 ก.พ. ได้รับคำร้องแล้ว 28+ ฉบับ อัยการเตือนว่า กกต. เสี่ยงโทษจำคุก 5 ปี ผู้ตรวจการแผ่นดินมีเวลา 60 วันในการพิจารณาส่งเรื่องต่อศาลรัฐธรรมนูญ องค์กรภาคประชาสังคม 36 แห่งและนักวิชาการกว่า 200 คนออกแถลงการณ์เรียกร้องความรับผิดชอบ ANFREL แสดงความกังวลอย่างยิ่ง ข้อค้นพบทั้งหมดในรายงานนี้ใช้ข้อมูล กกต. อย่างเป็นทางการ — ข้อมูลชุดเดียวกับที่การสืบสวนของผู้ตรวจการแผ่นดินกำลังพิจารณา"></p>
+    </div>
+
+  </div>
+
+  <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:.75rem;padding:.9rem 1.2rem;font-size:.82rem;line-height:1.6;color:#fbbf24" class="i18n"
+    data-en="⚠ This investigation uses official ECT data and publicly reported figures. It does not allege fraud. It identifies statistical anomalies that are large enough to be outcome-determinative in specific districts, and raises questions that only a full ballot-level data release by the ECT can answer. Scroll down for the complete analysis."
+    data-th="⚠ การสืบสวนนี้ใช้ข้อมูลจาก กกต. อย่างเป็นทางการและตัวเลขที่รายงานสาธารณะ ไม่ได้กล่าวหาว่ามีการทุจริต แต่ระบุความผิดปกติทางสถิติที่มีขนาดใหญ่พอที่จะกำหนดผลลัพธ์ได้ในบางเขต และตั้งคำถามที่มีเพียงการเปิดเผยข้อมูลระดับบัตรทั้งหมดของ กกต. เท่านั้นที่จะตอบได้ เลื่อนลงเพื่อดูการวิเคราะห์ที่สมบูรณ์"></div>
+</div>
 
 <!-- CONTEXT -->
 <div class="context-wrap" id="context">
