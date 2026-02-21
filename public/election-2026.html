@@ -376,74 +376,197 @@ padding:.9rem 1.1rem;margin-top:1rem;font-size:.8rem;color:var(--d);line-height:
 
   <!-- WHO BENEFITS -->
   <div class="var-box" style="background:rgba(139,92,246,0.06);border-color:rgba(139,92,246,0.25);margin-bottom:1.25rem">
-    <h3 class="i18n" data-en="Finding 4 — Who Benefits? Party-Level Anomaly Breakdown" data-th="ข้อค้นพบที่ 4 — ใครได้ประโยชน์? การวิเคราะห์ความผิดปกติรายพรรค"></h3>
-    <p class="i18n"
-      data-en="Cross-referencing every district's winner with its deviation pattern reveals a statistically striking alignment. <strong>People's Party (ประชาชน): 98.8% positive deviation.</strong> In 84 of its 85 won seats, party-list votes exceed constituency votes — with a mean deviation of +2.57%, the highest of any major party. In all 58 of its high-deviation seats (abs &gt; 2%), the direction is exclusively party &gt; constituency: zero exceptions. <strong>Phumjaithai (ภูมิใจไทย): the mirror image.</strong> Of its 160 seats, 108 (67.5%) have constituency &gt; party-list, mean −0.46%. It accounts for 61.4% of all nationally negative-deviation districts. These two patterns are directionally opposite and geographically concentrated: ประชาชน's surplus is driven by Bangkok (+132,828 net) and the South (+63,940); ภูมิใจไทย's deficit is driven by Isan (−50,841). <strong>High spoiled ballots follow a different map entirely</strong> — concentrated in Northern Thailand (ตาก, เชียงใหม่, เชียงราย, ลำปาง), where กล้าธรรม and เพื่อไทย dominate. ประชาชน holds only 7.1% of high-spoiled seats despite winning 22% of districts nationally — suggesting QR-code-driven spoiling had minimal impact in its strongholds."
-      data-th="การเชื่อมโยงผู้ชนะในแต่ละเขตกับรูปแบบความเบี่ยงเบนเผยความสอดคล้องทางสถิติที่น่าทึ่ง <strong>พรรคประชาชน: บวกเบี่ยงเบน 98.8%</strong> ใน 84 จาก 85 ที่นั่งที่ชนะ บัญชีรายชื่อเกินแบ่งเขต ค่าเฉลี่ยความเบี่ยงเบน +2.57% สูงสุดในบรรดาพรรคใหญ่ทุกพรรค และใน 58 ที่นั่งที่เบี่ยงเบนสูง (สัมบูรณ์ &gt; 2%) ทิศทางเป็นบัญชีรายชื่อ &gt; แบ่งเขต ทั้งหมดโดยไม่มีข้อยกเว้น <strong>ภูมิใจไทย: ภาพสะท้อนตรงข้าม</strong> จาก 160 ที่นั่ง มี 108 ที่นั่ง (67.5%) ที่แบ่งเขตเกินบัญชีรายชื่อ ค่าเฉลี่ย −0.46% คิดเป็น 61.4% ของเขตที่มีความเบี่ยงเบนเป็นลบทั้งหมด รูปแบบทั้งสองนี้ตรงข้ามกันและกระจุกตัวตามภูมิภาค: ส่วนเกินของประชาชนมาจากกรุงเทพฯ (+132,828) และภาคใต้ (+63,940) ส่วนขาดของภูมิใจไทยมาจากภาคอีสาน (−50,841) <strong>บัตรเสียสูงตามแผนที่แตกต่างออกไปอย่างสิ้นเชิง</strong> กระจุกตัวในภาคเหนือ (ตาก เชียงใหม่ เชียงราย ลำปาง) ซึ่งกล้าธรรมและเพื่อไทยครองอยู่ ประชาชนถือครองเพียง 7.1% ของที่นั่งที่มีบัตรเสียสูง ทั้งที่ชนะ 22% ของเขตทั่วประเทศ ซึ่งชี้ว่าการทำบัตรเสียจากเรื่อง QR Code ส่งผลน้อยในฐานเสียงของพรรค"></p>
+    <h3 class="i18n" data-en="Finding 4 — Who Benefits? Candidate Surge &amp; Spoiled Ballot Winners" data-th="ข้อค้นพบที่ 4 — ใครได้ประโยชน์? ผู้ชนะจากบัตรเขย่งและบัตรเสีย"></h3>
 
-    <div style="overflow-x:auto;margin-top:1rem">
-      <table style="width:100%;border-collapse:collapse;font-size:0.82rem;font-family:inherit">
+    <p class="i18n" style="margin-bottom:1rem"
+      data-en="&ldquo;Candidate surge&rdquo; (constituency &gt; party-list) means a local candidate pulled more votes than their own party brand — voters chose the person, not the logo. Of 382 districts, 176 show this pattern. The aggregate surplus across these districts is <strong>239,382 votes</strong>. Who captures it? <strong>Phumjaithai (ภูมิใจไทย) dominates: 108 of 176 surge districts (61%), with a combined 146,478-vote surplus</strong> — accounting for 61% of the total national surge gap. กล้าธรรม (31 districts) and เพื่อไทย (27 districts) follow. People's Party (ประชาชน) appears only once, with a tiny +436 gap — confirming their wins are entirely party-brand driven, not candidate-driven. Spoiled ballots tell a different story: they cluster in the North under กล้าธรรม and เพื่อไทย, and in those high-spoiled districts, <strong>the winners benefit from a suppressed local-candidate vote</strong> — because every spoiled constituency ballot removes a potential rival vote while leaving party-list intact."
+      data-th="&ldquo;บัตรเขย่ง&rdquo; (แบ่งเขต &gt; บัญชีรายชื่อ) หมายความว่าผู้สมัครท้องถิ่นดึงคะแนนได้มากกว่าแบรนด์พรรคของตัวเอง — ผู้ลงคะแนนเลือกคน ไม่ใช่โลโก้ จาก 382 เขต มี 176 เขตที่แสดงรูปแบบนี้ ส่วนเกินรวมทั่วทุกเขตคือ <strong>239,382 คะแนน</strong> ใครได้รับส่วนนี้? <strong>ภูมิใจไทยครองอยู่: 108 จาก 176 เขตที่เกิดบัตรเขย่ง (61%) รวมส่วนเกิน 146,478 คะแนน</strong> คิดเป็น 61% ของช่องว่างบัตรเขย่งระดับชาติทั้งหมด กล้าธรรม (31 เขต) และเพื่อไทย (27 เขต) ตามมา พรรคประชาชนปรากฏเพียงครั้งเดียว ส่วนเกินเพียง +436 — ยืนยันว่าชัยชนะของพวกเขาขับเคลื่อนด้วยแบรนด์พรรคล้วน ๆ ไม่ใช่ตัวผู้สมัคร บัตรเสียบอกเล่าเรื่องราวต่างออกไป: กระจุกตัวในภาคเหนือภายใต้กล้าธรรมและเพื่อไทย และในเขตที่มีบัตรเสียสูงเหล่านั้น <strong>ผู้ชนะได้ประโยชน์จากคะแนนผู้สมัครท้องถิ่นที่ถูกกดทับ</strong> — เพราะบัตรแบ่งเขตที่เสียทุกใบตัดคะแนนคู่แข่งที่อาจเป็นไปได้ออก ขณะที่บัญชีรายชื่อยังคงสมบูรณ์"></p>
+
+    <!-- Top 10 Candidate Surge Table -->
+    <div style="margin-bottom:.5rem;font-size:.8rem;color:var(--muted);font-weight:600;letter-spacing:.04em" class="i18n"
+      data-en="TOP 10 — CANDIDATE SURGE DISTRICTS (Constituency Votes &gt; Party-List Votes)"
+      data-th="TOP 10 — เขตบัตรเขย่ง (แบ่งเขต &gt; บัญชีรายชื่อ)"></div>
+    <div style="overflow-x:auto;margin-bottom:1.25rem">
+      <table style="width:100%;border-collapse:collapse;font-size:0.8rem;font-family:inherit">
         <thead>
-          <tr style="border-bottom:1px solid rgba(255,255,255,0.12);color:var(--muted)">
-            <th style="text-align:left;padding:.4rem .6rem" class="i18n" data-en="Party" data-th="พรรค"></th>
-            <th style="text-align:center;padding:.4rem .6rem" class="i18n" data-en="Seats" data-th="ที่นั่ง"></th>
-            <th style="text-align:center;padding:.4rem .6rem" class="i18n" data-en="Mean Dev%" data-th="ค่าเฉลี่ยเบี่ยงเบน%"></th>
-            <th style="text-align:center;padding:.4rem .6rem" class="i18n" data-en="Party&gt;Const" data-th="บช&gt;แบ่ง"></th>
-            <th style="text-align:center;padding:.4rem .6rem" class="i18n" data-en="Abs&gt;2%" data-th="สัมบูรณ์&gt;2%"></th>
-            <th style="text-align:center;padding:.4rem .6rem" class="i18n" data-en="Spoiled&gt;5%" data-th="บัตรเสีย&gt;5%"></th>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.12);color:var(--muted);font-size:.75rem">
+            <th style="text-align:center;padding:.35rem .5rem">#</th>
+            <th style="text-align:left;padding:.35rem .5rem" class="i18n" data-en="Province / District" data-th="จังหวัด / เขต"></th>
+            <th style="text-align:left;padding:.35rem .5rem" class="i18n" data-en="Winner" data-th="ผู้ชนะ"></th>
+            <th style="text-align:left;padding:.35rem .5rem" class="i18n" data-en="Party" data-th="พรรค"></th>
+            <th style="text-align:right;padding:.35rem .5rem" class="i18n" data-en="Const" data-th="แบ่งเขต"></th>
+            <th style="text-align:right;padding:.35rem .5rem" class="i18n" data-en="Party-List" data-th="บัญชีรายชื่อ"></th>
+            <th style="text-align:right;padding:.35rem .5rem" class="i18n" data-en="Surge" data-th="ส่วนเกิน"></th>
+            <th style="text-align:right;padding:.35rem .5rem">%</th>
           </tr>
         </thead>
-        <tbody id="party-anomaly-tbody">
-          <tr style="border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(139,92,246,0.08)">
-            <td style="padding:.4rem .6rem;font-weight:600">ประชาชน</td>
-            <td style="text-align:center;padding:.4rem .6rem">85</td>
-            <td style="text-align:center;padding:.4rem .6rem;color:#a78bfa;font-weight:700">+2.57%</td>
-            <td style="text-align:center;padding:.4rem .6rem;color:#a78bfa;font-weight:700">98.8%</td>
-            <td style="text-align:center;padding:.4rem .6rem;color:#f87171">68.2%</td>
-            <td style="text-align:center;padding:.4rem .6rem;color:#4ade80">7.1%</td>
+        <tbody>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.06)">
+            <td style="text-align:center;padding:.35rem .5rem;color:var(--muted)">1</td>
+            <td style="padding:.35rem .5rem;font-weight:600">ลพบุรี เขต 4</td>
+            <td style="padding:.35rem .5rem">นายวรวงศ์ วรปัญญา</td>
+            <td style="padding:.35rem .5rem"><span style="color:#fb923c;font-weight:600">เพื่อไทย</span></td>
+            <td style="text-align:right;padding:.35rem .5rem">108,277</td>
+            <td style="text-align:right;padding:.35rem .5rem">98,815</td>
+            <td style="text-align:right;padding:.35rem .5rem;color:#4ade80;font-weight:700">+9,462</td>
+            <td style="text-align:right;padding:.35rem .5rem;color:#4ade80;font-weight:700">8.74%</td>
           </tr>
           <tr style="border-bottom:1px solid rgba(255,255,255,0.06)">
-            <td style="padding:.4rem .6rem;font-weight:600">ภูมิใจไทย</td>
-            <td style="text-align:center;padding:.4rem .6rem">160</td>
-            <td style="text-align:center;padding:.4rem .6rem;color:#f87171;font-weight:700">−0.46%</td>
-            <td style="text-align:center;padding:.4rem .6rem;color:#f87171;font-weight:700">32.5%</td>
-            <td style="text-align:center;padding:.4rem .6rem">26.2%</td>
-            <td style="text-align:center;padding:.4rem .6rem">13.1%</td>
+            <td style="text-align:center;padding:.35rem .5rem;color:var(--muted)">2</td>
+            <td style="padding:.35rem .5rem;font-weight:600">ราชบุรี เขต 4</td>
+            <td style="padding:.35rem .5rem">นายอัครเดช วงษ์พิทักษ์โรจน์</td>
+            <td style="padding:.35rem .5rem"><span style="color:#60a5fa;font-weight:600">ภูมิใจไทย</span></td>
+            <td style="text-align:right;padding:.35rem .5rem">107,579</td>
+            <td style="text-align:right;padding:.35rem .5rem">102,853</td>
+            <td style="text-align:right;padding:.35rem .5rem;color:#4ade80;font-weight:700">+4,726</td>
+            <td style="text-align:right;padding:.35rem .5rem;color:#4ade80;font-weight:700">4.39%</td>
           </tr>
           <tr style="border-bottom:1px solid rgba(255,255,255,0.06)">
-            <td style="padding:.4rem .6rem;font-weight:600">เพื่อไทย</td>
-            <td style="text-align:center;padding:.4rem .6rem">57</td>
-            <td style="text-align:center;padding:.4rem .6rem;color:#fb923c">+0.16%</td>
-            <td style="text-align:center;padding:.4rem .6rem">52.6%</td>
-            <td style="text-align:center;padding:.4rem .6rem">33.3%</td>
-            <td style="text-align:center;padding:.4rem .6rem;color:#f87171;font-weight:600">45.6%</td>
+            <td style="text-align:center;padding:.35rem .5rem;color:var(--muted)">3</td>
+            <td style="padding:.35rem .5rem;font-weight:600">ประจวบคีรีขันธ์ เขต 1</td>
+            <td style="padding:.35rem .5rem">นายสังคม แดงโชติ</td>
+            <td style="padding:.35rem .5rem"><span style="color:#60a5fa;font-weight:600">ภูมิใจไทย</span></td>
+            <td style="text-align:right;padding:.35rem .5rem">112,249</td>
+            <td style="text-align:right;padding:.35rem .5rem">107,999</td>
+            <td style="text-align:right;padding:.35rem .5rem;color:#4ade80;font-weight:700">+4,250</td>
+            <td style="text-align:right;padding:.35rem .5rem;color:#4ade80;font-weight:700">3.79%</td>
           </tr>
           <tr style="border-bottom:1px solid rgba(255,255,255,0.06)">
-            <td style="padding:.4rem .6rem;font-weight:600">กล้าธรรม</td>
-            <td style="text-align:center;padding:.4rem .6rem">55</td>
-            <td style="text-align:center;padding:.4rem .6rem;color:#fb923c">+0.41%</td>
-            <td style="text-align:center;padding:.4rem .6rem">43.6%</td>
-            <td style="text-align:center;padding:.4rem .6rem">36.4%</td>
-            <td style="text-align:center;padding:.4rem .6rem;color:#f87171;font-weight:600">36.4%</td>
+            <td style="text-align:center;padding:.35rem .5rem;color:var(--muted)">4</td>
+            <td style="padding:.35rem .5rem;font-weight:600">เพชรบูรณ์ เขต 2</td>
+            <td style="padding:.35rem .5rem">นายยุพราช บัวอินทร์</td>
+            <td style="padding:.35rem .5rem"><span style="color:#60a5fa;font-weight:600">ภูมิใจไทย</span></td>
+            <td style="text-align:right;padding:.35rem .5rem">95,529</td>
+            <td style="text-align:right;padding:.35rem .5rem">91,409</td>
+            <td style="text-align:right;padding:.35rem .5rem;color:#4ade80;font-weight:700">+4,120</td>
+            <td style="text-align:right;padding:.35rem .5rem;color:#4ade80;font-weight:700">4.31%</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.06)">
+            <td style="text-align:center;padding:.35rem .5rem;color:var(--muted)">5</td>
+            <td style="padding:.35rem .5rem;font-weight:600">สุพรรณบุรี เขต 3</td>
+            <td style="padding:.35rem .5rem">นายณัฐชาติ วงศ์ประเสริฐ</td>
+            <td style="padding:.35rem .5rem"><span style="color:#f59e0b;font-weight:600">กล้าธรรม</span></td>
+            <td style="text-align:right;padding:.35rem .5rem">101,452</td>
+            <td style="text-align:right;padding:.35rem .5rem">97,354</td>
+            <td style="text-align:right;padding:.35rem .5rem;color:#4ade80;font-weight:700">+4,098</td>
+            <td style="text-align:right;padding:.35rem .5rem;color:#4ade80;font-weight:700">4.04%</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.06)">
+            <td style="text-align:center;padding:.35rem .5rem;color:var(--muted)">6</td>
+            <td style="padding:.35rem .5rem;font-weight:600">ราชบุรี เขต 5</td>
+            <td style="padding:.35rem .5rem">นายบุญลือ ประเสริฐโสภา</td>
+            <td style="padding:.35rem .5rem"><span style="color:#60a5fa;font-weight:600">ภูมิใจไทย</span></td>
+            <td style="text-align:right;padding:.35rem .5rem">108,560</td>
+            <td style="text-align:right;padding:.35rem .5rem">104,714</td>
+            <td style="text-align:right;padding:.35rem .5rem;color:#4ade80;font-weight:700">+3,846</td>
+            <td style="text-align:right;padding:.35rem .5rem;color:#4ade80;font-weight:700">3.54%</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.06)">
+            <td style="text-align:center;padding:.35rem .5rem;color:var(--muted)">7</td>
+            <td style="padding:.35rem .5rem;font-weight:600">กาญจนบุรี เขต 3</td>
+            <td style="padding:.35rem .5rem">นายยศวัฒน์ มาไพศาลสิน</td>
+            <td style="padding:.35rem .5rem"><span style="color:#60a5fa;font-weight:600">ภูมิใจไทย</span></td>
+            <td style="text-align:right;padding:.35rem .5rem">107,950</td>
+            <td style="text-align:right;padding:.35rem .5rem">104,226</td>
+            <td style="text-align:right;padding:.35rem .5rem;color:#4ade80;font-weight:700">+3,724</td>
+            <td style="text-align:right;padding:.35rem .5rem;color:#4ade80;font-weight:700">3.45%</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.06)">
+            <td style="text-align:center;padding:.35rem .5rem;color:var(--muted)">8</td>
+            <td style="padding:.35rem .5rem;font-weight:600">นครสวรรค์ เขต 6</td>
+            <td style="padding:.35rem .5rem">นายประสาท ตันประเสริฐ</td>
+            <td style="padding:.35rem .5rem"><span style="color:#60a5fa;font-weight:600">ภูมิใจไทย</span></td>
+            <td style="text-align:right;padding:.35rem .5rem">85,258</td>
+            <td style="text-align:right;padding:.35rem .5rem">81,637</td>
+            <td style="text-align:right;padding:.35rem .5rem;color:#4ade80;font-weight:700">+3,621</td>
+            <td style="text-align:right;padding:.35rem .5rem;color:#4ade80;font-weight:700">4.25%</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.06)">
+            <td style="text-align:center;padding:.35rem .5rem;color:var(--muted)">9</td>
+            <td style="padding:.35rem .5rem;font-weight:600">กาญจนบุรี เขต 2</td>
+            <td style="padding:.35rem .5rem">นายชูเกียรติ จีนาภักดิ์</td>
+            <td style="padding:.35rem .5rem"><span style="color:#60a5fa;font-weight:600">ภูมิใจไทย</span></td>
+            <td style="text-align:right;padding:.35rem .5rem">97,680</td>
+            <td style="text-align:right;padding:.35rem .5rem">94,230</td>
+            <td style="text-align:right;padding:.35rem .5rem;color:#4ade80;font-weight:700">+3,450</td>
+            <td style="text-align:right;padding:.35rem .5rem;color:#4ade80;font-weight:700">3.53%</td>
           </tr>
           <tr>
-            <td style="padding:.4rem .6rem;font-weight:600">ประชาธิปัตย์</td>
-            <td style="text-align:center;padding:.4rem .6rem">10</td>
-            <td style="text-align:center;padding:.4rem .6rem;color:#a78bfa">+1.32%</td>
-            <td style="text-align:center;padding:.4rem .6rem;color:#a78bfa;font-weight:700">100%</td>
-            <td style="text-align:center;padding:.4rem .6rem">30.0%</td>
-            <td style="text-align:center;padding:.4rem .6rem;color:#4ade80">0.0%</td>
+            <td style="text-align:center;padding:.35rem .5rem;color:var(--muted)">10</td>
+            <td style="padding:.35rem .5rem;font-weight:600">นครราชสีมา เขต 10</td>
+            <td style="padding:.35rem .5rem">นายบุญจง วงศ์ไตรรัตน์</td>
+            <td style="padding:.35rem .5rem"><span style="color:#60a5fa;font-weight:600">ภูมิใจไทย</span></td>
+            <td style="text-align:right;padding:.35rem .5rem">104,308</td>
+            <td style="text-align:right;padding:.35rem .5rem">100,890</td>
+            <td style="text-align:right;padding:.35rem .5rem;color:#4ade80;font-weight:700">+3,418</td>
+            <td style="text-align:right;padding:.35rem .5rem;color:#4ade80;font-weight:700">3.28%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Party summary bar -->
+    <div style="margin-bottom:.5rem;font-size:.8rem;color:var(--muted);font-weight:600;letter-spacing:.04em" class="i18n"
+      data-en="SURGE DISTRICT COUNT BY PARTY (all 176 districts, const &gt; party-list)"
+      data-th="จำนวนเขตบัตรเขย่งรายพรรค (ทั้งหมด 176 เขต, แบ่งเขต &gt; บัญชีรายชื่อ)"></div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:0.8rem;font-family:inherit">
+        <thead>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.12);color:var(--muted);font-size:.75rem">
+            <th style="text-align:left;padding:.35rem .5rem" class="i18n" data-en="Party" data-th="พรรค"></th>
+            <th style="text-align:center;padding:.35rem .5rem" class="i18n" data-en="Surge Districts" data-th="เขตบัตรเขย่ง"></th>
+            <th style="text-align:center;padding:.35rem .5rem" class="i18n" data-en="Share" data-th="สัดส่วน"></th>
+            <th style="text-align:right;padding:.35rem .5rem" class="i18n" data-en="Total Vote Surplus" data-th="คะแนนส่วนเกินรวม"></th>
+            <th style="text-align:right;padding:.35rem .5rem" class="i18n" data-en="Avg Gap" data-th="ส่วนเกินเฉลี่ย"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(96,165,250,0.08)">
+            <td style="padding:.35rem .5rem;font-weight:700;color:#60a5fa">ภูมิใจไทย</td>
+            <td style="text-align:center;padding:.35rem .5rem;font-weight:700">108</td>
+            <td style="text-align:center;padding:.35rem .5rem;font-weight:700;color:#60a5fa">61.4%</td>
+            <td style="text-align:right;padding:.35rem .5rem;color:#4ade80;font-weight:700">146,478</td>
+            <td style="text-align:right;padding:.35rem .5rem">1,356</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.06)">
+            <td style="padding:.35rem .5rem;font-weight:600;color:#f59e0b">กล้าธรรม</td>
+            <td style="text-align:center;padding:.35rem .5rem">31</td>
+            <td style="text-align:center;padding:.35rem .5rem">17.6%</td>
+            <td style="text-align:right;padding:.35rem .5rem">40,707</td>
+            <td style="text-align:right;padding:.35rem .5rem">1,313</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.06)">
+            <td style="padding:.35rem .5rem;font-weight:600;color:#fb923c">เพื่อไทย</td>
+            <td style="text-align:center;padding:.35rem .5rem">27</td>
+            <td style="text-align:center;padding:.35rem .5rem">15.3%</td>
+            <td style="text-align:right;padding:.35rem .5rem">43,684</td>
+            <td style="text-align:right;padding:.35rem .5rem">1,618</td>
+          </tr>
+          <tr>
+            <td style="padding:.35rem .5rem;font-weight:600;color:#a78bfa">ประชาชน</td>
+            <td style="text-align:center;padding:.35rem .5rem">1</td>
+            <td style="text-align:center;padding:.35rem .5rem;color:var(--muted)">0.6%</td>
+            <td style="text-align:right;padding:.35rem .5rem;color:var(--muted)">436</td>
+            <td style="text-align:right;padding:.35rem .5rem;color:var(--muted)">436</td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
 
+  <!-- SPOILED BALLOT BENEFICIARIES -->
+  <div class="var-box" style="background:rgba(244,63,94,0.06);border-color:rgba(244,63,94,0.2);margin-bottom:1.25rem">
+    <h3 class="i18n" data-en="Finding 5 — Who Benefits from High Spoiled Ballot Districts?" data-th="ข้อค้นพบที่ 5 — ใครได้ประโยชน์จากเขตที่มีบัตรเสียสูง?"></h3>
+    <p class="i18n"
+      data-en="In the 76 districts where the spoiled ballot rate exceeds 5%, the geographic and partisan pattern is concentrated: <strong>เพื่อไทย wins 26 of those districts (34.2%), กล้าธรรม wins 20 (26.3%), and ภูมิใจไทย wins 21 (27.6%)</strong>. People's Party (ประชาชน) wins only 6 (7.9%) — dramatically underrepresented relative to its national seat count. Among the worst 20 districts by spoiled rate, กล้าธรรม leads with 7 districts (35%), all in the North (ตาก, เชียงใหม่, ลำปาง, แพร่, นราธิวาส). The critical question: in a district with 8–10% spoiled constituency ballots, the winner secures their seat with a materially smaller effective vote pool. The 9,782 spoiled ballots in ตาก เขต 2 — won by นายชิงชัย ก่อประภากิจ (กล้าธรรม) by only 6,115 votes — illustrates the stakes: if those spoiled ballots had been valid and distributed differently, the outcome may have changed. High spoiled rates in districts with narrow margins warrant individual judicial review."
+      data-th="ใน 76 เขตที่อัตราบัตรเสียเกิน 5% รูปแบบทางภูมิศาสตร์และพรรคการเมืองกระจุกตัวชัดเจน: <strong>เพื่อไทยชนะ 26 เขต (34.2%) กล้าธรรมชนะ 20 เขต (26.3%) และภูมิใจไทยชนะ 21 เขต (27.6%)</strong> พรรคประชาชนชนะเพียง 6 เขต (7.9%) ซึ่งน้อยกว่าสัดส่วนที่นั่งระดับชาติมาก ในบรรดา 20 เขตที่แย่ที่สุดตามอัตราบัตรเสีย กล้าธรรมนำด้วย 7 เขต (35%) ทั้งหมดอยู่ในภาคเหนือ (ตาก เชียงใหม่ ลำปาง แพร่ นราธิวาส) คำถามสำคัญ: ในเขตที่มีบัตรเสียแบ่งเขต 8–10% ผู้ชนะได้รับที่นั่งด้วยกลุ่มผู้ลงคะแนนที่มีผลน้อยลงอย่างมีนัยสำคัญ บัตรเสีย 9,782 ใบในตาก เขต 2 — ชนะโดยนายชิงชัย ก่อประภากิจ (กล้าธรรม) ด้วยคะแนนห่างเพียง 6,115 — แสดงให้เห็นถึงความสำคัญ: หากบัตรเสียเหล่านั้นใช้ได้และกระจายต่างออกไป ผลลัพธ์อาจเปลี่ยนไป อัตราบัตรเสียสูงในเขตที่ชนะด้วยคะแนนสูสีควรได้รับการทบทวนเป็นรายเขตโดยกระบวนการยุติธรรม"></p>
+  </div>
+
   <div class="insight">
     <strong class="i18n" data-en="🔍 The Bottom Line:" data-th="🔍 สรุปสำคัญ:"></strong>
     <span class="i18n"
-      data-en=" The statistical evidence across 382 districts builds a coherent and <span class='warn'>noticeable partisan pattern</span>. The 1:1 ratio anomaly concentrates almost exclusively in People's Party (ประชาชน) and Democrat (ประชาธิปัตย์) constituencies — both opposition parties. Phumjaithai (ภูมิใจไทย), the coalition government's largest partner, shows the inverse pattern everywhere. High spoiled ballots cluster in the North under กล้าธรรม and เพื่อไทย — a geographically and politically distinct phenomenon. These two anomalies do not overlap, and they do not cancel out: together they point to a 2026 election where the balloting irregularities systematically disadvantaged different parties in different ways, and where the data demands the ECT release full ballot-level records — exactly what the Ombudsman's investigation and Administrative Court case 304/2569 are demanding."
-      data-th=" หลักฐานทางสถิติจาก 382 เขตสร้าง<span class='warn'>รูปแบบที่ชัดเจนตามแนวพรรคการเมือง</span> ความผิดปกติอัตราส่วน 1:1 กระจุกตัวแทบทั้งหมดในเขตของพรรคประชาชนและประชาธิปัตย์ — ทั้งสองพรรคฝ่ายค้าน ภูมิใจไทย พรรคร่วมรัฐบาลที่ใหญ่ที่สุด แสดงรูปแบบตรงกันข้ามในทุกที่ บัตรเสียสูงกระจุกตัวในภาคเหนือภายใต้กล้าธรรมและเพื่อไทย ซึ่งเป็นปรากฏการณ์ที่แตกต่างกันทั้งทางภูมิศาสตร์และการเมือง ความผิดปกติทั้งสองนี้ไม่ซ้อนทับกัน และไม่หักล้างกัน แต่ร่วมกันชี้ให้เห็นว่าในการเลือกตั้ง 2569 ความผิดปกติในการลงคะแนนส่งผลกระทบต่อพรรคต่าง ๆ อย่างเป็นระบบในรูปแบบที่แตกต่างกัน และข้อมูลเหล่านี้ต้องการให้ กกต. เปิดเผยข้อมูลระดับบัตรทั้งหมด — ซึ่งเป็นสิ่งที่การสืบสวนของผู้ตรวจการแผ่นดินและคดีศาลปกครอง 304/2569 กำลังเรียกร้อง">
+      data-en=" Two distinct anomaly types, two distinct sets of beneficiaries. <span class='warn'>Candidate surge (const &gt; party)</span>: dominated by ภูมิใจไทย across 108 districts — consistent with their well-funded local candidate machine across the Central, West, and Northeast regions. <span class='warn'>High spoiled ballots</span>: concentrated in Northern districts where กล้าธรรม and เพื่อไทย candidates won with reduced effective vote pools. People's Party (ประชาชน) — the opposition party-list vote leader — benefits from neither: its wins are driven entirely by national party brand. The two patterns do not cancel each other out. Together, they point to an election where systemic irregularities advantaged different political forces in different regions, and the full picture cannot be assessed without ECT releasing complete ballot-level data — exactly what Administrative Court case 304/2569 and the Ombudsman's 60-day investigation are demanding."
+      data-th=" ความผิดปกติสองประเภท ผู้รับประโยชน์สองกลุ่ม <span class='warn'>บัตรเขย่ง (แบ่งเขต &gt; บัญชีรายชื่อ)</span>: ภูมิใจไทยครองอยู่ใน 108 เขต สอดคล้องกับเครื่องจักรผู้สมัครท้องถิ่นที่แข็งแกร่งและมีเงินทุนในภาคกลาง ภาคตะวันตก และอีสาน <span class='warn'>บัตรเสียสูง</span>: กระจุกตัวในเขตภาคเหนือที่กล้าธรรมและเพื่อไทยชนะด้วยกลุ่มผู้ลงคะแนนที่มีผลน้อยลง พรรคประชาชน — ผู้นำคะแนนบัญชีรายชื่อของฝ่ายค้าน — ไม่ได้รับประโยชน์จากทั้งสองอย่าง: ชัยชนะของพวกเขาขับเคลื่อนด้วยแบรนด์พรรคระดับชาติทั้งหมด รูปแบบทั้งสองไม่หักล้างกัน แต่ร่วมกันชี้ให้เห็นว่าการเลือกตั้งที่ผิดปกติเชิงระบบได้มอบข้อได้เปรียบให้กับกองกำลังทางการเมืองที่แตกต่างกันในภูมิภาคที่แตกต่างกัน และภาพรวมทั้งหมดไม่สามารถประเมินได้หากไม่มี กกต. เปิดเผยข้อมูลระดับบัตรทั้งหมด — ซึ่งเป็นสิ่งที่คดีศาลปกครอง 304/2569 และการสืบสวน 60 วันของผู้ตรวจการแผ่นดินกำลังเรียกร้อง">
     </span>
   </div>
 </div>
