@@ -571,6 +571,83 @@ padding:.9rem 1.1rem;margin-top:1rem;font-size:.8rem;color:var(--d);line-height:
     </div>
   </div>
 
+  <!-- RUNNER-UP ANALYSIS -->
+  <div class="var-box" style="background:rgba(251,191,36,0.05);border-color:rgba(251,191,36,0.2);margin-bottom:1.25rem">
+    <h3 class="i18n" data-en="Finding 5 — Who Loses? Runner-Up Parties in Anomalous Districts" data-th="ข้อค้นพบที่ 5 — ใครเสียประโยชน์? พรรคอันดับ 2 ในเขตที่มีความผิดปกติ"></h3>
+    <p class="i18n" style="margin-bottom:1rem"
+      data-en="The flip side of who wins is equally important: which parties are consistently the runner-up in districts with high spoiled ballots or large deviations? If a party is systematically placed second in anomalous districts, the irregularities may have cost them seats. <strong>High spoiled ballot districts (rate &gt;5%, n=76): People's Party (ประชาชน) is runner-up in 45 districts — a striking 59.2%.</strong> They won only 6 of these 76 districts, yet finished second in nearly 60%. This means ประชาชน candidates were narrowly beaten in districts where thousands of ballots were invalidated. In districts with both high spoiled AND deviation &gt;2% (n=28, the double-anomaly set): ประชาชน is again runner-up in 50% of cases. In absolute deviation &gt;2% districts (n=143): เพื่อไทย leads runner-up count (43 seats, 30.1%), followed by ภูมิใจไทย (41, 28.7%), then ประชาชน (23, 16.1%). The pattern is not random — it reveals which parties' candidates were most consistently placed second when the ballot environment was irregular."
+      data-th="อีกด้านของคำถาม 'ใครได้ประโยชน์' สำคัญพอกัน: พรรคไหนที่ตกเป็นอันดับ 2 อย่างสม่ำเสมอในเขตที่มีบัตรเสียสูงหรือความเบี่ยงเบนมาก? หากพรรคหนึ่งถูกจัดให้เป็นที่สองอย่างเป็นระบบในเขตที่ผิดปกติ ความผิดปกตินั้นอาจทำให้พรรคนั้นเสียที่นั่งไป <strong>เขตบัตรเสียสูง (อัตรา &gt;5%, n=76): พรรคประชาชนเป็นอันดับ 2 ใน 45 เขต — 59.2% ที่น่าทึ่ง</strong> พวกเขาชนะเพียง 6 เขตจาก 76 เขตเหล่านี้ แต่จบที่สองเกือบ 60% ซึ่งหมายความว่าผู้สมัครของประชาชนแพ้อย่างฉิวเฉียดในเขตที่บัตรหลายพันใบถูกทำให้เป็นโมฆะ ในเขตที่มีทั้งบัตรเสียสูงและความเบี่ยงเบน &gt;2% (n=28 เขตที่ผิดปกติสองด้าน): ประชาชนยังคงเป็นอันดับ 2 ใน 50% ของกรณี ในเขตที่มีความเบี่ยงเบนสัมบูรณ์ &gt;2% (n=143): เพื่อไทยนำจำนวนอันดับ 2 (43 เขต 30.1%) ตามด้วยภูมิใจไทย (41 เขต 28.7%) และประชาชน (23 เขต 16.1%) รูปแบบนี้ไม่ได้เกิดขึ้นแบบสุ่ม แต่เผยให้เห็นว่าพรรคไหนที่ผู้สมัครถูกจัดให้อยู่อันดับสองอย่างสม่ำเสมอเมื่อสภาพแวดล้อมการลงคะแนนผิดปกติ"></p>
+
+    <div class="g2">
+      <div>
+        <div style="font-size:.78rem;color:var(--muted);font-weight:600;letter-spacing:.04em;margin-bottom:.6rem" class="i18n"
+          data-en="RUNNER-UP PARTY — HIGH SPOILED DISTRICTS (rate &gt;5%, n=76)"
+          data-th="พรรคอันดับ 2 — เขตบัตรเสียสูง (อัตรา &gt;5%, n=76)"></div>
+        <div id="chart-runnerup-spoiled" style="height:220px"></div>
+      </div>
+      <div>
+        <div style="font-size:.78rem;color:var(--muted);font-weight:600;letter-spacing:.04em;margin-bottom:.6rem" class="i18n"
+          data-en="RUNNER-UP PARTY — ABS DEVIATION &gt;2% DISTRICTS (n=143)"
+          data-th="พรรคอันดับ 2 — เขตความเบี่ยงเบน &gt;2% (n=143)"></div>
+        <div id="chart-runnerup-dev" style="height:220px"></div>
+      </div>
+    </div>
+
+    <div style="margin-top:1.1rem;overflow-x:auto">
+      <div style="font-size:.78rem;color:var(--muted);font-weight:600;letter-spacing:.04em;margin-bottom:.6rem" class="i18n"
+        data-en="DOUBLE-ANOMALY: Abs dev &gt;2% AND spoiled &gt;5% (n=28) — Winner vs Runner-Up"
+        data-th="ผิดปกติสองด้าน: ความเบี่ยงเบน &gt;2% และบัตรเสีย &gt;5% (n=28) — ผู้ชนะ vs อันดับ 2"></div>
+      <table style="width:100%;border-collapse:collapse;font-size:0.8rem;font-family:inherit">
+        <thead>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.12);color:var(--muted);font-size:.75rem">
+            <th style="text-align:left;padding:.35rem .5rem" class="i18n" data-en="Party" data-th="พรรค"></th>
+            <th style="text-align:center;padding:.35rem .5rem" class="i18n" data-en="Won (double-anomaly)" data-th="ชนะ (สองผิดปกติ)"></th>
+            <th style="text-align:center;padding:.35rem .5rem" class="i18n" data-en="Runner-Up (double-anomaly)" data-th="อันดับ 2 (สองผิดปกติ)"></th>
+            <th style="text-align:center;padding:.35rem .5rem" class="i18n" data-en="Won (spoiled &gt;5%)" data-th="ชนะ (บัตรเสีย &gt;5%)"></th>
+            <th style="text-align:center;padding:.35rem .5rem" class="i18n" data-en="Runner-Up (spoiled &gt;5%)" data-th="อันดับ 2 (บัตรเสีย &gt;5%)"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.06)">
+            <td style="padding:.35rem .5rem;font-weight:700;color:#a78bfa">ประชาชน</td>
+            <td style="text-align:center;padding:.35rem .5rem">5 (17.9%)</td>
+            <td style="text-align:center;padding:.35rem .5rem;color:#f43f5e;font-weight:700">14 (50.0%) ⚠</td>
+            <td style="text-align:center;padding:.35rem .5rem">6 (7.9%)</td>
+            <td style="text-align:center;padding:.35rem .5rem;color:#f43f5e;font-weight:700">45 (59.2%) ⚠</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.06)">
+            <td style="padding:.35rem .5rem;font-weight:700;color:#fb923c">เพื่อไทย</td>
+            <td style="text-align:center;padding:.35rem .5rem;color:#4ade80;font-weight:700">12 (42.9%)</td>
+            <td style="text-align:center;padding:.35rem .5rem">8 (28.6%)</td>
+            <td style="text-align:center;padding:.35rem .5rem;color:#4ade80;font-weight:700">26 (34.2%)</td>
+            <td style="text-align:center;padding:.35rem .5rem">15 (19.7%)</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.06)">
+            <td style="padding:.35rem .5rem;font-weight:700;color:#f59e0b">กล้าธรรม</td>
+            <td style="text-align:center;padding:.35rem .5rem;color:#4ade80;font-weight:700">7 (25.0%)</td>
+            <td style="text-align:center;padding:.35rem .5rem">3 (10.7%)</td>
+            <td style="text-align:center;padding:.35rem .5rem;color:#4ade80;font-weight:700">20 (26.3%)</td>
+            <td style="text-align:center;padding:.35rem .5rem">6 (7.9%)</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.06)">
+            <td style="padding:.35rem .5rem;font-weight:700;color:#60a5fa">ภูมิใจไทย</td>
+            <td style="text-align:center;padding:.35rem .5rem">4 (14.3%)</td>
+            <td style="text-align:center;padding:.35rem .5rem">1 (3.6%)</td>
+            <td style="text-align:center;padding:.35rem .5rem">21 (27.6%)</td>
+            <td style="text-align:center;padding:.35rem .5rem">7 (9.2%)</td>
+          </tr>
+          <tr>
+            <td style="padding:.35rem .5rem;font-weight:700;color:#34d399">ประชาธิปัตย์</td>
+            <td style="text-align:center;padding:.35rem .5rem;color:var(--muted)">0</td>
+            <td style="text-align:center;padding:.35rem .5rem">2 (7.1%)</td>
+            <td style="text-align:center;padding:.35rem .5rem;color:var(--muted)">0</td>
+            <td style="text-align:center;padding:.35rem .5rem">2 (2.6%)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
   <!-- SPOILED BALLOT BENEFICIARIES -->
   <div class="var-box" style="background:rgba(244,63,94,0.06);border-color:rgba(244,63,94,0.2);margin-bottom:1.25rem">
     <h3 class="i18n" data-en="Finding 5 — Who Benefits from High Spoiled Ballot Districts?" data-th="ข้อค้นพบที่ 5 — ใครได้ประโยชน์จากเขตที่มีบัตรเสียสูง?"></h3>
@@ -1076,6 +1153,61 @@ function renderBenefitCharts() {
     window.addEventListener('resize', ()=>ec2.resize());
 }
 
+// ── RUNNER-UP CHARTS ───────────────────────────────────────────────────────────
+function renderRunnerUpCharts() {
+    const rows = DATA.extreme_deviations.filter(r => !r.missing_data && r.margin_votes > 0);
+    const pCol = {
+        'ภูมิใจไทย':'#60a5fa','เพื่อไทย':'#fb923c','กล้าธรรม':'#f59e0b',
+        'ประชาชน':'#a78bfa','ประชาธิปัตย์':'#34d399','พลังประชารัฐ':'#f472b6',
+        'ประชาชาติ':'#818cf8','ไทรวมพลัง':'#e879f9'
+    };
+
+    function makeHBar(elId, data) {
+        // data = [{party, winner, runnerup}]
+        const parties = data.map(d=>d.party);
+        const ec = echarts.init(document.getElementById(elId));
+        ec.setOption({
+            backgroundColor:'transparent',
+            tooltip:{ trigger:'axis', axisPointer:{type:'shadow'}, backgroundColor:'#111827', textStyle:{color:'#f1f5f9'} },
+            legend:{ bottom:0, textStyle:{color:'#94a3b8',fontSize:10} },
+            grid:{ left:'2%', right:'4%', bottom:'22%', top:'4%', containLabel:true },
+            xAxis:{ type:'value', axisLabel:{color:'#64748b'}, splitLine:{lineStyle:{color:'rgba(255,255,255,.04)'}} },
+            yAxis:{ type:'category', data:parties, axisLabel:{color:'#e2e8f0',fontSize:10} },
+            series:[
+                { name:t('Runner-Up (lost)','อันดับ 2 (แพ้)'), type:'bar',
+                  data:data.map(d=>({value:d.runnerup, itemStyle:{color:pCol[d.party]||'#64748b', opacity:0.5, borderRadius:[0,4,4,0]}})),
+                  label:{show:true,position:'right',color:'#94a3b8',fontSize:10,formatter:p=>p.value||''} },
+                { name:t('Winner (won)','ผู้ชนะ (ชนะ)'), type:'bar',
+                  data:data.map(d=>({value:d.winner, itemStyle:{color:pCol[d.party]||'#64748b', borderRadius:[0,4,4,0]}})),
+                  label:{show:true,position:'right',color:'#e2e8f0',fontSize:10,formatter:p=>p.value||''} }
+            ]
+        });
+        window.addEventListener('resize', ()=>ec.resize());
+    }
+
+    // Count runner-up & winner for spoiled >5%
+    const spoiledHigh = rows.filter(r => r.const_votes && r.spoiled_const/r.const_votes > 0.05);
+    const sp_w={}, sp_r={};
+    spoiledHigh.forEach(r=>{
+        const w=r.winner_party||'อื่นๆ', ru=r.runner_up_party||'อื่นๆ';
+        sp_w[w]=(sp_w[w]||0)+1; sp_r[ru]=(sp_r[ru]||0)+1;
+    });
+    const spoiledParties = [...new Set([...Object.keys(sp_r),...Object.keys(sp_w)])]
+        .sort((a,b)=>(sp_r[b]||0)-(sp_r[a]||0)).slice(0,6);
+    makeHBar('chart-runnerup-spoiled', spoiledParties.map(p=>({party:p, winner:sp_w[p]||0, runnerup:sp_r[p]||0})));
+
+    // Count runner-up & winner for abs dev >2%
+    const devHigh = rows.filter(r => Math.abs(r.diff_percent||0) > 2);
+    const dv_w={}, dv_r={};
+    devHigh.forEach(r=>{
+        const w=r.winner_party||'อื่นๆ', ru=r.runner_up_party||'อื่นๆ';
+        dv_w[w]=(dv_w[w]||0)+1; dv_r[ru]=(dv_r[ru]||0)+1;
+    });
+    const devParties = [...new Set([...Object.keys(dv_r),...Object.keys(dv_w)])]
+        .sort((a,b)=>(dv_r[b]||0)-(dv_r[a]||0)).slice(0,6);
+    makeHBar('chart-runnerup-dev', devParties.map(p=>({party:p, winner:dv_w[p]||0, runnerup:dv_r[p]||0})));
+}
+
 // ── CONTESTED RACES ────────────────────────────────────────────────────────────
 function renderContested() {
     const rows = DATA.extreme_deviations.filter(r => !r.missing_data && r.margin_votes > 0);
@@ -1222,6 +1354,7 @@ renderTopTables();
 renderHeaders();
 renderTable(allRows);
 renderBenefitCharts();
+renderRunnerUpCharts();
 renderContested();
 </script>
 </body>
