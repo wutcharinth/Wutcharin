@@ -554,6 +554,22 @@ padding:.9rem 1.1rem;margin-top:1rem;font-size:.8rem;color:var(--d);line-height:
     </div>
   </div>
 
+  <!-- BENEFIT CHARTS -->
+  <div class="g2" style="margin-bottom:1.25rem">
+    <div class="card ca cor">
+      <div class="kpi-t i18n" style="margin-bottom:.75rem"
+        data-en="Candidate Surge Districts by Party (Const &gt; Party-List, Abs Dev &gt; 2%)"
+        data-th="เขตบัตรเขย่งรายพรรค (แบ่งเขต &gt; บัญชีรายชื่อ, ความเบี่ยงเบน &gt; 2%)"></div>
+      <div id="chart-surge-party" class="chart"></div>
+    </div>
+    <div class="card ca crd">
+      <div class="kpi-t i18n" style="margin-bottom:.75rem"
+        data-en="High Spoiled Ballot Districts by Party (Spoiled Rate &gt; 5%)"
+        data-th="เขตบัตรเสียสูงรายพรรค (อัตราบัตรเสีย &gt; 5%)"></div>
+      <div id="chart-spoiled-party" class="chart"></div>
+    </div>
+  </div>
+
   <!-- SPOILED BALLOT BENEFICIARIES -->
   <div class="var-box" style="background:rgba(244,63,94,0.06);border-color:rgba(244,63,94,0.2);margin-bottom:1.25rem">
     <h3 class="i18n" data-en="Finding 5 — Who Benefits from High Spoiled Ballot Districts?" data-th="ข้อค้นพบที่ 5 — ใครได้ประโยชน์จากเขตที่มีบัตรเสียสูง?"></h3>
@@ -933,6 +949,67 @@ function refreshLabels() {
     filterTable();
 }
 
+// ── BENEFIT CHARTS ─────────────────────────────────────────────────────────────
+function renderBenefitCharts() {
+    const rows = DATA.extreme_deviations.filter(r => !r.missing_data);
+    const partyColors = {
+        'ภูมิใจไทย': '#60a5fa',
+        'เพื่อไทย':  '#fb923c',
+        'กล้าธรรม':  '#f59e0b',
+        'ประชาชน':   '#a78bfa',
+        'ประชาธิปัตย์': '#34d399',
+        'พลังประชารัฐ': '#f472b6',
+    };
+    function colorFor(p) { return partyColors[p] || '#64748b'; }
+
+    // ── Chart 1: Candidate Surge districts where abs dev > 2% AND const > party ──
+    const surgeAbove2 = rows.filter(r => r.vote_diff < 0 && Math.abs(r.diff_percent) > 2);
+    const surgeCount = {};
+    surgeAbove2.forEach(r => { const p = r.winner_party||'อื่นๆ'; surgeCount[p] = (surgeCount[p]||0)+1; });
+    const surgeEntries = Object.entries(surgeCount).sort((a,b)=>b[1]-a[1]).slice(0,7);
+
+    const ec1 = echarts.init(document.getElementById('chart-surge-party'));
+    ec1.setOption({
+        backgroundColor:'transparent',
+        tooltip:{ trigger:'axis', backgroundColor:'#111827', textStyle:{color:'#f1f5f9'},
+            formatter: p => `${p[0].name}<br/>${t('Surge Districts','เขตบัตรเขย่ง')}: <b>${p[0].value}</b>` },
+        grid:{ left:'2%', right:'6%', bottom:'3%', top:'6%', containLabel:true },
+        xAxis:{ type:'value', axisLabel:{color:'#64748b'}, splitLine:{lineStyle:{color:'rgba(255,255,255,.04)'}} },
+        yAxis:{ type:'category', data:surgeEntries.map(e=>e[0]), axisLabel:{color:'#e2e8f0', fontSize:11} },
+        series:[{ type:'bar', data:surgeEntries.map(e=>({
+            value:e[1],
+            itemStyle:{ color:colorFor(e[0]), borderRadius:[0,4,4,0] }
+        })),
+        label:{show:true, position:'right', color:'#94a3b8', fontSize:11, formatter:p=>p.value} }]
+    });
+    window.addEventListener('resize', ()=>ec1.resize());
+
+    // ── Chart 2: High spoiled ballot districts (spoiled rate > 5%) by winner party ──
+    const spoiledHigh = rows.filter(r => {
+        const rate = r.spoiled_const && r.const_votes ? r.spoiled_const / r.const_votes : 0;
+        return rate > 0.05;
+    });
+    const spoiledCount = {};
+    spoiledHigh.forEach(r => { const p = r.winner_party||'อื่นๆ'; spoiledCount[p] = (spoiledCount[p]||0)+1; });
+    const spoiledEntries = Object.entries(spoiledCount).sort((a,b)=>b[1]-a[1]).slice(0,7);
+
+    const ec2 = echarts.init(document.getElementById('chart-spoiled-party'));
+    ec2.setOption({
+        backgroundColor:'transparent',
+        tooltip:{ trigger:'axis', backgroundColor:'#111827', textStyle:{color:'#f1f5f9'},
+            formatter: p => `${p[0].name}<br/>${t('High-Spoiled Districts','เขตบัตรเสียสูง')}: <b>${p[0].value}</b>` },
+        grid:{ left:'2%', right:'6%', bottom:'3%', top:'6%', containLabel:true },
+        xAxis:{ type:'value', axisLabel:{color:'#64748b'}, splitLine:{lineStyle:{color:'rgba(255,255,255,.04)'}} },
+        yAxis:{ type:'category', data:spoiledEntries.map(e=>e[0]), axisLabel:{color:'#e2e8f0', fontSize:11} },
+        series:[{ type:'bar', data:spoiledEntries.map(e=>({
+            value:e[1],
+            itemStyle:{ color:colorFor(e[0]), borderRadius:[0,4,4,0] }
+        })),
+        label:{show:true, position:'right', color:'#94a3b8', fontSize:11, formatter:p=>p.value} }]
+    });
+    window.addEventListener('resize', ()=>ec2.resize());
+}
+
 // ── INIT ──────────────────────────────────────────────────────────────────────
 applyI18n();
 renderKPIs();
@@ -946,6 +1023,7 @@ renderSpoiled();
 renderTopTables();
 renderHeaders();
 renderTable(allRows);
+renderBenefitCharts();
 </script>
 </body>
 </html>
