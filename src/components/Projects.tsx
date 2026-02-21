@@ -1,6 +1,6 @@
 
 import { motion } from 'framer-motion';
-import { ArrowUpRight, ShieldCheck, SquareKanban, StarHalf, Database, MessageSquare, FileText, ScanText, Code, Receipt, Map, TrendingUp, Briefcase, Brain, Sparkles, Heart } from 'lucide-react';
+import { ArrowUpRight, ShieldCheck, SquareKanban, StarHalf, Database, MessageSquare, FileText, ScanText, Code, Receipt, Map, TrendingUp, Briefcase, Brain, Sparkles, Heart, BarChart2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const projectSections = [
@@ -59,6 +59,19 @@ const projectSections = [
                 color: "text-orange-500",
                 bg: "bg-orange-500/10",
                 border: "border-orange-500/20"
+            },
+            {
+                title: "Thailand 2026 Election Investigation",
+                role: "Data Investigator & Journalist",
+                badge: "Data Story",
+                desc: "Statistical investigation of Thailand's controversial Feb 8, 2026 election. Covers QR code ballot secrecy, vote count mismatches, the 1:1 ratio anomaly, and annulment petitions — using official ECT data across 382 districts.",
+                tags: ["ECT Data", "ECharts", "Bilingual", "Investigation"],
+                link: "/election-2026.html",
+                featured: true,
+                icon: BarChart2,
+                color: "text-red-500",
+                bg: "bg-red-500/10",
+                border: "border-red-500/20"
             },
             {
                 title: "AI Evolution Stats",
@@ -256,7 +269,7 @@ export default function Projects() {
 
                             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {section.items.map((project, index) => {
-                                    const isExternal = project.link.startsWith('http');
+                                    const isExternal = project.link.startsWith('http') || project.link.endsWith('.html');
                                     // @ts-ignore - Dynamic badge property
                                     const badge = project.badge;
 
