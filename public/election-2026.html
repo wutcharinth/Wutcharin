@@ -1079,16 +1079,29 @@ function renderBenefitCharts() {
 // ── CONTESTED RACES ────────────────────────────────────────────────────────────
 function renderContested() {
     const rows = DATA.extreme_deviations.filter(r => !r.missing_data && r.margin_votes > 0);
-    const partyColors = {
+    const pCol = {
         'ภูมิใจไทย':'#60a5fa','เพื่อไทย':'#fb923c','กล้าธรรม':'#f59e0b',
-        'ประชาชน':'#a78bfa','ประชาธิปัตย์':'#34d399','พลังประชารัฐ':'#f472b6'
+        'ประชาชน':'#a78bfa','ประชาธิปัตย์':'#34d399','พลังประชารัฐ':'#f472b6',
+        'ประชาชาติ':'#818cf8','ไทรวมพลัง':'#e879f9'
     };
-    const colorFor = p => partyColors[p] || '#64748b';
+    const colorFor = p => pCol[p] || '#64748b';
 
-    // Districts where spoiled > margin
+    // Annotate each row with flags
+    rows.forEach(r => {
+        r._spoiled      = r.spoiled_const || 0;
+        r._absDev       = Math.abs((r.party_votes||0) - (r.const_votes||0));
+        r._spoiledRate  = r.const_votes ? r._spoiled / r.const_votes : 0;
+        r._isSurge      = (r.party_votes||0) < (r.const_votes||0); // const > party = candidate surge
+        r._surgeAmt     = r._isSurge ? (r.const_votes - (r.party_votes||0)) : 0;
+        r._excessSpoiled= r._spoiled - r.margin_votes;   // +ve = spoiled > margin
+        r._combined     = r._spoiled + r._absDev;
+        r._combinedExcess = r._combined - r.margin_votes;
+    });
+
+    // At-risk: spoiled > margin
     const atRisk = rows
-        .filter(r => (r.spoiled_const||0) > r.margin_votes)
-        .sort((a,b) => ((b.spoiled_const||0) - b.margin_votes) - ((a.spoiled_const||0) - a.margin_votes));
+        .filter(r => r._excessSpoiled > 0)
+        .sort((a,b) => b._excessSpoiled - a._excessSpoiled);
 
     // ── Chart 1: at-risk seats by winning party ──
     const partyCnt = {};
@@ -1108,63 +1121,87 @@ function renderContested() {
     });
     window.addEventListener('resize', ()=>ec1.resize());
 
-    // ── Chart 2: top 10 by (spoiled - margin) excess ──
+    // ── Chart 2: top 10 — stacked margin vs spoiled excess ──
     const top10 = atRisk.slice(0,10);
     const ec2 = echarts.init(document.getElementById('chart-contested-gap'));
     ec2.setOption({
         backgroundColor:'transparent',
-        tooltip:{ trigger:'axis', backgroundColor:'#111827', textStyle:{color:'#f1f5f9'},
-            formatter: params => {
-                const r = top10[params[0].dataIndex];
-                return `${r.province} เขต ${r.district_num}<br/>` +
-                    `${t('Winner','ผู้ชนะ')}: ${r.winner_party}<br/>` +
-                    `${t('Margin','คะแนนห่าง')}: ${fmt(r.margin_votes)}<br/>` +
-                    `${t('Spoiled','บัตรเสีย')}: ${fmt(r.spoiled_const||0)}<br/>` +
-                    `${t('Excess','ส่วนเกิน')}: +${fmt((r.spoiled_const||0)-r.margin_votes)}`;
+        tooltip:{ trigger:'item', backgroundColor:'#111827', textStyle:{color:'#f1f5f9'},
+            formatter: p => {
+                const r = top10[p.dataIndex];
+                const spoiledPct = (r._spoiledRate*100).toFixed(1);
+                const surgeTag  = r._isSurge ? `🔼 ${t('Candidate Surge','บัตรเขย่ง')}: +${fmt(r._surgeAmt)}` : '';
+                return `<b>${esc(r.province)} เขต ${esc(r.district)}</b><br/>` +
+                    `${t('Winner','ผู้ชนะ')}: <span style="color:${colorFor(r.winner_party)}">${esc(r.winner_name||'—')}</span> (${esc(r.winner_party||'—')})<br/>` +
+                    `${t('Runner-Up','อันดับ 2')}: <span style="color:${colorFor(r.runner_up_party)}">${esc(r.runner_up_name||'—')}</span> (${esc(r.runner_up_party||'—')})<br/>` +
+                    `${t('Margin','คะแนนห่าง')}: <b style="color:#22c55e">${fmt(r.margin_votes)}</b><br/>` +
+                    `${t('Spoiled','บัตรเสีย')}: <b style="color:#f43f5e">${fmt(r._spoiled)}</b> (${spoiledPct}%)<br/>` +
+                    `${t('Excess','ส่วนเกิน')}: <b style="color:#f43f5e">+${fmt(r._excessSpoiled)}</b><br/>` +
+                    (surgeTag ? surgeTag : '');
             }
         },
-        grid:{ left:'2%', right:'4%', bottom:'14%', top:'6%', containLabel:true },
+        grid:{ left:'2%', right:'4%', bottom:'16%', top:'6%', containLabel:true },
         xAxis:{ type:'category',
-            data: top10.map(r=>`${r.province.replace('กรุงเทพมหานคร','กทม.')} ${r.district_num}`),
-            axisLabel:{ color:'#64748b', fontSize:9, rotate:35, interval:0 }
+            data: top10.map(r=>`${r.province} ${r.district}`),
+            axisLabel:{ color:'#64748b', fontSize:8.5, rotate:38, interval:0 }
         },
         yAxis:{ type:'value', axisLabel:{color:'#64748b', formatter:v=>fmt(v)}, splitLine:{lineStyle:{color:'rgba(255,255,255,.04)'}} },
         series:[
             { name:t('Win Margin','คะแนนห่าง'), type:'bar', stack:'a',
-              data:top10.map(r=>({ value:r.margin_votes, itemStyle:{color:'#22c55e',borderRadius:[0,0,0,0]} })),
+              data:top10.map(r=>({ value:r.margin_votes, itemStyle:{color:'#22c55e'} })),
               label:{show:false} },
-            { name:t('Spoiled Excess over Margin','บัตรเสียเกินคะแนนห่าง'), type:'bar', stack:'a',
-              data:top10.map(r=>({ value:(r.spoiled_const||0)-r.margin_votes, itemStyle:{color:'#f43f5e',borderRadius:[4,4,0,0]} })),
-              label:{show:true,position:'top',color:'#94a3b8',fontSize:9,formatter:p=>`+${fmt(p.value)}`} }
+            { name:t('Spoiled > Margin','บัตรเสียเกิน'), type:'bar', stack:'a',
+              data:top10.map(r=>({ value:r._excessSpoiled, itemStyle:{color:colorFor(r.winner_party), opacity:0.85, borderRadius:[4,4,0,0]} })),
+              label:{show:true,position:'top',color:'#94a3b8',fontSize:8.5,formatter:p=>`+${fmt(p.value)}`} }
         ],
         legend:{ bottom:0, textStyle:{color:'#94a3b8',fontSize:10} }
     });
     window.addEventListener('resize', ()=>ec2.resize());
 
-    // ── Detail table ──
+    // ── Detail table — candidate-focused ──
     const tbl = document.getElementById('contested-table');
     const hdrs = [
-        t('Province','จังหวัด'), t('Dist','เขต'), t('Winner','ผู้ชนะ'), t('Party','พรรค'),
-        t('Runner-Up','อันดับ 2'), t('Runner-Up Party','พรรคอันดับ 2'),
-        t('Margin','คะแนนห่าง'), t('Spoiled','บัตรเสีย'), t('Deviation','ความเบี่ยงเบน'),
-        t('Spoiled Excess','บัตรเสียเกิน')
+        t('Province / Dist','จังหวัด / เขต'),
+        t('Winner Candidate','ผู้ชนะ'),
+        t('Party','พรรค'),
+        t('Runner-Up Candidate','อันดับ 2'),
+        t('Runner-Up Party','พรรคอันดับ 2'),
+        t('Win Margin','คะแนนห่าง'),
+        t('Spoiled','บัตรเสีย'),
+        t('Spoiled Rate','อัตราบัตรเสีย'),
+        t('Deviation','เบี่ยงเบน'),
+        t('Surge?','บัตรเขย่ง?'),
+        t('Spoiled > Margin','บัตรเสียเกินห่าง'),
+        t('❓ What-If','❓ คำถาม')
     ];
-    let html = `<table><thead><tr>${hdrs.map(h=>`<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>`;
-    atRisk.forEach((r,i) => {
-        const excess = (r.spoiled_const||0) - r.margin_votes;
-        const absDev = Math.abs((r.party_votes||0) - (r.const_votes||0));
-        const severe = excess > 2000 ? 'background:rgba(244,63,94,0.08)' : '';
-        html += `<tr style="${severe}">
-            <td>${esc(r.province)}</td>
-            <td style="text-align:center">${esc(String(r.district_num))}</td>
-            <td style="font-size:.8em">${esc(r.winner||'—')}</td>
-            <td><span style="color:${colorFor(r.winner_party)};font-weight:600">${esc(r.winner_party||'—')}</span></td>
-            <td style="font-size:.8em">${esc(r.runner_up||'—')}</td>
+    let html = `<table><thead><tr>${hdrs.map(h=>`<th style="white-space:nowrap">${esc(h)}</th>`).join('')}</tr></thead><tbody>`;
+    atRisk.forEach(r => {
+        const spoiledPct = (r._spoiledRate*100).toFixed(1)+'%';
+        const surgeCell = r._isSurge
+            ? `<span style="color:#4ade80;font-weight:600">🔼 +${fmt(r._surgeAmt)}</span>`
+            : `<span style="color:var(--muted)">—</span>`;
+        // severity colour
+        const bg = r._excessSpoiled > 3000 ? 'background:rgba(244,63,94,0.10)' :
+                   r._excessSpoiled > 1500 ? 'background:rgba(245,158,11,0.06)' : '';
+        // what-if question
+        const q = r._isSurge
+            ? t(`If ${fmt(r._spoiled)} spoiled votes were valid — and the candidate surge (${fmt(r._surgeAmt)}) suggests voters preferred the local candidate over the party — could the runner-up have won?`,
+                `ถ้าบัตรเสีย ${fmt(r._spoiled)} ใบใช้ได้ — และบัตรเขย่ง (${fmt(r._surgeAmt)}) บ่งชี้ว่าผู้ลงคะแนนเลือกตัวบุคคลมากกว่าพรรค — อันดับ 2 อาจพลิกชนะได้หรือไม่?`)
+            : t(`If ${fmt(r._spoiled)} spoiled constituency ballots had been valid and redistributed, could the ${fmt(r.margin_votes)}-vote margin have flipped?`,
+                `ถ้าบัตรเสีย ${fmt(r._spoiled)} ใบใช้ได้และกระจายต่างออกไป คะแนนห่าง ${fmt(r.margin_votes)} อาจพลิกผลได้หรือไม่?`);
+        html += `<tr style="${bg}">
+            <td style="white-space:nowrap;font-weight:600">${esc(r.province)} เขต ${esc(r.district)}</td>
+            <td style="font-size:.8em;color:#e2e8f0">${esc(r.winner_name||'—')}</td>
+            <td><span style="color:${colorFor(r.winner_party)};font-weight:700">${esc(r.winner_party||'—')}</span></td>
+            <td style="font-size:.8em;color:#94a3b8">${esc(r.runner_up_name||'—')}</td>
             <td><span style="color:${colorFor(r.runner_up_party)};font-weight:500">${esc(r.runner_up_party||'—')}</span></td>
-            <td style="text-align:right;color:#22c55e;font-weight:600">${fmt(r.margin_votes)}</td>
-            <td style="text-align:right;color:#f43f5e;font-weight:600">${fmt(r.spoiled_const||0)}</td>
-            <td style="text-align:right;color:#f59e0b">${fmt(absDev)}</td>
-            <td style="text-align:right;color:#f43f5e;font-weight:700">+${fmt(excess)}</td>
+            <td style="text-align:right;color:#22c55e;font-weight:700">${fmt(r.margin_votes)}</td>
+            <td style="text-align:right;color:#f43f5e;font-weight:700">${fmt(r._spoiled)}</td>
+            <td style="text-align:right;color:${r._spoiledRate>0.07?'#f43f5e':r._spoiledRate>0.04?'#f59e0b':'#94a3b8'}">${spoiledPct}</td>
+            <td style="text-align:right;color:#f59e0b">${fmt(r._absDev)}</td>
+            <td style="text-align:center">${surgeCell}</td>
+            <td style="text-align:right;color:#f43f5e;font-weight:800">+${fmt(r._excessSpoiled)}</td>
+            <td style="font-size:.75em;color:#64748b;max-width:220px">${esc(q)}</td>
         </tr>`;
     });
     html += '</tbody></table>';
