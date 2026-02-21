@@ -1251,22 +1251,55 @@ function renderRunnerUpCharts() {
 
     function makeHBar(elId, data) {
         // data = [{party, winner, runnerup}]
-        const parties = data.map(d=>d.party);
+        // Semantic colours: green = seats WON, red = seats LOST as runner-up
+        // Party colour shown on y-axis label only via rich text
+        const WIN_COLOR    = '#22c55e';  // green  — won the seat
+        const LOSE_COLOR   = '#f43f5e';  // red    — finished 2nd, lost
+
+        const richStyles = {};
+        data.forEach(d => { richStyles[d.party] = { color: pCol[d.party]||'#94a3b8', fontWeight:'bold', fontSize:10 }; });
+
         const ec = echarts.init(document.getElementById(elId));
         ec.setOption({
             backgroundColor:'transparent',
-            tooltip:{ trigger:'axis', axisPointer:{type:'shadow'}, backgroundColor:'#111827', textStyle:{color:'#f1f5f9'} },
-            legend:{ bottom:0, textStyle:{color:'#94a3b8',fontSize:10} },
-            grid:{ left:'2%', right:'4%', bottom:'22%', top:'4%', containLabel:true },
+            tooltip:{
+                trigger:'axis', axisPointer:{type:'shadow'},
+                backgroundColor:'#111827', textStyle:{color:'#f1f5f9'},
+                formatter: params => {
+                    const d = data[params[0].dataIndex];
+                    return `<b style="color:${pCol[d.party]||'#fff'}">${d.party}</b><br/>` +
+                        `<span style="color:${WIN_COLOR}">●</span> ${t('Won','ชนะ')}: <b>${d.winner}</b><br/>` +
+                        `<span style="color:${LOSE_COLOR}">●</span> ${t('Runner-Up (lost)','อันดับ 2 (แพ้)')}: <b>${d.runnerup}</b>`;
+                }
+            },
+            legend:{
+                bottom: 0,
+                data:[
+                    { name: t('Won seat','ชนะ'), icon:'rect', itemStyle:{color:WIN_COLOR} },
+                    { name: t('Runner-Up (lost)','อันดับ 2 (แพ้)'), icon:'rect', itemStyle:{color:LOSE_COLOR} }
+                ],
+                textStyle:{ color:'#94a3b8', fontSize:10 }
+            },
+            grid:{ left:'2%', right:'6%', bottom:'18%', top:'4%', containLabel:true },
             xAxis:{ type:'value', axisLabel:{color:'#64748b'}, splitLine:{lineStyle:{color:'rgba(255,255,255,.04)'}} },
-            yAxis:{ type:'category', data:parties, axisLabel:{color:'#e2e8f0',fontSize:10} },
+            yAxis:{
+                type:'category',
+                data: data.map(d=>d.party),
+                axisLabel:{
+                    color:'#e2e8f0', fontSize:10,
+                    formatter: v => `{${v}|${v}}`,
+                    rich: richStyles
+                }
+            },
             series:[
-                { name:t('Runner-Up (lost)','อันดับ 2 (แพ้)'), type:'bar',
-                  data:data.map(d=>({value:d.runnerup, itemStyle:{color:pCol[d.party]||'#64748b', opacity:0.5, borderRadius:[0,4,4,0]}})),
-                  label:{show:true,position:'right',color:'#94a3b8',fontSize:10,formatter:p=>p.value||''} },
-                { name:t('Winner (won)','ผู้ชนะ (ชนะ)'), type:'bar',
-                  data:data.map(d=>({value:d.winner, itemStyle:{color:pCol[d.party]||'#64748b', borderRadius:[0,4,4,0]}})),
-                  label:{show:true,position:'right',color:'#e2e8f0',fontSize:10,formatter:p=>p.value||''} }
+                { name: t('Won seat','ชนะ'), type:'bar', barMaxWidth:14,
+                  data: data.map(d=>({ value: d.winner, itemStyle:{ color:WIN_COLOR, borderRadius:[0,3,3,0] } })),
+                  label:{ show:true, position:'right', color:'#86efac', fontSize:10, fontWeight:700, formatter:p=>p.value||'' }
+                },
+                { name: t('Runner-Up (lost)','อันดับ 2 (แพ้)'), type:'bar', barMaxWidth:14,
+                  data: data.map(d=>({ value: d.runnerup, itemStyle:{ color:LOSE_COLOR, borderRadius:[0,3,3,0] } })),
+                  label:{ show:true, position:'right', color:'#fca5a5', fontSize:10, fontWeight:700, formatter:p=>p.value||'' }
+                }
             ]
         });
         window.addEventListener('resize', ()=>ec.resize());
