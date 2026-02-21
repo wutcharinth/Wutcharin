@@ -233,8 +233,8 @@ padding:.9rem 1.1rem;margin-top:1rem;font-size:.8rem;color:var(--d);line-height:
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-left:3px solid #a78bfa;border-radius:.75rem;padding:1rem 1.1rem">
       <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;color:#a78bfa;margin-bottom:.4rem" class="i18n" data-en="FINDING 4 — WHO LOSES: THE RUNNER-UP PATTERN" data-th="ข้อค้นพบ 4 — ใครเสียประโยชน์: รูปแบบอันดับ 2"></div>
       <p style="font-size:.85rem;line-height:1.55;color:#cbd5e1;margin:0" class="i18n"
-        data-en="In 76 high-spoiled districts (&gt;5%), ประชาชน is runner-up in 45 (59.2%) while winning only 6 (7.9%). In 49 surge &gt;2% districts (the anomalous direction: const &gt; party), ภูมิใจไทย is runner-up in 29 (59.2%) while winning only 10 (20.4%); other runner-ups: เพื่อไทย 17 (34.7%), กล้าธรรม 15 (30.6%), ประชาชน only 4 (8.2%). Only 2 districts have both surge &gt;2% AND spoiled &gt;5% — both won by เพื่อไทย, กล้าธรรม runner-up in both."
-        data-th="ใน 76 เขตบัตรเสียสูง (&gt;5%) ประชาชนเป็นอันดับ 2 ใน 45 เขต (59.2%) แต่ชนะเพียง 6 เขต (7.9%) ใน 49 เขตบัตรเขย่ง &gt;2% (ทิศทางที่ผิดปกติ: แบ่งเขต &gt; บัญชีรายชื่อ) ภูมิใจไทยเป็นอันดับ 2 ใน 29 เขต (59.2%) แต่ชนะเพียง 10 เขต (20.4%) อันดับ 2 อื่นๆ: เพื่อไทย 17 เขต (34.7%) กล้าธรรม 15 เขต (30.6%) ประชาชนเพียง 4 เขต (8.2%) มีเพียง 2 เขตที่มีทั้งบัตรเขย่ง &gt;2% และบัตรเสีย &gt;5% — ทั้งสองชนะโดยเพื่อไทย กล้าธรรมอันดับ 2 ทั้งสองเขต"></p>
+        data-en="Combined ballot loss (spoiled + surge) per district computed first, then analysed at three thresholds. &gt;2% (n=355): ภูมิใจไทย wins 160 (45.1%), ประชาชน runner-up 128 (36.1%). &gt;3% (n=295): ภูมิใจไทย wins 145 (49.2%), ประชาชน runner-up 122 (41.4%). &gt;5% (n=153): ภูมิใจไทย wins 72 (47.1%), ประชาชน runner-up 66 (43.1%). Signal strengthens at every higher threshold — not noise."
+        data-th="คำนวณผลกระทบรวม (บัตรเสีย + บัตรเขย่ง) ต่อเขตก่อน แล้ววิเคราะห์ที่สามเกณฑ์ &gt;2% (n=355): ภูมิใจไทยชนะ 160 (45.1%) ประชาชนอันดับ 2 128 (36.1%) &gt;3% (n=295): ภูมิใจไทยชนะ 145 (49.2%) ประชาชนอันดับ 2 122 (41.4%) &gt;5% (n=153): ภูมิใจไทยชนะ 72 (47.1%) ประชาชนอันดับ 2 66 (43.1%) สัญญาณแข็งขึ้นทุกเกณฑ์ — ไม่ใช่สัญญาณรบกวน"></p>
     </div>
 
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-left:3px solid #f43f5e;border-radius:.75rem;padding:1rem 1.1rem">
@@ -658,122 +658,39 @@ padding:.9rem 1.1rem;margin-top:1rem;font-size:.8rem;color:var(--d);line-height:
     </div>
   </div>
 
-  <!-- RUNNER-UP ANALYSIS -->
+  <!-- COMBINED-FIRST RUNNER-UP ANALYSIS -->
   <div class="var-box" style="background:rgba(251,191,36,0.05);border-color:rgba(251,191,36,0.2);margin-bottom:1.25rem">
-    <h3 class="i18n" data-en="Finding 5 — Who Loses? Runner-Up Parties in High-Spoiled &amp; High-Deviation Districts" data-th="ข้อค้นพบที่ 5 — ใครเสียประโยชน์? พรรคอันดับ 2 ในเขตที่มีบัตรเสียสูงและเบี่ยงเบนสูง"></h3>
-    <p class="i18n" style="margin-bottom:1rem"
-      data-en="The flip side of who wins: which parties consistently finished <em>runner-up</em> in districts with anomalous ballot counts? Two groups to examine: <strong>(1) High spoiled ballot districts (rate &gt;5%, n=76):</strong> People's Party (ประชาชน) is runner-up in 45 of them — a striking 59.2% — while winning only 6 (7.9%). เพื่อไทย is runner-up in 15 (19.7%), กล้าธรรม in 6 (7.9%). The spoiled-ballot winner landscape is dominated by เพื่อไทย (26, 34.2%), ภูมิใจไทย (21, 27.6%), กล้าธรรม (20, 26.3%). <strong>(2) Surge &gt;2% districts (const &gt; party-list by &gt;2%, n=49 — the anomalous direction):</strong> กล้าธรรม wins 11 (22.4%); เพื่อไทย wins 8 (16.3%); ภูมิใจไทย wins 10 (20.4%). Runner-up: ภูมิใจไทย in 29 (59.2%), เพื่อไทย in 17 (34.7%), กล้าธรรม in 15 (30.6%), ประชาชน only 4 (8.2%). <strong>Districts with BOTH surge &gt;2% AND spoiled &gt;5% (n=2):</strong> Both won by เพื่อไทย; กล้าธรรม is runner-up in both. The small overlap confirms these two anomalies concentrate in different geographic areas."
-      data-th="อีกด้านของคำถาม: พรรคไหนตกเป็น <em>อันดับ 2</em> อย่างสม่ำเสมอในเขตที่มีการนับบัตรผิดปกติ? สองกลุ่มที่ต้องพิจารณา: <strong>(1) เขตบัตรเสียสูง (อัตรา &gt;5%, n=76):</strong> พรรคประชาชนเป็นอันดับ 2 ใน 45 เขต — 59.2% ที่น่าทึ่ง — ในขณะที่ชนะเพียง 6 เขต (7.9%) เพื่อไทยเป็นอันดับ 2 ใน 15 เขต (19.7%) กล้าธรรมใน 6 เขต (7.9%) ผู้ชนะในเขตบัตรเสียสูงคือ เพื่อไทย (26 เขต 34.2%) ภูมิใจไทย (21 เขต 27.6%) กล้าธรรม (20 เขต 26.3%) <strong>(2) เขตบัตรเขย่ง &gt;2% (แบ่งเขต &gt; บัญชีรายชื่อ เกิน 2%, n=49 — ทิศทางที่ผิดปกติ):</strong> กล้าธรรมชนะ 11 เขต (22.4%) เพื่อไทยชนะ 8 เขต (16.3%) ภูมิใจไทยชนะ 10 เขต (20.4%) อันดับ 2: ภูมิใจไทย 29 เขต (59.2%) เพื่อไทย 17 เขต (34.7%) กล้าธรรม 15 เขต (30.6%) ประชาชนเพียง 4 เขต (8.2%) <strong>เขตที่มีทั้งบัตรเขย่ง &gt;2% และบัตรเสีย &gt;5% (n=2):</strong> ทั้งสองเขตชนะโดยเพื่อไทย กล้าธรรมเป็นอันดับ 2 ทั้งสองเขต จำนวนที่ทับซ้อนน้อยยืนยันว่าสองความผิดปกตินี้กระจุกตัวในพื้นที่ต่างกัน"></p>
-
-    <div class="g2">
-      <div>
-        <div style="font-size:.78rem;color:var(--muted);font-weight:600;letter-spacing:.04em;margin-bottom:.6rem" class="i18n"
-          data-en="RUNNER-UP PARTY — HIGH SPOILED DISTRICTS (rate &gt;5%, n=76)"
-          data-th="พรรคอันดับ 2 — เขตบัตรเสียสูง (อัตรา &gt;5%, n=76)"></div>
-        <div id="chart-runnerup-spoiled" style="height:220px"></div>
-      </div>
-      <div>
-        <div style="font-size:.78rem;color:var(--muted);font-weight:600;letter-spacing:.04em;margin-bottom:.6rem" class="i18n"
-          data-en="RUNNER-UP PARTY — SURGE &gt;2% DISTRICTS (const &gt; party-list by &gt;2%, n=49)"
-          data-th="พรรคอันดับ 2 — เขตบัตรเขย่ง &gt;2% (แบ่งเขต &gt; บัญชีรายชื่อ เกิน 2%, n=49)"></div>
-        <div id="chart-runnerup-dev" style="height:220px"></div>
-      </div>
-    </div>
-
-    <div style="margin-top:1.1rem;overflow-x:auto">
-      <div style="font-size:.78rem;color:var(--muted);font-weight:600;letter-spacing:.04em;margin-bottom:.6rem" class="i18n"
-        data-en="SURGE &gt;2% AND SPOILED &gt;5% (n=2) — Winner vs Runner-Up  |  SPOILED &gt;5% only (n=76) — Winner vs Runner-Up"
-        data-th="บัตรเขย่ง &gt;2% และบัตรเสีย &gt;5% (n=2) — ผู้ชนะ vs อันดับ 2  |  บัตรเสีย &gt;5% เท่านั้น (n=76) — ผู้ชนะ vs อันดับ 2"></div>
-      <table style="width:100%;border-collapse:collapse;font-size:0.8rem;font-family:inherit">
-        <thead>
-          <tr style="border-bottom:1px solid rgba(255,255,255,0.12);color:var(--muted);font-size:.75rem">
-            <th style="text-align:left;padding:.35rem .5rem" class="i18n" data-en="Party" data-th="พรรค"></th>
-            <th style="text-align:center;padding:.35rem .5rem" class="i18n" data-en="Won (surge+spoiled)" data-th="ชนะ (บัตรเขย่ง+บัตรเสียสูง)"></th>
-            <th style="text-align:center;padding:.35rem .5rem" class="i18n" data-en="Runner-Up (surge+spoiled)" data-th="อันดับ 2 (บัตรเขย่ง+บัตรเสียสูง)"></th>
-            <th style="text-align:center;padding:.35rem .5rem" class="i18n" data-en="Won (spoiled &gt;5%)" data-th="ชนะ (บัตรเสีย &gt;5%)"></th>
-            <th style="text-align:center;padding:.35rem .5rem" class="i18n" data-en="Runner-Up (spoiled &gt;5%)" data-th="อันดับ 2 (บัตรเสีย &gt;5%)"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr style="border-bottom:1px solid rgba(255,255,255,0.06)">
-            <td style="padding:.35rem .5rem;font-weight:700;color:#a78bfa">ประชาชน</td>
-            <td style="text-align:center;padding:.35rem .5rem;color:var(--muted)">0</td>
-            <td style="text-align:center;padding:.35rem .5rem;color:var(--muted)">0</td>
-            <td style="text-align:center;padding:.35rem .5rem">6 (7.9%)</td>
-            <td style="text-align:center;padding:.35rem .5rem;color:#f43f5e;font-weight:700">45 (59.2%) ⚠</td>
-          </tr>
-          <tr style="border-bottom:1px solid rgba(255,255,255,0.06)">
-            <td style="padding:.35rem .5rem;font-weight:700;color:#fb923c">เพื่อไทย</td>
-            <td style="text-align:center;padding:.35rem .5rem;color:#4ade80;font-weight:700">2 (100%)</td>
-            <td style="text-align:center;padding:.35rem .5rem;color:var(--muted)">0</td>
-            <td style="text-align:center;padding:.35rem .5rem;color:#4ade80;font-weight:700">26 (34.2%)</td>
-            <td style="text-align:center;padding:.35rem .5rem">15 (19.7%)</td>
-          </tr>
-          <tr style="border-bottom:1px solid rgba(255,255,255,0.06)">
-            <td style="padding:.35rem .5rem;font-weight:700;color:#f59e0b">กล้าธรรม</td>
-            <td style="text-align:center;padding:.35rem .5rem;color:var(--muted)">0</td>
-            <td style="text-align:center;padding:.35rem .5rem;color:#f43f5e;font-weight:700">2 (100%) ⚠</td>
-            <td style="text-align:center;padding:.35rem .5rem;color:#4ade80;font-weight:700">20 (26.3%)</td>
-            <td style="text-align:center;padding:.35rem .5rem">6 (7.9%)</td>
-          </tr>
-          <tr style="border-bottom:1px solid rgba(255,255,255,0.06)">
-            <td style="padding:.35rem .5rem;font-weight:700;color:#60a5fa">ภูมิใจไทย</td>
-            <td style="text-align:center;padding:.35rem .5rem;color:var(--muted)">0</td>
-            <td style="text-align:center;padding:.35rem .5rem;color:var(--muted)">0</td>
-            <td style="text-align:center;padding:.35rem .5rem">21 (27.6%)</td>
-            <td style="text-align:center;padding:.35rem .5rem">7 (9.2%)</td>
-          </tr>
-          <tr>
-            <td style="padding:.35rem .5rem;font-weight:700;color:#34d399">ประชาธิปัตย์</td>
-            <td style="text-align:center;padding:.35rem .5rem;color:var(--muted)">0</td>
-            <td style="text-align:center;padding:.35rem .5rem;color:var(--muted)">0</td>
-            <td style="text-align:center;padding:.35rem .5rem;color:var(--muted)">0</td>
-            <td style="text-align:center;padding:.35rem .5rem">2 (2.6%)</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- COMBINED IMPACT ANALYSIS -->
-  <div class="var-box" style="background:rgba(99,102,241,0.06);border-color:rgba(99,102,241,0.3);margin-bottom:1.25rem">
     <h3 class="i18n"
-      data-en="Finding 6 — Combined Impact: Spoiled Ballots + Candidate Surge per District"
-      data-th="ข้อค้นพบที่ 6 — ผลกระทบรวม: บัตรเสีย + บัตรเขย่ง ต่อเขต"></h3>
+      data-en="Finding 5 — Who Wins &amp; Who Loses? Combined Ballot Loss per District"
+      data-th="ข้อค้นพบที่ 5 — ใครชนะ ใครแพ้? ผลกระทบรวมบัตรเสีย + บัตรเขย่งต่อเขต"></h3>
     <p class="i18n" style="margin-bottom:1rem"
-      data-en="For each district, we sum <strong>spoiled constituency ballots</strong> (votes lost to all candidates) and <strong>candidate surge</strong> (max(0, const_votes − party_votes) — the anomalous gap where party-list ballots went uncounted). Both represent votes that should have been cast but effectively disappeared from the constituency race. When their combined total exceeds 5% of the constituency vote pool, the district's result is materially exposed. <strong>153 districts exceed this 5% combined threshold — 28 of them also exceed the win margin outright.</strong> The winner and runner-up breakdown reveals which parties systematically benefit from, or are harmed by, districts with large combined ballot loss."
-      data-th="สำหรับแต่ละเขต เราคำนวณ <strong>บัตรเสียแบ่งเขต</strong> (คะแนนที่หายไปจากทุกผู้สมัคร) รวมกับ <strong>บัตรเขย่ง</strong> (max(0, แบ่งเขต − บัญชีรายชื่อ) — ช่องว่างที่ผิดปกติที่บัตรบัญชีรายชื่อไม่ถูกนับ) ทั้งสองคือคะแนนที่ควรถูกนับแต่หายไปจากการแข่งขันแบ่งเขต เมื่อผลรวมเกิน 5% ของคะแนนในเขต ผลการเลือกตั้งของเขตนั้นมีความเปราะบางอย่างมีนัยสำคัญ <strong>153 เขตเกินเกณฑ์รวม 5% นี้ — 28 เขตในนั้นยังเกินคะแนนห่างของผู้ชนะโดยตรง</strong> การวิเคราะห์รายพรรคเผยให้เห็นว่าพรรคไหนได้ประโยชน์อย่างเป็นระบบ หรือเสียประโยชน์จากเขตที่มีการสูญเสียบัตรสูง"></p>
+      data-en="Before splitting by anomaly type, we first <strong>compute the combined ballot loss per district</strong>: spoiled constituency ballots + candidate surge (max(0, const − party-list) — votes that disappeared from the constituency race). This combined metric is then used as the primary filter at three thresholds. The pattern is consistent across all thresholds: <strong style='color:#3b82f6'>ภูมิใจไทย</strong> dominates as winner; <strong style='color:#f97316'>ประชาชน</strong> is structurally over-represented as runner-up. The signal strengthens as the threshold rises, confirming it is not noise."
+      data-th="ก่อนจะแยกวิเคราะห์ตามประเภทความผิดปกติ เราคำนวณ<strong>ผลกระทบรวมต่อเขตก่อน</strong>: บัตรเสียแบ่งเขต + บัตรเขย่ง (max(0, แบ่งเขต − บัญชีรายชื่อ) — คะแนนที่หายไปจากการแข่งขันแบ่งเขต) จากนั้นใช้ตัวชี้วัดรวมนี้เป็นตัวกรองหลักที่สามเกณฑ์ รูปแบบสอดคล้องกันในทุกเกณฑ์: <strong style='color:#3b82f6'>ภูมิใจไทย</strong>ครองตำแหน่งผู้ชนะ; <strong style='color:#f97316'>ประชาชน</strong>เป็นอันดับ 2 เชิงโครงสร้าง สัญญาณแข็งแกร่งขึ้นเมื่อเกณฑ์สูงขึ้น ยืนยันว่าไม่ใช่สัญญาณรบกวน"></p>
 
-    <!-- KPI row -->
-    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.25rem">
-      <div style="background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.3);border-radius:.6rem;padding:.6rem 1rem;min-width:120px;text-align:center">
-        <div style="font-size:1.6rem;font-weight:800;color:#818cf8;line-height:1">153</div>
-        <div style="font-size:.7rem;color:var(--muted);margin-top:.2rem" class="i18n" data-en="Districts combined &gt;5%" data-th="เขตที่รวม &gt;5%"></div>
-      </div>
-      <div style="background:rgba(244,63,94,0.1);border:1px solid rgba(244,63,94,0.3);border-radius:.6rem;padding:.6rem 1rem;min-width:120px;text-align:center">
-        <div style="font-size:1.6rem;font-weight:800;color:#f43f5e;line-height:1">28</div>
-        <div style="font-size:.7rem;color:var(--muted);margin-top:.2rem" class="i18n" data-en="Also exceed win margin" data-th="เกินคะแนนห่างด้วย"></div>
-      </div>
-      <div style="background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);border-radius:.6rem;padding:.6rem 1rem;min-width:120px;text-align:center">
-        <div style="font-size:1.6rem;font-weight:800;color:#60a5fa;line-height:1">160</div>
-        <div style="font-size:.7rem;color:var(--muted);margin-top:.2rem" class="i18n" data-en="ภูมิใจไทย wins (45.1%)" data-th="ภูมิใจไทยชนะ (45.1%)"></div>
-      </div>
-      <div style="background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.2);border-radius:.6rem;padding:.6rem 1rem;min-width:120px;text-align:center">
-        <div style="font-size:1.6rem;font-weight:800;color:#a78bfa;line-height:1">128</div>
-        <div style="font-size:.7rem;color:var(--muted);margin-top:.2rem" class="i18n" data-en="ประชาชน runner-up (36.1%)" data-th="ประชาชนอันดับ 2 (36.1%)"></div>
-      </div>
+    <!-- Threshold tabs -->
+    <div style="display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap">
+      <button id="tab-2" onclick="switchThreshold(2)" style="padding:.35rem .9rem;border-radius:.4rem;font-size:.78rem;font-weight:700;cursor:pointer;border:1px solid rgba(251,191,36,0.5);background:rgba(251,191,36,0.15);color:#fbbf24;transition:all .15s">
+        &gt;2% <span style="font-weight:400;font-size:.7rem">(n=355)</span>
+      </button>
+      <button id="tab-3" onclick="switchThreshold(3)" style="padding:.35rem .9rem;border-radius:.4rem;font-size:.78rem;font-weight:700;cursor:pointer;border:1px solid rgba(255,255,255,0.15);background:transparent;color:var(--muted);transition:all .15s">
+        &gt;3% <span style="font-weight:400;font-size:.7rem">(n=295)</span>
+      </button>
+      <button id="tab-5" onclick="switchThreshold(5)" style="padding:.35rem .9rem;border-radius:.4rem;font-size:.78rem;font-weight:700;cursor:pointer;border:1px solid rgba(255,255,255,0.15);background:transparent;color:var(--muted);transition:all .15s">
+        &gt;5% <span style="font-weight:400;font-size:.7rem">(n=153)</span>
+      </button>
     </div>
 
-    <!-- Chart: winner vs runner-up per party (combined >5%) -->
-    <div style="font-size:.78rem;color:var(--muted);font-weight:600;letter-spacing:.04em;margin-bottom:.5rem" class="i18n"
-      data-en="WINNER vs RUNNER-UP BY PARTY — Districts where Spoiled + Surge &gt; 5% of constituency vote (n=153)"
-      data-th="ผู้ชนะ vs อันดับ 2 รายพรรค — เขตที่บัตรเสีย + บัตรเขย่ง &gt; 5% ของคะแนนในเขต (n=153)"></div>
-    <div id="chart-combined-impact" style="height:260px;margin-bottom:1.25rem"></div>
+    <!-- Dynamic KPI strip -->
+    <div id="combined-kpis" style="display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1rem"></div>
 
-    <!-- Top 15 districts table -->
+    <!-- Primary chart: winner vs runner-up at selected threshold -->
+    <div id="combined-chart-label" style="font-size:.78rem;color:var(--muted);font-weight:600;letter-spacing:.04em;margin-bottom:.5rem"></div>
+    <div id="chart-combined-threshold" style="height:280px;margin-bottom:1.25rem"></div>
+
+    <!-- Top 15 table -->
     <div style="font-size:.78rem;color:var(--muted);font-weight:600;letter-spacing:.04em;margin-bottom:.5rem" class="i18n"
-      data-en="TOP 15 DISTRICTS — Highest Combined (Spoiled + Surge) as % of Constituency Votes"
-      data-th="15 เขตสูงสุด — ผลรวม (บัตรเสีย + บัตรเขย่ง) เป็น % ของคะแนนในเขต"></div>
+      data-en="TOP 15 DISTRICTS — Highest Combined Ballot Loss (Spoiled + Surge) as % of Constituency Votes"
+      data-th="15 เขตสูงสุด — ผลรวมบัตรสูญหาย (บัตรเสีย + บัตรเขย่ง) เป็น % ของคะแนนแบ่งเขต"></div>
     <div style="overflow-x:auto">
       <table id="table-combined-impact" style="width:100%;border-collapse:collapse;font-size:0.78rem;font-family:inherit"></table>
     </div>
@@ -955,8 +872,37 @@ const fmtPct = n => (n == null ? '—' : (n > 0 ? '+' : '') + n.toFixed(2) + '%'
 const fmtAbsPct = n => (n == null ? '—' : Math.abs(n).toFixed(2) + '%');
 const esc = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 const COLORS = ['#f97316','#ef4444','#3b82f6','#10b981','#8b5cf6','#f59e0b','#06b6d4','#ec4899','#14b8a6','#a78bfa'];
-const PARTY_COLOR = {'ภูมิใจไทย':'#f97316','ประชาชน':'#ef4444','เพื่อไทย':'#3b82f6','ประชาธิปัตย์':'#22d3ee'};
-function pc(party) { return PARTY_COLOR[party] || '#8b5cf6'; }
+// Party brand colours — applied consistently throughout the dashboard
+// ประชาชน=orange, เพื่อไทย=red, ภูมิใจไทย=blue, กล้าธรรม=green
+const PARTY_COLOR = {
+    'ประชาชน':    '#f97316',  // orange
+    'เพื่อไทย':   '#ef4444',  // red
+    'ภูมิใจไทย':  '#3b82f6',  // blue
+    'กล้าธรรม':   '#22c55e',  // green
+    'ประชาธิปัตย์':'#06b6d4',  // cyan
+    'พลังประชารัฐ':'#ec4899',  // pink
+    'ประชาชาติ':  '#818cf8',  // indigo
+    'ไทรวมพลัง':  '#a78bfa',  // violet
+    'โอกาสใหม่':  '#facc15',  // yellow
+};
+function pc(party) { return PARTY_COLOR[party] || '#64748b'; }
+// Shared enrichment: compute combined (spoiled + surge) per district row
+function enrichRows(rows) {
+    return rows.map(r => {
+        const cv  = r.const_votes   || 0;
+        const pv  = r.party_votes   || 0;
+        const sp  = r.spoiled_const || 0;
+        const sur = Math.max(0, cv - pv);
+        const comb = sp + sur;
+        return { ...r,
+            _sp:   sp,   _sur:  sur,  _comb: comb,
+            _spPct:  cv > 0 ? sp   / cv * 100 : 0,
+            _surPct: cv > 0 ? sur  / cv * 100 : 0,
+            _combPct:cv > 0 ? comb / cv * 100 : 0,
+            _exceeds: comb > (r.margin_votes || 0)
+        };
+    });
+}
 function srcLink(url, label) {
     const safeUrl = (typeof url === 'string' && /^https?:\/\//i.test(url)) ? url : '#';
     return '<a href="' + esc(safeUrl) + '" target="_blank" rel="noopener noreferrer" class="src-link">📄 ' + esc(label) + '</a>';
@@ -1232,15 +1178,7 @@ function refreshLabels() {
 // ── BENEFIT CHARTS ─────────────────────────────────────────────────────────────
 function renderBenefitCharts() {
     const rows = DATA.extreme_deviations.filter(r => !r.missing_data);
-    const partyColors = {
-        'ภูมิใจไทย': '#60a5fa',
-        'เพื่อไทย':  '#fb923c',
-        'กล้าธรรม':  '#f59e0b',
-        'ประชาชน':   '#a78bfa',
-        'ประชาธิปัตย์': '#34d399',
-        'พลังประชารัฐ': '#f472b6',
-    };
-    function colorFor(p) { return partyColors[p] || '#64748b'; }
+    function colorFor(p) { return pc(p); }
 
     // ── Chart 1: Candidate Surge districts where abs dev > 2% AND const > party ──
     const surgeAbove2 = rows.filter(r => r.vote_diff < 0 && Math.abs(r.diff_percent) > 2);
@@ -1290,148 +1228,91 @@ function renderBenefitCharts() {
     window.addEventListener('resize', ()=>ec2.resize());
 }
 
-// ── RUNNER-UP CHARTS ───────────────────────────────────────────────────────────
-function renderRunnerUpCharts() {
-    const rows = DATA.extreme_deviations.filter(r => !r.missing_data && r.margin_votes > 0);
-    const pCol = {
-        'ภูมิใจไทย':'#60a5fa','เพื่อไทย':'#fb923c','กล้าธรรม':'#f59e0b',
-        'ประชาชน':'#a78bfa','ประชาธิปัตย์':'#34d399','พลังประชารัฐ':'#f472b6',
-        'ประชาชาติ':'#818cf8','ไทรวมพลัง':'#e879f9'
-    };
+// ── COMBINED THRESHOLD RUNNER-UP ANALYSIS ─────────────────────────────────────
+// Pre-enrich all valid rows once; reused by switchThreshold()
+let _enrichedRows = null;
+let _thresholdChart = null;
 
-    function makeHBar(elId, data) {
-        // data = [{party, winner, runnerup}]
-        // Semantic colours: green = seats WON, red = seats LOST as runner-up
-        // Party colour shown on y-axis label only via rich text
-        const WIN_COLOR    = '#22c55e';  // green  — won the seat
-        const LOSE_COLOR   = '#f43f5e';  // red    — finished 2nd, lost
-
-        const richStyles = {};
-        data.forEach(d => { richStyles[d.party] = { color: pCol[d.party]||'#94a3b8', fontWeight:'bold', fontSize:10 }; });
-
-        const ec = echarts.init(document.getElementById(elId));
-        ec.setOption({
-            backgroundColor:'transparent',
-            tooltip:{
-                trigger:'axis', axisPointer:{type:'shadow'},
-                backgroundColor:'#111827', textStyle:{color:'#f1f5f9'},
-                formatter: params => {
-                    const d = data[params[0].dataIndex];
-                    return `<b style="color:${pCol[d.party]||'#fff'}">${d.party}</b><br/>` +
-                        `<span style="color:${WIN_COLOR}">●</span> ${t('Won','ชนะ')}: <b>${d.winner}</b><br/>` +
-                        `<span style="color:${LOSE_COLOR}">●</span> ${t('Runner-Up (lost)','อันดับ 2 (แพ้)')}: <b>${d.runnerup}</b>`;
-                }
-            },
-            legend:{
-                bottom: 0,
-                data:[
-                    { name: t('Won seat','ชนะ'), icon:'rect', itemStyle:{color:WIN_COLOR} },
-                    { name: t('Runner-Up (lost)','อันดับ 2 (แพ้)'), icon:'rect', itemStyle:{color:LOSE_COLOR} }
-                ],
-                textStyle:{ color:'#94a3b8', fontSize:10 }
-            },
-            grid:{ left:'2%', right:'6%', bottom:'18%', top:'4%', containLabel:true },
-            xAxis:{ type:'value', axisLabel:{color:'#64748b'}, splitLine:{lineStyle:{color:'rgba(255,255,255,.04)'}} },
-            yAxis:{
-                type:'category',
-                data: data.map(d=>d.party),
-                axisLabel:{
-                    color:'#e2e8f0', fontSize:10,
-                    formatter: v => `{${v}|${v}}`,
-                    rich: richStyles
-                }
-            },
-            series:[
-                { name: t('Won seat','ชนะ'), type:'bar', barMaxWidth:14,
-                  data: data.map(d=>({ value: d.winner, itemStyle:{ color:WIN_COLOR, borderRadius:[0,3,3,0] } })),
-                  label:{ show:true, position:'right', color:'#86efac', fontSize:10, fontWeight:700, formatter:p=>p.value||'' }
-                },
-                { name: t('Runner-Up (lost)','อันดับ 2 (แพ้)'), type:'bar', barMaxWidth:14,
-                  data: data.map(d=>({ value: d.runnerup, itemStyle:{ color:LOSE_COLOR, borderRadius:[0,3,3,0] } })),
-                  label:{ show:true, position:'right', color:'#fca5a5', fontSize:10, fontWeight:700, formatter:p=>p.value||'' }
-                }
-            ]
-        });
-        window.addEventListener('resize', ()=>ec.resize());
-    }
-
-    // Count runner-up & winner for spoiled >5%
-    const spoiledHigh = rows.filter(r => r.const_votes && r.spoiled_const/r.const_votes > 0.05);
-    const sp_w={}, sp_r={};
-    spoiledHigh.forEach(r=>{
-        const w=r.winner_party||'อื่นๆ', ru=r.runner_up_party||'อื่นๆ';
-        sp_w[w]=(sp_w[w]||0)+1; sp_r[ru]=(sp_r[ru]||0)+1;
-    });
-    const spoiledParties = [...new Set([...Object.keys(sp_r),...Object.keys(sp_w)])]
-        .sort((a,b)=>(sp_r[b]||0)-(sp_r[a]||0)).slice(0,6);
-    makeHBar('chart-runnerup-spoiled', spoiledParties.map(p=>({party:p, winner:sp_w[p]||0, runnerup:sp_r[p]||0})));
-
-    // Count runner-up & winner for SURGE >2% (const > party by >2%, i.e. diff_percent < -2)
-    // This is the anomalous direction: party-list ballots went missing/uncounted vs constituency
-    const surgeHigh = rows.filter(r => (r.diff_percent||0) < -2);
-    const dv_w={}, dv_r={};
-    surgeHigh.forEach(r=>{
-        const w=r.winner_party||'อื่นๆ', ru=r.runner_up_party||'อื่นๆ';
-        dv_w[w]=(dv_w[w]||0)+1; dv_r[ru]=(dv_r[ru]||0)+1;
-    });
-    const devParties = [...new Set([...Object.keys(dv_r),...Object.keys(dv_w)])]
-        .sort((a,b)=>(dv_r[b]||0)-(dv_r[a]||0)).slice(0,6);
-    makeHBar('chart-runnerup-dev', devParties.map(p=>({party:p, winner:dv_w[p]||0, runnerup:dv_r[p]||0})));
+function getCombinedRows() {
+    if (_enrichedRows) return _enrichedRows;
+    const raw = DATA.extreme_deviations.filter(r =>
+        !r.missing_data && r.margin_votes > 0 && r.const_votes > 0);
+    _enrichedRows = enrichRows(raw).sort((a,b) => b._combPct - a._combPct);
+    return _enrichedRows;
 }
 
-// ── COMBINED IMPACT (Spoiled + Surge) ──────────────────────────────────────────
-function renderCombinedImpact() {
-    const pCol = {
-        'ภูมิใจไทย':'#60a5fa','เพื่อไทย':'#fb923c','กล้าธรรม':'#f59e0b',
-        'ประชาชน':'#a78bfa','ประชาธิปัตย์':'#34d399','พลังประชารัฐ':'#f472b6',
-        'ประชาชาติ':'#818cf8','ไทรวมพลัง':'#e879f9'
-    };
-    const colorFor = p => pCol[p] || '#64748b';
-    const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function switchThreshold(thr) {
+    [2,3,5].forEach(v => {
+        const btn = document.getElementById('tab-'+v);
+        if (!btn) return;
+        if (v === thr) {
+            btn.style.background = 'rgba(251,191,36,0.15)';
+            btn.style.borderColor = 'rgba(251,191,36,0.5)';
+            btn.style.color = '#fbbf24';
+        } else {
+            btn.style.background = 'transparent';
+            btn.style.borderColor = 'rgba(255,255,255,0.15)';
+            btn.style.color = 'var(--muted)';
+        }
+    });
 
-    const rows = DATA.extreme_deviations.filter(r =>
-        !r.missing_data && r.margin_votes > 0 && r.const_votes > 0
-    );
+    const all = getCombinedRows();
+    const cohort = all.filter(r => r._combPct > thr);
+    const n = cohort.length;
+    const exceeds = cohort.filter(r => r._exceeds).length;
 
-    // Compute combined = spoiled + surge (surge = max(0, const - party))
-    const enriched = rows.map(r => {
-        const cv = r.const_votes, pv = r.party_votes||0;
-        const spoiled = r.spoiled_const||0;
-        const surge   = Math.max(0, cv - pv);
-        const combined = spoiled + surge;
-        const combinedPct = combined / cv * 100;
-        return {...r, _spoiled:spoiled, _surge:surge, _combined:combined,
-                      _combinedPct:combinedPct, _exceedsMargin: combined > r.margin_votes};
-    }).sort((a,b) => b._combinedPct - a._combinedPct);
-
-    // Filter: combined > 5%
-    const over5 = enriched.filter(r => r._combinedPct > 5);
-
-    // Count winner / runner-up per party
-    const w_cnt={}, ru_cnt={};
-    over5.forEach(r => {
+    const wc = {}, rc = {};
+    cohort.forEach(r => {
         const w  = r.winner_party    || 'อื่นๆ';
         const ru = r.runner_up_party || 'อื่นๆ';
-        w_cnt[w]  = (w_cnt[w] ||0)+1;
-        ru_cnt[ru]= (ru_cnt[ru]||0)+1;
+        wc[w]  = (wc[w]  || 0) + 1;
+        rc[ru] = (rc[ru] || 0) + 1;
     });
 
-    // All parties sorted by runner-up count descending
-    const parties = [...new Set([...Object.keys(w_cnt), ...Object.keys(ru_cnt)])]
-        .filter(p => (w_cnt[p]||0)+(ru_cnt[p]||0) >= 2)
-        .sort((a,b) => ((ru_cnt[b]||0)+(w_cnt[b]||0)) - ((ru_cnt[a]||0)+(w_cnt[a]||0)));
+    const parties = [...new Set([...Object.keys(wc), ...Object.keys(rc)])]
+        .filter(p => (wc[p]||0) + (rc[p]||0) >= 2)
+        .sort((a,b) => ((wc[b]||0)+(rc[b]||0)) - ((wc[a]||0)+(rc[a]||0)));
 
-    // ── Chart: grouped bar winner vs runner-up per party ──
-    const richStyles = {};
-    parties.forEach(p => {
-        richStyles[p] = { color: colorFor(p), fontWeight:'bold', fontSize:11 };
-    });
+    // KPI strip
+    const kpiEl = document.getElementById('combined-kpis');
+    if (kpiEl) {
+        const topW = parties.reduce((best,p) => (wc[p]||0)>(wc[best]||0)?p:best, parties[0]||'—');
+        const topR = parties.reduce((best,p) => (rc[p]||0)>(rc[best]||0)?p:best, parties[0]||'—');
+        kpiEl.innerHTML =
+          `<div style="background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.3);border-radius:.6rem;padding:.55rem .9rem;text-align:center">
+            <div style="font-size:1.5rem;font-weight:800;color:#818cf8;line-height:1">${n}</div>
+            <div style="font-size:.68rem;color:var(--muted);margin-top:.15rem">${t('Districts combined >'+thr+'%','\u0e40\u0e02\u0e15\u0e17\u0e35\u0e48\u0e23\u0e27\u0e21 >'+thr+'%')}</div>
+          </div>
+          <div style="background:rgba(244,63,94,0.1);border:1px solid rgba(244,63,94,0.3);border-radius:.6rem;padding:.55rem .9rem;text-align:center">
+            <div style="font-size:1.5rem;font-weight:800;color:#f43f5e;line-height:1">${exceeds}</div>
+            <div style="font-size:.68rem;color:var(--muted);margin-top:.15rem">${t('Exceed win margin','\u0e40\u0e01\u0e34\u0e19\u0e04\u0e30\u0e41\u0e19\u0e19\u0e2b\u0e48\u0e32\u0e07')}</div>
+          </div>
+          <div style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.3);border-radius:.6rem;padding:.55rem .9rem;text-align:center">
+            <div style="font-size:1.5rem;font-weight:800;color:${pc(topW)};line-height:1">${wc[topW]||0}</div>
+            <div style="font-size:.68rem;color:var(--muted);margin-top:.15rem"><span style="color:${pc(topW)};font-weight:700">${topW}</span> ${t('wins','\u0e0a\u0e19\u0e30')} (${n>0?((wc[topW]||0)/n*100).toFixed(1):0}%)</div>
+          </div>
+          <div style="background:rgba(249,115,22,0.1);border:1px solid rgba(249,115,22,0.3);border-radius:.6rem;padding:.55rem .9rem;text-align:center">
+            <div style="font-size:1.5rem;font-weight:800;color:${pc(topR)};line-height:1">${rc[topR]||0}</div>
+            <div style="font-size:.68rem;color:var(--muted);margin-top:.15rem"><span style="color:${pc(topR)};font-weight:700">${topR}</span> ${t('runner-up','\u0e2d\u0e31\u0e19\u0e14\u0e31\u0e1a 2')} (${n>0?((rc[topR]||0)/n*100).toFixed(1):0}%)</div>
+          </div>`;
+    }
+
+    const labelEl = document.getElementById('combined-chart-label');
+    if (labelEl) labelEl.textContent = t(
+        'WINNER vs RUNNER-UP \u2014 Combined ballot loss > '+thr+'% of constituency vote (n='+n+')',
+        '\u0e1c\u0e39\u0e49\u0e0a\u0e19\u0e30 vs \u0e2d\u0e31\u0e19\u0e14\u0e31\u0e1a 2 \u2014 \u0e1c\u0e25\u0e23\u0e27\u0e21\u0e1a\u0e31\u0e15\u0e23\u0e2a\u0e39\u0e0d\u0e2b\u0e32\u0e22 > '+thr+'% \u0e02\u0e2d\u0e07\u0e04\u0e30\u0e41\u0e19\u0e19\u0e41\u0e1a\u0e48\u0e07\u0e40\u0e02\u0e15 (n='+n+')'
+    );
 
     const WIN_C  = '#22c55e';
-    const LOSE_C = '#f43f5e';
+    const LOSE_C = '#ef4444';
+    const richStyles = {};
+    parties.forEach(p => { richStyles[p] = { color: pc(p), fontWeight:'bold', fontSize:11 }; });
 
-    const ec = echarts.init(document.getElementById('chart-combined-impact'));
-    ec.setOption({
+    if (_thresholdChart) _thresholdChart.dispose();
+    const el = document.getElementById('chart-combined-threshold');
+    if (!el) return;
+    _thresholdChart = echarts.init(el);
+    _thresholdChart.setOption({
         backgroundColor:'transparent',
         tooltip:{
             trigger:'axis', axisPointer:{type:'shadow'},
@@ -1439,116 +1320,94 @@ function renderCombinedImpact() {
             textStyle:{color:'#f1f5f9', fontSize:11},
             formatter: params => {
                 const party = params[0].axisValue;
-                const w  = w_cnt[party]||0;
-                const ru = ru_cnt[party]||0;
-                const tot = over5.length;
-                return `<b style="color:${colorFor(party)}">${esc(party)}</b><br/>` +
-                    `<span style="color:#86efac">■</span> ${t('Won','ชนะ')}: <b style="color:#22c55e">${w}</b> (${(w/tot*100).toFixed(1)}%)<br/>` +
-                    `<span style="color:#fca5a5">■</span> ${t('Runner-Up','อันดับ 2')}: <b style="color:#f43f5e">${ru}</b> (${(ru/tot*100).toFixed(1)}%)`;
+                const w = wc[party]||0, ru = rc[party]||0;
+                return '<b style="color:'+pc(party)+'">'+party+'</b><br/>'+
+                    '<span style="color:'+WIN_C+'">&#9632;</span> '+t('Won','\u0e0a\u0e19\u0e30')+': <b style="color:'+WIN_C+'">'+w+'</b> ('+(n>0?(w/n*100).toFixed(1):0)+'%)<br/>'+
+                    '<span style="color:'+LOSE_C+'">&#9632;</span> '+t('Runner-Up','\u0e2d\u0e31\u0e19\u0e14\u0e31\u0e1a 2')+': <b style="color:'+LOSE_C+'">'+ru+'</b> ('+(n>0?(ru/n*100).toFixed(1):0)+'%)';
             }
         },
         legend:{
             bottom:0, itemWidth:12, itemHeight:12,
             textStyle:{color:'#94a3b8', fontSize:10},
             data:[
-                { name:t('Won seat','ชนะ'), icon:'roundRect', itemStyle:{color:WIN_C} },
-                { name:t('Runner-Up (lost)','อันดับ 2 (แพ้)'), icon:'roundRect', itemStyle:{color:LOSE_C} }
+                { name:t('Won seat','\u0e0a\u0e19\u0e30'), icon:'roundRect', itemStyle:{color:WIN_C} },
+                { name:t('Runner-Up','\u0e2d\u0e31\u0e19\u0e14\u0e31\u0e1a 2'), icon:'roundRect', itemStyle:{color:LOSE_C} }
             ]
         },
-        grid:{ left:'1%', right:'5%', bottom:'18%', top:'4%', containLabel:true },
+        grid:{ left:'1%', right:'7%', bottom:'18%', top:'4%', containLabel:true },
         xAxis:{ type:'value', axisLabel:{color:'#475569',fontSize:9},
                 splitLine:{lineStyle:{color:'rgba(255,255,255,.05)'}} },
         yAxis:{ type:'category', data: parties,
-            axisLabel:{ formatter: v=>`{${v}|${v}}`, rich: richStyles } },
+            axisLabel:{ formatter: v => '{'+v+'|'+v+'}', rich: richStyles }
+        },
         series:[
-            {
-                name: t('Won seat','ชนะ'),
-                type:'bar', barGap:'8%', barMaxWidth:20,
-                data: parties.map(p=>({ value:w_cnt[p]||0,
-                    itemStyle:{color:WIN_C, borderRadius:[0,4,4,0]} })),
-                label:{show:true, position:'right', color:'#86efac', fontSize:10, fontWeight:700,
-                       formatter: p => {
-                           const pct = ((p.value/over5.length)*100).toFixed(1);
-                           return `${p.value} (${pct}%)`;
-                       }}
+            { name: t('Won seat','\u0e0a\u0e19\u0e30'), type:'bar', barGap:'8%', barMaxWidth:20,
+              data: parties.map(p=>({ value:wc[p]||0,
+                  itemStyle:{color:WIN_C, borderRadius:[0,4,4,0]} })),
+              label:{show:true, position:'right', color:'#86efac', fontSize:10, fontWeight:700,
+                     formatter: p => p.value ? p.value+' ('+(p.value/n*100).toFixed(1)+'%)' : '' }
             },
-            {
-                name: t('Runner-Up (lost)','อันดับ 2 (แพ้)'),
-                type:'bar', barMaxWidth:20,
-                data: parties.map(p=>({ value:ru_cnt[p]||0,
-                    itemStyle:{color:LOSE_C, opacity:0.9, borderRadius:[0,4,4,0]} })),
-                label:{show:true, position:'right', color:'#fca5a5', fontSize:10, fontWeight:700,
-                       formatter: p => {
-                           const pct = ((p.value/over5.length)*100).toFixed(1);
-                           return `${p.value} (${pct}%)`;
-                       }}
+            { name: t('Runner-Up','\u0e2d\u0e31\u0e19\u0e14\u0e31\u0e1a 2'), type:'bar', barMaxWidth:20,
+              data: parties.map(p=>({ value:rc[p]||0,
+                  itemStyle:{color:LOSE_C, opacity:0.9, borderRadius:[0,4,4,0]} })),
+              label:{show:true, position:'right', color:'#fca5a5', fontSize:10, fontWeight:700,
+                     formatter: p => p.value ? p.value+' ('+(p.value/n*100).toFixed(1)+'%)' : '' }
             }
         ]
     });
-    window.addEventListener('resize', ()=>ec.resize());
+    window.addEventListener('resize', ()=>_thresholdChart && _thresholdChart.resize());
 
-    // ── Top 15 table ──
+    // Top-15 table
+    const top15 = all.slice(0, 15);
+    const esc2 = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const fmtN = n2 => n2 == null ? '\u2014' : Number(n2).toLocaleString();
     const hdrs = [
-        t('Province / Dist','จังหวัด / เขต'),
-        t('Winner','ผู้ชนะ'),
-        t('Party','พรรค'),
-        t('Runner-Up','อันดับ 2'),
-        t('R-U Party','พรรคอันดับ 2'),
-        t('Spoiled','บัตรเสีย'),
-        t('Surge','บัตรเขย่ง'),
-        t('Combined','รวม'),
-        t('Comb %','% รวม'),
-        t('Win Margin','คะแนนห่าง'),
-        t('Exceed?','เกินห่าง?')
+        t('Province / Dist','\u0e08\u0e31\u0e07\u0e2b\u0e27\u0e31\u0e14 / \u0e40\u0e02\u0e15'),
+        t('Winner','\u0e1c\u0e39\u0e49\u0e0a\u0e19\u0e30'), t('Party','\u0e1e\u0e23\u0e23\u0e04'),
+        t('Runner-Up','\u0e2d\u0e31\u0e19\u0e14\u0e31\u0e1a 2'),
+        t('R-U Party','\u0e1e\u0e23\u0e23\u0e04\u0e2d\u0e31\u0e19\u0e14\u0e31\u0e1a 2'),
+        t('Spoiled','\u0e1a\u0e31\u0e15\u0e23\u0e40\u0e2a\u0e35\u0e22'),
+        t('Surge','\u0e1a\u0e31\u0e15\u0e23\u0e40\u0e02\u0e22\u0e48\u0e07'),
+        t('Combined','\u0e23\u0e27\u0e21'), t('Comb %','% \u0e23\u0e27\u0e21'),
+        t('Win Margin','\u0e04\u0e30\u0e41\u0e19\u0e19\u0e2b\u0e48\u0e32\u0e07'),
+        t('Exceed?','\u0e40\u0e01\u0e34\u0e19\u0e2b\u0e48\u0e32\u0e07?')
     ];
-    const top15 = enriched.slice(0, 15);
-    let html = `<table style="width:100%;border-collapse:collapse;font-size:.75rem;font-family:inherit">
-<thead><tr style="border-bottom:1px solid rgba(255,255,255,.12);color:var(--muted);font-size:.7rem">
-${hdrs.map(h=>`<th style="padding:.3rem .5rem;white-space:nowrap;text-align:${h===hdrs[0]||h===hdrs[1]||h===hdrs[3]?'left':'right'}">${esc(h)}</th>`).join('')}
-</tr></thead><tbody>`;
-
+    let html = '<table style="width:100%;border-collapse:collapse;font-size:.75rem;font-family:inherit"><thead><tr style="border-bottom:1px solid rgba(255,255,255,.12);color:var(--muted);font-size:.7rem">';
+    hdrs.forEach((h,i) => { html += '<th style="padding:.3rem .5rem;white-space:nowrap;text-align:'+(i<2||i===3?'left':'right')+'">'+esc2(h)+'</th>'; });
+    html += '</tr></thead><tbody>';
     top15.forEach(r => {
-        const exceed = r._exceedsMargin;
-        const bg = r._combinedPct > 10 ? 'background:rgba(244,63,94,0.12)' :
-                   r._combinedPct >  7 ? 'background:rgba(245,158,11,0.07)' : '';
-        const exceedCell = exceed
-            ? `<span style="color:#f43f5e;font-weight:700">YES ⚠</span>`
-            : `<span style="color:var(--muted)">—</span>`;
-        html += `<tr style="border-bottom:1px solid rgba(255,255,255,.05);${bg}">
-            <td style="padding:.3rem .5rem;font-weight:600;white-space:nowrap">${esc(r.province)} เขต ${esc(r.district)}</td>
-            <td style="padding:.3rem .5rem;font-size:.72rem;color:#e2e8f0">${esc(r.winner_name||'—')}</td>
-            <td style="padding:.3rem .5rem"><span style="color:${colorFor(r.winner_party)};font-weight:700">${esc(r.winner_party||'—')}</span></td>
-            <td style="padding:.3rem .5rem;font-size:.72rem;color:#94a3b8">${esc(r.runner_up_name||'—')}</td>
-            <td style="padding:.3rem .5rem"><span style="color:${colorFor(r.runner_up_party)};font-weight:600">${esc(r.runner_up_party||'—')}</span></td>
-            <td style="padding:.3rem .5rem;text-align:right;color:#f43f5e">${fmt(r._spoiled)}</td>
-            <td style="padding:.3rem .5rem;text-align:right;color:#fbbf24">${r._surge > 0 ? fmt(r._surge) : '<span style="color:var(--muted)">—</span>'}</td>
-            <td style="padding:.3rem .5rem;text-align:right;font-weight:700;color:#c084fc">${fmt(r._combined)}</td>
-            <td style="padding:.3rem .5rem;text-align:right;font-weight:700;color:${r._combinedPct>10?'#f43f5e':r._combinedPct>5?'#f59e0b':'#94a3b8'}">${r._combinedPct.toFixed(1)}%</td>
-            <td style="padding:.3rem .5rem;text-align:right;color:#22c55e">${fmt(r.margin_votes)}</td>
-            <td style="padding:.3rem .5rem;text-align:center">${exceedCell}</td>
-        </tr>`;
+        const bg = r._combPct > 10 ? 'background:rgba(244,63,94,0.12)' :
+                   r._combPct >  7 ? 'background:rgba(245,158,11,0.07)' : '';
+        const exceedCell = r._exceeds
+            ? '<span style="color:#f43f5e;font-weight:700">YES \u26a0</span>'
+            : '<span style="color:var(--muted)">\u2014</span>';
+        html += '<tr style="border-bottom:1px solid rgba(255,255,255,.05);'+bg+'">'
+            +'<td style="padding:.3rem .5rem;font-weight:600;white-space:nowrap">'+esc2(r.province)+' \u0e40\u0e02\u0e15 '+esc2(r.district)+'</td>'
+            +'<td style="padding:.3rem .5rem;font-size:.72rem;color:#e2e8f0">'+esc2(r.winner_name||'\u2014')+'</td>'
+            +'<td style="padding:.3rem .5rem"><span style="color:'+pc(r.winner_party)+';font-weight:700">'+esc2(r.winner_party||'\u2014')+'</span></td>'
+            +'<td style="padding:.3rem .5rem;font-size:.72rem;color:#94a3b8">'+esc2(r.runner_up_name||'\u2014')+'</td>'
+            +'<td style="padding:.3rem .5rem"><span style="color:'+pc(r.runner_up_party)+';font-weight:600">'+esc2(r.runner_up_party||'\u2014')+'</span></td>'
+            +'<td style="padding:.3rem .5rem;text-align:right;color:#f43f5e">'+fmtN(r._sp)+'</td>'
+            +'<td style="padding:.3rem .5rem;text-align:right;color:#fbbf24">'+(r._sur>0?fmtN(r._sur):'<span style="color:var(--muted)">\u2014</span>')+'</td>'
+            +'<td style="padding:.3rem .5rem;text-align:right;font-weight:700;color:#c084fc">'+fmtN(r._comb)+'</td>'
+            +'<td style="padding:.3rem .5rem;text-align:right;font-weight:700;color:'+(r._combPct>10?'#ef4444':r._combPct>5?'#f59e0b':'#94a3b8')+'">'+r._combPct.toFixed(1)+'%</td>'
+            +'<td style="padding:.3rem .5rem;text-align:right;color:#22c55e">'+fmtN(r.margin_votes)+'</td>'
+            +'<td style="padding:.3rem .5rem;text-align:center">'+exceedCell+'</td>'
+            +'</tr>';
     });
     html += '</tbody></table>';
-    document.getElementById('table-combined-impact').outerHTML = html.replace('id="table-combined-impact"', '');
-    // re-insert table with correct id if needed — just set innerHTML on wrapper
-    const wrapper = document.querySelector('#table-combined-impact');
-    if(wrapper) wrapper.outerHTML = html;
-    else {
-        // find the placeholder we inserted
-        const tbl = document.getElementById('table-combined-impact');
-        if(tbl) tbl.outerHTML = html;
-    }
+    const tbl = document.getElementById('table-combined-impact');
+    if (tbl) tbl.innerHTML = html;
+}
+
+function renderRunnerUpCharts() {
+    switchThreshold(2);
 }
 
 // ── CONTESTED RACES ────────────────────────────────────────────────────────────
 function renderContested() {
     const rows = DATA.extreme_deviations.filter(r => !r.missing_data && r.margin_votes > 0);
-    const pCol = {
-        'ภูมิใจไทย':'#60a5fa','เพื่อไทย':'#fb923c','กล้าธรรม':'#f59e0b',
-        'ประชาชน':'#a78bfa','ประชาธิปัตย์':'#34d399','พลังประชารัฐ':'#f472b6',
-        'ประชาชาติ':'#818cf8','ไทรวมพลัง':'#e879f9'
-    };
-    const colorFor = p => pCol[p] || '#64748b';
+    const colorFor = p => pc(p);
 
     // Annotate each row with flags
     rows.forEach(r => {
