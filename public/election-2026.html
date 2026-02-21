@@ -755,7 +755,7 @@ padding:.9rem 1.1rem;margin-top:1rem;font-size:.8rem;color:var(--d);line-height:
 <!-- PROTEST / SURGE -->
 <div class="section" id="protest">
   <div class="sec-hdr">
-    <h2 class="i18n" data-en="Top 10: Protest Votes &amp; Candidate Surge" data-th="Top 10: บัญชีรายชื่อ > แบ่งเขต และ แบ่งเขต > บัญชีรายชื่อ"></h2>
+    <h2 class="i18n" data-en="Top 10: Party &gt; Constituency &amp; Candidate Surge" data-th="Top 10: บัญชีรายชื่อ > แบ่งเขต และ แบ่งเขต > บัญชีรายชื่อ"></h2>
     <span class="tag tag-rd i18n" data-en="Abs Deviation Ranked" data-th="จัดอันดับตามค่าสัมบูรณ์"></span>
   </div>
   <div class="g2">
@@ -1107,7 +1107,7 @@ function miniTbl(rows, color) {
         ).join('') + '</tbody></table>';
 }
 function renderTopTables() {
-    document.getElementById('protest-label').textContent = t('Top 10 Protest Hubs (Party > Constituency)','10 เขตที่มีความต่าง: บัญชีรายชื่อ > แบ่งเขต');
+    document.getElementById('protest-label').textContent = t('Top 10 Party > Constituency','10 เขตที่มีความต่าง: บัญชีรายชื่อ > แบ่งเขต');
     document.getElementById('surge-label').textContent = t('Top 10 Candidate Surge (Constituency > Party)','Top 10 เขตผู้สมัครพุ่ง (แบ่งเขต > บัญชีรายชื่อ)');
     document.getElementById('protest-table').innerHTML = miniTbl(DATA.top_protest_hubs, 'var(--rs)');
     document.getElementById('surge-table').innerHTML = miniTbl(DATA.top_candidate_surge, 'var(--am)');
