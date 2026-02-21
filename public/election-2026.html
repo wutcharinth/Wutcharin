@@ -165,6 +165,7 @@ padding:.9rem 1.1rem;margin-top:1rem;font-size:.8rem;color:var(--d);line-height:
     <a href="#scatter" class="i18n" data-en="Scatter Map" data-th="แผนที่กระจาย"></a>
     <a href="#spoiled" class="i18n" data-en="Spoiled Ballots" data-th="บัตรเสีย"></a>
     <a href="#deep-dive" class="i18n" data-en="Deep Investigation" data-th="สืบสวนเชิงลึก"></a>
+    <a href="#contested" class="i18n" data-en="Contested Seats" data-th="เขตเสี่ยง"></a>
     <a href="#districts" class="i18n" data-en="All Districts" data-th="ทุกเขต"></a>
   </div>
   <button id="lang-btn" aria-label="Switch language / เปลี่ยนภาษา">TH 🇹🇭</button>
@@ -605,6 +606,71 @@ padding:.9rem 1.1rem;margin-top:1rem;font-size:.8rem;color:var(--d);line-height:
   </div>
 </div>
 
+<!-- CONTESTED RACES -->
+<div class="section" id="contested">
+  <div class="sec-hdr">
+    <h2 class="i18n" data-en="Could It Have Changed the Result?" data-th="อาจพลิกผลการเลือกตั้งได้หรือไม่?"></h2>
+    <span class="tag tag-rd i18n" data-en="37 At-Risk Seats" data-th="37 เขตเสี่ยง"></span>
+  </div>
+
+  <div class="var-box" style="margin-bottom:1.25rem">
+    <p class="i18n"
+      data-en="A seat's result is potentially contestable if the number of <strong>spoiled constituency ballots alone exceeds the winner's margin</strong>. Logic: if those ballots had been valid and distributed differently — even partially to the runner-up — the outcome could change. Across 382 valid districts, <span class='warn'>37 seats meet this threshold</span> (spoiled &gt; margin). In 26 additional districts, the 1:1 deviation alone exceeds the margin. In 68 districts total, the <em>combined</em> spoiled + deviation exceeds the margin. This does not prove fraud — but it identifies the districts where data irregularities are large enough to be <strong>outcome-determinative</strong> if the underlying ballots were misclassified or miscounted."
+      data-th="ผลการเลือกตั้งในเขตหนึ่งอาจถูกโต้แย้งได้ หากจำนวน<strong>บัตรเสียแบ่งเขตเพียงอย่างเดียวมากกว่าคะแนนห่างของผู้ชนะ</strong> หลักตรรกะ: หากบัตรเหล่านั้นใช้ได้และกระจายต่างออกไป — แม้เพียงบางส่วนไปยังผู้ที่ได้คะแนนเป็นอันดับสอง — ผลลัพธ์อาจเปลี่ยนแปลง จาก 382 เขตที่มีข้อมูลครบถ้วน <span class='warn'>37 เขตผ่านเกณฑ์นี้</span> (บัตรเสีย &gt; คะแนนห่าง) ใน 26 เขตเพิ่มเติม ความเบี่ยงเบน 1:1 เพียงอย่างเดียวก็เกินคะแนนห่างแล้ว และใน 68 เขตรวมกัน ผลรวมของบัตรเสียและความเบี่ยงเบนเกินคะแนนห่าง สิ่งนี้ไม่ได้พิสูจน์การทุจริต แต่ระบุเขตที่ความผิดปกติของข้อมูลใหญ่พอที่จะ<strong>กำหนดผลลัพธ์ได้</strong> หากบัตรที่อยู่เบื้องหลังถูกจัดประเภทหรือนับผิด"></p>
+  </div>
+
+  <!-- KPI row -->
+  <div class="g3" style="margin-bottom:1.25rem">
+    <div class="card ca crd">
+      <div class="kpi-t i18n" data-en="Seats: Spoiled &gt; Margin" data-th="เขต: บัตรเสีย &gt; คะแนนห่าง"></div>
+      <div class="kpi-v" style="color:#f43f5e">37</div>
+      <div class="kpi-s i18n" data-en="Spoiled ballots alone exceed win margin" data-th="บัตรเสียอย่างเดียวเกินคะแนนห่าง"></div>
+    </div>
+    <div class="card ca cor">
+      <div class="kpi-t i18n" data-en="Seats: Deviation &gt; Margin" data-th="เขต: ความเบี่ยงเบน &gt; คะแนนห่าง"></div>
+      <div class="kpi-v" style="color:#f59e0b">26</div>
+      <div class="kpi-s i18n" data-en="1:1 deviation alone exceeds win margin" data-th="ความเบี่ยงเบน 1:1 เพียงอย่างเดียวเกินคะแนนห่าง"></div>
+    </div>
+    <div class="card ca cpu">
+      <div class="kpi-t i18n" data-en="Seats: Combined &gt; Margin" data-th="เขต: รวมกัน &gt; คะแนนห่าง"></div>
+      <div class="kpi-v" style="color:#a78bfa">68</div>
+      <div class="kpi-s i18n" data-en="Spoiled + deviation together exceed margin" data-th="บัตรเสีย + ความเบี่ยงเบนรวมกันเกินคะแนนห่าง"></div>
+    </div>
+  </div>
+
+  <!-- Chart + Table -->
+  <div class="g2" style="margin-bottom:1.25rem">
+    <div class="card ca cor">
+      <div class="kpi-t i18n" style="margin-bottom:.75rem"
+        data-en="Contested Seats by Party (Spoiled &gt; Margin)"
+        data-th="เขตที่อาจพลิกผล รายพรรค (บัตรเสีย &gt; คะแนนห่าง)"></div>
+      <div id="chart-contested-party" class="chart"></div>
+    </div>
+    <div class="card ca crd">
+      <div class="kpi-t i18n" style="margin-bottom:.75rem"
+        data-en="Top 10 Most At-Risk Seats (Spoiled − Margin excess)"
+        data-th="10 เขตที่เสี่ยงสูงสุด (บัตรเสีย − คะแนนห่าง)"></div>
+      <div id="chart-contested-gap" class="chart"></div>
+    </div>
+  </div>
+
+  <!-- Detail table -->
+  <div class="card full">
+    <div class="kpi-t i18n" style="margin-bottom:.75rem"
+      data-en="All 37 At-Risk Seats — Spoiled Ballots Exceed Win Margin"
+      data-th="ทั้ง 37 เขตเสี่ยง — บัตรเสียเกินคะแนนห่าง"></div>
+    <div class="tbl-wrap" style="max-height:420px" id="contested-table"></div>
+  </div>
+
+  <div class="insight">
+    <strong class="i18n" data-en="🔍 What to look for:" data-th="🔍 สิ่งที่ควรสังเกต:"></strong>
+    <span class="i18n"
+      data-en=" Focus on districts where the winner's margin is <em>smaller than the spoiled ballot count</em> AND the runner-up's party scored higher on the party-list in the same district. That combination suggests voters may have endorsed a different party nationally while the local seat went another way — possibly because constituency ballot spoiling suppressed turnout unevenly. The <span class='warn'>most extreme case: ศรีสะเกษ เขต 6</span> — won by margin of just 273 votes, with 3,411 spoiled ballots and 1,213 deviation. นครราชสีมา เขต 3 was won by 299 votes with 3,626 spoiled ballots. นราธิวาส เขต 3 was won by just 266 votes with 2,416 spoiled ballots and 2,235 deviation — both exceeding the margin individually. These are the seats the ECT's full ballot-level data release would most directly clarify."
+      data-th=" มุ่งสนใจเขตที่คะแนนห่างของผู้ชนะ<em>น้อยกว่าจำนวนบัตรเสีย</em> และพรรคของผู้ที่ได้อันดับสองได้คะแนนบัญชีรายชื่อสูงกว่าในเขตเดียวกัน ผสมผสานนั้นชี้ให้เห็นว่าผู้ลงคะแนนอาจสนับสนุนพรรคอื่นในระดับชาติ ขณะที่ที่นั่งท้องถิ่นไปอีกทาง — อาจเป็นเพราะการทำบัตรแบ่งเขตเสียกดทับผู้ลงคะแนนอย่างไม่สม่ำเสมอ <span class='warn'>กรณีสุดขีด: ศรีสะเกษ เขต 6</span> — ชนะห่างเพียง 273 คะแนน มีบัตรเสีย 3,411 ใบและความเบี่ยงเบน 1,213 นครราชสีมา เขต 3 ชนะด้วย 299 คะแนน มีบัตรเสีย 3,626 ใบ นราธิวาส เขต 3 ชนะด้วย 266 คะแนน มีบัตรเสีย 2,416 ใบและความเบี่ยงเบน 2,235 — ทั้งสองเกินคะแนนห่างแยกกันอยู่แล้ว เหล่านี้คือที่นั่งที่การเปิดเผยข้อมูลระดับบัตรของ กกต. จะชี้แจงได้ตรงที่สุด">
+    </span>
+  </div>
+</div>
+
 <!-- ALL DISTRICTS -->
 <div class="section" id="districts">
   <div class="sec-hdr">
@@ -1010,6 +1076,101 @@ function renderBenefitCharts() {
     window.addEventListener('resize', ()=>ec2.resize());
 }
 
+// ── CONTESTED RACES ────────────────────────────────────────────────────────────
+function renderContested() {
+    const rows = DATA.extreme_deviations.filter(r => !r.missing_data && r.margin_votes > 0);
+    const partyColors = {
+        'ภูมิใจไทย':'#60a5fa','เพื่อไทย':'#fb923c','กล้าธรรม':'#f59e0b',
+        'ประชาชน':'#a78bfa','ประชาธิปัตย์':'#34d399','พลังประชารัฐ':'#f472b6'
+    };
+    const colorFor = p => partyColors[p] || '#64748b';
+
+    // Districts where spoiled > margin
+    const atRisk = rows
+        .filter(r => (r.spoiled_const||0) > r.margin_votes)
+        .sort((a,b) => ((b.spoiled_const||0) - b.margin_votes) - ((a.spoiled_const||0) - a.margin_votes));
+
+    // ── Chart 1: at-risk seats by winning party ──
+    const partyCnt = {};
+    atRisk.forEach(r => { const p = r.winner_party||'อื่นๆ'; partyCnt[p] = (partyCnt[p]||0)+1; });
+    const partyEntries = Object.entries(partyCnt).sort((a,b)=>b[1]-a[1]);
+
+    const ec1 = echarts.init(document.getElementById('chart-contested-party'));
+    ec1.setOption({
+        backgroundColor:'transparent',
+        tooltip:{ trigger:'axis', backgroundColor:'#111827', textStyle:{color:'#f1f5f9'} },
+        grid:{ left:'2%', right:'8%', bottom:'3%', top:'6%', containLabel:true },
+        xAxis:{ type:'value', axisLabel:{color:'#64748b'}, splitLine:{lineStyle:{color:'rgba(255,255,255,.04)'}} },
+        yAxis:{ type:'category', data:partyEntries.map(e=>e[0]), axisLabel:{color:'#e2e8f0', fontSize:11} },
+        series:[{ type:'bar', data:partyEntries.map(e=>({
+            value:e[1], itemStyle:{ color:colorFor(e[0]), borderRadius:[0,4,4,0] }
+        })), label:{show:true,position:'right',color:'#94a3b8',fontSize:11,formatter:p=>p.value} }]
+    });
+    window.addEventListener('resize', ()=>ec1.resize());
+
+    // ── Chart 2: top 10 by (spoiled - margin) excess ──
+    const top10 = atRisk.slice(0,10);
+    const ec2 = echarts.init(document.getElementById('chart-contested-gap'));
+    ec2.setOption({
+        backgroundColor:'transparent',
+        tooltip:{ trigger:'axis', backgroundColor:'#111827', textStyle:{color:'#f1f5f9'},
+            formatter: params => {
+                const r = top10[params[0].dataIndex];
+                return `${r.province} เขต ${r.district_num}<br/>` +
+                    `${t('Winner','ผู้ชนะ')}: ${r.winner_party}<br/>` +
+                    `${t('Margin','คะแนนห่าง')}: ${fmt(r.margin_votes)}<br/>` +
+                    `${t('Spoiled','บัตรเสีย')}: ${fmt(r.spoiled_const||0)}<br/>` +
+                    `${t('Excess','ส่วนเกิน')}: +${fmt((r.spoiled_const||0)-r.margin_votes)}`;
+            }
+        },
+        grid:{ left:'2%', right:'4%', bottom:'14%', top:'6%', containLabel:true },
+        xAxis:{ type:'category',
+            data: top10.map(r=>`${r.province.replace('กรุงเทพมหานคร','กทม.')} ${r.district_num}`),
+            axisLabel:{ color:'#64748b', fontSize:9, rotate:35, interval:0 }
+        },
+        yAxis:{ type:'value', axisLabel:{color:'#64748b', formatter:v=>fmt(v)}, splitLine:{lineStyle:{color:'rgba(255,255,255,.04)'}} },
+        series:[
+            { name:t('Win Margin','คะแนนห่าง'), type:'bar', stack:'a',
+              data:top10.map(r=>({ value:r.margin_votes, itemStyle:{color:'#22c55e',borderRadius:[0,0,0,0]} })),
+              label:{show:false} },
+            { name:t('Spoiled Excess over Margin','บัตรเสียเกินคะแนนห่าง'), type:'bar', stack:'a',
+              data:top10.map(r=>({ value:(r.spoiled_const||0)-r.margin_votes, itemStyle:{color:'#f43f5e',borderRadius:[4,4,0,0]} })),
+              label:{show:true,position:'top',color:'#94a3b8',fontSize:9,formatter:p=>`+${fmt(p.value)}`} }
+        ],
+        legend:{ bottom:0, textStyle:{color:'#94a3b8',fontSize:10} }
+    });
+    window.addEventListener('resize', ()=>ec2.resize());
+
+    // ── Detail table ──
+    const tbl = document.getElementById('contested-table');
+    const hdrs = [
+        t('Province','จังหวัด'), t('Dist','เขต'), t('Winner','ผู้ชนะ'), t('Party','พรรค'),
+        t('Runner-Up','อันดับ 2'), t('Runner-Up Party','พรรคอันดับ 2'),
+        t('Margin','คะแนนห่าง'), t('Spoiled','บัตรเสีย'), t('Deviation','ความเบี่ยงเบน'),
+        t('Spoiled Excess','บัตรเสียเกิน')
+    ];
+    let html = `<table><thead><tr>${hdrs.map(h=>`<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>`;
+    atRisk.forEach((r,i) => {
+        const excess = (r.spoiled_const||0) - r.margin_votes;
+        const absDev = Math.abs((r.party_votes||0) - (r.const_votes||0));
+        const severe = excess > 2000 ? 'background:rgba(244,63,94,0.08)' : '';
+        html += `<tr style="${severe}">
+            <td>${esc(r.province)}</td>
+            <td style="text-align:center">${esc(String(r.district_num))}</td>
+            <td style="font-size:.8em">${esc(r.winner||'—')}</td>
+            <td><span style="color:${colorFor(r.winner_party)};font-weight:600">${esc(r.winner_party||'—')}</span></td>
+            <td style="font-size:.8em">${esc(r.runner_up||'—')}</td>
+            <td><span style="color:${colorFor(r.runner_up_party)};font-weight:500">${esc(r.runner_up_party||'—')}</span></td>
+            <td style="text-align:right;color:#22c55e;font-weight:600">${fmt(r.margin_votes)}</td>
+            <td style="text-align:right;color:#f43f5e;font-weight:600">${fmt(r.spoiled_const||0)}</td>
+            <td style="text-align:right;color:#f59e0b">${fmt(absDev)}</td>
+            <td style="text-align:right;color:#f43f5e;font-weight:700">+${fmt(excess)}</td>
+        </tr>`;
+    });
+    html += '</tbody></table>';
+    tbl.innerHTML = html;
+}
+
 // ── INIT ──────────────────────────────────────────────────────────────────────
 applyI18n();
 renderKPIs();
@@ -1024,6 +1185,7 @@ renderTopTables();
 renderHeaders();
 renderTable(allRows);
 renderBenefitCharts();
+renderContested();
 </script>
 </body>
 </html>
