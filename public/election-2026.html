@@ -181,28 +181,32 @@ padding:.9rem 1.1rem;margin-top:1rem;font-size:.8rem;color:var(--d);line-height:
   <h1 class="report-title i18n" style="font-size:clamp(1.6rem,4vw,2.4rem)"
     data-en="Thailand 2569 Election&#10;Statistical Investigation"
     data-th="รายงานสืบสวนสถิติ&#10;การเลือกตั้ง 2569"></h1>
+  <p class="report-subtitle i18n" style="font-size:.95rem;margin-top:.75rem;margin-bottom:0"
+    data-en="Two statistical anomalies in the official ECT data raised concern after the Feb 8, 2026 election: an unusually high number of spoiled constituency ballots (1.28 million, 3.56% avg), and districts where constituency votes exceeded party-list votes — the so-called &ldquo;candidate surge&rdquo; (บัตรเขย่ง). Since every voter receives exactly 2 ballots, these two signals should cancel each other out — but they don&rsquo;t, and they concentrate in the same districts. This dashboard quantifies both anomalies using official ECT data only, to understand their scale and impact on individual seat outcomes."
+    data-th="ข้อมูลอย่างเป็นทางการของ กกต. หลังการเลือกตั้ง 8 ก.พ. 2569 เผยความผิดปกติทางสถิติสองประการ: จำนวนบัตรเสียแบ่งเขตที่สูงผิดปกติ (1.28 ล้านใบ เฉลี่ย 3.56%) และเขตที่คะแนนแบ่งเขตมากกว่าบัญชีรายชื่อ ซึ่งเรียกว่า &ldquo;บัตรเขย่ง&rdquo; เนื่องจากผู้ลงคะแนนทุกคนได้รับบัตร 2 ใบเท่ากัน สัญญาณทั้งสองควรหักล้างกัน — แต่กลับไม่เป็นเช่นนั้น และยิ่งไปกว่านั้น ทั้งสองยังกระจุกตัวในเขตเดียวกัน รายงานนี้วัดขนาดของความผิดปกติทั้งสองโดยใช้เฉพาะข้อมูล กกต. อย่างเป็นทางการ เพื่อทำความเข้าใจผลกระทบต่อผลการเลือกตั้งรายเขต">
+  </p>
 
   <!-- Key numbers strip -->
   <div style="display:flex;flex-wrap:wrap;gap:.75rem;margin:1.25rem 0 1.75rem">
     <div style="background:rgba(244,63,94,0.1);border:1px solid rgba(244,63,94,0.25);border-radius:.75rem;padding:.65rem 1.1rem;min-width:130px">
       <div style="font-size:1.5rem;font-weight:800;color:#f43f5e;line-height:1">1,280,974</div>
-      <div style="font-size:.72rem;color:var(--muted);margin-top:.2rem" class="i18n" data-en="Spoiled constituency ballots" data-th="บัตรเสียแบ่งเขต"></div>
+      <div style="font-size:.72rem;color:var(--muted);margin-top:.2rem" class="i18n" data-en="Spoiled constituency ballots (3.56% avg)" data-th="บัตรเสียแบ่งเขต (เฉลี่ย 3.56%)"></div>
+    </div>
+    <div style="background:rgba(249,115,22,0.1);border:1px solid rgba(249,115,22,0.25);border-radius:.75rem;padding:.65rem 1.1rem;min-width:130px">
+      <div style="font-size:1.5rem;font-weight:800;color:#f97316;line-height:1">176 / 382</div>
+      <div style="font-size:.72rem;color:var(--muted);margin-top:.2rem" class="i18n" data-en="Districts with บัตรเขย่ง (const &gt; party)" data-th="เขตที่มีบัตรเขย่ง (แบ่งเขต &gt; บัญชีรายชื่อ)"></div>
     </div>
     <div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);border-radius:.75rem;padding:.65rem 1.1rem;min-width:130px">
-      <div style="font-size:1.5rem;font-weight:800;color:#f59e0b;line-height:1">143 / 382</div>
-      <div style="font-size:.72rem;color:var(--muted);margin-top:.2rem" class="i18n" data-en="Districts with deviation &gt;2%" data-th="เขตที่เบี่ยงเบนเกิน 2%"></div>
+      <div style="font-size:1.5rem;font-weight:800;color:#f59e0b;line-height:1">355 / 382</div>
+      <div style="font-size:.72rem;color:var(--muted);margin-top:.2rem" class="i18n" data-en="Districts: combined impact &gt;2% of votes" data-th="เขตที่ผลกระทบรวมเกิน 2% ของคะแนน"></div>
     </div>
     <div style="background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.25);border-radius:.75rem;padding:.65rem 1.1rem;min-width:130px">
       <div style="font-size:1.5rem;font-weight:800;color:#a78bfa;line-height:1">37</div>
-      <div style="font-size:.72rem;color:var(--muted);margin-top:.2rem" class="i18n" data-en="Seats where spoiled &gt; win margin" data-th="เขตที่บัตรเสียเกินคะแนนห่าง"></div>
-    </div>
-    <div style="background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.2);border-radius:.75rem;padding:.65rem 1.1rem;min-width:130px">
-      <div style="font-size:1.5rem;font-weight:800;color:#4ade80;line-height:1">+146,485</div>
-      <div style="font-size:.72rem;color:var(--muted);margin-top:.2rem" class="i18n" data-en="Net national ballot gap (party − const)" data-th="ส่วนต่างสุทธิระดับชาติ (บช − แบ่งเขต)"></div>
+      <div style="font-size:.72rem;color:var(--muted);margin-top:.2rem" class="i18n" data-en="Seats where spoiled alone &gt; win margin" data-th="เขตที่บัตรเสียอย่างเดียวเกินคะแนนห่าง"></div>
     </div>
     <div style="background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);border-radius:.75rem;padding:.65rem 1.1rem;min-width:130px">
       <div style="font-size:1.5rem;font-weight:800;color:#60a5fa;line-height:1">28+</div>
-      <div style="font-size:.72rem;color:var(--muted);margin-top:.2rem" class="i18n" data-en="Petitions to Ombudsman filed" data-th="คำร้องต่อผู้ตรวจการแผ่นดิน"></div>
+      <div style="font-size:.72rem;color:var(--muted);margin-top:.2rem" class="i18n" data-en="Petitions filed — case active in court" data-th="คำร้องที่ยื่น — คดียังดำเนินอยู่ในศาล"></div>
     </div>
   </div>
 
@@ -210,52 +214,52 @@ padding:.9rem 1.1rem;margin-top:1rem;font-size:.8rem;color:var(--d);line-height:
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-bottom:1.5rem">
 
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-left:3px solid #f43f5e;border-radius:.75rem;padding:1rem 1.1rem">
-      <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;color:#f43f5e;margin-bottom:.4rem" class="i18n" data-en="FINDING 1 — SPOILED BALLOTS EXCEED WIN MARGINS" data-th="ข้อค้นพบ 1 — บัตรเสียเกินคะแนนห่างในหลายเขต"></div>
+      <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;color:#f43f5e;margin-bottom:.4rem" class="i18n" data-en="CONCERN 1 — ABNORMALLY HIGH SPOILED BALLOTS" data-th="ความกังวล 1 — บัตรเสียสูงผิดปกติ"></div>
       <p style="font-size:.85rem;line-height:1.55;color:#cbd5e1;margin:0" class="i18n"
-        data-en="1,280,974 constituency ballots were spoiled — a 3.56% average that is 8.7× larger than the official net gap of 146,485. The reported party-list spoiled total of just 16,632 produces a forensically implausible 22:1 ratio: only 11.4% of constituency spoiled ballots needed to be selectively cast to fully explain the national imbalance. The data either records a systemic reporting failure — or something else. Scroll down to see the district-level breakdown."
-        data-th="บัตรเสียในส่วนแบ่งเขตรวม 1,280,974 ใบ — อัตราเฉลี่ย 3.56% ซึ่งมากกว่าส่วนต่างสุทธิอย่างเป็นทางการ 146,485 ถึง 8.7 เท่า ตัวเลขบัตรเสียบัญชีรายชื่อที่รายงานเพียง 16,632 ใบสร้างอัตราส่วน 22:1 ที่ไม่น่าเป็นไปได้ทางนิติวิทยาศาสตร์ ต้องใช้บัตรเสียแบบเลือกเพียง 11.4% เท่านั้นเพื่ออธิบายความไม่สมดุลระดับชาติ ข้อมูลนี้บันทึกความล้มเหลวเชิงระบบ — หรือสิ่งอื่น เลื่อนลงเพื่อดูรายละเอียดระดับเขต"></p>
+        data-en="1,280,974 constituency ballots were declared spoiled — a national average of 3.56%, with 37 individual districts recording rates high enough to outnumber the winner&rsquo;s margin outright. By contrast, the reported party-list spoiled total is only 16,632 — a 22:1 ratio that is statistically implausible. The analysis below maps spoiled rates at district level to see where and by how much they exceed win margins."
+        data-th="บัตรเสียแบ่งเขตทั่วประเทศ 1,280,974 ใบ — เฉลี่ย 3.56% และใน 37 เขต จำนวนบัตรเสียสูงกว่าคะแนนห่างของผู้ชนะ ในขณะเดียวกัน บัตรเสียบัญชีรายชื่อที่รายงานมีเพียง 16,632 ใบ — อัตราส่วน 22:1 ที่ไม่น่าเป็นไปได้ทางสถิติ การวิเคราะห์ด้านล่างแสดงอัตราบัตรเสียรายเขตเพื่อดูว่าส่งผลต่อผลการแข่งขันอย่างไร"></p>
+    </div>
+
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-left:3px solid #f97316;border-radius:.75rem;padding:1rem 1.1rem">
+      <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;color:#f97316;margin-bottom:.4rem" class="i18n" data-en="CONCERN 2 — บัตรเขย่ง: CONSTITUENCY EXCEEDS PARTY-LIST" data-th="ความกังวล 2 — บัตรเขย่ง: แบ่งเขตมากกว่าบัญชีรายชื่อ"></div>
+      <p style="font-size:.85rem;line-height:1.55;color:#cbd5e1;margin:0" class="i18n"
+        data-en="Each voter gets exactly 2 ballots, so constituency and party-list totals per district should be near equal. In 176 of 382 districts, constituency votes exceed party-list — the &ldquo;บัตรเขย่ง&rdquo; direction. This is the more anomalous direction: it implies party-list ballots in those districts were missing or uncounted at a higher rate. The analysis examines who wins and who loses in districts where this anomaly is largest."
+        data-th="ผู้ลงคะแนนแต่ละคนได้รับบัตร 2 ใบ ดังนั้นผลรวมทั้งสองประเภทในแต่ละเขตควรใกล้เคียงกัน แต่ใน 176 จาก 382 เขต คะแนนแบ่งเขตมากกว่าบัญชีรายชื่อ — นั่นคือ &ldquo;บัตรเขย่ง&rdquo; นี่คือทิศทางที่ผิดปกติกว่า เพราะหมายความว่าบัตรบัญชีรายชื่อในเขตเหล่านั้นสูญหายหรือไม่ถูกนับในอัตราที่สูงกว่า การวิเคราะห์ตรวจสอบว่าใครได้และใครเสียประโยชน์ในเขตที่ความผิดปกตินี้สูงที่สุด"></p>
     </div>
 
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-left:3px solid #f59e0b;border-radius:.75rem;padding:1rem 1.1rem">
-      <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;color:#f59e0b;margin-bottom:.4rem" class="i18n" data-en="FINDING 2 — TWO ANOMALIES, TWO DIFFERENT CONCERNS" data-th="ข้อค้นพบ 2 — สองความผิดปกติ สองประเด็นที่ต่างกัน"></div>
+      <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;color:#f59e0b;margin-bottom:.4rem" class="i18n" data-en="FINDING 1 — COMBINED IMPACT FIRST, THEN ANALYSE" data-th="ข้อค้นพบ 1 — รวมผลกระทบก่อน แล้วค่อยวิเคราะห์"></div>
       <p style="font-size:.85rem;line-height:1.55;color:#cbd5e1;margin:0" class="i18n"
-        data-en="Each voter receives exactly 2 ballots, so valid totals per district should be near 1:1. <strong>Party &gt; Constituency</strong> (206 districts) is the expected direction — constituency spoiling drives the +146k national baseline. <strong>Constituency &gt; Party-list</strong> — the &ldquo;candidate surge&rdquo; (176 districts) — is the more anomalous direction: it means party-list ballots went missing or uncounted at a higher rate in that specific district. Districts where either deviation exceeds 2% are the core of this investigation."
-        data-th="ผู้ลงคะแนนแต่ละคนได้รับบัตร 2 ใบ ดังนั้นผลรวมในแต่ละเขตควรใกล้ 1:1 <strong>บัญชีรายชื่อ &gt; แบ่งเขต</strong> (206 เขต) คือทิศทางที่คาดได้ — บัตรเสียแบ่งเขตเป็นตัวขับเคลื่อน baseline +146k ระดับชาติ <strong>แบ่งเขต &gt; บัญชีรายชื่อ</strong> — &ldquo;บัตรเขย่ง&rdquo; (176 เขต) — คือทิศทางที่ผิดปกติกว่า หมายความว่าบัตรบัญชีรายชื่อสูญหายหรือไม่ถูกนับในอัตราสูงกว่าในเขตนั้น เขตที่เบี่ยงเบนเกิน 2% ในทิศทางใดทิศทางหนึ่งคือหัวใจของการสืบสวนนี้"></p>
+        data-en="Rather than treating spoiled ballots and บัตรเขย่ง as separate filters, this analysis first computes a combined impact per district (spoiled + surge as % of constituency votes), then classifies districts by threshold. At &gt;2% combined (355 districts): ภูมิใจไทย wins 45.1%, ประชาชน runner-up 36.1%. The same pattern holds at &gt;3% and &gt;5% — and strengthens. Scroll to the threshold analysis to explore all three levels interactively."
+        data-th="แทนที่จะกรองบัตรเสียและบัตรเขย่งแยกกัน การวิเคราะห์นี้คำนวณผลกระทบรวมต่อเขตก่อน (บัตรเสีย + บัตรเขย่งเทียบกับคะแนนแบ่งเขต) แล้วจึงจัดกลุ่มตามเกณฑ์ ที่เกณฑ์ผลกระทบรวม &gt;2% (355 เขต): ภูมิใจไทยชนะ 45.1% ประชาชนอันดับ 2 ที่ 36.1% รูปแบบเดิมยังคงอยู่ที่ &gt;3% และ &gt;5% — และยิ่งเข้มข้นขึ้น เลื่อนลงไปที่การวิเคราะห์เกณฑ์เพื่อสำรวจทั้งสามระดับแบบโต้ตอบ"></p>
     </div>
 
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-left:3px solid #60a5fa;border-radius:.75rem;padding:1rem 1.1rem">
-      <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;color:#60a5fa;margin-bottom:.4rem" class="i18n" data-en="FINDING 3 — CANDIDATE SURGE: WHO BENEFITS" data-th="ข้อค้นพบ 3 — บัตรเขย่ง: ใครได้ประโยชน์"></div>
+      <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;color:#60a5fa;margin-bottom:.4rem" class="i18n" data-en="FINDING 2 — WHO WINS IN HIGH-ANOMALY DISTRICTS" data-th="ข้อค้นพบ 2 — ใครชนะในเขตที่มีความผิดปกติสูง"></div>
       <p style="font-size:.85rem;line-height:1.55;color:#cbd5e1;margin:0" class="i18n"
-        data-en="In 176 districts, constituency votes exceed party-list votes — the &ldquo;candidate surge.&rdquo; ภูมิใจไทย dominates this pattern: 108 of 176 surge districts (61%), accumulating 146,478 surplus constituency votes relative to party-list. The critical question is not who won, but whether spoiled ballots and surge combined exceed the winner&rsquo;s margin — because if they do, the declared result is mathematically unverifiable without a ballot-level audit."
-        data-th="ใน 176 เขต คะแนนแบ่งเขตเกินบัญชีรายชื่อ — นั่นคือ &ldquo;บัตรเขย่ง&rdquo; ภูมิใจไทยครองรูปแบบนี้: 108 จาก 176 เขต (61%) คิดเป็นคะแนนส่วนเกิน 146,478 คะแนน คำถามสำคัญไม่ใช่ใครชนะ แต่คือบัตรเสียและบัตรเขย่งรวมกันเกินคะแนนห่างของผู้ชนะหรือไม่ เพราะหากเกิน ผลที่ประกาศออกมาจะไม่สามารถยืนยันได้ทางคณิตศาสตร์หากไม่มีการตรวจสอบระดับบัตร"></p>
+        data-en="ภูมิใจไทย wins 108 of the 176 บัตรเขย่ง districts (61%), accumulating 146,478 surplus constituency votes above party-list. In the same districts, ประชาชน is the runner-up in 36.1–43.1% of cases across all thresholds. The concentration of both anomalies in ภูมิใจไทย-won districts is consistent across every threshold tested — making this a pattern, not statistical noise."
+        data-th="ภูมิใจไทยชนะ 108 จาก 176 เขตบัตรเขย่ง (61%) มีคะแนนแบ่งเขตส่วนเกิน 146,478 คะแนนเหนือบัญชีรายชื่อ ในเขตเดียวกัน ประชาชนเป็นอันดับ 2 ใน 36.1–43.1% ของกรณีในทุกเกณฑ์ การกระจุกตัวของความผิดปกติทั้งสองในเขตที่ภูมิใจไทยชนะมีความสม่ำเสมอในทุกเกณฑ์ที่ทดสอบ — นี่คือรูปแบบ ไม่ใช่สัญญาณรบกวน"></p>
     </div>
 
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-left:3px solid #a78bfa;border-radius:.75rem;padding:1rem 1.1rem">
-      <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;color:#a78bfa;margin-bottom:.4rem" class="i18n" data-en="FINDING 4 — WHO LOSES: THE RUNNER-UP PATTERN" data-th="ข้อค้นพบ 4 — ใครเสียประโยชน์: รูปแบบอันดับ 2"></div>
+      <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;color:#a78bfa;margin-bottom:.4rem" class="i18n" data-en="FINDING 3 — 37 SEATS WHERE SPOILED EXCEEDS THE MARGIN" data-th="ข้อค้นพบ 3 — 37 เขตที่บัตรเสียเกินคะแนนห่าง"></div>
       <p style="font-size:.85rem;line-height:1.55;color:#cbd5e1;margin:0" class="i18n"
-        data-en="Combined ballot loss (spoiled + surge) per district computed first, then analysed at three thresholds. &gt;2% (n=355): ภูมิใจไทย wins 160 (45.1%), ประชาชน runner-up 128 (36.1%). &gt;3% (n=295): ภูมิใจไทย wins 145 (49.2%), ประชาชน runner-up 122 (41.4%). &gt;5% (n=153): ภูมิใจไทย wins 72 (47.1%), ประชาชน runner-up 66 (43.1%). Signal strengthens at every higher threshold — not noise."
-        data-th="คำนวณผลกระทบรวม (บัตรเสีย + บัตรเขย่ง) ต่อเขตก่อน แล้ววิเคราะห์ที่สามเกณฑ์ &gt;2% (n=355): ภูมิใจไทยชนะ 160 (45.1%) ประชาชนอันดับ 2 128 (36.1%) &gt;3% (n=295): ภูมิใจไทยชนะ 145 (49.2%) ประชาชนอันดับ 2 122 (41.4%) &gt;5% (n=153): ภูมิใจไทยชนะ 72 (47.1%) ประชาชนอันดับ 2 66 (43.1%) สัญญาณแข็งขึ้นทุกเกณฑ์ — ไม่ใช่สัญญาณรบกวน"></p>
-    </div>
-
-    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-left:3px solid #f43f5e;border-radius:.75rem;padding:1rem 1.1rem">
-      <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;color:#f43f5e;margin-bottom:.4rem" class="i18n" data-en="FINDING 5 — 37 OUTCOME-DETERMINATIVE SEATS" data-th="ข้อค้นพบ 5 — 37 เขตที่อาจพลิกผล"></div>
-      <p style="font-size:.85rem;line-height:1.55;color:#cbd5e1;margin:0" class="i18n"
-        data-en="In 37 districts, spoiled constituency ballots alone outnumber the winner&rsquo;s margin: นราธิวาส เขต 3 (won by 266, spoiled 2,416), ศรีสะเกษ เขต 6 (won by 273, spoiled 3,411), นครราชสีมา เขต 3 (won by 299, spoiled 3,626). When 1:1 deviation is added, 68 seats are in question. These are the specific districts where a full ballot-level audit would directly determine whether the results should stand."
-        data-th="ใน 37 เขต บัตรเสียแบ่งเขตอย่างเดียวมากกว่าคะแนนห่างของผู้ชนะ: นราธิวาส เขต 3 (ชนะ 266 คะแนน บัตรเสีย 2,416 ใบ), ศรีสะเกษ เขต 6 (ชนะ 273 บัตรเสีย 3,411), นครราชสีมา เขต 3 (ชนะ 299 บัตรเสีย 3,626) เมื่อรวมความเบี่ยงเบน 1:1 จำนวนเขตที่ตั้งคำถามได้ขยายเป็น 68 เขต เหล่านี้คือเขตเฉพาะที่การตรวจสอบข้อมูลระดับบัตรจะกำหนดโดยตรงว่าผลที่ประกาศควรยืนหรือไม่"></p>
+        data-en="In 37 districts, spoiled constituency ballots alone outnumber the winner&rsquo;s margin — for example นราธิวาส เขต 3 (won by 266 votes, 2,416 spoiled) and ศรีสะเกษ เขต 6 (won by 273, spoiled 3,411). Adding บัตรเขย่ง deviation brings the total to 68 contested seats. In these specific districts, the declared result cannot be verified without a full ballot-level data release from the ECT."
+        data-th="ใน 37 เขต จำนวนบัตรเสียแบ่งเขตมากกว่าคะแนนห่างของผู้ชนะ เช่น นราธิวาส เขต 3 (ชนะ 266 คะแนน บัตรเสีย 2,416 ใบ) และ ศรีสะเกษ เขต 6 (ชนะ 273 บัตรเสีย 3,411) เมื่อรวมความเบี่ยงเบนบัตรเขย่ง จำนวนเขตที่มีข้อสงสัยเพิ่มเป็น 68 เขต ในเขตเหล่านี้ ผลที่ประกาศไม่สามารถยืนยันได้หากไม่มีการเปิดเผยข้อมูลระดับบัตรจาก กกต."></p>
     </div>
 
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-left:3px solid #34d399;border-radius:.75rem;padding:1rem 1.1rem">
       <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;color:#34d399;margin-bottom:.4rem" class="i18n" data-en="LEGAL STATUS — ACTIVE PROCEEDINGS" data-th="สถานะทางกฎหมาย — กระบวนการที่ยังดำเนินอยู่"></div>
       <p style="font-size:.85rem;line-height:1.55;color:#cbd5e1;margin:0" class="i18n"
-        data-en="Administrative Court case 304/2569 was filed Feb 13–14; the Ombudsman issued a formal 7-day demand letter to the ECT on Feb 16 and has a 60-day window to decide on Constitutional Court referral. 36 civil society organizations, 200+ academics, and international monitor ANFREL have issued formal accountability demands — and all of them are examining the same official ECT data used throughout this dashboard."
-        data-th="คดีศาลปกครองที่ 304/2569 ยื่นฟ้องเมื่อ 13–14 ก.พ. ผู้ตรวจการแผ่นดินมีหนังสือทางการให้ กกต. ชี้แจงภายใน 7 วันเมื่อ 16 ก.พ. และมีเวลา 60 วันในการพิจารณาส่งเรื่องต่อศาลรัฐธรรมนูญ องค์กรภาคประชาสังคม 36 แห่ง นักวิชาการกว่า 200 คน และ ANFREL องค์กรติดตามการเลือกตั้งระดับสากล ต่างออกแถลงการณ์เรียกร้องความรับผิดชอบ — และทุกฝ่ายกำลังพิจารณาข้อมูล กกต. อย่างเป็นทางการชุดเดียวกับที่ใช้ในรายงานนี้"></p>
+        data-en="The statistical anomalies above are at the core of active legal proceedings. Administrative Court case 304/2569 (filed Feb 13–14) and 28+ Ombudsman petitions all cite the same ballot irregularities this data captures. The Ombudsman has a 60-day window to decide on Constitutional Court referral — the same ECT figures used throughout this dashboard are the evidence being argued."
+        data-th="ความผิดปกติทางสถิติข้างต้นอยู่ที่แกนกลางของกระบวนการทางกฎหมายที่ยังดำเนินอยู่ คดีศาลปกครองที่ 304/2569 (ยื่นฟ้อง 13–14 ก.พ.) และคำร้องต่อผู้ตรวจการแผ่นดินกว่า 28 ฉบับ ต่างอ้างถึงความผิดปกติของบัตรเดียวกันกับที่ข้อมูลนี้บันทึกไว้ ผู้ตรวจการแผ่นดินมีเวลา 60 วันในการตัดสินใจส่งเรื่องต่อศาลรัฐธรรมนูญ — ตัวเลข กกต. ที่ใช้ตลอดรายงานนี้คือหลักฐานที่กำลังถูกถกเถียงอยู่"></p>
     </div>
 
   </div>
 
   <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:.75rem;padding:.9rem 1.2rem;font-size:.82rem;line-height:1.6;color:#fbbf24" class="i18n"
-    data-en="⚠ This investigation uses official ECT data only and does not allege fraud. It asks one question: when spoiled ballots and 1:1 deviation combined exceed the win margin in a district, could the declared result have differed — and only a full ballot-level data release by the ECT can answer it."
-    data-th="⚠ การสืบสวนนี้ใช้เฉพาะข้อมูล กกต. อย่างเป็นทางการและไม่ได้กล่าวหาว่ามีการทุจริต แต่ถามคำถามเดียว: เมื่อบัตรเสียและความเบี่ยงเบน 1:1 รวมกันเกินคะแนนห่างในเขตหนึ่ง ผลที่ประกาศอาจต่างออกไปได้หรือไม่ — และมีเพียงการเปิดเผยข้อมูลระดับบัตรของ กกต. เท่านั้นที่จะตอบได้"></div>
+    data-en="⚠ This report uses official ECT data only and makes no allegation of fraud. Its purpose is to quantify two observable anomalies — abnormally high spoiled ballots and บัตรเขย่ง — and determine which specific districts they affect enough to make the declared result statistically unverifiable without a ballot-level audit."
+    data-th="⚠ รายงานนี้ใช้เฉพาะข้อมูล กกต. อย่างเป็นทางการและไม่ได้กล่าวหาว่ามีการทุจริต จุดประสงค์คือการวัดความผิดปกติที่มองเห็นได้สองประการ — บัตรเสียสูงผิดปกติและบัตรเขย่ง — และระบุว่าเขตใดได้รับผลกระทบมากพอจนทำให้ผลที่ประกาศไม่สามารถยืนยันได้ทางสถิติหากไม่มีการตรวจสอบระดับบัตร"></div>
 </div>
 
 <!-- CONTEXT -->
@@ -263,8 +267,8 @@ padding:.9rem 1.1rem;margin-top:1rem;font-size:.8rem;color:var(--d);line-height:
   <div class="alert-badge"><span class="dot"></span> <span class="i18n" data-en="ACTIVE INVESTIGATION — Feb 8, 2026 Election" data-th="สืบสวนต่อเนื่อง — เลือกตั้ง 8 ก.พ. 2569"></span></div>
   <h1 class="report-title i18n" data-en="Active Legal&#10;Investigation" data-th="กระบวนการทางกฎหมาย&#10;ที่ยังดำเนินอยู่"></h1>
   <p class="report-subtitle i18n"
-    data-en="Thailand&rsquo;s February 8, 2026 general election produced four compounding controversies within days of polling: QR-coded ballots raising secrecy concerns, ballot count mismatches at individual polling stations, a national 1:1 ratio anomaly across 382 districts, and a wave of annulment petitions now in active legal proceedings. The four cards below trace the timeline; the data analysis that follows quantifies what the official ECT figures actually show."
-    data-th="การเลือกตั้งทั่วไปของไทยเมื่อ 8 กุมภาพันธ์ 2569 ก่อให้เกิดข้อกังวลสี่ประการที่ซ้อนทับกันภายในไม่กี่วัน ได้แก่ บัตรเลือกตั้งที่มี QR Code ทำให้เกิดคำถามด้านความลับ จำนวนบัตรที่ไม่ตรงกันในแต่ละหน่วยเลือกตั้ง ความผิดปกติของอัตราส่วน 1:1 ใน 382 เขตทั่วประเทศ และคำร้องขอเพิกถอนที่กำลังอยู่ระหว่างกระบวนการทางกฎหมาย การ์ดสี่ใบด้านล่างบันทึกลำดับเหตุการณ์ และการวิเคราะห์ข้อมูลถัดจากนั้นแสดงให้เห็นว่าตัวเลขจาก กกต. อย่างเป็นทางการบอกอะไรเรา">
+    data-en="The statistical anomalies in the data — high spoiled ballots and บัตรเขย่ง — did not emerge in a vacuum. They appeared alongside four public controversies that erupted within days of polling. Understanding the controversies explains why the data looks the way it does: QR-coded ballots may have driven deliberate spoiling; count mismatches explain the raw devations; the 1:1 ratio breakdown is exactly what the analysis measures; and the legal petitions are the formal consequence. The cards below trace the timeline. The data sections that follow show the numbers."
+    data-th="ความผิดปกติทางสถิติในข้อมูล — บัตรเสียสูงและบัตรเขย่ง — ไม่ได้เกิดขึ้นในสุญญากาศ แต่ปรากฏขึ้นพร้อมกับข้อถกเถียงสาธารณะสี่ประการที่ปะทุขึ้นภายในไม่กี่วันหลังการเลือกตั้ง การเข้าใจข้อถกเถียงเหล่านี้ช่วยอธิบายว่าทำไมข้อมูลจึงมีลักษณะเช่นนี้: QR Code อาจกระตุ้นให้ผู้ลงคะแนนทำบัตรเสียโดยตั้งใจ ความไม่ตรงกันของยอดบัตรอธิบายความเบี่ยงเบนที่วัดได้ การพัง 1:1 คือสิ่งที่การวิเคราะห์วัดโดยตรง และคำร้องทางกฎหมายคือผลทางการที่ตามมา การ์ดด้านล่างบันทึกลำดับเหตุการณ์ และส่วนข้อมูลที่ตามมาแสดงตัวเลข">
   </p>
   <div class="news-grid">
     <div class="news-card">
