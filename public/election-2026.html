@@ -805,15 +805,21 @@ padding:.9rem 1.1rem;margin-top:1rem;font-size:.8rem;color:var(--d);line-height:
   <!-- Chart + Table -->
   <div class="g2" style="margin-bottom:1.25rem">
     <div class="card ca cor">
-      <div class="kpi-t i18n" style="margin-bottom:.75rem"
-        data-en="Contested Seats by Party (Spoiled &gt; Margin)"
-        data-th="เขตที่อาจพลิกผล รายพรรค (บัตรเสีย &gt; คะแนนห่าง)"></div>
+      <div class="kpi-t i18n" style="margin-bottom:.5rem"
+        data-en="How many at-risk seats does each party hold?"
+        data-th="แต่ละพรรคถือครองกี่เขตที่เสี่ยงพลิกผล?"></div>
+      <div style="font-size:.75rem;color:#64748b;margin-bottom:.75rem"
+        class="i18n" data-en="(seats where spoiled ballots outnumber the win margin)"
+        data-th="(เขตที่บัตรเสียมากกว่าคะแนนที่ชนะ)"></div>
       <div id="chart-contested-party" class="chart"></div>
     </div>
     <div class="card ca crd">
-      <div class="kpi-t i18n" style="margin-bottom:.75rem"
-        data-en="Top 10 Most At-Risk Seats (Spoiled − Margin excess)"
-        data-th="10 เขตที่เสี่ยงสูงสุด (บัตรเสีย − คะแนนห่าง)"></div>
+      <div class="kpi-t i18n" style="margin-bottom:.5rem"
+        data-en="Top 10 Most Vulnerable Seats — Win Margin vs Total Spoiled"
+        data-th="10 เขตเสี่ยงสูงสุด — คะแนนห่าง vs บัตรเสียทั้งหมด"></div>
+      <div style="font-size:.75rem;color:#64748b;margin-bottom:.75rem"
+        class="i18n" data-en="🟢 Green = votes separating winner from runner-up &nbsp;|&nbsp; 🔴 Red = total spoiled ballots &nbsp;|&nbsp; (×) = how many times spoiled exceeds the margin"
+        data-th="🟢 เขียว = คะแนนที่ชนะ &nbsp;|&nbsp; 🔴 แดง = บัตรเสียทั้งหมด &nbsp;|&nbsp; (×) = บัตรเสียมากกว่าคะแนนห่างกี่เท่า"></div>
       <div id="chart-contested-gap" class="chart"></div>
     </div>
   </div>
@@ -1355,58 +1361,158 @@ function renderContested() {
         .filter(r => r._excessSpoiled > 0)
         .sort((a,b) => b._excessSpoiled - a._excessSpoiled);
 
-    // ── Chart 1: at-risk seats by winning party ──
+    // ── Chart 1: at-risk seats by winning party — horizontal bars, colour = party ──
     const partyCnt = {};
-    atRisk.forEach(r => { const p = r.winner_party||'อื่นๆ'; partyCnt[p] = (partyCnt[p]||0)+1; });
-    const partyEntries = Object.entries(partyCnt).sort((a,b)=>b[1]-a[1]);
+    const partyWorstExcess = {};
+    atRisk.forEach(r => {
+        const p = r.winner_party||'อื่นๆ';
+        partyCnt[p] = (partyCnt[p]||0)+1;
+        partyWorstExcess[p] = Math.max(partyWorstExcess[p]||0, r._excessSpoiled);
+    });
+    const partyEntries = Object.entries(partyCnt).sort((a,b)=>a[1]-b[1]); // ascending → longest bar at top
 
     const ec1 = echarts.init(document.getElementById('chart-contested-party'));
     ec1.setOption({
         backgroundColor:'transparent',
-        tooltip:{ trigger:'axis', backgroundColor:'#111827', textStyle:{color:'#f1f5f9'} },
-        grid:{ left:'2%', right:'8%', bottom:'3%', top:'6%', containLabel:true },
-        xAxis:{ type:'value', axisLabel:{color:'#64748b'}, splitLine:{lineStyle:{color:'rgba(255,255,255,.04)'}} },
-        yAxis:{ type:'category', data:partyEntries.map(e=>e[0]), axisLabel:{color:'#e2e8f0', fontSize:11} },
-        series:[{ type:'bar', data:partyEntries.map(e=>({
-            value:e[1], itemStyle:{ color:colorFor(e[0]), borderRadius:[0,4,4,0] }
-        })), label:{show:true,position:'right',color:'#94a3b8',fontSize:11,formatter:p=>p.value} }]
+        tooltip:{
+            trigger:'axis',
+            backgroundColor:'#111827',
+            borderColor:'#334155',
+            textStyle:{color:'#f1f5f9'},
+            formatter: params => {
+                const party = params[0].name;
+                const cnt   = params[0].value;
+                const worst = fmt(partyWorstExcess[party]||0);
+                return `<b style="color:${colorFor(party)}">${esc(party)}</b><br/>` +
+                    `${t('At-risk seats','เขตเสี่ยง')}: <b>${cnt}</b><br/>` +
+                    `${t('Worst excess','ส่วนเกินสูงสุด')}: <b style="color:#f43f5e">+${worst}</b> ${t('votes','คะแนน')}`;
+            }
+        },
+        grid:{ left:'1%', right:'12%', bottom:'4%', top:'4%', containLabel:true },
+        xAxis:{
+            type:'value',
+            axisLabel:{color:'#475569', fontSize:10},
+            splitLine:{lineStyle:{color:'rgba(255,255,255,.05)'}},
+            minInterval:1
+        },
+        yAxis:{
+            type:'category',
+            data: partyEntries.map(e=>e[0]),
+            axisLabel:{
+                color:'#e2e8f0',
+                fontSize:11,
+                fontWeight:'bold',
+                formatter: v => v,
+                rich:{}
+            }
+        },
+        series:[{
+            type:'bar',
+            barMaxWidth:22,
+            data: partyEntries.map(e=>({
+                value: e[1],
+                itemStyle:{ color:colorFor(e[0]), borderRadius:[0,5,5,0] }
+            })),
+            label:{
+                show:true,
+                position:'right',
+                fontSize:12,
+                fontWeight:'bold',
+                color:'#f1f5f9',
+                formatter: p => `${p.value} ${t('seats','เขต')}`
+            }
+        }]
     });
     window.addEventListener('resize', ()=>ec1.resize());
 
-    // ── Chart 2: top 10 — stacked margin vs spoiled excess ──
+    // ── Chart 2: top 10 — GROUPED bars: Win Margin (green) vs Total Spoiled (red) ──
+    // Much clearer than stacked: you immediately see spoiled bar towering over margin bar
     const top10 = atRisk.slice(0,10);
+    const labels = top10.map(r=>`${r.province}\nเขต ${r.district}`);
+
     const ec2 = echarts.init(document.getElementById('chart-contested-gap'));
     ec2.setOption({
         backgroundColor:'transparent',
-        tooltip:{ trigger:'item', backgroundColor:'#111827', textStyle:{color:'#f1f5f9'},
-            formatter: p => {
-                const r = top10[p.dataIndex];
-                const spoiledPct = (r._spoiledRate*100).toFixed(1);
-                const surgeTag  = r._isSurge ? `🔼 ${t('Candidate Surge','บัตรเขย่ง')}: +${fmt(r._surgeAmt)}` : '';
+        tooltip:{
+            trigger:'axis',
+            axisPointer:{type:'shadow'},
+            backgroundColor:'#111827',
+            borderColor:'#334155',
+            textStyle:{color:'#f1f5f9', fontSize:11},
+            formatter: params => {
+                const idx = params[0].dataIndex;
+                const r   = top10[idx];
+                const pct = (r._spoiledRate*100).toFixed(1);
+                const ratio = (r._spoiled / r.margin_votes).toFixed(1);
+                const surgeTag = r._isSurge
+                    ? `<br/>🔼 ${t('Candidate Surge','บัตรเขย่ง')}: <b style="color:#fbbf24">+${fmt(r._surgeAmt)}</b>`
+                    : '';
                 return `<b>${esc(r.province)} เขต ${esc(r.district)}</b><br/>` +
-                    `${t('Winner','ผู้ชนะ')}: <span style="color:${colorFor(r.winner_party)}">${esc(r.winner_name||'—')}</span> (${esc(r.winner_party||'—')})<br/>` +
-                    `${t('Runner-Up','อันดับ 2')}: <span style="color:${colorFor(r.runner_up_party)}">${esc(r.runner_up_name||'—')}</span> (${esc(r.runner_up_party||'—')})<br/>` +
-                    `${t('Margin','คะแนนห่าง')}: <b style="color:#22c55e">${fmt(r.margin_votes)}</b><br/>` +
-                    `${t('Spoiled','บัตรเสีย')}: <b style="color:#f43f5e">${fmt(r._spoiled)}</b> (${spoiledPct}%)<br/>` +
-                    `${t('Excess','ส่วนเกิน')}: <b style="color:#f43f5e">+${fmt(r._excessSpoiled)}</b><br/>` +
-                    (surgeTag ? surgeTag : '');
+                    `<span style="color:${colorFor(r.winner_party)}">■</span> ${esc(r.winner_name||'—')} <span style="color:#64748b">(${esc(r.winner_party||'—')})</span><br/>` +
+                    `<span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#22c55e;margin-right:4px"></span>${t('Win Margin','คะแนนห่าง')}: <b style="color:#22c55e">${fmt(r.margin_votes)}</b><br/>` +
+                    `<span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#f43f5e;margin-right:4px"></span>${t('Total Spoiled','บัตรเสียทั้งหมด')}: <b style="color:#f43f5e">${fmt(r._spoiled)}</b> (${pct}%)<br/>` +
+                    `⚠️ ${t('Spoiled is','บัตรเสียมาก')} <b style="color:#fbbf24">${ratio}×</b> ${t('the win margin','เท่าของคะแนนห่าง')}` +
+                    surgeTag;
             }
         },
-        grid:{ left:'2%', right:'4%', bottom:'16%', top:'6%', containLabel:true },
-        xAxis:{ type:'category',
-            data: top10.map(r=>`${r.province} ${r.district}`),
-            axisLabel:{ color:'#64748b', fontSize:8.5, rotate:38, interval:0 }
+        legend:{
+            bottom:0,
+            itemWidth:12,
+            itemHeight:12,
+            textStyle:{color:'#94a3b8', fontSize:10},
+            data:[
+                { name:t('Win Margin','คะแนนห่าง (คะแนนที่ชนะ)'), icon:'roundRect', itemStyle:{color:'#22c55e'} },
+                { name:t('Total Spoiled Ballots','บัตรเสียทั้งหมด'), icon:'roundRect', itemStyle:{color:'#f43f5e'} }
+            ]
         },
-        yAxis:{ type:'value', axisLabel:{color:'#64748b', formatter:v=>fmt(v)}, splitLine:{lineStyle:{color:'rgba(255,255,255,.04)'}} },
+        grid:{ left:'1%', right:'3%', bottom:'22%', top:'8%', containLabel:true },
+        xAxis:{
+            type:'category',
+            data: top10.map(r=>`${r.province} เขต ${r.district}`),
+            axisLabel:{ color:'#64748b', fontSize:8, rotate:40, interval:0 }
+        },
+        yAxis:{
+            type:'value',
+            name: t('Votes','คะแนน'),
+            nameTextStyle:{color:'#475569', fontSize:9},
+            axisLabel:{color:'#475569', fontSize:9, formatter:v=>fmt(v)},
+            splitLine:{lineStyle:{color:'rgba(255,255,255,.05)'}}
+        },
         series:[
-            { name:t('Win Margin','คะแนนห่าง'), type:'bar', stack:'a',
-              data:top10.map(r=>({ value:r.margin_votes, itemStyle:{color:'#22c55e'} })),
-              label:{show:false} },
-            { name:t('Spoiled > Margin','บัตรเสียเกิน'), type:'bar', stack:'a',
-              data:top10.map(r=>({ value:r._excessSpoiled, itemStyle:{color:colorFor(r.winner_party), opacity:0.85, borderRadius:[4,4,0,0]} })),
-              label:{show:true,position:'top',color:'#94a3b8',fontSize:8.5,formatter:p=>`+${fmt(p.value)}`} }
-        ],
-        legend:{ bottom:0, textStyle:{color:'#94a3b8',fontSize:10} }
+            {
+                name: t('Win Margin','คะแนนห่าง (คะแนนที่ชนะ)'),
+                type:'bar',
+                barGap:'10%',
+                barMaxWidth:28,
+                data: top10.map(r=>({
+                    value: r.margin_votes,
+                    itemStyle:{ color:'#22c55e', borderRadius:[4,4,0,0] }
+                })),
+                label:{
+                    show:true, position:'top',
+                    color:'#86efac', fontSize:8, fontWeight:700,
+                    formatter: p => fmt(p.value)
+                }
+            },
+            {
+                name: t('Total Spoiled Ballots','บัตรเสียทั้งหมด'),
+                type:'bar',
+                barMaxWidth:28,
+                data: top10.map(r=>({
+                    value: r._spoiled,
+                    itemStyle:{ color:'#f43f5e', borderRadius:[4,4,0,0], opacity:0.9 }
+                })),
+                label:{
+                    show:true, position:'top',
+                    color:'#fca5a5', fontSize:8, fontWeight:700,
+                    formatter: p => {
+                        const r = top10[p.dataIndex];
+                        const mult = (r._spoiled / r.margin_votes).toFixed(1);
+                        return `${fmt(p.value)}\n(${mult}×)`;
+                    }
+                }
+            }
+        ]
     });
     window.addEventListener('resize', ()=>ec2.resize());
 
