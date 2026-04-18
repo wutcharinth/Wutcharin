@@ -49,34 +49,54 @@ export default function SplitText({
         if (!ref.current || prefersReduced) return;
         const el = ref.current;
         const targets = el.querySelectorAll<HTMLElement>('[data-split-token]');
+        if (targets.length === 0) return;
 
         const ctx = gsap.context(() => {
-            gsap.set(targets, { yPercent: 110, opacity: 0 });
-
-            const to = {
-                yPercent: 0,
-                opacity: 1,
-                duration,
-                delay,
-                ease: 'expo.out',
-                stagger,
-            };
-
-            if (trigger === 'load') {
-                gsap.to(targets, to);
-            } else {
-                gsap.to(targets, {
-                    ...to,
-                    scrollTrigger: {
-                        trigger: el,
-                        start,
-                        toggleActions: once ? 'play none none none' : 'play reverse play reverse',
-                    },
-                });
-            }
+            gsap.set(targets, { yPercent: 40, opacity: 0 });
         }, el);
 
-        return () => ctx.revert();
+        const to = {
+            yPercent: 0,
+            opacity: 1,
+            duration,
+            delay,
+            ease: 'expo.out',
+            stagger,
+        };
+
+        let played = false;
+        const play = () => {
+            if (played) return;
+            played = true;
+            gsap.to(targets, to);
+        };
+
+        if (trigger === 'load') {
+            play();
+            return () => ctx.revert();
+        }
+
+        const io = new IntersectionObserver(
+            (entries) => {
+                for (const e of entries) {
+                    if (e.isIntersecting) {
+                        play();
+                        if (once) io.disconnect();
+                    } else if (!once && played) {
+                        // Reset for replay
+                        played = false;
+                        gsap.set(targets, { yPercent: 40, opacity: 0 });
+                    }
+                }
+            },
+            { rootMargin: '0px 0px -10% 0px', threshold: 0.1 }
+        );
+        io.observe(el);
+
+        return () => {
+            io.disconnect();
+            ctx.revert();
+        };
     }, [prefersReduced, mode, stagger, duration, delay, trigger, start, once]);
 
     return React.createElement(
@@ -89,12 +109,11 @@ export default function SplitText({
             return (
                 <span
                     key={t.key}
+                    data-split-token
                     aria-hidden="true"
-                    style={{ display: 'inline-block', overflow: 'hidden', verticalAlign: 'top' }}
+                    style={{ display: 'inline-block', willChange: 'transform, opacity' }}
                 >
-                    <span data-split-token style={{ display: 'inline-block', willChange: 'transform, opacity' }}>
-                        {t.char}
-                    </span>
+                    {t.char}
                 </span>
             );
         })
