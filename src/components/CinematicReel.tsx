@@ -255,7 +255,66 @@ function S3() {
     );
 }
 
-// Scene 4 — Interactive Lecture Insights (NEW) ────────────────────────────────
+// Scene 4 — Analytics & Business Strategy ────────────────────────────────────
+const STRAT_CAPS = [
+    {
+        title: 'Strategic AI Advisory',
+        sub: 'Roadmaps · Digital transformation · Board-level alignment',
+        color: '#22d3ee',
+        icon: '◈',
+    },
+    {
+        title: 'Business Intelligence',
+        sub: 'Dashboards · KPIs · Executive reporting · Decision pipelines',
+        color: '#34d399',
+        icon: '◉',
+    },
+    {
+        title: 'Predictive Analytics',
+        sub: 'Forecasting · Pattern recognition · Data-driven risk modeling',
+        color: '#38bdf8',
+        icon: '◐',
+    },
+    {
+        title: 'Organisational AI',
+        sub: 'Team upskilling · AI literacy · Process redesign · Culture shift',
+        color: '#a3e635',
+        icon: '◍',
+    },
+];
+
+function SStrat() {
+    return (
+        <motion.div variants={stg} initial="hidden" animate="show" exit="exit"
+            className="flex flex-col items-center gap-5 text-center w-full max-w-2xl">
+            <motion.div variants={itm}><Pill color="#22d3ee">Analytics · BI · Business Strategy</Pill></motion.div>
+            <motion.div variants={itm}
+                className="text-[clamp(1.9rem,5.5vw,3.6rem)] font-black leading-tight tracking-tight">
+                <span style={{ background: 'linear-gradient(135deg,#f1f5f9 20%,#22d3ee 55%,#34d399 100%)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>
+                    AI meets<br />business reality.
+                </span>
+            </motion.div>
+            <motion.p variants={itm} className="text-slate-500 text-sm max-w-md leading-relaxed">
+                The technical side only matters when it moves the business forward — strategy, intelligence, and execution together.
+            </motion.p>
+            <motion.div variants={stg} className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full text-left">
+                {STRAT_CAPS.map(c => (
+                    <motion.div key={c.title} variants={itm}
+                        className="flex items-start gap-3 rounded-xl border px-4 py-3.5"
+                        style={{ background: `${c.color}07`, borderColor: `${c.color}22` }}>
+                        <span className="text-lg leading-none flex-shrink-0 mt-0.5" style={{ color: c.color }}>{c.icon}</span>
+                        <div>
+                            <div className="text-sm font-semibold mb-0.5" style={{ color: c.color }}>{c.title}</div>
+                            <div className="text-[10px] text-slate-500 font-mono leading-relaxed">{c.sub}</div>
+                        </div>
+                    </motion.div>
+                ))}
+            </motion.div>
+        </motion.div>
+    );
+}
+
+// Scene 5 — Interactive Lecture Insights ──────────────────────────────────────
 const INSIGHTS = [
     { title: 'Karpathy LLM Guide', sub: 'Token visualizers · Model ELO', color: '#818cf8', icon: '🧠' },
     { title: 'Agentic AI Deep Dive', sub: 'Stanford CS230 · HyDE · ReAct', color: '#a78bfa', icon: '🤖' },
@@ -383,9 +442,10 @@ const SCENES = [
     { id: 1, dur: 4800 },   // AI Agents
     { id: 2, dur: 4400 },   // Data Stories
     { id: 3, dur: 4000 },   // Expertise
-    { id: 4, dur: 4500 },   // Interactive Insights (new)
-    { id: 5, dur: 4500 },   // Impact at Scale (new)
-    { id: 6, dur: 6000 },   // CTA
+    { id: 4, dur: 4200 },   // Analytics & Business Strategy
+    { id: 5, dur: 4500 },   // Interactive Insights
+    { id: 6, dur: 4500 },   // Impact
+    { id: 7, dur: 6000 },   // CTA
 ];
 const TOTAL = SCENES.reduce((s, sc) => s + sc.dur, 0);
 
@@ -461,9 +521,10 @@ export default function CinematicReel() {
                     {scene === 1 && <motion.div key="s1" className="w-full flex justify-center" variants={up} initial="hidden" animate="show" exit="exit"><S1 /></motion.div>}
                     {scene === 2 && <motion.div key="s2" className="w-full flex justify-center" variants={up} initial="hidden" animate="show" exit="exit"><S2 /></motion.div>}
                     {scene === 3 && <motion.div key="s3" className="w-full flex justify-center" variants={up} initial="hidden" animate="show" exit="exit"><S3 /></motion.div>}
-                    {scene === 4 && <motion.div key="s4" className="w-full flex justify-center" variants={up} initial="hidden" animate="show" exit="exit"><S4 /></motion.div>}
-                    {scene === 5 && <motion.div key="s5" className="w-full flex justify-center" variants={up} initial="hidden" animate="show" exit="exit"><S5 /></motion.div>}
-                    {(scene === 6 || skipped) && <motion.div key="s6" className="w-full flex justify-center" variants={up} initial="hidden" animate="show" exit="exit"><S6 onSkip={skip} /></motion.div>}
+                    {scene === 4 && <motion.div key="s4" className="w-full flex justify-center" variants={up} initial="hidden" animate="show" exit="exit"><SStrat /></motion.div>}
+                    {scene === 5 && <motion.div key="s5" className="w-full flex justify-center" variants={up} initial="hidden" animate="show" exit="exit"><S4 /></motion.div>}
+                    {scene === 6 && <motion.div key="s6" className="w-full flex justify-center" variants={up} initial="hidden" animate="show" exit="exit"><S5 /></motion.div>}
+                    {(scene === 7 || skipped) && <motion.div key="s7" className="w-full flex justify-center" variants={up} initial="hidden" animate="show" exit="exit"><S6 onSkip={skip} /></motion.div>}
                 </AnimatePresence>
             </div>
 
