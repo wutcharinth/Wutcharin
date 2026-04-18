@@ -24,7 +24,7 @@ const Home = () => {
 
         return () => {
             lenis.destroy();
-        }
+        };
     }, []);
 
     return (
