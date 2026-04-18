@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
+import {
+    Brain, Bot, Lightbulb, TrendingUp, Globe, BarChart2,
+    Compass, PieChart, Activity, Users, type LucideIcon,
+} from 'lucide-react';
 
 /* ─────────────────────────────────────────────────────────────────────────────
    CinematicReel — AI-focused motion-graphic showreel.
@@ -256,31 +260,11 @@ function S3() {
 }
 
 // Scene 4 — Analytics & Business Strategy ────────────────────────────────────
-const STRAT_CAPS = [
-    {
-        title: 'Strategic AI Advisory',
-        sub: 'Roadmaps · Digital transformation · Board-level alignment',
-        color: '#22d3ee',
-        icon: '◈',
-    },
-    {
-        title: 'Business Intelligence',
-        sub: 'Dashboards · KPIs · Executive reporting · Decision pipelines',
-        color: '#34d399',
-        icon: '◉',
-    },
-    {
-        title: 'Predictive Analytics',
-        sub: 'Forecasting · Pattern recognition · Data-driven risk modeling',
-        color: '#38bdf8',
-        icon: '◐',
-    },
-    {
-        title: 'Organisational AI',
-        sub: 'Team upskilling · AI literacy · Process redesign · Culture shift',
-        color: '#a3e635',
-        icon: '◍',
-    },
+const STRAT_CAPS: { title: string; sub: string; color: string; icon: LucideIcon }[] = [
+    { title: 'Strategic AI Advisory', sub: 'Roadmaps · Digital transformation · Board-level alignment', color: '#22d3ee', icon: Compass },
+    { title: 'Business Intelligence', sub: 'Dashboards · KPIs · Executive reporting · Decision pipelines', color: '#34d399', icon: PieChart },
+    { title: 'Predictive Analytics', sub: 'Forecasting · Pattern recognition · Data-driven risk modeling', color: '#38bdf8', icon: Activity },
+    { title: 'Organisational AI', sub: 'Team upskilling · AI literacy · Process redesign · Culture shift', color: '#a3e635', icon: Users },
 ];
 
 function SStrat() {
@@ -302,7 +286,7 @@ function SStrat() {
                     <motion.div key={c.title} variants={itm}
                         className="flex items-start gap-3 rounded-xl border px-4 py-3.5"
                         style={{ background: `${c.color}07`, borderColor: `${c.color}22` }}>
-                        <span className="text-lg leading-none flex-shrink-0 mt-0.5" style={{ color: c.color }}>{c.icon}</span>
+                        <c.icon className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: c.color }} />
                         <div>
                             <div className="text-sm font-semibold mb-0.5" style={{ color: c.color }}>{c.title}</div>
                             <div className="text-[10px] text-slate-500 font-mono leading-relaxed">{c.sub}</div>
@@ -315,13 +299,13 @@ function SStrat() {
 }
 
 // Scene 5 — Interactive Lecture Insights ──────────────────────────────────────
-const INSIGHTS = [
-    { title: 'Karpathy LLM Guide', sub: 'Token visualizers · Model ELO', color: '#818cf8', icon: '🧠' },
-    { title: 'Agentic AI Deep Dive', sub: 'Stanford CS230 · HyDE · ReAct', color: '#a78bfa', icon: '🤖' },
-    { title: 'The Human Edge', sub: "Po-Shen Loh's philosophy · AI era", color: '#22d3ee', icon: '💡' },
-    { title: 'AI Evolution Stats', sub: 'Parameter explosion · Context rev.', color: '#e879f9', icon: '📈' },
-    { title: 'Future of Work', sub: 'Automation vs transformation', color: '#34d399', icon: '🌐' },
-    { title: 'Thai Election 2566', sub: 'RAG chatbot · Data storytelling', color: '#fb923c', icon: '🗳' },
+const INSIGHTS: { title: string; sub: string; color: string; icon: LucideIcon }[] = [
+    { title: 'Karpathy LLM Guide', sub: 'Token visualizers · Model ELO', color: '#818cf8', icon: Brain },
+    { title: 'Agentic AI Deep Dive', sub: 'Stanford CS230 · HyDE · ReAct', color: '#a78bfa', icon: Bot },
+    { title: 'The Human Edge', sub: "Po-Shen Loh's philosophy · AI era", color: '#22d3ee', icon: Lightbulb },
+    { title: 'AI Evolution Stats', sub: 'Parameter explosion · Context rev.', color: '#e879f9', icon: TrendingUp },
+    { title: 'Future of Work', sub: 'Automation vs transformation', color: '#34d399', icon: Globe },
+    { title: 'Thai Election 2566', sub: 'RAG chatbot · Data storytelling', color: '#fb923c', icon: BarChart2 },
 ];
 
 function S4() {
@@ -340,7 +324,7 @@ function S4() {
                     <motion.div key={ins.title} variants={itm}
                         className="flex items-start gap-2.5 border border-slate-800/70 rounded-xl px-3 py-3 text-left"
                         style={{ background: `${ins.color}08`, borderColor: `${ins.color}20` }}>
-                        <span className="text-base leading-none mt-0.5">{ins.icon}</span>
+                        <ins.icon className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: ins.color }} />
                         <div>
                             <div className="text-[11px] font-semibold leading-tight mb-0.5" style={{ color: ins.color }}>{ins.title}</div>
                             <div className="text-[9px] text-slate-600 font-mono leading-tight">{ins.sub}</div>
