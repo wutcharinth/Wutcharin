@@ -42,6 +42,17 @@
   /* Custom Utilities for Brutalism */
   --shadow-brutal: 8px 8px 0px 0px var(--shadow-color);
   --shadow-brutal-hover: 4px 4px 0px 0px var(--shadow-color);
+
+  /* Motion tokens — shared across all animated primitives */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --dur-fast: 180ms;
+  --dur-base: 320ms;
+  --dur-slow: 600ms;
+  --dur-xslow: 1100ms;
 }
 
 @layer base {
@@ -95,4 +106,82 @@
 .animate-gradient-x {
   background-size: 200% 200%;
   animation: gradient-x 15s ease infinite;
+}
+
+/* ============================================================
+   Motion foundation — shared keyframes & utilities
+   ============================================================ */
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes aurora {
+  0%, 100% { transform: translate(-10%, -10%) rotate(0deg); }
+  50% { transform: translate(10%, 10%) rotate(180deg); }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-18px) translateX(6px); }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.85); opacity: 1; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+@keyframes scramble-glitch {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-1px, 1px); }
+  40% { transform: translate(-1px, -1px); }
+  60% { transform: translate(1px, 1px); }
+  80% { transform: translate(1px, -1px); }
+}
+
+.animate-aurora {
+  animation: aurora 22s var(--ease-in-out-quart) infinite;
+}
+
+.animate-float-slow {
+  animation: float-slow 7s var(--ease-in-out-quart) infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.18) 50%, transparent 65%);
+  background-size: 200% 100%;
+  animation: shimmer 2.4s linear infinite;
+}
+
+/* Noise overlay — subtle film grain for dark backgrounds */
+.bg-noise {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.35 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+/* Custom cursor — hide native cursor when enhanced cursor is active */
+body.cursor-enhanced,
+body.cursor-enhanced * {
+  cursor: none !important;
+}
+
+/* Interactive element hint for cursor hover detection */
+.cursor-hover {
+  cursor: none;
+}
+
+/* Reduced motion — honor system preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  body.cursor-enhanced,
+  body.cursor-enhanced * {
+    cursor: auto !important;
+  }
 }

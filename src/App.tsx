@@ -15,6 +15,7 @@ import AIEvolutionPage from './pages/AIEvolutionPage';
 import AgenticAIPage from './pages/AgenticAIPage';
 import HumanEdgePage from './pages/HumanEdgePage';
 import KarpathyDeepDivePage from './pages/KarpathyDeepDivePage';
+import { CustomCursor, PageTransition } from './lib/motion';
 
 // Component to scroll to top on route change
 const ScrollToTop = () => {
@@ -27,11 +28,11 @@ const ScrollToTop = () => {
   return null;
 };
 
-function App() {
+const AnimatedRoutes = () => {
+  const location = useLocation();
   return (
-    <Router>
-      <ScrollToTop />
-      <Routes>
+    <PageTransition>
+      <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Home />} />
         <Route path="/gemini-ocr" element={<GeminiOCRPage />} />
         <Route path="/thai-election" element={<ThaiElectionPage />} />
@@ -48,6 +49,16 @@ function App() {
         <Route path="/human-edge" element={<HumanEdgePage />} />
         <Route path="/karpathy-deep-dive" element={<KarpathyDeepDivePage />} />
       </Routes>
+    </PageTransition>
+  );
+};
+
+function App() {
+  return (
+    <Router>
+      <ScrollToTop />
+      <CustomCursor />
+      <AnimatedRoutes />
     </Router>
   );
 }
