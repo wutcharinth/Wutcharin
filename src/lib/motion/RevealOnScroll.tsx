@@ -42,22 +42,44 @@ export default function RevealOnScroll({
 
         const ctx = gsap.context(() => {
             gsap.set(targets, { y, opacity: 0 });
-            gsap.to(targets, {
-                y: 0,
-                opacity: 1,
-                duration,
-                delay,
-                ease: 'expo.out',
-                stagger: staggerChildren,
-                scrollTrigger: {
-                    trigger: el,
-                    start,
-                    toggleActions: once ? 'play none none none' : 'play reverse play reverse',
-                },
-            });
         }, el);
 
-        return () => ctx.revert();
+        const to = {
+            y: 0,
+            opacity: 1,
+            duration,
+            delay,
+            ease: 'expo.out',
+            stagger: staggerChildren,
+        };
+
+        let played = false;
+        const play = () => {
+            if (played) return;
+            played = true;
+            gsap.to(targets, to);
+        };
+
+        const io = new IntersectionObserver(
+            (entries) => {
+                for (const e of entries) {
+                    if (e.isIntersecting) {
+                        play();
+                        if (once) io.disconnect();
+                    } else if (!once && played) {
+                        played = false;
+                        gsap.set(targets, { y, opacity: 0 });
+                    }
+                }
+            },
+            { rootMargin: '0px 0px -10% 0px', threshold: 0.05 }
+        );
+        io.observe(el);
+
+        return () => {
+            io.disconnect();
+            ctx.revert();
+        };
     }, [prefersReduced, staggerChildren, delay, duration, y, start, once]);
 
     return React.createElement(as, { ref, className }, children);
