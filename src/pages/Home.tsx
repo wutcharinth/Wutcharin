@@ -3,6 +3,7 @@ import Lenis from 'lenis';
 
 import Header from '../components/Header';
 import Hero from '../components/Hero';
+import CinematicReel from '../components/CinematicReel';
 import ExecutiveProfile from '../components/ExecutiveProfile';
 import Projects from '../components/Projects';
 import Experience from '../components/Experience';
@@ -44,6 +45,7 @@ const Home = () => {
 
             <main id="main-content">
                 <Hero />
+                <CinematicReel />
                 <ExecutiveProfile />
 
                 <SkillsMarquee />
