@@ -2,13 +2,18 @@ import { motion } from 'framer-motion';
 import { ParliamentGrid } from '../components/ParliamentGrid';
 import { ElectionInsights } from '../components/ElectionInsights';
 import { SeatDecompositionTree } from '../components/SeatDecompositionTree';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { ArrowLeft, Map as MapIcon, BarChart2, Users } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import electionDataRaw from '../data/election-2023.json';
 import SEO from '../components/SEO';
 import ThaiElectionChatbot from '../components/ThaiElectionChatbot';
 import ProjectNavigation from '../components/ProjectNavigation';
+import SubPageShell from '../components/shared/SubPageShell';
+import SubPageHero from '../components/shared/SubPageHero';
+import { RevealOnScroll } from '../lib/motion';
+
+const ACCENT = '#F47524';
+const ACCENT2 = '#E30613';
 
 // Type Definitions
 interface PartyStats {
@@ -84,7 +89,6 @@ const electionData = electionDataRaw as ElectionData;
 export default function ThaiElectionPage() {
     const [selectedProvince, setSelectedProvince] = useState<ProvinceData | null>(null);
     const [selectedDistrict, setSelectedDistrict] = useState<District | null>(null);
-    const containerRef = useRef(null);
 
     // Group provinces by region
     const regions = [
@@ -97,71 +101,43 @@ export default function ThaiElectionPage() {
         ["South", electionData.provinces.filter(p => p.region === "South")],
     ] as [string, ProvinceData[]][];
 
-    console.log("Election Data Loaded:", electionData.national.parties);
-
     return (
-        <div ref={containerRef} className="min-h-screen bg-black text-white font-sans selection:bg-primary selection:text-white">
+        <SubPageShell statusLabel="Synthesizing Siam · 2023" accentColor={ACCENT}>
             <SEO
                 title="Thai Election 2023 Visualization"
                 description="Interactive visualization of the 2023 Thai General Election results, featuring AI-powered insights and granular district-level data."
                 url="https://wutcharin.com/thai-election"
                 image="/thai-election-og.png"
             />
-            {/* Navigation */}
-            <nav className="fixed top-0 left-0 right-0 z-50 p-6 flex justify-between items-center mix-blend-difference">
-                <Link to="/" className="flex items-center gap-2 text-[#F47524] font-bold uppercase tracking-widest hover:text-white transition-colors">
-                    <ArrowLeft className="w-5 h-5" /> Back to Portfolio
-                </Link>
-                <div className="text-sm font-mono text-gray-400">SYNTHESIZING SIAM // 2023</div>
-            </nav>
 
-            {/* Hero Section */}
-            <section className="relative h-screen flex items-center justify-center overflow-hidden">
-                <div className="absolute inset-0 z-0">
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black z-10"></div>
-
-                </div>
-
-                <div className="relative z-20 text-center px-4 max-w-5xl mx-auto">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
-                    >
-                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm mb-6">
-                            <BarChart2 className="w-4 h-4 text-[#F47524]" />
-                            <span className="text-sm font-medium text-gray-300 uppercase tracking-wider">Data Visualization & Storytelling Showcase</span>
-                        </div>
-
-                        <h1 className="text-7xl md:text-9xl font-black uppercase tracking-tighter mb-6 leading-none">
-                            Thai Election <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F47524] to-[#E30613]">2023</span>
-                        </h1>
-                        <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto font-light mb-10">
-                            An interactive deep dive into the historic "Orange Wave" that reshaped Thailand's political landscape.
-                        </p>
-                    </motion.div>
-                </div>
-
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 1.5, duration: 1 }}
-                    className="absolute bottom-10 left-0 right-0 flex justify-center"
-                >
-                    <div className="animate-bounce text-white/50">
-                        <Users className="w-8 h-8" />
-                    </div>
-                </motion.div>
-            </section>
+            <SubPageHero
+                badgeLabel="Data Visualization Showcase"
+                BadgeIcon={BarChart2}
+                titleLead="Thai Election"
+                titleAccent="2023."
+                accentColor={ACCENT}
+                accentColor2={ACCENT2}
+                index="05"
+                description={
+                    <>
+                        An interactive deep dive into the historic <span className="text-white font-normal">"Orange Wave"</span> that reshaped Thailand's political landscape.
+                    </>
+                }
+            />
 
             {/* Party Performance Section - Bar Chart */}
-            <section className="py-32 bg-black relative z-10">
+            <section className="py-24 bg-black relative z-10">
                 <div className="container mx-auto px-4">
                     <div className="mb-20">
-                        <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-8 flex items-center gap-4">
-                            <BarChart2 className="w-12 h-12 text-[#F47524]" />
-                            National Results
-                        </h2>
+                        <RevealOnScroll staggerChildren={0.08}>
+                            <div data-reveal-child className="flex items-center gap-3 mb-6">
+                                <BarChart2 className="w-5 h-5" style={{ color: ACCENT }} />
+                                <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-white/50">National Results</span>
+                            </div>
+                            <h2 data-reveal-child className="text-4xl md:text-6xl font-medium text-white tracking-[-0.03em] mb-12 leading-[0.95]">
+                                How Thailand voted.
+                            </h2>
+                        </RevealOnScroll>
 
                         {/* Parliament Grid Summary */}
                         <div className="mb-12">
@@ -245,16 +221,21 @@ export default function ThaiElectionPage() {
             />
 
             {/* Digital Kingdom - Grid Map */}
-            <section className="py-32 bg-black border-t border-white/10 relative">
+            <section className="py-24 bg-black border-t border-white/5 relative">
                 <div className="container mx-auto px-4">
                     <div className="flex flex-col lg:flex-row gap-12 items-start">
                         {/* Map Area */}
                         <div className="lg:w-2/3">
-                            <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-12 flex items-center gap-4">
-                                <MapIcon className="w-12 h-12 text-primary" />
-                                Digital Kingdom
-                            </h2>
-                            <p className="text-gray-400 mb-8">Explore the results by region. Each cell represents a province.</p>
+                            <RevealOnScroll staggerChildren={0.08}>
+                                <div data-reveal-child className="flex items-center gap-3 mb-6">
+                                    <MapIcon className="w-5 h-5" style={{ color: ACCENT }} />
+                                    <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-white/50">Digital Kingdom</span>
+                                </div>
+                                <h2 data-reveal-child className="text-4xl md:text-6xl font-medium text-white tracking-[-0.03em] mb-6 leading-[0.95]">
+                                    Province by province.
+                                </h2>
+                                <p data-reveal-child className="text-slate-400 font-light mb-10 max-w-xl">Explore the results by region. Each cell represents a district — click to see candidate rankings.</p>
+                            </RevealOnScroll>
 
                             <div className="space-y-12">
                                 {regions.map(([regionName, provinces]) => (
@@ -429,12 +410,12 @@ export default function ThaiElectionPage() {
             {/* AI Chatbot */}
             <ThaiElectionChatbot />
 
-            {/* --- Navigation Footer --- */}
+            {/* Project nav */}
             <ProjectNavigation currentId="thai-election" />
 
             {/* Methodology Modal */}
             <MethodologyModal />
-        </div>
+        </SubPageShell>
     );
 }
 
