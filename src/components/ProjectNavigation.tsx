@@ -1,7 +1,31 @@
+
 import { Link } from 'react-router-dom';
-import { ArrowRight, ShieldCheck, SquareKanban, StarHalf, Database, FileText, MessageSquare, TrendingUp, Briefcase, Brain } from 'lucide-react';
+import { ArrowRight, ShieldCheck, SquareKanban, StarHalf, Database, FileText, MessageSquare, TrendingUp, Briefcase, Brain, Heart, Sparkles } from 'lucide-react';
 
 const projects = [
+    // --- LECTURE INSIGHTS & DATA VISUALIZATIONS ---
+    {
+        id: 'karpathy-deep-dive',
+        title: "Karpathy LLM Guide",
+        desc: "The Probabilistic OS",
+        icon: Brain,
+        color: "text-indigo-500",
+        bg: "bg-indigo-500/10",
+        border: "border-indigo-500/20",
+        link: "/karpathy-deep-dive",
+        category: "insights"
+    },
+    {
+        id: 'human-edge',
+        title: "The Human Edge",
+        desc: "Survival in the AI Era",
+        icon: Heart,
+        color: "text-cyan-500",
+        bg: "bg-cyan-500/10",
+        border: "border-cyan-500/20",
+        link: "/human-edge",
+        category: "insights"
+    },
     {
         id: 'agentic-ai',
         title: "Agentic AI",
@@ -10,67 +34,8 @@ const projects = [
         color: "text-blue-500",
         bg: "bg-blue-500/10",
         border: "border-blue-500/20",
-        link: "/agentic-ai"
-    },
-    {
-        id: 'risk-guard',
-        title: "RiskGuard AI",
-        desc: "Internal Audit & Compliance Agent",
-        icon: ShieldCheck,
-        color: "text-rose-500",
-        bg: "bg-rose-500/10",
-        border: "border-rose-500/20",
-        link: "/risk-guard"
-    },
-    {
-        id: 'project-flow',
-        title: "ProjectFlow AI",
-        desc: "Autonomous Scrum Master Agent",
-        icon: SquareKanban,
-        color: "text-blue-500",
-        bg: "bg-blue-500/10",
-        border: "border-blue-500/20",
-        link: "/project-flow"
-    },
-    {
-        id: 'review-flow',
-        title: "ReviewFlow AI",
-        desc: "Reputation & Sentiment Engine",
-        icon: StarHalf,
-        color: "text-amber-500",
-        bg: "bg-amber-500/10",
-        border: "border-amber-500/20",
-        link: "/review-flow"
-    },
-    {
-        id: 'query-flow',
-        title: "QueryFlow AI",
-        desc: "Enterprise Data Agent",
-        icon: Database,
-        color: "text-violet-500",
-        bg: "bg-violet-500/10",
-        border: "border-violet-500/20",
-        link: "/query-flow"
-    },
-    {
-        id: 'collections',
-        title: "Collections AI",
-        desc: "Autonomous Finance Recovery Agent",
-        icon: Database,
-        color: "text-emerald-500",
-        bg: "bg-emerald-500/10",
-        border: "border-emerald-500/20",
-        link: "/collections"
-    },
-    {
-        id: 'slip-verify',
-        title: "SlipVerify AI",
-        desc: "Expense Verification Agent",
-        icon: FileText,
-        color: "text-purple-500",
-        bg: "bg-purple-500/10",
-        border: "border-purple-500/20",
-        link: "/slip-verify"
+        link: "/agentic-ai",
+        category: "insights"
     },
     {
         id: 'thai-election',
@@ -80,7 +45,8 @@ const projects = [
         color: "text-orange-500",
         bg: "bg-orange-500/10",
         border: "border-orange-500/20",
-        link: "/thai-election"
+        link: "/thai-election",
+        category: "insights"
     },
     {
         id: 'ai-evolution',
@@ -90,7 +56,8 @@ const projects = [
         color: "text-fuchsia-500",
         bg: "bg-fuchsia-500/10",
         border: "border-fuchsia-500/20",
-        link: "/ai-evolution"
+        link: "/ai-evolution",
+        category: "insights"
     },
     {
         id: 'future-of-work',
@@ -100,17 +67,76 @@ const projects = [
         color: "text-cyan-500",
         bg: "bg-cyan-500/10",
         border: "border-cyan-500/20",
-        link: "/future-of-work"
+        link: "/future-of-work",
+        category: "insights"
+    },
+
+    // --- AI AGENTS ---
+    {
+        id: 'risk-guard',
+        title: "RiskGuard AI",
+        desc: "Internal Audit & Compliance Agent",
+        icon: ShieldCheck,
+        color: "text-rose-500",
+        bg: "bg-rose-500/10",
+        border: "border-rose-500/20",
+        link: "/risk-guard",
+        category: "agents"
     },
     {
-        id: 'karpathy-deep-dive',
-        title: "Karpathy LLM Guide",
-        desc: "The Probabilistic OS",
-        icon: Brain,
-        color: "text-indigo-500",
-        bg: "bg-indigo-500/10",
-        border: "border-indigo-500/20",
-        link: "/karpathy-deep-dive"
+        id: 'project-flow',
+        title: "ProjectFlow AI",
+        desc: "Autonomous Scrum Master Agent",
+        icon: SquareKanban,
+        color: "text-blue-500",
+        bg: "bg-blue-500/10",
+        border: "border-blue-500/20",
+        link: "/project-flow",
+        category: "agents"
+    },
+    {
+        id: 'review-flow',
+        title: "ReviewFlow AI",
+        desc: "Reputation & Sentiment Engine",
+        icon: StarHalf,
+        color: "text-amber-500",
+        bg: "bg-amber-500/10",
+        border: "border-amber-500/20",
+        link: "/review-flow",
+        category: "agents"
+    },
+    {
+        id: 'query-flow',
+        title: "QueryFlow AI",
+        desc: "Enterprise Data Agent",
+        icon: Database,
+        color: "text-violet-500",
+        bg: "bg-violet-500/10",
+        border: "border-violet-500/20",
+        link: "/query-flow",
+        category: "agents"
+    },
+    {
+        id: 'collections',
+        title: "Collections AI",
+        desc: "Autonomous Finance Recovery Agent",
+        icon: Sparkles,
+        color: "text-emerald-500",
+        bg: "bg-emerald-500/10",
+        border: "border-emerald-500/20",
+        link: "/collections",
+        category: "agents"
+    },
+    {
+        id: 'slip-verify',
+        title: "SlipVerify AI",
+        desc: "Expense Verification Agent",
+        icon: FileText,
+        color: "text-purple-500",
+        bg: "bg-purple-500/10",
+        border: "border-purple-500/20",
+        link: "/slip-verify",
+        category: "agents"
     }
 ];
 
@@ -119,21 +145,32 @@ interface ProjectNavigationProps {
 }
 
 const ProjectNavigation = ({ currentId }: ProjectNavigationProps) => {
-    // Filter out current project and get next 3
-    const otherProjects = projects.filter(p => p.id !== currentId).slice(0, 3);
+    const currentProject = projects.find(p => p.id === currentId);
+
+    // Filter projects to find those in the same category, excluding the current one
+    let recommendedProjects = projects
+        .filter(p => p.id !== currentId && p.category === currentProject?.category)
+        .slice(0, 3);
+
+    // Fallback: If no category found (or unusual case), just show first 3 others
+    if (recommendedProjects.length === 0) {
+        recommendedProjects = projects.filter(p => p.id !== currentId).slice(0, 3);
+    }
 
     return (
         <section className="py-20 border-t border-slate-800 bg-[#020617]">
             <div className="container mx-auto px-6">
                 <div className="flex items-center justify-between mb-10">
-                    <h2 className="text-2xl font-bold text-white uppercase tracking-tight">Explore Other Agents</h2>
+                    <h2 className="text-2xl font-bold text-white uppercase tracking-tight">
+                        {currentProject?.category === 'agents' ? 'Explore Other Agents' : 'More Interactive Insights'}
+                    </h2>
                     <Link to="/" className="text-sm font-bold text-slate-400 hover:text-white flex items-center gap-2 transition-colors">
                         View All <ArrowRight className="w-4 h-4" />
                     </Link>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {otherProjects.map((project) => (
+                    {recommendedProjects.map((project) => (
                         <Link
                             key={project.id}
                             to={project.link}
