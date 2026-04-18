@@ -165,9 +165,44 @@ body.cursor-enhanced * {
   cursor: none !important;
 }
 
+/* But always show a pointer on form controls so users never lose context */
+body.cursor-enhanced input,
+body.cursor-enhanced textarea,
+body.cursor-enhanced select {
+  cursor: auto !important;
+}
+
 /* Interactive element hint for cursor hover detection */
 .cursor-hover {
   cursor: none;
+}
+
+/* A11y: preserve keyboard focus rings — they'd otherwise be invisible
+   against the custom cursor's mix-blend-difference layer. */
+:focus-visible {
+  outline: 2px solid rgba(167, 139, 250, 0.9);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Skip-to-content target — visible on keyboard focus only */
+.skip-link {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  padding: 0.75rem 1.25rem;
+  background: white;
+  color: #020617;
+  border-radius: 0 0 0.75rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  z-index: 10000;
+  transition: transform 200ms var(--ease-out-expo);
+}
+.skip-link:focus-visible {
+  transform: translate(-50%, 0);
 }
 
 /* Reduced motion — honor system preference */
