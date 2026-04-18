@@ -153,7 +153,7 @@ export default function Hero() {
                     <div className="flex items-center gap-2 border border-violet-500/20 bg-violet-500/5 px-4 py-1.5 rounded-full">
                         <span className="h-1.5 w-1.5 rounded-full bg-violet-400 animate-pulse" />
                         <span className="text-[10px] font-mono text-violet-300/70 uppercase tracking-[0.28em]">
-                            AI Expert · Advisory · Consulting · Speaking
+                            AI Expert · Advisory · Consulting
                         </span>
                     </div>
                 </motion.div>
