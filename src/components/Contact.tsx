@@ -32,7 +32,7 @@ export default function Contact() {
                             mode="words"
                             stagger={0.07}
                             delay={0.2}
-                            className="text-5xl md:text-7xl lg:text-[7.5rem] font-medium tracking-[-0.04em] leading-[0.9] block text-transparent bg-clip-text bg-gradient-to-r from-violet-300 via-fuchsia-300 to-violet-300 animate-gradient-x"
+                            className="text-5xl md:text-7xl lg:text-[7.5rem] font-medium tracking-[-0.04em] leading-[0.9] block text-violet-200 mt-1"
                         >
                             something together.
                         </SplitText>

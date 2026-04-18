@@ -33,12 +33,12 @@ const metrics: Metric[] = [
         max: 60,
         unit: 'people',
         color: '#22d3ee',
-        detail: 'Managed engineers, analysts, and data scientists across multiple business units.',
+        detail: 'Managed business analysts, data analytics specialists, and PMOs across multiple business units.',
         breakdown: [
-            { name: 'Analysts', pct: 42 },
-            { name: 'Data Scientists', pct: 26 },
-            { name: 'Engineers', pct: 22 },
-            { name: 'PMs', pct: 10 },
+            { name: 'Business Analysts', pct: 38 },
+            { name: 'Data Analytics', pct: 30 },
+            { name: 'Specialists', pct: 20 },
+            { name: 'PMOs', pct: 12 },
         ],
     },
     {
@@ -129,7 +129,7 @@ function AnimatedBar({
                 </div>
                 <div className="flex items-baseline gap-2 tabular-nums">
                     <span className="text-2xl md:text-3xl font-medium text-white tracking-tight">
-                        {count >= 1000 ? `${(count / 1000).toFixed(0)}k` : count}
+                        {count >= 1000 ? `${(count / 1000).toFixed(0)}k+` : `${count}+`}
                     </span>
                     <span className="text-[10px] md:text-xs font-mono text-white/40 uppercase tracking-widest">
                         {metric.unit}
