@@ -295,21 +295,21 @@ function S4() {
 
 // Scene 5 — Impact at Scale (NEW) ─────────────────────────────────────────────
 const IMPACT = [
-    { val: 20, suffix: '+', label: 'AI Agents\nShipped', color: '#a78bfa', grad: 'linear-gradient(135deg,#a78bfa,#7c3aed)' },
-    { val: 50, suffix: '+', label: 'Data Professionals\nLed', color: '#22d3ee', grad: 'linear-gradient(135deg,#22d3ee,#0891b2)' },
-    { val: 15, suffix: '+', label: 'Interactive\nArticles', color: '#e879f9', grad: 'linear-gradient(135deg,#e879f9,#a855f7)' },
-    { val: 20, suffix: 'yrs', label: 'Enterprise\nExperience', color: '#34d399', grad: 'linear-gradient(135deg,#34d399,#10b981)' },
+    { val: 20, suffix: '+', label: 'Autonomous AI\nSystems in Production', color: '#a78bfa', grad: 'linear-gradient(135deg,#a78bfa,#7c3aed)' },
+    { val: 30, suffix: '+', label: 'AI-Powered\nProducts Built', color: '#22d3ee', grad: 'linear-gradient(135deg,#22d3ee,#0891b2)' },
+    { val: 10, suffix: '+', label: 'Public Data\nInvestigations', color: '#e879f9', grad: 'linear-gradient(135deg,#e879f9,#a855f7)' },
+    { val: 15, suffix: '+', label: 'Interactive AI\nExperiences Deployed', color: '#34d399', grad: 'linear-gradient(135deg,#34d399,#10b981)' },
 ];
 
 function S5() {
     return (
         <motion.div variants={stg} initial="hidden" animate="show" exit="exit"
             className="flex flex-col items-center gap-6 text-center w-full max-w-2xl">
-            <motion.div variants={itm}><Pill color="#34d399">Impact at Scale</Pill></motion.div>
+            <motion.div variants={itm}><Pill color="#34d399">What's been built</Pill></motion.div>
             <motion.div variants={itm}
                 className="text-[clamp(1.8rem,5vw,3.2rem)] font-black leading-tight tracking-tight text-slate-100">
-                Real output.<br />
-                <span className="text-slate-500 font-light text-[clamp(.9rem,2.8vw,1.6rem)]">Not just theory.</span>
+                Built. Deployed.<br />
+                <span className="text-slate-500 font-light text-[clamp(.9rem,2.8vw,1.6rem)]">Running in the real world.</span>
             </motion.div>
             <motion.div variants={stg} className="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full">
                 {IMPACT.map((s, i) => (
