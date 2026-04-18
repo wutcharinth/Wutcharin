@@ -13,16 +13,23 @@ import SEO from '../components/SEO';
 
 const Home = () => {
     useEffect(() => {
+        // Skip Lenis on touch devices or when the user asks for reduced motion —
+        // smooth-scroll libraries can feel sluggish on low-end phones and
+        // conflict with native scroll assistance.
+        const isTouch = window.matchMedia('(hover: none)').matches;
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (isTouch || prefersReduced) return;
+
         const lenis = new Lenis();
-
-        function raf(time: number) {
+        let raf = 0;
+        const tick = (time: number) => {
             lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
-
-        requestAnimationFrame(raf);
+            raf = requestAnimationFrame(tick);
+        };
+        raf = requestAnimationFrame(tick);
 
         return () => {
+            cancelAnimationFrame(raf);
             lenis.destroy();
         };
     }, []);
@@ -35,7 +42,7 @@ const Home = () => {
             />
             <Header />
 
-            <main>
+            <main id="main-content">
                 <Hero />
                 <ExecutiveProfile />
 

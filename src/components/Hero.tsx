@@ -1,8 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, lazy, Suspense } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Mail } from 'lucide-react';
 
-import FishBackground from './FishBackground';
+// Three.js + fiber weighs ~300KB gzip. Lazy-loading keeps the hero text
+// interactive immediately; fish fade in once the bundle arrives.
+const FishBackground = lazy(() => import('./FishBackground'));
 import { MagneticButton, gsap } from '../lib/motion';
 
 /**
@@ -124,7 +126,9 @@ export default function Hero() {
 
     return (
         <section className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden px-4">
-            <FishBackground />
+            <Suspense fallback={null}>
+                <FishBackground />
+            </Suspense>
 
             {/* Aurora wash */}
             <div

@@ -33,13 +33,22 @@ export default function SubPageShell({
 
     useEffect(() => {
         window.scrollTo(0, 0);
+
+        const isTouch = window.matchMedia('(hover: none)').matches;
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (isTouch || prefersReduced) return;
+
         const lenis = new Lenis();
-        function raf(time: number) {
+        let raf = 0;
+        const tick = (time: number) => {
             lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
-        requestAnimationFrame(raf);
-        return () => lenis.destroy();
+            raf = requestAnimationFrame(tick);
+        };
+        raf = requestAnimationFrame(tick);
+        return () => {
+            cancelAnimationFrame(raf);
+            lenis.destroy();
+        };
     }, []);
 
     return (
@@ -79,7 +88,7 @@ export default function SubPageShell({
                 />
             </motion.nav>
 
-            <main className="relative pt-28 pb-20 z-10">{children}</main>
+            <main id="main-content" className="relative pt-28 pb-20 z-10">{children}</main>
 
             <footer className="relative z-10 py-10 border-t border-white/5 bg-slate-950 text-center">
                 <p className="text-[10px] font-mono text-slate-500 uppercase tracking-[0.3em]">
