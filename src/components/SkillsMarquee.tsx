@@ -1,48 +1,66 @@
+import { Marquee, SplitText } from '../lib/motion';
 
-import { motion } from 'framer-motion';
-
-const skills = [
-    "Strategic Transformation", "Startups", "Negotiation", "Commercial Operations", "Business Development",
-    "Strategic Planning", "Analytical Skills", "Business Analysis", "Artificial Intelligence (AI)", "Automation",
-    "Data Analytics", "FinTech", "Machine Learning", "Tableau", "KPI Development",
-    "Financial Modeling", "Database Management", "Credit Risk Modeling", "Business Intelligence", "Project Management",
-    "AI Agents", "AI Automations", "RAG", "LLM Integration",
-    "Cursor", "Claude Code", "Antigravity", "VS Code",
-    "n8n", "Python", "SQL",
-    "Prompt Engineering", "Workflow Automation", "Data Strategy",
-    "PowerBI", "React", "TypeScript",
-    "Team Leadership", "Google Cloud"
+const topRow = [
+    'Strategic Transformation', 'Startups', 'Negotiation', 'Commercial Ops', 'Business Dev',
+    'Strategic Planning', 'Analytics', 'Business Analysis', 'AI', 'Automation',
+    'FinTech', 'Machine Learning', 'KPI Development', 'Financial Modeling',
+    'Credit Risk Modeling', 'Business Intelligence',
 ];
+
+const bottomRow = [
+    'AI Agents', 'RAG', 'LLM Integration', 'Claude Code', 'Cursor', 'Antigravity',
+    'n8n', 'Python', 'SQL', 'Prompt Engineering', 'Workflow Automation',
+    'Data Strategy', 'PowerBI', 'Tableau', 'React', 'TypeScript',
+    'Team Leadership', 'Google Cloud',
+];
+
+function Chip({ label, highlight = false }: { label: string; highlight?: boolean }) {
+    return (
+        <div
+            className={`shrink-0 rounded-full px-5 py-2.5 text-sm font-light tracking-wide transition-colors ${highlight
+                ? 'border border-violet-400/40 bg-violet-500/10 text-white backdrop-blur-sm'
+                : 'border border-white/10 bg-white/[0.03] text-slate-300 hover:text-white hover:border-white/30'
+                }`}
+        >
+            {label}
+        </div>
+    );
+}
 
 export default function SkillsMarquee() {
     return (
-        <section className="py-20 bg-[#020617] border-y border-white/5 overflow-hidden relative">
-            <div className="absolute inset-0 bg-violet-500/5 blur-[100px]"></div>
+        <section className="relative overflow-hidden bg-[#020617] border-y border-white/5 py-24">
+            {/* Background accents */}
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(139,92,246,0.06),transparent_70%)]" aria-hidden="true" />
+            <div className="pointer-events-none absolute inset-0 bg-noise opacity-[0.04]" aria-hidden="true" />
 
-            <div className="max-w-7xl mx-auto px-4 mb-10 text-center relative z-10">
-                <h2 className="text-sm font-bold text-violet-400 uppercase tracking-widest mb-2">Technical Expertise</h2>
-                <div className="w-12 h-1 bg-violet-600 mx-auto rounded-full"></div>
+            <div className="relative z-10 max-w-7xl mx-auto px-6 mb-14 flex items-end justify-between gap-6 flex-wrap">
+                <div>
+                    <div className="inline-flex items-center gap-2 mb-4 px-3 py-1 rounded-full border border-white/10 bg-white/5">
+                        <span className="h-1 w-1 rounded-full bg-violet-400" />
+                        <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-slate-300">02 · Stack</span>
+                    </div>
+                    <SplitText
+                        as="h2"
+                        mode="words"
+                        stagger={0.05}
+                        className="text-4xl md:text-6xl font-medium tracking-[-0.03em] text-white leading-[0.95] block"
+                    >
+                        Technical Expertise
+                    </SplitText>
+                </div>
+                <p className="max-w-md text-sm md:text-base text-slate-400 font-light leading-relaxed">
+                    A living toolkit shaped by two decades across strategy, analytics, and engineering — continuously refreshed as the frontier moves.
+                </p>
             </div>
 
-            <div className="flex relative z-10">
-                <motion.div
-                    className="flex gap-4 whitespace-nowrap"
-                    animate={{ x: ["0%", "-50%"] }}
-                    transition={{
-                        repeat: Infinity,
-                        ease: "linear",
-                        duration: 60,
-                    }}
-                >
-                    {[...skills, ...skills].map((skill, index) => (
-                        <div
-                            key={index}
-                            className="px-6 py-3 bg-slate-900/50 border border-slate-800 rounded-full text-lg font-medium text-slate-300 hover:text-white hover:border-violet-500/50 hover:bg-violet-500/10 transition-all cursor-default"
-                        >
-                            {skill}
-                        </div>
-                    ))}
-                </motion.div>
+            <div className="relative z-10 space-y-5">
+                <Marquee speed={55} direction="left" gap={12}>
+                    {topRow.map((s) => (<Chip key={s} label={s} />))}
+                </Marquee>
+                <Marquee speed={65} direction="right" gap={12}>
+                    {bottomRow.map((s, i) => (<Chip key={s} label={s} highlight={i % 4 === 0} />))}
+                </Marquee>
             </div>
         </section>
     );
