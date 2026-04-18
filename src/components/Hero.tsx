@@ -150,10 +150,10 @@ export default function Hero() {
                     transition={{ delay: 0.4, duration: 0.8 }}
                     className="mb-10 flex justify-center"
                 >
-                    <div className="flex items-center gap-2 border border-white/10 px-3 py-1 rounded-full">
-                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                        <span className="text-[10px] font-mono text-white/50 uppercase tracking-[0.3em]">
-                            Available for work
+                    <div className="flex items-center gap-2 border border-violet-500/20 bg-violet-500/5 px-4 py-1.5 rounded-full">
+                        <span className="h-1.5 w-1.5 rounded-full bg-violet-400 animate-pulse" />
+                        <span className="text-[10px] font-mono text-violet-300/70 uppercase tracking-[0.28em]">
+                            AI Expert · Advisory · Consulting · Speaking
                         </span>
                     </div>
                 </motion.div>
