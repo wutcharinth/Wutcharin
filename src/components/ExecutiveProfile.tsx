@@ -261,8 +261,11 @@ export default function ExecutiveProfile() {
                 </SplitText>
 
                 <RevealOnScroll staggerChildren={0.1} duration={0.8}>
-                    <p data-reveal-child className="max-w-2xl text-base md:text-lg text-white/50 font-light leading-relaxed mb-24">
+                    <p data-reveal-child className="max-w-2xl text-base md:text-lg text-white/50 font-light leading-relaxed mb-6">
                         Twenty years translating complex data into C-suite strategy — a hands-on builder scaling AI, automation, and analytics functions across hyper-growth tech (Agoda) and aviation.
+                    </p>
+                    <p data-reveal-child className="max-w-2xl text-base md:text-lg text-white/50 font-light leading-relaxed mb-24">
+                        Not just agents — the <span className="text-white/70">systems around them</span>: orchestration, memory, tool surfaces, guardrails, and evaluation that make multi-step agentic workflows reliable in production, not just in the demo.
                     </p>
                 </RevealOnScroll>
 
