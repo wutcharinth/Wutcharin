@@ -78,9 +78,10 @@ export default function Header() {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                 className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
-                    ? 'bg-slate-950/60 backdrop-blur-xl py-3 border-b border-white/5 shadow-[0_1px_0_0_rgba(255,255,255,0.04)_inset]'
-                    : 'bg-transparent py-5'
+                    ? 'bg-slate-950/60 backdrop-blur-xl pb-3 border-b border-white/5 shadow-[0_1px_0_0_rgba(255,255,255,0.04)_inset]'
+                    : 'bg-transparent pb-5'
                     }`}
+            style={{ paddingTop: `calc(env(safe-area-inset-top) + ${isScrolled ? '0.75rem' : '1.25rem'})` }}
             >
                 <div className="max-w-7xl mx-auto px-6 flex justify-between items-center gap-6">
                     <a
