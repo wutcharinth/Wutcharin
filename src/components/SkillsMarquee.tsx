@@ -8,7 +8,8 @@ const topRow = [
 ];
 
 const bottomRow = [
-    'AI Agents', 'RAG', 'LLM Integration', 'Claude Code', 'Claude Skills', 'Cursor', 'Antigravity',
+    'AI Agents', 'Agentic Systems', 'Orchestration', 'Guardrails & Evals', 'RAG', 'LLM Integration',
+    'Claude Code', 'Claude Skills', 'Cursor', 'Antigravity',
     'n8n', 'Python', 'SQL', 'Prompt Engineering', 'Workflow Automation',
     'Data Strategy', 'PowerBI', 'Tableau', 'React', 'TypeScript',
     'Team Leadership', 'Google Cloud',
