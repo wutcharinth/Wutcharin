@@ -63,7 +63,7 @@ export default function SubPageShell({
                 transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                 className="fixed top-0 left-0 right-0 z-50 bg-slate-950/70 backdrop-blur-xl border-b border-white/5"
             >
-                <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+                <div className="max-w-7xl mx-auto px-6 flex justify-between items-center" style={{ paddingTop: 'calc(env(safe-area-inset-top) + 1rem)', paddingBottom: '1rem' }}>
                     <Link
                         to="/"
                         data-cursor="back"
