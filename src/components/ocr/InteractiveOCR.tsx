@@ -104,13 +104,11 @@ export default function InteractiveOCR() {
                         const width = x1 - x0;
                         const height = y1 - y0;
 
-                        // Draw box
-                        ctx.strokeStyle = '#00ff00';
+                        ctx.strokeStyle = '#3b82f6';
                         ctx.lineWidth = 2;
                         ctx.strokeRect(x0, y0, width, height);
 
-                        // Draw background for text
-                        ctx.fillStyle = 'rgba(0, 255, 0, 0.2)';
+                        ctx.fillStyle = 'rgba(59, 130, 246, 0.15)';
                         ctx.fillRect(x0, y0, width, height);
                     }
                 });
@@ -128,42 +126,44 @@ export default function InteractiveOCR() {
     };
 
     return (
-        <div className="w-full max-w-6xl mx-auto p-6 bg-bg text-text font-mono rounded-none border-2 border-border shadow-[8px_8px_0px_0px_var(--shadow-color)]">
-            <div className="flex items-center justify-between mb-6 border-b-4 border-border pb-4">
-                <h2 className="text-2xl font-black uppercase tracking-tighter flex items-center gap-2">
-                    <Sparkles className="text-primary animate-pulse" />
-                    GEMINI_VISION_DEMO_V1.0
+        <div className="w-full max-w-6xl mx-auto rounded-2xl border border-white/5 bg-white/[0.02] backdrop-blur-sm overflow-hidden p-6">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-6 pb-5 border-b border-white/8">
+                <h2 className="text-base font-medium text-white tracking-tight flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-blue-400" />
+                    Gemini Vision — OCR Demo
                 </h2>
-                <div className="flex items-center gap-4 text-sm font-bold">
-                    <span className={`flex items-center gap-2 px-3 py-1 border-2 border-border ${isProcessing ? 'bg-yellow-400 text-black animate-pulse' : 'bg-green-500 text-white'}`}>
-                        {isProcessing ? <RefreshCw className="animate-spin w-4 h-4" /> : <CheckCircle2 className="w-4 h-4" />}
-                        STATUS: {status.toUpperCase()}
-                    </span>
+                <div className={`flex items-center gap-2 px-3 py-1 rounded-full border text-[10px] font-mono uppercase tracking-[0.2em] transition-colors ${
+                    isProcessing
+                        ? 'border-amber-500/40 bg-amber-500/10 text-amber-400'
+                        : 'border-emerald-500/40 bg-emerald-500/10 text-emerald-400'
+                }`}>
+                    {isProcessing
+                        ? <RefreshCw className="animate-spin w-3 h-3" />
+                        : <CheckCircle2 className="w-3 h-3" />
+                    }
+                    {isProcessing ? 'Processing' : status}
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Left Panel: Image Input/Display */}
                 <div className="space-y-4">
-                    <div className="relative min-h-[400px] bg-white border-2 border-border shadow-[4px_4px_0px_0px_var(--shadow-color)] overflow-hidden flex flex-col items-center justify-center group">
+                    <div className="relative min-h-[280px] md:min-h-[400px] bg-slate-900/50 border border-white/8 rounded-xl overflow-hidden flex flex-col items-center justify-center group">
                         {!image ? (
-                            <div {...getRootProps()} className="absolute inset-0 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors">
+                            <div {...getRootProps()} className="absolute inset-0 flex flex-col items-center justify-center cursor-pointer hover:bg-white/[0.02] transition-colors">
                                 <input {...getInputProps()} />
-                                <Upload className="w-16 h-16 mb-4 text-primary opacity-50 group-hover:scale-110 transition-transform" />
-                                <p className="text-xl font-black uppercase tracking-tight">DROP IMAGE HERE</p>
-                                <p className="text-sm font-bold opacity-50 mt-2">or click to upload</p>
-                                <p className="text-xs font-bold bg-black text-white px-2 py-1 mt-4">SUPPORTS: JPG, PNG</p>
-                                <p className="text-[10px] font-bold text-gray-400 mt-2 uppercase tracking-wide">
-                                    (PDF support available in production pipeline)
-                                </p>
+                                <Upload className="w-12 h-12 mb-4 text-slate-500 group-hover:text-blue-400 group-hover:scale-110 transition-all duration-300" />
+                                <p className="text-base font-medium text-slate-300 mb-1">Drop image here</p>
+                                <p className="text-sm text-slate-500 font-light">or click to upload · JPG, PNG</p>
                             </div>
                         ) : (
-                            <div className="relative w-full h-full bg-gray-100 flex items-center justify-center p-4">
+                            <div className="relative w-full h-full bg-slate-900/40 flex items-center justify-center p-4">
                                 <img
                                     ref={imageRef}
                                     src={image}
                                     alt="Uploaded"
-                                    className="max-w-full max-h-[500px] object-contain border-2 border-border shadow-sm"
+                                    className="max-w-full max-h-[500px] object-contain rounded-lg"
                                 />
                                 <canvas
                                     ref={canvasRef}
@@ -176,16 +176,19 @@ export default function InteractiveOCR() {
                                     }}
                                 />
                                 {isProcessing && (
-                                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center backdrop-blur-sm">
-                                        <div className="w-full max-w-xs bg-white p-4 border-2 border-black shadow-[4px_4px_0px_0px_black]">
-                                            <div className="h-4 bg-gray-200 border-2 border-black mb-2">
+                                    <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center">
+                                        <div className="w-full max-w-xs bg-slate-900/90 border border-white/10 rounded-xl p-5">
+                                            <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden mb-3">
                                                 <motion.div
-                                                    className="h-full bg-primary"
+                                                    className="h-full rounded-full"
+                                                    style={{ background: 'linear-gradient(90deg, #2563eb, #38bdf8)' }}
                                                     initial={{ width: 0 }}
                                                     animate={{ width: `${progress}%` }}
                                                 />
                                             </div>
-                                            <p className="text-center font-bold text-xs uppercase">PROCESSING... {progress}%</p>
+                                            <p className="text-center text-xs font-mono text-slate-400 uppercase tracking-widest">
+                                                Processing — {progress}%
+                                            </p>
                                         </div>
                                     </div>
                                 )}
@@ -193,69 +196,76 @@ export default function InteractiveOCR() {
                         )}
                     </div>
 
-                    <div className="flex gap-4">
+                    <div className="flex gap-3">
                         <button
                             onClick={runOCR}
                             disabled={!image || isProcessing}
-                            className="flex-1 py-4 bg-primary text-white border-2 border-border font-black uppercase tracking-widest hover:bg-red-600 transition-all shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-[2px] hover:translate-y-[2px] disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none disabled:translate-x-0 disabled:translate-y-0 flex items-center justify-center gap-2"
+                            className="flex-1 py-3 rounded-xl text-sm font-medium flex items-center justify-center gap-2 transition-all border disabled:opacity-40 disabled:cursor-not-allowed"
+                            style={{
+                                backgroundColor: '#2563eb20',
+                                borderColor: '#2563eb40',
+                                color: '#60a5fa',
+                            }}
+                            onMouseEnter={(e) => { if (!e.currentTarget.disabled) e.currentTarget.style.backgroundColor = '#2563eb30'; }}
+                            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#2563eb20'; }}
                         >
-                            <Scan size={20} />
-                            INITIATE SCAN
+                            <Scan size={16} />
+                            Initiate scan
                         </button>
                         <button
                             onClick={reset}
                             disabled={isProcessing}
-                            className="px-8 py-4 bg-white text-black border-2 border-border font-black uppercase tracking-widest hover:bg-gray-100 transition-all shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-[2px] hover:translate-y-[2px] disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-6 py-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white border border-white/8 hover:border-white/20 bg-white/[0.02] hover:bg-white/[0.05] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                         >
-                            RESET
+                            Reset
                         </button>
                     </div>
                 </div>
 
                 {/* Right Panel: Data Output */}
-                <div className="bg-black text-green-400 border-2 border-border shadow-[8px_8px_0px_0px_var(--shadow-color)] p-4 font-mono text-sm h-[500px] overflow-y-auto custom-scrollbar relative">
-                    <div className="sticky top-0 bg-black/90 backdrop-blur border-b border-green-900/50 pb-2 mb-4 flex items-center gap-2 z-10">
-                        <FileText size={16} />
-                        <span className="font-bold">TERMINAL OUTPUT</span>
+                <div className="bg-slate-900/60 border border-white/5 rounded-xl p-5 font-mono text-sm h-[300px] md:h-[440px] lg:h-[500px] overflow-y-auto relative">
+                    <div className="sticky top-0 bg-slate-900/90 backdrop-blur border-b border-white/5 pb-3 mb-4 flex items-center gap-2 z-10 text-slate-400">
+                        <FileText size={14} />
+                        <span className="text-[10px] uppercase tracking-widest">Terminal Output</span>
                     </div>
 
                     {!result ? (
-                        <div className="text-gray-500 space-y-2 opacity-70">
-                            <p>{'>'} System ready...</p>
-                            <p>{'>'} Waiting for input...</p>
-                            {image && <p className="text-green-500">{'>'} Image loaded successfully.</p>}
+                        <div className="space-y-2">
+                            <p className="text-slate-600">{'>'} System ready...</p>
+                            <p className="text-slate-600">{'>'} Waiting for input...</p>
+                            {image && <p className="text-emerald-400">{'>'} Image loaded successfully.</p>}
                             {status === 'failed' && (
-                                <div className="text-red-500 font-bold">
-                                    <p>{'>'} ERROR: Analysis Failed.</p>
-                                    <p className="text-xs mt-1 text-red-400">{'>'} DETAILS: {error}</p>
+                                <div>
+                                    <p className="text-red-400">{'>'} ERROR: Analysis Failed.</p>
+                                    <p className="text-xs mt-1 text-red-400/70">{'>'} DETAILS: {error}</p>
                                 </div>
                             )}
                         </div>
                     ) : (
                         <div className="space-y-6">
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="bg-gray-900 p-3 border border-green-900/30">
-                                    <p className="text-xs text-gray-500 mb-1">CONFIDENCE</p>
-                                    <p className="text-2xl font-bold text-white">{result.confidence ? result.confidence.toFixed(1) : 'N/A'}%</p>
+                            <div className="grid grid-cols-2 gap-3">
+                                <div className="bg-slate-800/50 p-4 rounded-xl border border-white/5">
+                                    <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-slate-500 mb-1">Confidence</p>
+                                    <p className="text-2xl font-medium text-white">{result.confidence ? result.confidence.toFixed(1) : 'N/A'}%</p>
                                 </div>
-                                <div className="bg-gray-900 p-3 border border-green-900/30">
-                                    <p className="text-xs text-gray-500 mb-1">DETECTED WORDS</p>
-                                    <p className="text-2xl font-bold text-white">{result.words ? result.words.length : 0}</p>
-                                </div>
-                            </div>
-
-                            <div>
-                                <p className="text-xs text-gray-500 mb-2 uppercase">RAW TEXT EXTRACTION</p>
-                                <div className="bg-gray-900 p-4 border border-green-900/30 whitespace-pre-wrap text-white font-sans text-lg leading-relaxed min-h-[100px]">
-                                    {result.text ? result.text : <span className="text-gray-500 italic">No text detected in this image.</span>}
+                                <div className="bg-slate-800/50 p-4 rounded-xl border border-white/5">
+                                    <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-slate-500 mb-1">Detected Words</p>
+                                    <p className="text-2xl font-medium text-white">{result.words ? result.words.length : 0}</p>
                                 </div>
                             </div>
 
                             <div>
-                                <p className="text-xs text-gray-500 mb-2 uppercase">JSON DATA STREAM</p>
-                                <div className="bg-gray-900 p-4 border border-green-900/30 text-xs text-gray-400 overflow-x-auto">
+                                <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-slate-500 mb-2">Raw Text Extraction</p>
+                                <div className="bg-slate-800/40 p-4 rounded-xl border border-white/5 whitespace-pre-wrap text-slate-200 font-sans text-base leading-relaxed min-h-[100px]">
+                                    {result.text ? result.text : <span className="text-slate-500 italic">No text detected in this image.</span>}
+                                </div>
+                            </div>
+
+                            <div>
+                                <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-slate-500 mb-2">JSON Data Stream</p>
+                                <div className="bg-slate-800/40 p-4 rounded-xl border border-white/5 text-xs text-slate-400 overflow-x-auto">
                                     <pre>{JSON.stringify(result.words ? result.words.slice(0, 5) : [], null, 2)}</pre>
-                                    {result.words && result.words.length > 5 && <p className="mt-2 text-gray-600">... {result.words.length - 5} more items</p>}
+                                    {result.words && result.words.length > 5 && <p className="mt-2 text-slate-600">... {result.words.length - 5} more items</p>}
                                 </div>
                             </div>
                         </div>
@@ -263,9 +273,9 @@ export default function InteractiveOCR() {
                 </div>
             </div>
 
-            <div className="mt-6 pt-4 border-t-2 border-border flex items-center gap-2 text-xs font-bold uppercase tracking-wide opacity-70">
-                <AlertCircle size={14} />
-                <span>NOTE: Powered by Google Gemini Vision Pro.</span>
+            <div className="mt-5 pt-4 border-t border-white/5 flex items-center gap-2 text-xs text-slate-500 font-light">
+                <AlertCircle size={12} />
+                <span>Powered by Google Gemini Vision Pro.</span>
             </div>
         </div>
     );

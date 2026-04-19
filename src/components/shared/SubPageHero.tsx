@@ -93,7 +93,7 @@ export default function SubPageHero({
             {/* Content */}
             <motion.div
                 style={{ y: parallaxY, opacity: fadeOpacity }}
-                className="relative max-w-7xl mx-auto px-6 pt-16 pb-28 lg:pt-20 lg:pb-32 will-change-transform"
+                className="relative max-w-7xl mx-auto px-6 pt-14 pb-20 md:pt-16 md:pb-28 lg:pt-20 lg:pb-32 will-change-transform"
             >
                 <div className="max-w-4xl">
                     {/* Badge */}
@@ -118,7 +118,7 @@ export default function SubPageHero({
                             mode="words"
                             stagger={0.06}
                             duration={1}
-                            className="text-4xl md:text-6xl lg:text-7xl font-medium tracking-[-0.03em] text-white leading-[0.95] block"
+                            className="text-4xl md:text-6xl lg:text-7xl font-medium tracking-[-0.03em] text-white leading-[1] md:leading-[0.95] block"
                         >
                             {titleLead}
                         </SplitText>
@@ -129,7 +129,7 @@ export default function SubPageHero({
                             stagger={0.06}
                             delay={0.2}
                             duration={1}
-                            className="text-4xl md:text-6xl lg:text-7xl font-medium tracking-[-0.03em] leading-[0.95] block mt-1"
+                            className="text-4xl md:text-6xl lg:text-7xl font-medium tracking-[-0.03em] leading-[1] md:leading-[0.95] block mt-1"
                         >
                             {titleAccent}
                         </SplitText>

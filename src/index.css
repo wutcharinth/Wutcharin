@@ -185,6 +185,10 @@ body.cursor-enhanced select {
   border-radius: 4px;
 }
 
+/* Hide scrollbar while keeping scroll functionality */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
 /* Skip-to-content — hidden via clip (robust across all browsers/iOS) */
 .skip-link {
   position: absolute;

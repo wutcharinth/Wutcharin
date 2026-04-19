@@ -200,28 +200,30 @@ export default function Projects() {
                         Rapid AI prototypes — often shipped in days, not weeks — and scalable intelligent systems at enterprise scale.
                     </motion.p>
 
-                    {/* Filter tabs */}
-                    <div className="mt-10 flex flex-wrap gap-2">
-                        {categories.map((c) => {
-                            const isActive = c === active;
-                            return (
-                                <button
-                                    key={c}
-                                    onClick={() => setActive(c)}
-                                    className={`relative cursor-hover rounded-full px-4 py-2 text-xs font-medium tracking-wide transition-colors ${isActive ? 'text-slate-950' : 'text-slate-300 hover:text-white'
-                                        }`}
-                                >
-                                    {isActive && (
-                                        <motion.div
-                                            layoutId="projectFilterPill"
-                                            className="absolute inset-0 rounded-full bg-white"
-                                            transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                                        />
-                                    )}
-                                    <span className="relative z-10">{c}</span>
-                                </button>
-                            );
-                        })}
+                    {/* Filter tabs — horizontally scrollable on mobile */}
+                    <div className="mt-10 -mx-4 px-4 overflow-x-auto no-scrollbar">
+                        <div className="flex gap-2 w-max pb-1">
+                            {categories.map((c) => {
+                                const isActive = c === active;
+                                return (
+                                    <button
+                                        key={c}
+                                        onClick={() => setActive(c)}
+                                        className={`relative cursor-hover rounded-full px-4 py-2 text-xs font-medium tracking-wide transition-colors whitespace-nowrap ${isActive ? 'text-slate-950' : 'text-slate-300 hover:text-white'
+                                            }`}
+                                    >
+                                        {isActive && (
+                                            <motion.div
+                                                layoutId="projectFilterPill"
+                                                className="absolute inset-0 rounded-full bg-white"
+                                                transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                                            />
+                                        )}
+                                        <span className="relative z-10">{c}</span>
+                                    </button>
+                                );
+                            })}
+                        </div>
                     </div>
                 </div>
 
@@ -253,9 +255,16 @@ export default function Projects() {
 
                                 <RevealOnScroll staggerChildren={0.08} className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
                                     {section.items.map((p, i) => (
-                                        <div key={p.title} data-reveal-child className="h-full">
+                                        <motion.div
+                                            key={p.title}
+                                            data-reveal-child
+                                            className="h-full"
+                                            initial={{ opacity: 0, y: 20, scale: 0.97 }}
+                                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                                            transition={{ duration: 0.5, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
+                                        >
                                             <ProjectCard project={p} index={i} />
-                                        </div>
+                                        </motion.div>
                                     ))}
                                 </RevealOnScroll>
                             </div>
