@@ -69,6 +69,21 @@ const metrics: Metric[] = [
             { name: 'Dashboards', pct: 10 },
         ],
     },
+    {
+        label: 'Claude Skills authored',
+        value: 20,
+        max: 25,
+        unit: 'skills',
+        color: '#34d399',
+        detail: 'Reusable skills adopted across the team — compressing the full SOP lifecycle from research to release.',
+        breakdown: [
+            { name: 'Research & refine', pct: 20 },
+            { name: 'Plan & break down', pct: 20 },
+            { name: 'Deep-dive analysis', pct: 25 },
+            { name: 'Corporate data access', pct: 20 },
+            { name: 'DevOps lift', pct: 15 },
+        ],
+    },
 ];
 
 function formatValue(n: number, unit: string) {
