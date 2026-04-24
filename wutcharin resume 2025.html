@@ -4,326 +4,587 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wutcharin Thatan - Resume</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Wutcharin Thatan — Resume</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
+        :root {
+            --ink: #0f172a;
+            --ink-2: #1f2937;
+            --muted: #475569;
+            --muted-2: #64748b;
+            --rule: #cbd5e1;
+            --rule-soft: #e2e8f0;
+            --paper: #f5f4f0;
+            --card: #ffffff;
+            --accent: #0f766e;
         }
 
-        .text-xxs {
-            font-size: 0.6rem;
-            /* 9.6px */
-            line-height: 0.8rem;
-            /* 12.8px */
+        * { box-sizing: border-box; }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: var(--paper);
+            color: var(--ink-2);
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 11px;
+            line-height: 1.45;
+            -webkit-font-smoothing: antialiased;
         }
 
+        .page-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            padding: 28px 16px;
+        }
+
+        .page {
+            width: 210mm;
+            height: 297mm;
+            background: var(--card);
+            box-shadow: 0 30px 60px -25px rgba(15, 23, 42, 0.25), 0 10px 20px -10px rgba(15, 23, 42, 0.1);
+            border-radius: 2px;
+            padding: 11mm 14mm;
+            overflow: hidden;
+        }
+
+        /* ---------- Header ---------- */
+        .masthead {
+            border-bottom: 1px solid var(--ink);
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+        }
+        .masthead h1 {
+            font-family: 'Fraunces', Georgia, serif;
+            font-weight: 600;
+            font-size: 28.6px;
+            letter-spacing: -0.01em;
+            margin: 0 0 2px;
+            color: var(--ink);
+            font-variation-settings: "opsz" 144;
+        }
+        .masthead .tagline {
+            font-size: 10.45px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--muted);
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+        .masthead .tagline .sep {
+            color: var(--accent);
+            margin: 0 7px;
+            font-weight: 700;
+        }
+        .masthead .contact {
+            font-size: 11px;
+            color: var(--ink-2);
+            line-height: 1.6;
+        }
+        .masthead .contact a { color: var(--ink-2); text-decoration: none; }
+        .masthead .contact a:hover { color: var(--accent); }
+        .masthead .contact .dot {
+            color: var(--rule);
+            margin: 0 8px;
+        }
+        .masthead .quote {
+            margin-top: 8px;
+            font-family: 'Fraunces', Georgia, serif;
+            font-style: italic;
+            font-size: 11.55px;
+            color: var(--muted);
+            letter-spacing: 0.002em;
+        }
+
+        /* ---------- Section ---------- */
+        section { margin-top: 10px; }
+        section:first-of-type { margin-top: 0; }
+
+        .section-hd {
+            font-size: 10.45px;
+            font-weight: 700;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: var(--ink);
+            padding-bottom: 3px;
+            margin-bottom: 6px;
+            border-bottom: 1px solid var(--rule);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-hd::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            display: inline-block;
+            border-radius: 1px;
+        }
+
+        /* ---------- Profile ---------- */
+        .profile p {
+            margin: 0;
+            font-size: 11px;
+            line-height: 1.5;
+            color: var(--ink-2);
+        }
+        .profile .lede {
+            font-family: 'Fraunces', Georgia, serif;
+            font-weight: 500;
+            font-size: 11.88px;
+            line-height: 1.45;
+            color: var(--ink);
+        }
+        .profile p + p { margin-top: 3px; }
+
+        /* ---------- Skills table ---------- */
+        .skills-row {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 6px 14px;
+            padding: 3px 0;
+            border-top: 1px solid var(--rule-soft);
+            align-items: baseline;
+        }
+        .skills-row:first-child { border-top: 0; padding-top: 0; }
+        .skills-row .k {
+            font-size: 10.45px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            color: var(--ink);
+            text-transform: uppercase;
+        }
+        .skills-row .v {
+            font-size: 11px;
+            color: var(--ink-2);
+            line-height: 1.45;
+        }
+        .skills-row .v b { color: var(--ink); font-weight: 600; }
+
+        /* ---------- Experience ---------- */
+        .role + .role {
+            margin-top: 7px;
+            padding-top: 7px;
+            border-top: 1px dashed var(--rule-soft);
+        }
+        .role-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+        }
+        .role-head .title {
+            font-size: 11.88px;
+            font-weight: 700;
+            color: var(--ink);
+            letter-spacing: -0.003em;
+        }
+        .role-head .dates {
+            font-size: 9.9px;
+            color: var(--muted-2);
+            font-weight: 500;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+            letter-spacing: 0.02em;
+        }
+        .role-sub {
+            font-size: 10.45px;
+            color: var(--muted);
+            margin-top: 1px;
+            margin-bottom: 3px;
+        }
+        .role-sub .company {
+            font-weight: 600;
+            color: var(--ink-2);
+        }
+        .role-progression {
+            font-size: 9.9px;
+            color: var(--muted-2);
+            font-style: italic;
+            margin: -1px 0 3px;
+        }
+        .role ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .role li {
+            position: relative;
+            padding-left: 12px;
+            margin-top: 2px;
+            font-size: 10.78px;
+            color: var(--ink-2);
+            line-height: 1.45;
+        }
+        .role li::before {
+            content: "•";
+            position: absolute;
+            left: 2px;
+            top: -1px;
+            color: var(--accent);
+            font-weight: 700;
+        }
+        .role li b { font-weight: 600; color: var(--ink); }
+        .role li .cat {
+            font-weight: 700;
+            color: var(--ink);
+        }
+        .ext-link {
+            color: var(--accent);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(15, 118, 110, 0.35);
+        }
+        .ext-link:hover {
+            border-bottom-color: var(--accent);
+        }
+        .ext-link b { color: inherit; }
+
+        .role-short {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 4px 0;
+            border-top: 1px dashed var(--rule-soft);
+            font-size: 10.78px;
+        }
+        .role-short:first-child { border-top: 0; }
+        .role-short .lhs { color: var(--ink-2); }
+        .role-short .lhs .title { font-weight: 700; color: var(--ink); }
+        .role-short .lhs .company { font-weight: 500; color: var(--ink-2); }
+        .role-short .lhs .desc { color: var(--muted); line-height: 1.4; }
+        .role-short .dates {
+            font-size: 9.9px;
+            color: var(--muted-2);
+            font-weight: 500;
+            white-space: nowrap;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* ---------- Projects ---------- */
+        .project {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 2px 14px;
+            align-items: baseline;
+            padding: 3px 0;
+            border-top: 1px dashed var(--rule-soft);
+        }
+        .project:first-child { border-top: 0; padding-top: 0; }
+        .project .lhs { min-width: 0; }
+        .project .name {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+        .project .role-label {
+            font-size: 9.9px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+        .project .url {
+            font-size: 9.9px;
+            color: var(--accent);
+            text-decoration: none;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+        .project .desc {
+            font-size: 10.45px;
+            color: var(--ink-2);
+            line-height: 1.4;
+        }
+        .project .desc .stack {
+            color: var(--muted);
+            font-style: italic;
+        }
+
+        /* ---------- Education ---------- */
+        .edu-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+            padding: 4px 0;
+            border-top: 1px dashed var(--rule-soft);
+        }
+        .edu-row:first-child { border-top: 0; padding-top: 0; }
+        .edu-row .lhs .degree {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+        .edu-row .lhs .inst {
+            font-size: 10.45px;
+            color: var(--muted);
+        }
+        .edu-row .dates {
+            font-size: 9.9px;
+            color: var(--muted-2);
+            font-weight: 500;
+            white-space: nowrap;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* ---------- Print ---------- */
         @media print {
-            @page {
-                size: A4;
-                margin: 0;
-            }
-
-            body {
+            @page { size: A4; margin: 11mm 14mm; }
+            html, body {
+                background: #fff;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
-                margin: 0;
-                padding: 0;
-                background-color: white !important;
-                width: 210mm;
-                height: 297mm;
             }
-
-            .print-container {
-                box-shadow: none !important;
-                margin: 0 !important;
-                width: 100%;
-                height: 100%;
+            .page-wrap { padding: 0; gap: 0; display: block; }
+            .page {
+                box-shadow: none;
                 border-radius: 0;
+                width: auto;
+                height: auto;
+                min-height: 0;
+                padding: 0;
+                overflow: visible;
+                page-break-after: auto;
+                break-after: auto;
             }
-
-            .print-bg-white {
-                background-color: white !important;
-            }
-
-            .print-text-black {
-                color: black !important;
-            }
-
-            .print-bg-slate-800 {
-                background-color: #1e293b !important;
-            }
-
-            .print-break-inside-avoid {
-                page-break-inside: avoid;
-            }
+            .page + .page { margin-top: 10px; }
+            section, .role, .project, .edu-row, .role-short { page-break-inside: avoid; break-inside: avoid; }
+            h2, h3 { page-break-after: avoid; break-after: avoid; }
         }
     </style>
 </head>
 
-<body class="flex justify-center items-center min-h-screen p-8">
-    <div class="w-[210mm] h-[297mm] bg-white shadow-2xl rounded-lg print-container flex flex-col overflow-hidden">
-        <div class="grid grid-cols-12 flex-grow"> <!-- Left Column -->
-            <div class="col-span-12 md:col-span-3 bg-slate-800 p-6 pt-10 text-white print-bg-slate-800">
-                <header class="text-center mb-4 print-break-inside-avoid">
-                    <h1 class="text-lg font-extrabold tracking-tight text-white">WUTCHARIN THATAN</h1>
-                    <p class="text-xs font-medium text-cyan-400 mt-1">Executive Leader | AI, Automation & Analytics</p>
-                </header>
-                <section class="mb-3 print-break-inside-avoid">
-                    <h2 class="text-[10px] font-bold uppercase tracking-widest text-cyan-400 mb-2">Contact</h2>
-                    <ul class="space-y-1 text-xxs text-slate-300">
-                        <li class="flex items-start gap-3"> <svg class="w-4 h-4 text-cyan-400 flex-shrink-0"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path
-                                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                            </svg> <span>(+66) 061-565-5969</span> </li>
-                        <li class="flex items-start gap-3"> <svg class="w-4 h-4 text-cyan-400 flex-shrink-0"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                                <polyline points="22,6 12,13 2,6" />
-                            </svg> <a href="mailto:wutcharin.th@gmail.com"
-                                class="hover:text-cyan-400">wutcharin.th@gmail.com</a> </li>
-                        <li class="flex items-start gap-3"> <svg class="w-4 h-4 text-cyan-400 flex-shrink-0"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path
-                                    d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                                <rect x="2" y="9" width="4" height="12" />
-                                <circle cx="4" cy="4" r="2" />
-                            </svg> <a href="https://linkedin.com/in/Wutcharin" target="_blank"
-                                class="hover:text-cyan-400">linkedin.com/in/Wutcharin</a> </li>
-                    </ul>
-                </section>
-                <section class="mb-3 print-break-inside-avoid">
-                    <h2 class="text-[10px] font-bold uppercase tracking-widest text-cyan-400 mb-2">Core Competencies
-                    </h2>
-                    <div class="space-y-1 text-xxs text-slate-300">
-                        <div>
-                            <h3 class="font-bold text-white mb-0.5">Strategic Leadership & Vision</h3>
-                            <p>Corporate data strategy, AI roadmaps & vision, and C-suite advisory on AI integration.
-                            </p>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-white mb-0.5">Team Leadership & Growth</h3>
-                            <p>Building, mentoring, and scaling high-performing teams of data and AI specialists.</p>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-white mb-0.5">Business Acumen & Impact</h3>
-                            <p>Go-to-market strategy, venture capital acquisition, and complex corporate turnarounds.
-                            </p>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-white mb-0.5">Vendor & Partner Management</h3>
-                            <p>Tech vendor negotiation and strategic partner management in aviation and tech industries.
-                            </p>
-                        </div>
-                    </div>
-                </section>
-                <section class="mb-3 print-break-inside-avoid">
-                    <h2 class="text-[10px] font-bold uppercase tracking-widest text-cyan-400 mb-2">Technical Skills &
-                        Tools</h2>
-                    <div class="space-y-1 text-xxs text-slate-300">
-                        <div>
-                            <h3 class="font-bold text-white mb-0.5">Analytics & Machine Learning</h3>
-                            <p>SQL, Python (Pandas, Scikit-learn) for predictive modeling (ROI, churn, LTV) &
-                                forecasting.</p>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-white mb-0.5">AI & Development Tools</h3>
-                            <p>Cursor, Claude Code, Antigravity, VS Code, n8n, Power Automate, GenAI Integration.</p>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-white mb-0.5">Visualization & Communication</h3>
-                            <p>BI Platforms (Tableau, Metabase, SuperSet) for data storytelling & compelling
-                                visualization.</p>
-                        </div>
-                    </div>
-                </section>
-                <section class="print-break-inside-avoid">
-                    <h2 class="text-[10px] font-bold uppercase tracking-widest text-cyan-400 mb-2">Education</h2>
-                    <div class="space-y-1 text-xxs">
-                        <div>
-                            <p class="font-bold text-white">Master of Business Administration</p>
-                            <p class="text-slate-300">Stamford International University</p>
-                        </div>
-                        <div>
-                            <p class="font-bold text-white">Bachelor of Engineering</p>
-                            <p class="text-slate-300">Chulalongkorn University</p>
-                        </div>
-                    </div>
-                </section>
-            </div> <!-- Right Column -->
-            <div class="col-span-12 md:col-span-9 bg-gray-50 p-6 pt-10 print-bg-white overflow-y-auto">
-                <section class="mb-1 print-break-inside-avoid">
-                    <h2 class="text-base font-extrabold text-slate-800 mb-1">Executive Profile</h2>
-                    <p class="text-xxs text-slate-600 leading-relaxed"> An executive leader with nearly 20 years of
-                        experience, including a decade in people management, who builds and scales high-performing AI,
-                        Automation, and Analytics functions to operate as revenue-generating engines. With a career
-                        spanning corporate turnarounds and hyper-growth tech, I specialize in translating complex data
-                        into decisive C-suite strategies, securing capital, and embedding a data-first culture to drive
-                        measurable business outcomes. </p>
-                </section>
-                <section class="mb-1 print-break-inside-avoid">
-                    <h2 class="text-base font-extrabold text-slate-800 mb-2">Career Highlights</h2>
-                    <div class="grid grid-cols-2 gap-x-6 gap-y-1 text-xxs">
-                        <div class="flex items-start gap-2"> <svg class="w-4 h-4 text-cyan-500 flex-shrink-0"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />
-                            </svg>
-                            <div><span class="font-bold">Saved 12,000+ hours annually</span> via targeted AI &
-                                automation initiatives in FinTech.</div>
-                        </div>
-                        <div class="flex items-start gap-2"> <svg class="w-4 h-4 text-cyan-500 flex-shrink-0"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="12" y1="1" x2="12" y2="23"></line>
-                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                            </svg>
-                            <div><span class="font-bold">Secured 200M THB</span> in seed funding by developing the
-                                business plan and investor pitch.</div>
-                        </div>
-                        <div class="flex items-start gap-2"> <svg class="w-4 h-4 text-cyan-500 flex-shrink-0"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 2a10 10 0 1 0 10 10H12V2z"></path>
-                                <path d="M12 2a10 10 0 0 1 10 10h-10V2z"></path>
-                                <path d="M12 12L2.5 12"></path>
-                                <path d="M12 12l6.5-6.5"></path>
-                                <path d="M12 12l6.5 6.5"></path>
-                            </svg>
-                            <div><span class="font-bold">Led AI Strategy & Agent Development:</span> Built
-                                RAG/Text-to-SQL agents & led workshops to boost productivity.</div>
-                        </div>
-                        <div class="flex items-start gap-2"> <svg class="w-4 h-4 text-cyan-500 flex-shrink-0"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="9" cy="7" r="4"></circle>
-                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                            </svg>
-                            <div><span class="font-bold">Empowered 600+ Users</span> by deploying over 100 Tableau
-                                dashboards.</div>
-                        </div>
-                    </div>
-                </section>
-                <section>
-                    <div class="flex justify-between items-center mb-1">
-                        <h2 class="text-base font-extrabold text-slate-800">Professional Experience</h2> <span
-                            class="text-[9px] text-slate-500 italic">Details reflect last 10 years</span>
-                    </div>
-                    <div class="space-y-2">
-                        <article class="print-break-inside-avoid">
-                            <h3 class="text-xs font-bold text-slate-900">Associate Director - FinTech Data and
-                                Automation</h3>
-                            <p class="text-xxs font-medium text-slate-600">Agoda <span
-                                    class="text-slate-400 font-normal italic">| Global Travel Tech</span> | Apr 2024 -
-                                Present</p>
-                            <ul class="list-disc list-outside ml-4 mt-1 space-y-1 text-xxs text-slate-600">
-                                <li>Direct a cross-functional division of 10, encompassing Finance Analytics and RPA/AI
-                                    teams, to identify and execute on high-impact process automation opportunities.</li>
-                                <li>Crafting the departmental AI vision and roadmap; led workshops and built AI Agents
-                                    (RAG, Auto-SQL) to automate workflows.</li>
-                                <li>Achieved over 12,000 hours in annualized time savings by deploying targeted
-                                    automation solutions and machine learning models for collection risk and cashback
-                                    liability.</li>
-                                <li>Orchestrated deep-dive variance analysis between financial statements and
-                                    operational data, providing critical insights to leadership on revenue and cost
-                                    drivers.</li>
-                            </ul>
-                        </article>
-                        <article class="print-break-inside-avoid">
-                            <h3 class="text-xs font-bold text-slate-900">Head of Commercial</h3>
-                            <p class="text-xxs font-medium text-slate-600">Really Cool Airlines <span
-                                    class="text-slate-400 font-normal italic">| Airline Startup</span> | Apr 2023 - Feb
-                                2024</p>
-                            <ul class="list-disc list-outside ml-4 mt-1 space-y-1 text-xxs text-slate-600">
-                                <li>Architected and scaled the airline's entire commercial division from inception,
-                                    building and mentoring a team of 11 across 6 functions including Network Planning
-                                    and Revenue Management.</li>
-                                <li>Developed the definitive business plan and investor pitch, leveraging data-driven
-                                    market analysis to craft a compelling go-to-market strategy that successfully
-                                    secured 200M THB in seed funding.</li>
-                            </ul>
-                        </article>
-                        <article class="print-break-inside-avoid">
-                            <h3 class="text-xs font-bold text-slate-900">Head of Strategic Foresight & Planning</h3>
-                            <p class="text-xxs font-medium text-slate-600">Thairath Group <span
-                                    class="text-slate-400 font-normal italic">| Thai Media Conglomerate</span> | Apr
-                                2022 - Mar 2023</p>
-                            <ul class="list-disc list-outside ml-4 mt-1 space-y-1 text-xxs text-slate-600">
-                                <li>Led a group-wide data transformation, establishing standardized KPI frameworks and
-                                    deploying analytics systems to create a unified view of performance across business
-                                    units.</li>
-                                <li>Launched a new media business unit by developing the complete business plan to
-                                    mitigate content rights risks and capture new international revenue streams.</li>
-                                <li>Functioned as a key strategic advisor to senior leadership, providing data-driven
-                                    recommendations on resource allocation, operational workflows, and technology
-                                    investments.</li>
-                            </ul>
-                        </article>
-                        <article class="print-break-inside-avoid">
-                            <h3 class="text-xs font-bold text-slate-900">Associate Director - Supply Analytics</h3>
-                            <p class="text-xxs font-medium text-slate-600">Agoda <span
-                                    class="text-slate-400 font-normal italic">| Global Travel Tech</span> | Nov 2017 -
-                                Apr 2022</p>
-                            <ul class="list-disc list-outside ml-4 mt-1 space-y-1 text-xxs text-slate-600">
-                                <li>Directed analytics for the Partner Programs division, transforming raw data into
-                                    actionable insights and strategic recommendations presented directly to C-level
-                                    leadership.</li>
-                                <li>Oversaw credit risk management and analytics for the Partner Prepaid Programs,
-                                    mitigating financial exposure and optimizing partner payment solutions.</li>
-                                <li>Developed and deployed multiple high-impact machine learning models, including
-                                    partner ROI/churn prediction and a proprietary Supply Health Score.</li>
-                                <li>Established comprehensive analytics frameworks for partner segmentation and
-                                    evaluation, enabling more targeted and effective partner engagement strategies.</li>
-                                <li>Designed and implemented a scalable, self-service BI ecosystem, launching over 100
-                                    Tableau dashboards that provided insights to more than 600 users.</li>
-                            </ul>
-                        </article>
-                        <article class="print-break-inside-avoid">
-                            <h3 class="text-xs font-bold text-slate-900">Planning Director</h3>
-                            <p class="text-xxs font-medium text-slate-600">Nok Air <span
-                                    class="text-slate-400 font-normal italic">| Low-Cost Airline</span> | Oct 2016 - Nov
-                                2017</p>
-                            <ul class="list-disc list-outside ml-4 mt-1 space-y-1 text-xxs text-slate-600">
-                                <li>Played a pivotal role in a successful corporate turnaround by developing analytical
-                                    models for network and fleet optimization, leading to a 15% increase in aircraft
-                                    utilization.</li>
-                                <li>Conducted in-depth competitor analysis to identify market opportunities and inform
-                                    strategic fleet and network decisions.</li>
-                                <li>Developed and presented the full turnaround strategy to the Board of Directors,
-                                    creditors, and potential investors, resulting in the acquisition of crucial new
-                                    capital.</li>
-                            </ul>
-                        </article>
-                        <article class="print-break-inside-avoid">
-                            <h3 class="text-xs font-bold text-slate-900">Corporate Strategy & Planning Manager</h3>
-                            <p class="text-xxs font-medium text-slate-600">Thai Smile Airways <span
-                                    class="text-slate-400 font-normal italic">| Regional Airline</span> | Nov 2015 - Sep
-                                2016</p>
-                            <ul class="list-disc list-outside ml-4 mt-1 space-y-1 text-xxs text-slate-600">
-                                <li>Led data-driven network planning to analyze route profitability, directly
-                                    contributing to increased market share.</li>
-                                <li>Managed negotiations with aviation authorities/airports to secure vital operating
-                                    permits and slots.</li>
-                            </ul>
-                        </article>
+<body>
+    <div class="page-wrap">
+        <!-- =========== PAGE 1 =========== -->
+        <main class="page">
+            <header class="masthead">
+                <h1>Wutcharin Thatan</h1>
+                <div class="tagline">
+                    Executive Leader<span class="sep">·</span>AI<span class="sep">·</span>Automation<span class="sep">·</span>Analytics
+                </div>
+                <div class="contact">
+                    Bangkok, Thailand
+                    <span class="dot">·</span>(+66) 061-565-5969
+                    <span class="dot">·</span><a href="mailto:wutcharin.th@gmail.com">wutcharin.th@gmail.com</a>
+                    <span class="dot">·</span><a href="https://linkedin.com/in/wutcharin" target="_blank">linkedin.com/in/wutcharin</a>
+                    <span class="dot">·</span><a href="https://wutcharin.com" target="_blank">wutcharin.com</a>
+                </div>
+                <div class="quote">&ldquo;Transforming businesses through AI-powered automation, advanced analytics, and intelligent data solutions.&rdquo;</div>
+            </header>
 
+            <section class="profile">
+                <div class="section-hd">Executive Profile</div>
+                <p class="lede">Executive leader with nearly 20 years of experience (10+ years in people management), combining Business Strategy and Technical Execution.</p>
+                <p>A hands-on builder who has managed <b>50+ data professionals</b>, deployed <b>20+ AI agents</b>, and generated <b>12,000+ hours</b> in annual efficiency. Specialized in scaling high-performing AI, Automation, and Analytics functions, and expert at bridging Finance, Engineering, and Commercial strategy — having secured more than <b>200M THB</b> in capital via data-driven planning across hyper-growth Tech (Agoda) and Aviation sectors.</p>
+            </section>
+
+            <section>
+                <div class="section-hd">Key Competencies &amp; Technical Skills</div>
+                <div class="skills-row">
+                    <div class="k">Leadership</div>
+                    <div class="v">Corporate Data Strategy, AI Roadmaps, C-Suite Advisory, Venture Fundraising, Crisis Management, Corporate Turnarounds, Team Building, <b>AI-Driven Rapid Prototyping</b> (translating business requirements into functional MVPs and productization).</div>
+                </div>
+                <div class="skills-row">
+                    <div class="k">AI &amp; Dev</div>
+                    <div class="v">Generative AI (Gemini, Claude), <b>RAG Architectures</b>, AI Agents (<b>Text-to-SQL, Market Research, Deep-Dive Analysis, Personalized Onboarding, OCR, Unstructured-to-Structured Data</b>), React, Node.js, Python, n8n, Firebase, LangGraph.</div>
+                </div>
+                <div class="skills-row">
+                    <div class="k">Analytics</div>
+                    <div class="v">SQL, Tableau, Metabase, Superset, <b>Predictive Modeling</b> (Time Series, Regression, Classification, Clustering), ETL Pipelines, Financial Variance Analysis.</div>
+                </div>
+            </section>
+
+            <section>
+                <div class="section-hd">Professional Experience</div>
+
+                <article class="role">
+                    <div class="role-head">
+                        <div class="title">Associate Director — FinTech Data &amp; Automation</div>
+                        <div class="dates">Apr 2024 — Present</div>
                     </div>
-                </section>
-            </div>
-        </div>
+                    <div class="role-sub"><span class="company">Agoda</span> · Bangkok · Global Travel Tech</div>
+                    <ul>
+                        <li><span class="cat">Strategic Leadership:</span> Lead the FinTech Data &amp; Automation (FDA) division — a <b>12-person team</b> across three pillars: <b>Analytics, AI, and Automation</b>. Drive operational efficiency across Finance Operations &amp; Controlling (Accounting, Payin, Payout, Credit Risk, Collections), Treasury, Tax, and Financial Planning &amp; Analysis.</li>
+                        <li><span class="cat">Impact:</span> Delivered <b>12,000+ hours</b> in annual productivity gain via targeted automation and data-driven process improvement, materially reducing manual workload in financial reconciliation.</li>
+                        <li><span class="cat">AI Vision:</span> Defined and executed the long-term AI, Automation, and Analytics roadmap for FinTech — shipping production AI agents (RAG, Text-to-SQL) and championing self-service BI to embed a data-first culture in Finance.</li>
+                        <li><span class="cat">Insight:</span> Orchestrated deep-dive variance analysis across financial statements and operational data, surfacing revenue and cost drivers to senior leadership.</li>
+                    </ul>
+                </article>
+
+                <article class="role">
+                    <div class="role-head">
+                        <div class="title">Head of Commercial</div>
+                        <div class="dates">Apr 2023 — Feb 2024</div>
+                    </div>
+                    <div class="role-sub"><span class="company">Really Cool Airlines</span> · Bangkok · Airline Startup</div>
+                    <ul>
+                        <li><span class="cat">Regulatory Success:</span> Led development of the comprehensive Airline Business Plan, successfully securing the <b>Air Operating License (AOL)</b> from the Civil Aviation Authority of Thailand (CAAT).</li>
+                        <li><span class="cat">Startup Launch:</span> Built and mentored a high-performing commercial division of <b>11 professionals</b> across <b>6 teams</b> (Network Planning, Revenue Management, Marketing, and others).</li>
+                        <li><span class="cat">Global Representation:</span> Represented the airline on the global stage at <a class="ext-link" href="#" target="_blank"><b>Routes World Istanbul</b></a>; featured in industry press (<a class="ext-link" href="#" target="_blank">Aviation Week — Really Cool Airlines launch plans</a>).</li>
+                        <li><span class="cat">Commercial Operations:</span> Led major commercial contract negotiations and secured strategic landing slots at BKK and key airports in Japan.</li>
+                        <li><span class="cat">Fundraising:</span> Secured <b>200M THB</b> in seed funding via fleet and schedule planning insight. <i>(Venture later concluded due to external aircraft supply constraints.)</i></li>
+                    </ul>
+                </article>
+
+                <article class="role">
+                    <div class="role-head">
+                        <div class="title">Head of Strategic Foresight &amp; Planning</div>
+                        <div class="dates">Apr 2022 — Mar 2023</div>
+                    </div>
+                    <div class="role-sub"><span class="company">Thairath Group</span> · Bangkok · Thai Media Conglomerate</div>
+                    <ul>
+                        <li><span class="cat">C-Suite Advisory:</span> Reported directly to C-level executives, providing strategic guidance across the group ecosystem — <b>Thairath TV, Thairath Online, Thairath Logistics, and Everpink</b>.</li>
+                        <li><span class="cat">Strategic Initiatives:</span> Led the establishment of new business units for online content rights and news verticals; deep-dive analytics on content performance to identify revenue opportunities.</li>
+                        <li><span class="cat">Transformation:</span> Managed a team of PMOs and led a data-driven culture program, implementing KPI frameworks and analytics systems that unified strategic priorities across diverse business units.</li>
+                    </ul>
+                </article>
+            </section>
+        </main>
+
+        <!-- =========== PAGE 2 =========== -->
+        <main class="page">
+            <section>
+                <div class="section-hd">Professional Experience (continued)</div>
+
+                <article class="role">
+                    <div class="role-head">
+                        <div class="title">Associate Director — Supply Analytics</div>
+                        <div class="dates">Nov 2017 — Apr 2022</div>
+                    </div>
+                    <div class="role-sub"><span class="company">Agoda</span> · Bangkok · Global Travel Tech</div>
+                    <div class="role-progression">Progression: Senior Opportunity Manager (2017) → Head of Analytics (2019) → Associate Director (2021)</div>
+                    <ul>
+                        <li><span class="cat">Strategic Alignment:</span> Partnered with Senior Leadership (HQ, Regional Directors, Country Heads) across the Supply/Accommodation organization to align targets and opportunities; delivered analytics and insight to drive Go-to-Market strategy.</li>
+                        <li><span class="cat">Program Optimization:</span> Directed analytics for major partner programs focused on <b>visibility, supply availability, and pricing</b>, driving significant incremental business for hotel partners and Agoda.</li>
+                        <li><span class="cat">Risk Management:</span> Engineered end-to-end risk frameworks for key commercial initiatives (e.g., Prepaid Programs) — <b>ROI analysis, exposure monitoring, Expected Loss models</b>, alerting, remediation, and collections.</li>
+                        <li><span class="cat">Scale:</span> Oversaw the design and rollout of a self-service analytics ecosystem — <b>100+ Tableau dashboards</b> serving <b>600+ users</b>.</li>
+                    </ul>
+                </article>
+
+                <article class="role">
+                    <div class="role-head">
+                        <div class="title">Planning Director</div>
+                        <div class="dates">Oct 2016 — Nov 2017</div>
+                    </div>
+                    <div class="role-sub"><span class="company">Nok Air</span> · Bangkok · Low-Cost Airline</div>
+                    <ul>
+                        <li><span class="cat">Corporate Turnaround:</span> Co-architected a successful corporate turnaround using analytical models that increased aircraft utilization by <b>15%</b>; led route network planning, financial modeling, and competitive analysis for multi-year strategic plans.</li>
+                        <li><span class="cat">Capital Secured:</span> Developed and presented the turnaround strategy multiple times to the Board, Shareholders, and Investors — securing multiple rounds of funding totaling over <b>4 Billion THB</b>.</li>
+                    </ul>
+                </article>
+
+                <article class="role">
+                    <div class="role-head">
+                        <div class="title">Strategy &amp; Planning Manager</div>
+                        <div class="dates">Nov 2015 — Sep 2016</div>
+                    </div>
+                    <div class="role-sub"><span class="company">Thai Smile Airways</span> · Bangkok · Regional Airline</div>
+                    <ul>
+                        <li><span class="cat">Network Strategy:</span> Led a team of <b>8</b> on network optimization, route expansion, and strategic planning; monitored KPIs and delivered recommendations to senior leadership.</li>
+                        <li><span class="cat">Relations:</span> Built and maintained critical relationships with aviation authorities and government bodies to secure vital operating permits and slots.</li>
+                    </ul>
+                </article>
+
+                <div class="role-short">
+                    <div class="lhs">
+                        <div><span class="title">Commercial Management Trainee / Senior Supervisor</span> · <span class="company">Thai Airways</span>, Bangkok</div>
+                        <div class="desc">Selected via rigorous internal process (from Cabin Crew) for the Commercial Management Trainee Program grooming future Country Managers. Rotated through commercial functions, supporting the CEO's Advisor on route profitability, network connectivity, and competitive market analysis.</div>
+                    </div>
+                    <div class="dates">Jan 2008 — Nov 2015</div>
+                </div>
+
+                <div class="role-short">
+                    <div class="lhs">
+                        <div><span class="title">Junior Consultant</span> · <span class="company">DST International (Thailand)</span>, Bangkok</div>
+                        <div class="desc">FinTech consulting — financial modeling and client training.</div>
+                    </div>
+                    <div class="dates">Apr 2007 — Jan 2008</div>
+                </div>
+
+                <div class="role-short">
+                    <div class="lhs">
+                        <div><span class="title">Junior Analyst</span> · <span class="company">Prudent Siam Securities</span>, Bangkok</div>
+                        <div class="desc">Financial analysis and corporate valuation.</div>
+                    </div>
+                    <div class="dates">Jun 2006 — Mar 2007</div>
+                </div>
+            </section>
+
+            <section>
+                <div class="section-hd">Showcase Personal Projects</div>
+
+                <div class="project">
+                    <div class="lhs">
+                        <div><span class="name">Thai Election Data Storytelling</span> <span class="role-label">· Data Storytelling</span></div>
+                        <div class="desc">Interactive 3D viz of the 2023 Thai General Election — AI insights &amp; cinematic storytelling. <span class="stack">React, Gemini AI, Data Viz.</span></div>
+                    </div>
+                    <a class="url" href="https://wutcharin.com/thai-election" target="_blank">wutcharin.com/thai-election</a>
+                </div>
+
+                <div class="project">
+                    <div class="lhs">
+                        <div><span class="name">Resume Builder</span> <span class="role-label">· Full-Stack Developer</span></div>
+                        <div class="desc">AI-powered resume builder with real-time preview, smart templates, and DOCX/HTML export. <span class="stack">React, Gemini AI, Tailwind.</span></div>
+                    </div>
+                    <a class="url" href="https://wutcharin.com/resume-builder" target="_blank">wutcharin.com/resume-builder</a>
+                </div>
+
+                <div class="project">
+                    <div class="lhs">
+                        <div><span class="name">SlipVerify AI</span> <span class="role-label">· AI Engineer</span></div>
+                        <div class="desc">Autonomous revenue-protection agent — cyclic state, fraud detection, human-in-the-loop. <span class="stack">LangGraph, Python, React.</span></div>
+                    </div>
+                    <a class="url" href="https://wutcharin.com/slip-verify" target="_blank">wutcharin.com/slip-verify</a>
+                </div>
+
+                <div class="project">
+                    <div class="lhs">
+                        <div><span class="name">Enterprise Collections AI</span> <span class="role-label">· AI Engineer</span></div>
+                        <div class="desc">Autonomous dispute agent for VCC overcharges — cognitive flow, strategy engine, auto-rebuttal. <span class="stack">LangGraph, React, Agentic AI.</span></div>
+                    </div>
+                    <a class="url" href="https://wutcharin.com/collections" target="_blank">wutcharin.com/collections</a>
+                </div>
+
+                <div class="project">
+                    <div class="lhs">
+                        <div><span class="name">Gemini OCR</span> <span class="role-label">· AI Engineer</span></div>
+                        <div class="desc">Next-gen OCR on Gemini 2.5 Flash — multimodal, handwriting recognition, structured JSON output. <span class="stack">Gemini AI, Node.js, React.</span></div>
+                    </div>
+                    <a class="url" href="https://wutcharin.com/gemini-ocr" target="_blank">wutcharin.com/gemini-ocr</a>
+                </div>
+
+                <div class="project">
+                    <div class="lhs">
+                        <div><span class="name">SplitBill AI</span> <span class="role-label">· Creator &amp; Developer</span></div>
+                        <div class="desc">Production-ready AI expense splitter — receipt scanning, item parsing, smart assignment. <span class="stack">React, Firebase, Gemini AI.</span></div>
+                    </div>
+                    <a class="url" href="https://splitbill-ai.com" target="_blank">splitbill-ai.com</a>
+                </div>
+            </section>
+
+            <section>
+                <div class="section-hd">Education</div>
+                <div class="edu-row">
+                    <div class="lhs">
+                        <div class="degree">Master of Business Administration — Marketing</div>
+                        <div class="inst">Stamford International University, Bangkok</div>
+                    </div>
+                    <div class="dates">2014 — 2015</div>
+                </div>
+                <div class="edu-row">
+                    <div class="lhs">
+                        <div class="degree">Bachelor of Engineering — Industrial Engineering</div>
+                        <div class="inst">Chulalongkorn University, Bangkok</div>
+                    </div>
+                    <div class="dates">2002 — 2006</div>
+                </div>
+            </section>
+        </main>
     </div>
 </body>
 
 </html>
-
-@
