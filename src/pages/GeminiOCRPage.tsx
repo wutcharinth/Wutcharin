@@ -138,7 +138,7 @@ const GeminiOCRPage = () => {
                                 <span className="ml-auto text-slate-500 text-[10px]">server/index.js</span>
                             </div>
                             <pre className="whitespace-pre-wrap text-slate-300 leading-relaxed">
-{`const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+{`const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
 // Construct multimodal prompt
 const result = await model.generateContent([
@@ -175,7 +175,7 @@ const text = response.text();`}
                         <SidebarCard title="Model specs" icon={Database} accent="#a855f7">
                             <dl className="text-[11px] space-y-3">
                                 {[
-                                    ['Model', 'gemini-2.0-flash'],
+                                    ['Model', 'gemini-2.5-flash'],
                                     ['Context', '1M tokens'],
                                     ['Input', 'Text + Image'],
                                 ].map(([k, v]) => (

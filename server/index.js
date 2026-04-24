@@ -67,7 +67,7 @@ app.post('/api/analyze', upload.single('image'), async (req, res) => {
             return res.status(500).json({ error: 'Server configuration error: API Key missing' });
         }
 
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
         const imagePart = {
             inlineData: {

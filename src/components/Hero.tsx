@@ -1,6 +1,6 @@
 import { useEffect, useRef, lazy, Suspense } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowRight, Mail } from 'lucide-react';
+import { ArrowRight, Mail, Download } from 'lucide-react';
 
 // Three.js + fiber weighs ~300KB gzip. Lazy-loading keeps the hero text
 // interactive immediately; fish fade in once the bundle arrives.
@@ -208,6 +208,18 @@ export default function Hero() {
                         <span className="flex items-center gap-2">
                             <Mail className="w-4 h-4" />
                             Get in touch
+                        </span>
+                    </MagneticButton>
+                    <MagneticButton
+                        as="a"
+                        href="/Wutcharin_CV_2025.pdf"
+                        {...({ download: 'Wutcharin_Thatan_Resume.pdf', target: '_blank', rel: 'noopener' } as Record<string, string>)}
+                        className="group px-7 py-3 rounded-full border border-violet-400/30 text-violet-200 hover:text-white font-medium text-sm tracking-wide hover:bg-violet-500/10 transition-colors"
+                        data-cursor="download"
+                    >
+                        <span className="flex items-center gap-2">
+                            <Download className="w-4 h-4" />
+                            Download resume
                         </span>
                     </MagneticButton>
                 </motion.div>
