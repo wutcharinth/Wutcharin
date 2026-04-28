@@ -15,12 +15,10 @@ function KineticWord({
     text,
     className = '',
     delay = 0,
-    gradient = false,
 }: {
     text: string;
     className?: string;
     delay?: number;
-    gradient?: boolean;
 }) {
     const ref = useRef<HTMLSpanElement | null>(null);
 
@@ -29,9 +27,13 @@ function KineticWord({
         const el = ref.current;
         const letters = el.querySelectorAll<HTMLElement>('[data-letter]');
 
-        const ctx = gsap.context(() => {
-            gsap.set(letters, { yPercent: 120, opacity: 0, rotate: () => gsap.utils.random(-10, 10) });
-            gsap.to(letters, {
+        // Use gsap.fromTo so the start state is enforced even if a previous
+        // ctx.revert() cleared the inline transform/opacity. Avoids the
+        // StrictMode / HMR race where letters could otherwise strand at 0 opacity.
+        const tween = gsap.fromTo(
+            letters,
+            { yPercent: 120, opacity: 0, rotate: () => gsap.utils.random(-10, 10) },
+            {
                 yPercent: 0,
                 opacity: 1,
                 rotate: 0,
@@ -39,8 +41,8 @@ function KineticWord({
                 ease: 'expo.out',
                 stagger: 0.05,
                 delay,
-            });
-        }, el);
+            }
+        );
 
         const onMove = (e: MouseEvent) => {
             letters.forEach((letter) => {
@@ -73,7 +75,7 @@ function KineticWord({
         return () => {
             window.removeEventListener('mousemove', onMove);
             el.removeEventListener('mouseleave', onLeave);
-            ctx.revert();
+            tween.kill();
         };
     }, [delay, text]);
 
@@ -86,14 +88,6 @@ function KineticWord({
                         style={{
                             display: 'inline-block',
                             willChange: 'transform, opacity',
-                            backgroundImage: gradient
-                                ? 'linear-gradient(110deg, #ffffff 10%, #cbd5e1 40%, #ffffff 55%, #94a3b8 70%, #ffffff 100%)'
-                                : undefined,
-                            WebkitBackgroundClip: gradient ? 'text' : undefined,
-                            backgroundClip: gradient ? 'text' : undefined,
-                            color: gradient ? 'transparent' : undefined,
-                            backgroundSize: gradient ? '220% 100%' : undefined,
-                            animation: gradient ? 'shimmer 3.4s linear infinite' : undefined,
                         }}
                     >
                         {c}
@@ -167,7 +161,7 @@ export default function Hero() {
                         <KineticWord text="Wutcharin" className="text-white" delay={0.6} />
                     </h1>
                     <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[8rem] font-medium tracking-[-0.035em] leading-[0.9] block mt-1">
-                        <KineticWord text="Thatan" gradient delay={0.85} />
+                        <KineticWord text="Thatan" className="text-slate-300" delay={0.85} />
                     </h1>
                 </motion.div>
 

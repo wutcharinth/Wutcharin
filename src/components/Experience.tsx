@@ -15,8 +15,8 @@ type Job = {
 const experiences: Job[] = [
     {
         company: 'Agoda',
-        role: 'Associate Director — FinTech Data and Automation',
-        period: 'Apr 2024 — Present',
+        role: 'Associate Director, FinTech Data and Automation',
+        period: 'Apr 2024  – Present',
         points: [
             'Direct a cross-functional division of 10, encompassing Finance Analytics and RPA/AI teams, to identify and execute on high-impact process automation opportunities.',
             'Crafting the departmental AI vision and roadmap; led workshops and built AI Agents (RAG, Auto-SQL) to automate workflows.',
@@ -27,7 +27,7 @@ const experiences: Job[] = [
     {
         company: 'Really Cool Airlines',
         role: 'Head of Commercial',
-        period: 'Apr 2023 — Feb 2024',
+        period: 'Apr 2023 – Feb 2024',
         points: [
             "Architected and scaled the airline's entire commercial division from inception, building and mentoring a team of 11 across 6 functions including Network Planning and Revenue Management.",
             'Developed the definitive business plan and investor pitch, leveraging data-driven market analysis to craft a compelling go-to-market strategy that successfully secured 200M THB in seed funding.',
@@ -38,7 +38,7 @@ const experiences: Job[] = [
     {
         company: 'Thairath Group',
         role: 'Head of Strategic Foresight and Planning',
-        period: 'Apr 2022 — Mar 2023',
+        period: 'Apr 2022 – Mar 2023',
         points: [
             'Led a group-wide data transformation, establishing standardized KPI frameworks and deploying analytics systems to create a unified view of performance across business units.',
             'Launched a new media business unit by developing the complete business plan to mitigate content rights risks and capture new international revenue streams.',
@@ -47,8 +47,8 @@ const experiences: Job[] = [
     },
     {
         company: 'Agoda',
-        role: 'Associate Director — Supply Analytics',
-        period: 'Nov 2017 — Apr 2022',
+        role: 'Associate Director, Supply Analytics',
+        period: 'Nov 2017 – Apr 2022',
         points: [
             'Directed analytics for the Partner Programs division, transforming raw data into actionable insights and strategic recommendations presented directly to C-level leadership.',
             'Oversaw credit risk management and analytics for the Partner Prepaid Programs, mitigating financial exposure and optimizing partner payment solutions.',
@@ -60,7 +60,7 @@ const experiences: Job[] = [
     {
         company: 'Nok Air',
         role: 'Planning Director',
-        period: 'Oct 2016 — Nov 2017',
+        period: 'Oct 2016 – Nov 2017',
         points: [
             'Played a pivotal role in a successful corporate turnaround by developing analytical models for network and fleet optimization, leading to a 15% increase in aircraft utilization.',
             'Conducted in-depth competitor analysis to identify market opportunities and inform strategic fleet and network decisions.',
@@ -70,7 +70,7 @@ const experiences: Job[] = [
     {
         company: 'Thai Smile Airways',
         role: 'Corporate Strategy & Planning Manager',
-        period: 'Nov 2015 — Sep 2016',
+        period: 'Nov 2015 – Sep 2016',
         points: [
             'Led data-driven network planning to analyze route profitability, directly contributing to increased market share.',
             'Managed negotiations with aviation authorities/airports to secure vital operating permits and slots.',
@@ -97,10 +97,10 @@ export default function Experience() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                        className="inline-flex items-center gap-2 mb-6 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm"
+                        className="inline-flex items-center gap-2 mb-6 px-3 py-1 rounded-full border border-white/10"
                     >
                         <span className="h-1 w-1 rounded-full bg-violet-400" />
-                        <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-slate-300">04 · Journey</span>
+                        <span className="text-[10px] font-mono uppercase tracking-[0.28em] text-slate-300">04 · Journey</span>
                     </motion.div>
                     <SplitText
                         as="h2"
@@ -115,10 +115,10 @@ export default function Experience() {
                 <div ref={sectionRef} className="relative">
                     {/* Track line (faded) */}
                     <div className="absolute left-4 md:left-6 top-0 bottom-0 w-px bg-white/10" aria-hidden="true" />
-                    {/* Progress line (scroll-driven gradient) */}
+                    {/* Progress line — single Violet Signal, no rainbow */}
                     <motion.div
                         style={{ height: lineHeight }}
-                        className="absolute left-4 md:left-6 top-0 w-px bg-gradient-to-b from-violet-400 via-fuchsia-400 to-violet-400"
+                        className="absolute left-4 md:left-6 top-0 w-px bg-violet-400"
                         aria-hidden="true"
                     />
 
@@ -142,14 +142,14 @@ export default function Experience() {
                                 {/* Period badge above card */}
                                 <div
                                     data-reveal-child
-                                    className="font-mono text-[10px] uppercase tracking-[0.25em] text-violet-300/80 mb-3"
+                                    className="font-mono text-[10px] uppercase tracking-[0.28em] text-violet-300/80 mb-3"
                                 >
                                     {exp.period}
                                 </div>
 
                                 <div
                                     data-reveal-child
-                                    className="group relative rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.03] to-transparent backdrop-blur-sm p-6 md:p-8 hover:border-white/25 transition-colors"
+                                    className="group relative rounded-xl border border-white/10 bg-white/[0.02] p-6 md:p-8 hover:border-white/25 transition-colors"
                                 >
                                     <div className="flex items-baseline gap-3 flex-wrap mb-2">
                                         <h3 className="text-xl md:text-2xl font-medium text-white tracking-[-0.01em]">

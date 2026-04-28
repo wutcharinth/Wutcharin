@@ -34,7 +34,7 @@ const projectSections: Section[] = [
             { title: 'The Human Edge', role: 'Interactive Article', badge: 'Lecture Insight', desc: "Based on Po-Shen Loh's philosophy. Features a 'Mental Fitness' simulation and visualizations of the new survival skills in the AI era.", tags: ['Philosophy', 'React', 'Interactive', 'Mental Fitness'], link: '/human-edge', icon: Heart, accent: '#22d3ee' },
             { title: 'Agentic AI Deep Dive', role: 'Technical Writer & Educator', badge: 'Lecture Insight', desc: "Interactive article exploring Stanford CS230's lecture on Agentic AI. Features visualizations of the Jagged Frontier, Prompt Engineering, HyDE, and ReAct patterns.", tags: ['Stanford CS230', 'Agentic AI', 'Interactive', 'Education'], link: '/agentic-ai', icon: Brain, accent: '#a78bfa' },
             { title: 'Thai Election 2566', role: 'Data Artist & AI Engineer', badge: 'Data Story', desc: 'Interactive data storytelling with an integrated RAG-based AI chatbot. Visualizes 2023 election results with deep political insights.', tags: ['Data Viz', 'RAG', 'Gemini AI', 'React'], link: '/thai-election', icon: MessageSquare, accent: '#fb923c' },
-            { title: 'Thailand 2026 Election Investigation', role: 'Data Investigator & Journalist', badge: 'Data Story', desc: "Statistical investigation of Thailand's controversial Feb 8, 2026 election. Covers QR-code ballot secrecy, vote-count mismatches, the 1:1 ratio anomaly, and annulment petitions — using official ECT data across 382 districts.", tags: ['ECT Data', 'ECharts', 'Bilingual', 'Investigation'], link: '/election-2026.html', icon: BarChart2, accent: '#ef4444' },
+            { title: 'Thailand 2026 Election Investigation', role: 'Data Investigator & Journalist', badge: 'Data Story', desc: "Statistical investigation of Thailand's controversial Feb 8, 2026 election. Covers QR-code ballot secrecy, vote-count mismatches, the 1:1 ratio anomaly, and annulment petitions, using official ECT data across 382 districts.", tags: ['ECT Data', 'ECharts', 'Bilingual', 'Investigation'], link: '/election-2026.html', icon: BarChart2, accent: '#ef4444' },
             { title: 'AI Evolution Stats', role: 'Data Storyteller', badge: 'Data Story', desc: 'Interactive visualization of the exponential rise of AI. From Parameter Explosions to the Context Revolution.', tags: ['Data Storytelling', 'Recharts', 'React', 'AI Trends'], link: '/ai-evolution', icon: TrendingUp, accent: '#e879f9' },
             { title: 'Future of Work', role: 'Data Journalist', badge: 'Data Story', desc: 'A data-driven view on global job disruption and the emerging roles of tomorrow. Automation vs Transformation.', tags: ['Data Journalism', 'React', 'Labor Stats'], link: '/future-of-work', icon: Briefcase, accent: '#22d3ee' },
         ],
@@ -70,7 +70,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
     const Icon = project.icon;
 
     const Inner = (
-        <TiltCard max={7} lift={8} className="group relative h-full rounded-2xl border border-white/[0.08] bg-gradient-to-b from-white/[0.04] to-white/[0.01] backdrop-blur-sm p-6 md:p-7 overflow-hidden" data-cursor="view">
+        <TiltCard max={7} lift={8} className="group relative h-full rounded-xl border border-white/[0.08] bg-white/[0.02] hover:border-white/15 transition-colors p-6 md:p-7 overflow-hidden" data-cursor="view">
             {/* Ambient glow that matches the project accent */}
             <div
                 className="pointer-events-none absolute -top-24 -right-24 h-60 w-60 rounded-full opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-40"
@@ -118,7 +118,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                     <span className="font-mono text-[10px] text-slate-500">{String(index + 1).padStart(2, '0')}</span>
                     <h3 className="text-lg md:text-xl font-medium text-white tracking-[-0.01em]">{project.title}</h3>
                 </div>
-                <p className="text-[10px] font-mono text-slate-500 uppercase tracking-[0.18em] mb-5">{project.role}</p>
+                <p className="text-[10px] font-mono text-slate-500 uppercase tracking-[0.28em] mb-5">{project.role}</p>
 
                 <p className="text-sm text-slate-400 leading-relaxed line-clamp-3 flex-grow mb-6">
                     {project.desc}
@@ -176,10 +176,10 @@ export default function Projects() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                        className="inline-flex items-center gap-2 mb-6 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm"
+                        className="inline-flex items-center gap-2 mb-6 px-3 py-1 rounded-full border border-white/10"
                     >
                         <span className="h-1 w-1 rounded-full bg-violet-400" />
-                        <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-slate-300">03 · Work</span>
+                        <span className="text-[10px] font-mono uppercase tracking-[0.28em] text-slate-300">03 · Work</span>
                     </motion.div>
 
                     <SplitText
@@ -197,7 +197,7 @@ export default function Projects() {
                         transition={{ delay: 0.4, duration: 0.8 }}
                         className="mt-8 max-w-2xl text-base md:text-lg text-slate-400 font-light leading-relaxed"
                     >
-                        Rapid AI prototypes — often shipped in days, not weeks — and scalable intelligent systems at enterprise scale.
+                        Rapid AI prototypes (often shipped in days, not weeks) alongside scalable intelligent systems at enterprise scale.
                     </motion.p>
 
                     {/* Filter tabs — horizontally scrollable on mobile */}
@@ -240,7 +240,7 @@ export default function Projects() {
                             <div key={section.category}>
                                 <RevealOnScroll staggerChildren={0.08} className="mb-10">
                                     <div data-reveal-child className="flex items-baseline gap-4 flex-wrap">
-                                        <span className="font-mono text-xs text-violet-300/80 tracking-[0.22em] uppercase">
+                                        <span className="font-mono text-xs text-violet-300/80 tracking-[0.28em] uppercase">
                                             Cat · 0{si + 1}
                                         </span>
                                         <h3 className="text-2xl md:text-3xl font-medium text-white tracking-[-0.01em]">
