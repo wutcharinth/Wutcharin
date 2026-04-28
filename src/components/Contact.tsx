@@ -14,9 +14,9 @@ export default function Contact() {
 
             <div className="relative max-w-5xl mx-auto text-center">
                 <RevealOnScroll staggerChildren={0.1} duration={1}>
-                    <div data-reveal-child className="inline-flex items-center gap-2 mb-8 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
+                    <div data-reveal-child className="inline-flex items-center gap-2 mb-8 px-3 py-1 rounded-full border border-white/10">
                         <span className="h-1 w-1 rounded-full bg-violet-400" />
-                        <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-slate-300">05 · Connect</span>
+                        <span className="text-[10px] font-mono uppercase tracking-[0.28em] text-slate-300">05 · Connect</span>
                     </div>
                     <div data-reveal-child>
                         <SplitText
@@ -39,7 +39,7 @@ export default function Contact() {
                     </div>
 
                     <p data-reveal-child className="mt-10 mx-auto max-w-xl text-base md:text-lg text-slate-400 font-light leading-relaxed">
-                        Open to discussing new projects, bold ideas, and ambitious visions — whether it's an enterprise AI initiative, a startup bet, or a weekend prototype.
+                        Open to discussing new projects, bold ideas, and ambitious visions: an enterprise AI initiative, a startup bet, or a weekend prototype.
                     </p>
 
                     <div data-reveal-child className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -80,7 +80,7 @@ export default function Contact() {
                     </div>
 
                     {/* Decorative email plate */}
-                    <div data-reveal-child className="mt-20 inline-flex items-center gap-3 font-mono text-xs text-slate-500 tracking-widest">
+                    <div data-reveal-child className="mt-20 inline-flex items-center gap-3 font-mono text-xs text-slate-500 tracking-[0.28em]">
                         <span className="h-px w-12 bg-white/10" />
                         <a
                             href="mailto:wutcharin.th@gmail.com"

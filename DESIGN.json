@@ -1,0 +1,217 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-04-28T00:00:00Z",
+  "title": "Design System: Wutcharin Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "midnight-deep": {
+        "role": "neutral",
+        "displayName": "Midnight Deep",
+        "canonical": "oklch(11% 0.02 265)",
+        "tonalRamp": [
+          "#000409", "#020617", "#070b1f", "#0e1428", "#1a2138", "#2a3350", "#445173", "#7a8aa9"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "oklch(8% 0 0)",
+        "tonalRamp": [
+          "#000000", "#050505", "#0a0a0a", "#121212", "#1f1f1f", "#2e2e2e", "#525252", "#8a8a8a"
+        ]
+      },
+      "violet-signal": {
+        "role": "primary",
+        "displayName": "Violet Signal",
+        "canonical": "oklch(74% 0.16 295)",
+        "tonalRamp": [
+          "#1e1b4b", "#312e81", "#4338ca", "#6d28d9", "#7c3aed", "#a78bfa", "#c4b5fd", "#ede9fe"
+        ]
+      },
+      "violet-deep": {
+        "role": "primary",
+        "displayName": "Violet Deep",
+        "canonical": "oklch(54% 0.22 295)",
+        "tonalRamp": [
+          "#2e1065", "#4c1d95", "#5b21b6", "#6d28d9", "#7c3aed", "#8b5cf6", "#a78bfa", "#c4b5fd"
+        ]
+      },
+      "violet-glow": {
+        "role": "primary",
+        "displayName": "Violet Glow",
+        "canonical": "oklch(34% 0.16 295)",
+        "tonalRamp": [
+          "#1e1b4b", "#2e1065", "#3b1d8a", "#4c1d95", "#5b21b6", "#6d28d9", "#7c3aed", "#8b5cf6"
+        ]
+      },
+      "cyan-pulse": {
+        "role": "secondary",
+        "displayName": "Cyan Pulse",
+        "canonical": "oklch(83% 0.13 200)",
+        "tonalRamp": [
+          "#083344", "#0e7490", "#0891b2", "#06b6d4", "#22d3ee", "#67e8f9", "#a5f3fc", "#cffafe"
+        ]
+      },
+      "fuchsia-flare": {
+        "role": "secondary",
+        "displayName": "Fuchsia Flare",
+        "canonical": "oklch(75% 0.25 320)",
+        "tonalRamp": [
+          "#4a044e", "#86198f", "#a21caf", "#c026d3", "#d946ef", "#e879f9", "#f0abfc", "#f5d0fe"
+        ]
+      },
+      "slate-body": {
+        "role": "neutral",
+        "displayName": "Slate Body",
+        "canonical": "oklch(86% 0.01 265)",
+        "tonalRamp": [
+          "#0f172a", "#1e293b", "#334155", "#475569", "#64748b", "#94a3b8", "#cbd5e1", "#e2e8f0"
+        ]
+      },
+      "slate-mute": {
+        "role": "neutral",
+        "displayName": "Slate Mute",
+        "canonical": "oklch(70% 0.02 265)",
+        "tonalRamp": [
+          "#0f172a", "#1e293b", "#334155", "#475569", "#64748b", "#94a3b8", "#cbd5e1", "#e2e8f0"
+        ]
+      },
+      "white-pure": {
+        "role": "neutral",
+        "displayName": "White Pure",
+        "canonical": "oklch(100% 0 0)",
+        "tonalRamp": [
+          "#525252", "#737373", "#a3a3a3", "#d4d4d4", "#e5e5e5", "#f5f5f5", "#fafafa", "#ffffff"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero only. Often broken letter-by-letter for kinetic entry." },
+      "headline": { "displayName": "Headline", "purpose": "Section openers. UPPERCASE." },
+      "title": { "displayName": "Title", "purpose": "Card titles, project names. Sentence case." },
+      "body": { "displayName": "Body", "purpose": "Default reading text. 65 to 75ch line length." },
+      "label": { "displayName": "Label", "purpose": "Mono uppercase meta-labels at 0.28em letter-spacing — status indicators, eyebrows, badges." }
+    },
+    "shadows": [
+      { "name": "ambient-violet-glow", "value": "0 0 18px rgba(139, 92, 246, 0.6)", "purpose": "Live-status indicator only — pulse dots, active nav pill, hover on primary CTA. Signals 'running'." },
+      { "name": "soft-violet-bloom", "value": "0 0 12px rgba(167, 139, 250, 0.25)", "purpose": "Subtle violet halo on focused interactive elements." },
+      { "name": "brutalist-hard", "value": "8px 8px 0px 0px var(--shadow-color)", "purpose": "Legacy only — kept for the few brutalism elements in _backup/. Not for new components." }
+    ],
+    "motion": [
+      { "name": "ease-out-expo", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Default easing for entrance animations and reveals." },
+      { "name": "ease-out-quart", "value": "cubic-bezier(0.25, 1, 0.5, 1)", "purpose": "Slightly less aggressive ease-out for body-section transitions." },
+      { "name": "ease-in-out-quart", "value": "cubic-bezier(0.76, 0, 0.24, 1)", "purpose": "Symmetrical easing for ambient looping animations (aurora, float-slow)." },
+      { "name": "ease-spring", "value": "cubic-bezier(0.34, 1.56, 0.64, 1)", "purpose": "Magnetic-button cursor-pull only. Never used for layout transitions." },
+      { "name": "dur-fast", "value": "180ms", "purpose": "Hover, focus, micro-interactions." },
+      { "name": "dur-base", "value": "320ms", "purpose": "Default state transitions." },
+      { "name": "dur-slow", "value": "600ms", "purpose": "Section reveals, larger choreography." },
+      { "name": "dur-xslow", "value": "1100ms", "purpose": "Hero entrance, cinematic reel beats." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" },
+      { "name": "2xl", "value": "1536px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single white CTA pill. Used once or twice per page max.",
+      "html": "<button class=\"ds-btn-primary\">View projects</button>",
+      "css": ".ds-btn-primary { background: #ffffff; color: #020617; padding: 12px 28px; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.875rem; font-weight: 500; letter-spacing: 0; border: none; border-radius: 9999px; cursor: pointer; transition: background 320ms cubic-bezier(0.16, 1, 0.3, 1), color 320ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-primary:hover { background: #a78bfa; color: #020617; } .ds-btn-primary:focus-visible { outline: 2px solid rgba(167, 139, 250, 0.9); outline-offset: 3px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "The default dark-section action button — violet outline pill.",
+      "html": "<button class=\"ds-btn-ghost\">Get in touch</button>",
+      "css": ".ds-btn-ghost { background: transparent; color: #a78bfa; padding: 12px 28px; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.875rem; font-weight: 500; border: 1px solid rgba(167, 139, 250, 0.3); border-radius: 9999px; cursor: pointer; transition: background 320ms cubic-bezier(0.16, 1, 0.3, 1), color 320ms cubic-bezier(0.16, 1, 0.3, 1), border-color 320ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-ghost:hover { background: rgba(124, 58, 237, 0.1); color: #ffffff; border-color: rgba(167, 139, 250, 0.7); } .ds-btn-ghost:focus-visible { outline: 2px solid rgba(167, 139, 250, 0.9); outline-offset: 3px; }"
+    },
+    {
+      "name": "Meta Chip",
+      "kind": "chip",
+      "refersTo": "chip-meta",
+      "description": "Violet pill with optional pulsing dot — section eyebrows, project badges, status indicators.",
+      "html": "<span class=\"ds-chip-meta\"><span class=\"ds-chip-dot\"></span>AI / DATA / OPS</span>",
+      "css": ".ds-chip-meta { display: inline-flex; align-items: center; gap: 8px; background: rgba(76, 29, 149, 0.08); color: #c4b5fd; padding: 6px 16px; font-family: 'Courier New', Courier, monospace; font-size: 0.625rem; font-weight: 500; letter-spacing: 0.28em; text-transform: uppercase; border: 1px solid rgba(167, 139, 250, 0.2); border-radius: 9999px; } .ds-chip-dot { width: 6px; height: 6px; background: #a78bfa; border-radius: 9999px; animation: ds-chip-pulse 2s cubic-bezier(0.16, 1, 0.3, 1) infinite; } @keyframes ds-chip-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.85); } }"
+    },
+    {
+      "name": "Section Card",
+      "kind": "card",
+      "refersTo": "card-section",
+      "description": "Default content card on dark sections — hairline border, no rest-state shadow.",
+      "html": "<article class=\"ds-card\"><h3 class=\"ds-card-title\">Project Title</h3><p class=\"ds-card-body\">Card body text in slate-body color.</p></article>",
+      "css": ".ds-card { background: #020617; color: #cbd5e1; padding: 32px; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 12px; transition: border-color 320ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-card:hover { border-color: rgba(255, 255, 255, 0.15); } .ds-card-title { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 1.25rem; font-weight: 600; line-height: 1.3; color: #ffffff; margin: 0 0 12px 0; } .ds-card-body { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 1rem; font-weight: 400; line-height: 1.6; color: #cbd5e1; margin: 0; max-width: 65ch; }"
+    },
+    {
+      "name": "Display Heading",
+      "kind": "custom",
+      "refersTo": "display",
+      "description": "Hero-only display type. Heavy and tight. Often broken letter-by-letter for kinetic entry.",
+      "html": "<h1 class=\"ds-display\">Wutcharin</h1>",
+      "css": ".ds-display { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: clamp(3rem, 8vw, 7.5rem); font-weight: 900; line-height: 0.9; letter-spacing: -0.04em; color: #ffffff; text-transform: none; margin: 0; }"
+    },
+    {
+      "name": "Mono Label",
+      "kind": "custom",
+      "refersTo": "label",
+      "description": "Mono uppercase eyebrow — the system's status-indicator typeface.",
+      "html": "<span class=\"ds-label\">Section / 02 — Projects</span>",
+      "css": ".ds-label { font-family: 'Courier New', Courier, monospace; font-size: 0.625rem; font-weight: 500; line-height: 1; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(196, 181, 253, 0.8); }"
+    },
+    {
+      "name": "Nav Pill",
+      "kind": "nav",
+      "refersTo": "nav",
+      "description": "Scroll-aware top-nav pill. Active state fills with violet wash.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-item ds-nav-active\" href=\"#hero\">Hero</a><a class=\"ds-nav-item\" href=\"#projects\">Projects</a></nav>",
+      "css": ".ds-nav { display: inline-flex; gap: 4px; padding: 6px; background: rgba(2, 6, 23, 0.7); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 9999px; } .ds-nav-item { padding: 8px 16px; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.875rem; font-weight: 500; color: #94a3b8; text-decoration: none; border-radius: 9999px; transition: background 320ms cubic-bezier(0.16, 1, 0.3, 1), color 320ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-nav-item:hover { color: #ffffff; } .ds-nav-active { background: rgba(167, 139, 250, 0.1); color: #c4b5fd; border: 1px solid rgba(167, 139, 250, 0.3); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Midnight Console",
+    "overview": "A late-night operations room running fintech at scale. The surface is dim by design, visitors arrive into a near-black room where motion is the only ambient signal, and every glowing element is doing real work. Violet is the operator's accent: a single hue that carries focus, status, and intent. Cyan and fuchsia appear sparingly, only on artifacts that already earned their own identity (specific projects, specific lectures). The interface is technical without being cyberpunk, kinetic without being maximalist, confident without bragging.\n\nThe system explicitly rejects four neighbors: the LinkedIn-blue corporate-resume default; the SaaS landing-page hero-metric template; the AI-slop dev-portfolio palette of glassmorphism and rainbow-gradient text; and the crypto/web3 neon-on-black maximalism.",
+    "keyCharacteristics": [
+      "Near-black #020617 surface with violet #a78bfa as the single signal color",
+      "Variable section rhythm — never uniform padding",
+      "Mono-cased labels at 0.28em letter-spacing carrying state and meta-context",
+      "Type breaks letter-by-letter on hero, lands solid in body",
+      "Pre-rendered Remotion video replaces runtime particle systems where it wins on perf"
+    ],
+    "rules": [
+      { "name": "The 10% Rule", "body": "Violet Signal is used on no more than 10% of any given screen by visual area. Its rarity is the point.", "section": "colors" },
+      { "name": "The Identity Lane Rule", "body": "Cyan Pulse and Fuchsia Flare belong to specific named artifacts. They are project identities, not global colors.", "section": "colors" },
+      { "name": "The No-Black Rule", "body": "#000 and #fff are forbidden as raw values. Use Midnight Deep (#020617) and tinted neutrals.", "section": "colors" },
+      { "name": "The Heavy-and-Tight Rule", "body": "Display weight is 900, never 700. Display tracking is -0.04em, never default.", "section": "typography" },
+      { "name": "The Mono-Label Rule", "body": "Mono is reserved for labels at 0.25em letter-spacing or more in UPPERCASE. A status-indicator typeface, not a code typeface.", "section": "typography" },
+      { "name": "The No-Gradient-Text Rule", "body": "background-clip: text combined with a gradient is forbidden by name. Emphasis through weight and size.", "section": "typography" },
+      { "name": "The Flat-By-Default Rule", "body": "New components ship with no box-shadow at rest. Shadows appear only as a response to state.", "section": "elevation" },
+      { "name": "The Aurora Is Color Rule", "body": "Large blurred violet/fuchsia orbs are backgrounds tinted by blur, not elevation cues.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do use Midnight Deep (#020617) as the canonical dark surface, never #000.",
+      "Do keep Violet Signal under 10% of any screen by visual area. Rarity is the design.",
+      "Do vary section padding deliberately. Identical padding everywhere is monotony.",
+      "Do pair every Violet Signal cue with size or weight contrast, so color blindness does not lose the meaning.",
+      "Do retire one motion layer when adding another. The site already has Three.js + GSAP + Framer Motion + neural canvas; adding Remotion means subtracting.",
+      "Do respect prefers-reduced-motion on every animation: instant reveals, paused marquees, no autoplay video, restored native cursor."
+    ],
+    "donts": [
+      "Don't use corporate LinkedIn blue (#0A66C2) anywhere.",
+      "Don't use background-clip: text with a gradient.",
+      "Don't apply glassmorphism as a default surface.",
+      "Don't ship the SaaS hero-metric template.",
+      "Don't ship identical 3-up card grids of icon + heading + description.",
+      "Don't use neon-on-black cyberpunk palettes.",
+      "Don't use mint/teal grids, animated coin/token particles, or faux Launch App CTAs.",
+      "Don't use border-left greater than 1px as a colored accent stripe.",
+      "Don't use em dashes in copy.",
+      "Don't use #000 or #fff as raw values without deliberate role assignment."
+    ]
+  }
+}

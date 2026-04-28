@@ -8,52 +8,12 @@ import {
 /* ─────────────────────────────────────────────────────────────────────────────
    CinematicReel — AI-focused motion-graphic showreel.
    7 scenes, loops continuously, no name repetition.
-───────────────────────────────────────────────────────────────────────────── */
 
-// ── Neural-network particle canvas ───────────────────────────────────────────
-function useNeuralCanvas(ref: React.RefObject<HTMLCanvasElement | null>) {
-    useEffect(() => {
-        const cv = ref.current; if (!cv) return;
-        const ctx = cv.getContext('2d'); if (!ctx) return;
-        type P = { x: number; y: number; vx: number; vy: number };
-        let pts: P[] = []; let raf = 0;
-        const MAX_DIST = 130;
-        const resize = () => {
-            cv.width = cv.offsetWidth; cv.height = cv.offsetHeight;
-            pts = Array.from({ length: Math.floor((cv.width * cv.height) / 9000) }, () => ({
-                x: Math.random() * cv.width, y: Math.random() * cv.height,
-                vx: (Math.random() - .5) * .22, vy: (Math.random() - .5) * .22,
-            }));
-        };
-        const draw = () => {
-            ctx.clearRect(0, 0, cv.width, cv.height);
-            for (let i = 0; i < pts.length; i++) {
-                for (let j = i + 1; j < pts.length; j++) {
-                    const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
-                    const d = Math.sqrt(dx * dx + dy * dy);
-                    if (d < MAX_DIST) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = `rgba(139,92,246,${(1 - d / MAX_DIST) * 0.18})`;
-                        ctx.lineWidth = 0.8;
-                        ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-            pts.forEach(p => {
-                p.x += p.vx; p.y += p.vy;
-                if (p.x < 0) p.x = cv.width; if (p.x > cv.width) p.x = 0;
-                if (p.y < 0) p.y = cv.height; if (p.y > cv.height) p.y = 0;
-                ctx.beginPath(); ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(139,92,246,0.45)'; ctx.fill();
-            });
-            raf = requestAnimationFrame(draw);
-        };
-        resize(); draw();
-        window.addEventListener('resize', resize);
-        return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize); };
-    }, [ref]);
-}
+   Background: Pre-rendered Remotion video (public/video/midnight-console.mp4)
+   replaced the runtime canvas particle system. Reduces JS work per frame on
+   this section to zero, and the pre-render lets us choreograph a deterministic,
+   seamlessly-looping aurora + neural lattice without RAF cost in the browser.
+───────────────────────────────────────────────────────────────────────────── */
 
 // ── Animated counter ──────────────────────────────────────────────────────────
 function Counter({ to, dur = 1600, suffix = '' }: { to: number; dur?: number; suffix?: string }) {
@@ -89,7 +49,7 @@ const itm: Variants = {
 // ── Pill label ────────────────────────────────────────────────────────────────
 function Pill({ children, color = '#a78bfa' }: { children: React.ReactNode; color?: string }) {
     return (
-        <span className="inline-block text-[10px] font-mono tracking-[0.2em] uppercase px-3 py-0.5 rounded-full border"
+        <span className="inline-block text-[10px] font-mono tracking-[0.28em] uppercase px-3 py-0.5 rounded-full border"
             style={{ color, borderColor: `${color}35`, background: `${color}0d` }}>
             {children}
         </span>
@@ -120,12 +80,11 @@ function S0() {
                 Agentic AI
             </motion.div>
             <motion.div variants={itm}
-                className="text-[clamp(1.1rem,3.5vw,2.2rem)] font-light leading-tight"
-                style={{ background: 'linear-gradient(90deg,#a78bfa,#e879f9,#22d3ee)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>
+                className="text-[clamp(1.1rem,3.5vw,2.2rem)] font-light leading-tight text-violet-300/90">
                 that actually works.
             </motion.div>
             <motion.p variants={itm} className="text-slate-500 text-sm max-w-sm leading-relaxed">
-                From autonomous agents to data investigations — everything on this page solves a real problem.
+                From autonomous agents to data investigations: everything on this page solves a real problem.
             </motion.p>
         </motion.div>
     );
@@ -191,9 +150,9 @@ function S1() {
 
 // Scene 2 — Data Investigations ───────────────────────────────────────────────
 const DATA_STORIES = [
-    { label: 'Thailand Election 2026 — Statistical Investigation', pct: 91, color: '#ef4444', tag: '382 districts · Official ECT data · 4 anomalies' },
-    { label: 'Agentic AI Deep Dive — Stanford CS230', pct: 78, color: '#a78bfa', tag: 'Interactive lecture · Jagged frontier · ReAct patterns' },
-    { label: 'AI Evolution — Parameters to Context Revolution', pct: 85, color: '#e879f9', tag: 'Exponential data visualization · Model ELO charts' },
+    { label: 'Thailand Election 2026: Statistical Investigation', pct: 91, color: '#ef4444', tag: '382 districts · Official ECT data · 4 anomalies' },
+    { label: 'Agentic AI Deep Dive: Stanford CS230', pct: 78, color: '#a78bfa', tag: 'Interactive lecture · Jagged frontier · ReAct patterns' },
+    { label: 'AI Evolution: Parameters to Context Revolution', pct: 85, color: '#e879f9', tag: 'Exponential data visualization · Model ELO charts' },
 ];
 
 function S2() {
@@ -202,10 +161,8 @@ function S2() {
             className="flex flex-col items-center gap-5 text-center w-full max-w-2xl">
             <motion.div variants={itm}><Pill color="#fb923c">Data Journalism · Investigation · Storytelling</Pill></motion.div>
             <motion.div variants={itm}
-                className="text-[clamp(1.8rem,5.5vw,3.5rem)] font-black leading-tight tracking-tight">
-                <span style={{ background: 'linear-gradient(135deg,#f1f5f9 30%,#fb923c)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>
-                    Complex data.<br />Unmissable stories.
-                </span>
+                className="text-[clamp(1.8rem,5.5vw,3.5rem)] font-black leading-tight tracking-tight text-slate-100">
+                Complex data.<br /><span className="text-slate-400 font-light">Unmissable stories.</span>
             </motion.div>
             <motion.div variants={stg} className="flex flex-col gap-3.5 w-full text-left">
                 {DATA_STORIES.map((d, i) => (
@@ -273,26 +230,29 @@ function SStrat() {
             className="flex flex-col items-center gap-5 text-center w-full max-w-2xl">
             <motion.div variants={itm}><Pill color="#22d3ee">Analytics · BI · Business Strategy</Pill></motion.div>
             <motion.div variants={itm}
-                className="text-[clamp(1.9rem,5.5vw,3.6rem)] font-black leading-tight tracking-tight">
-                <span style={{ background: 'linear-gradient(135deg,#f1f5f9 20%,#22d3ee 55%,#34d399 100%)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>
-                    AI meets<br />business reality.
-                </span>
+                className="text-[clamp(1.9rem,5.5vw,3.6rem)] font-black leading-tight tracking-tight text-slate-100">
+                AI meets<br /><span className="text-cyan-300/90">business reality.</span>
             </motion.div>
             <motion.p variants={itm} className="text-slate-500 text-sm max-w-md leading-relaxed">
-                The technical side only matters when it moves the business forward — strategy, intelligence, and execution together.
+                The technical side only matters when it moves the business forward: strategy, intelligence, and execution together.
             </motion.p>
-            <motion.div variants={stg} className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full text-left">
-                {STRAT_CAPS.map(c => (
-                    <motion.div key={c.title} variants={itm}
-                        className="flex items-start gap-3 rounded-xl border px-4 py-3.5"
-                        style={{ background: `${c.color}07`, borderColor: `${c.color}22` }}>
-                        <c.icon className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: c.color }} />
-                        <div>
-                            <div className="text-sm font-semibold mb-0.5" style={{ color: c.color }}>{c.title}</div>
-                            <div className="text-[10px] text-slate-500 font-mono leading-relaxed">{c.sub}</div>
-                        </div>
-                    </motion.div>
-                ))}
+            <motion.div variants={stg} className="grid grid-cols-6 auto-rows-min gap-3 w-full text-left">
+                {STRAT_CAPS.map((c, i) => {
+                    // Bento layout: first card spans 4/6, rest split — breaks identical-grid cliché.
+                    const span = i === 0 ? 'col-span-6 sm:col-span-4 row-span-2' : i === 1 ? 'col-span-6 sm:col-span-2' : 'col-span-3';
+                    const variant = i === 0 ? 'p-5 gap-4' : 'p-3.5 gap-3';
+                    return (
+                        <motion.div key={c.title} variants={itm}
+                            className={`${span} flex items-start ${variant} rounded-xl border`}
+                            style={{ background: `${c.color}07`, borderColor: `${c.color}22` }}>
+                            <c.icon className={`${i === 0 ? 'w-5 h-5' : 'w-4 h-4'} flex-shrink-0 mt-0.5`} style={{ color: c.color }} />
+                            <div>
+                                <div className={`${i === 0 ? 'text-base' : 'text-sm'} font-semibold mb-0.5`} style={{ color: c.color }}>{c.title}</div>
+                                <div className="text-[10px] text-slate-500 font-mono leading-relaxed">{c.sub}</div>
+                            </div>
+                        </motion.div>
+                    );
+                })}
             </motion.div>
         </motion.div>
     );
@@ -314,23 +274,26 @@ function S4() {
             className="flex flex-col items-center gap-5 text-center w-full max-w-2xl">
             <motion.div variants={itm}><Pill color="#818cf8">Interactive Lecture Insights</Pill></motion.div>
             <motion.div variants={itm}
-                className="text-[clamp(1.8rem,5.5vw,3.5rem)] font-black leading-tight tracking-tight">
-                <span style={{ background: 'linear-gradient(135deg,#f1f5f9 20%,#818cf8 60%,#e879f9)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>
-                    Profound ideas.<br />Made interactive.
-                </span>
+                className="text-[clamp(1.8rem,5.5vw,3.5rem)] font-black leading-tight tracking-tight text-slate-100">
+                Profound ideas.<br /><span className="text-violet-300/90 font-light">Made interactive.</span>
             </motion.div>
-            <motion.div variants={stg} className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 w-full">
-                {INSIGHTS.map(ins => (
-                    <motion.div key={ins.title} variants={itm}
-                        className="flex items-start gap-2.5 border border-slate-800/70 rounded-xl px-3 py-3 text-left"
-                        style={{ background: `${ins.color}08`, borderColor: `${ins.color}20` }}>
-                        <ins.icon className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: ins.color }} />
-                        <div>
-                            <div className="text-[11px] font-semibold leading-tight mb-0.5" style={{ color: ins.color }}>{ins.title}</div>
-                            <div className="text-[9px] text-slate-600 font-mono leading-tight">{ins.sub}</div>
-                        </div>
-                    </motion.div>
-                ))}
+            <motion.div variants={stg} className="grid grid-cols-6 gap-2.5 w-full">
+                {INSIGHTS.map((ins, i) => {
+                    // Bento: 2-3-1 rhythm across 6 lectures — first big, then trio, then half-half.
+                    const span = i === 0 ? 'col-span-6 sm:col-span-3' : i === 1 ? 'col-span-3 sm:col-span-3' :
+                        i === 2 ? 'col-span-2' : i === 3 ? 'col-span-2' : i === 4 ? 'col-span-2' : 'col-span-6 sm:col-span-3';
+                    return (
+                        <motion.div key={ins.title} variants={itm}
+                            className={`${span} flex items-start gap-2.5 rounded-xl border px-3 py-3 text-left`}
+                            style={{ background: `${ins.color}08`, borderColor: `${ins.color}20` }}>
+                            <ins.icon className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: ins.color }} />
+                            <div>
+                                <div className="text-[11px] font-semibold leading-tight mb-0.5" style={{ color: ins.color }}>{ins.title}</div>
+                                <div className="text-[9px] text-slate-600 font-mono leading-tight">{ins.sub}</div>
+                            </div>
+                        </motion.div>
+                    );
+                })}
             </motion.div>
         </motion.div>
     );
@@ -338,10 +301,10 @@ function S4() {
 
 // Scene 5 — Impact at Scale (NEW) ─────────────────────────────────────────────
 const IMPACT = [
-    { val: 20, suffix: '+', label: 'Autonomous AI\nSystems in Production', color: '#a78bfa', grad: 'linear-gradient(135deg,#a78bfa,#7c3aed)' },
-    { val: 30, suffix: '+', label: 'AI-Powered\nProducts Built', color: '#22d3ee', grad: 'linear-gradient(135deg,#22d3ee,#0891b2)' },
-    { val: 10, suffix: '+', label: 'Public Data\nInvestigations', color: '#e879f9', grad: 'linear-gradient(135deg,#e879f9,#a855f7)' },
-    { val: 15, suffix: '+', label: 'Interactive AI\nExperiences Deployed', color: '#34d399', grad: 'linear-gradient(135deg,#34d399,#10b981)' },
+    { val: 20, suffix: '+', label: 'Autonomous AI\nSystems in Production', color: '#a78bfa' },
+    { val: 30, suffix: '+', label: 'AI-Powered\nProducts Built', color: '#22d3ee' },
+    { val: 10, suffix: '+', label: 'Public Data\nInvestigations', color: '#e879f9' },
+    { val: 15, suffix: '+', label: 'Interactive AI\nExperiences Deployed', color: '#34d399' },
 ];
 
 function S5() {
@@ -357,17 +320,16 @@ function S5() {
             <motion.div variants={stg} className="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full">
                 {IMPACT.map((s, i) => (
                     <motion.div key={s.label} variants={itm}
-                        className="flex flex-col items-center gap-2 border border-slate-800/60 rounded-2xl py-5 px-3"
+                        className="flex flex-col items-center gap-2 border border-slate-800/60 rounded-xl py-5 px-3"
                         style={{ background: `${s.color}07` }}>
-                        <div className="text-[clamp(2rem,6vw,3.2rem)] font-black leading-none"
-                            style={{ backgroundImage: s.grad, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>
+                        <div className="text-[clamp(2rem,6vw,3.2rem)] font-black leading-none" style={{ color: s.color }}>
                             <Counter to={s.val} dur={1400 + i * 100} suffix={s.suffix} />
                         </div>
-                        <div className="text-[9px] text-slate-500 font-mono uppercase tracking-widest leading-relaxed whitespace-pre-line">
+                        <div className="text-[9px] text-slate-500 font-mono uppercase tracking-[0.28em] leading-relaxed whitespace-pre-line">
                             {s.label}
                         </div>
                         <div className="w-full h-px rounded-full overflow-hidden bg-slate-800">
-                            <motion.div className="h-full rounded-full" style={{ background: s.grad }}
+                            <motion.div className="h-full rounded-full" style={{ background: s.color }}
                                 initial={{ width: 0 }} animate={{ width: `${(s.val / (s.suffix === 'yrs' ? 25 : s.val)) * 80 + 20}%` }}
                                 transition={{ duration: 1.4, delay: 0.3 + i * 0.12, ease: EASE }} />
                         </div>
@@ -393,9 +355,7 @@ function S6({ onSkip }: { onSkip: () => void }) {
             <motion.div variants={itm}
                 className="text-[clamp(2.2rem,6.5vw,4.8rem)] font-black tracking-tight leading-none text-slate-100">
                 Let's explore<br />
-                <span style={{ background: 'linear-gradient(90deg,#a78bfa,#e879f9,#22d3ee)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>
-                    what AI can unlock.
-                </span>
+                <span className="text-violet-300">what AI can unlock.</span>
             </motion.div>
             <motion.div variants={stg} className="flex flex-wrap justify-center gap-2">
                 {CAPS.map(c => (
@@ -435,15 +395,18 @@ const TOTAL = SCENES.reduce((s, sc) => s + sc.dur, 0);
 
 // ── Main component ────────────────────────────────────────────────────────────
 export default function CinematicReel() {
-    const cvRef = useRef<HTMLCanvasElement>(null);
+    const videoRef = useRef<HTMLVideoElement>(null);
     const secRef = useRef<HTMLElement>(null);
     const rafRef = useRef<number>(0);
     const t0Ref = useRef<number | null>(null);
     const [scene, setScene] = useState(-1);
     const [pct, setPct] = useState(0);
     const [skipped, setSkipped] = useState(false); // true only if user manually skips
+    const [reduced, setReduced] = useState(false);
 
-    useNeuralCanvas(cvRef);
+    useEffect(() => {
+        setReduced(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    }, []);
 
     const tick = useCallback((ts: number) => {
         if (!t0Ref.current) t0Ref.current = ts;
@@ -475,6 +438,12 @@ export default function CinematicReel() {
 
     useEffect(() => {
         const el = secRef.current; if (!el) return;
+        // Honor reduced-motion: park on the CTA scene, skip the auto-loop choreography.
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            setScene(7);
+            setPct(100);
+            return;
+        }
         const obs = new IntersectionObserver(entries => {
             if (entries[0].isIntersecting && !t0Ref.current) {
                 rafRef.current = requestAnimationFrame(tick);
@@ -491,10 +460,30 @@ export default function CinematicReel() {
             style={{ background: '#020617' }}
             aria-label="AI expertise reel">
 
-            {/* Neural net canvas */}
-            <canvas ref={cvRef} className="absolute inset-0 w-full h-full pointer-events-none opacity-60" />
+            {/* Pre-rendered Remotion ambient — replaces the runtime particle canvas.
+                prefers-reduced-motion: paused at frame 0 (the poster shows through). */}
+            {reduced ? (
+                <img
+                    src="/video/midnight-console.jpg"
+                    alt=""
+                    aria-hidden="true"
+                    className="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-70"
+                />
+            ) : (
+                <video
+                    ref={videoRef}
+                    src="/video/midnight-console.mp4"
+                    poster="/video/midnight-console.jpg"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    aria-hidden="true"
+                    className="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-70"
+                />
+            )}
 
-            {/* Radial vignette */}
+            {/* Radial vignette — keeps section edges quiet against the dark surround */}
             <div className="absolute inset-0 pointer-events-none"
                 style={{ background: 'radial-gradient(ellipse 70% 60% at 50% 50%,transparent 20%,rgba(2,6,23,.95) 100%)' }} />
 
@@ -522,16 +511,15 @@ export default function CinematicReel() {
                 ))}
             </div>
 
-            {/* Progress bar */}
+            {/* Progress bar — single Violet Signal, no gradient (10% Rule) */}
             <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/5 z-20">
-                <motion.div className="h-full"
-                    style={{ background: 'linear-gradient(90deg,#6d28d9,#a78bfa,#22d3ee)', width: `${pct}%` }} />
+                <motion.div className="h-full bg-violet-400" style={{ width: `${pct}%` }} />
             </div>
 
             {/* Skip */}
             {!skipped && (
                 <button onClick={skip}
-                    className="absolute top-4 right-5 z-20 text-[10px] font-mono tracking-[0.14em] uppercase text-slate-700 hover:text-slate-400 transition-colors border border-slate-800 hover:border-slate-600 rounded-full px-3 py-1.5">
+                    className="absolute top-4 right-5 z-20 text-[10px] font-mono tracking-[0.28em] uppercase text-slate-700 hover:text-slate-400 transition-colors border border-slate-800 hover:border-slate-600 rounded-full px-3 py-1.5">
                     SKIP ✕
                 </button>
             )}

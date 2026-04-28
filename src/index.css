@@ -1,47 +1,38 @@
 @import "tailwindcss";
 @plugin "tailwindcss-animate";
 
+/* Brand tokens — authoritative source of truth.
+   See DESIGN.md ("The Midnight Console") for the design system this implements. */
 @layer base {
   :root {
-    --color-primary: #0A66C2;
-    --color-secondary: #000000;
-    --color-bg: #F2F2F2;
-    --color-text: #000000;
-    --color-border: #000000;
-    --color-inverse: #000000;
-    --color-inverse-text: #FFFFFF;
-    --shadow-color: #000000;
-  }
-
-  .dark {
-    --color-primary: #0A66C2;
-    --color-secondary: #FFFFFF;
-    --color-bg: #050505;
-    --color-text: #FFFFFF;
-    --color-border: #FFFFFF;
-    --color-inverse: #FFFFFF;
-    --color-inverse-text: #000000;
-    --shadow-color: #FFFFFF;
+    --color-bg: #020617;            /* Midnight Deep */
+    --color-bg-step: #050505;       /* Ink — section break */
+    --color-text: #cbd5e1;          /* Slate Body */
+    --color-text-mute: #94a3b8;     /* Slate Mute */
+    --color-text-strong: #ffffff;   /* White Pure */
+    --color-signal: #a78bfa;        /* Violet Signal */
+    --color-signal-deep: #7c3aed;   /* Violet Deep */
+    --color-signal-glow: #4c1d95;   /* Violet Glow */
+    --color-cyan: #22d3ee;          /* Cyan Pulse — identity-lane only */
+    --color-fuchsia: #e879f9;       /* Fuchsia Flare — identity-lane only */
+    --color-border-faint: rgba(255, 255, 255, 0.05);
+    --color-border-soft: rgba(255, 255, 255, 0.15);
   }
 }
 
 @theme {
-  --color-primary: var(--color-primary);
-  /* LinkedIn Blue */
-  --color-secondary: var(--color-secondary);
-  /* Black */
   --color-bg: var(--color-bg);
-  /* Light Gray / Off-White */
+  --color-bg-step: var(--color-bg-step);
   --color-text: var(--color-text);
-  --color-border: var(--color-border);
-  --color-inverse: var(--color-inverse);
-  --color-inverse-text: var(--color-inverse-text);
+  --color-text-mute: var(--color-text-mute);
+  --color-text-strong: var(--color-text-strong);
+  --color-signal: var(--color-signal);
+  --color-signal-deep: var(--color-signal-deep);
+  --color-signal-glow: var(--color-signal-glow);
+  --color-cyan: var(--color-cyan);
+  --color-fuchsia: var(--color-fuchsia);
   --font-mono: 'Courier New', Courier, monospace;
   --font-sans: 'Helvetica Neue', 'Arial', sans-serif;
-
-  /* Custom Utilities for Brutalism */
-  --shadow-brutal: 8px 8px 0px 0px var(--shadow-color);
-  --shadow-brutal-hover: 4px 4px 0px 0px var(--shadow-color);
 
   /* Motion tokens — shared across all animated primitives */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -58,7 +49,6 @@
 @layer base {
   body {
     @apply bg-bg text-text antialiased font-sans;
-    background-color: #F2F2F2;
   }
 
   h1,

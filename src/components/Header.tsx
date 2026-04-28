@@ -117,7 +117,7 @@ export default function Header() {
                                     key={link.name}
                                     href={link.href}
                                     data-nav-id={link.id}
-                                    className={`relative px-4 py-2 text-[11px] font-mono uppercase tracking-[0.22em] transition-colors cursor-hover ${isActive ? 'text-white' : 'text-slate-400 hover:text-white'
+                                    className={`relative px-4 py-2 text-[11px] font-mono uppercase tracking-[0.28em] transition-colors cursor-hover ${isActive ? 'text-white' : 'text-slate-400 hover:text-white'
                                         }`}
                                 >
                                     {link.name}
@@ -137,10 +137,10 @@ export default function Header() {
                     </div>
                 </div>
 
-                {/* Scroll progress bar */}
+                {/* Scroll progress bar — single Violet Signal, 10% Rule */}
                 <motion.div
                     style={{ scaleX }}
-                    className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-violet-400 via-fuchsia-400 to-violet-400 origin-left"
+                    className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-violet-400 origin-left"
                 />
             </motion.header>
 
