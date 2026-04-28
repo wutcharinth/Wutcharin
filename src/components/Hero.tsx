@@ -205,9 +205,24 @@ export default function Hero() {
                         </span>
                     </MagneticButton>
                     <MagneticButton
-                        as="a"
-                        href="/Wutcharin_CV_2025.pdf"
-                        {...({ download: 'Wutcharin_Thatan_Resume.pdf', target: '_blank', rel: 'noopener' } as Record<string, string>)}
+                        as="button"
+                        onClick={async (e: React.MouseEvent) => {
+                            e.preventDefault();
+                            try {
+                                const response = await fetch('/Wutcharin_CV_2025.pdf');
+                                const blob = await response.blob();
+                                const url = window.URL.createObjectURL(blob);
+                                const a = document.createElement('a');
+                                a.href = url;
+                                a.download = 'Wutcharin_Thatan_Resume.pdf';
+                                document.body.appendChild(a);
+                                a.click();
+                                document.body.removeChild(a);
+                                window.URL.revokeObjectURL(url);
+                            } catch (err) {
+                                window.open('/Wutcharin_CV_2025.pdf', '_blank');
+                            }
+                        }}
                         className="group px-7 py-3 rounded-full border border-violet-400/30 text-violet-200 hover:text-white font-medium text-sm tracking-wide hover:bg-violet-500/10 transition-colors"
                         data-cursor="download"
                     >
