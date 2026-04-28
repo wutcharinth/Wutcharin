@@ -55,6 +55,7 @@ const projectSections: Section[] = [
         category: 'AI Projects & Websites',
         description: 'Full-stack applications and AI-powered tools',
         items: [
+            { title: 'Klikr', role: 'Full Stack Developer', desc: 'Real-time audience engagement platform featuring interactive presentations, live quizzes, and instant scoring.', tags: ['React', 'Interactive', 'Platform'], link: 'https://www.klikrapp.com/', icon: Sparkles, accent: '#10b981' },
             { title: 'SplitBill AI', role: 'Creator & Developer', desc: 'Built end-to-end. Features instant receipt scanning with Gemini AI, automatic item parsing, and smart assignment.', tags: ['Gemini AI', 'React', 'Firebase'], link: 'https://splitbill-ai.com/', icon: Receipt, accent: '#ec4899' },
             { title: 'AI Resume Builder', role: 'Full Stack Developer', desc: 'Interactive resume builder with AI-powered content suggestions and real-time preview.', tags: ['React', 'Gemini AI', 'Tailwind CSS'], link: '/resume-builder', icon: Code, accent: '#14b8a6' },
             { title: 'Gemini OCR', role: 'Frontend Developer', desc: "High-accuracy OCR tool powered by Google's Gemini Vision Pro. Extracts structured data from complex documents.", tags: ['Gemini API', 'React', 'OCR', 'AI'], link: '/gemini-ocr', icon: ScanText, accent: '#818cf8' },
