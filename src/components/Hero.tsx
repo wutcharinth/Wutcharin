@@ -209,7 +209,7 @@ export default function Hero() {
                         onClick={async (e: React.MouseEvent) => {
                             e.preventDefault();
                             try {
-                                const response = await fetch('/Wutcharin_CV_2025.pdf');
+                                const response = await fetch('/Wutcharin_CV_2026.pdf');
                                 const blob = await response.blob();
                                 const url = window.URL.createObjectURL(blob);
                                 const a = document.createElement('a');
