@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     ArrowUpRight, ShieldCheck, SquareKanban, StarHalf, Database, MessageSquare,
-    FileText, ScanText, Code, Receipt, Map, TrendingUp, Briefcase, Brain,
+    FileText, ScanText, Code, Receipt, TrendingUp, Briefcase, Brain,
     Sparkles, Heart, BarChart2, Inbox, Bot, type LucideIcon,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -61,7 +61,6 @@ const projectSections: Section[] = [
             { title: 'SplitBill AI', role: 'Creator & Developer', desc: 'Built end-to-end. Features instant receipt scanning with Gemini AI, automatic item parsing, and smart assignment.', tags: ['Gemini AI', 'React', 'Firebase'], link: 'https://splitbill-ai.com/', icon: Receipt, accent: '#ec4899' },
             { title: 'AI Resume Builder', role: 'Full Stack Developer', desc: 'Interactive resume builder with AI-powered content suggestions and real-time preview.', tags: ['React', 'Gemini AI', 'Tailwind CSS'], link: '/resume-builder', icon: Code, accent: '#14b8a6' },
             { title: 'Gemini OCR', role: 'Frontend Developer', desc: "High-accuracy OCR tool powered by Google's Gemini Vision Pro. Extracts structured data from complex documents.", tags: ['Gemini API', 'React', 'OCR', 'AI'], link: '/gemini-ocr', icon: ScanText, accent: '#818cf8' },
-            { title: 'Local Guide', role: 'Full Stack Developer', desc: 'End-to-end booking platform POC. Demonstrates full-stack development capabilities including real-time availability and booking management.', tags: ['React', 'Full Stack', 'Booking System', 'POC'], link: 'https://web-production-c4714.up.railway.app/', icon: Map, accent: '#22d3ee' },
         ],
     },
 ];
