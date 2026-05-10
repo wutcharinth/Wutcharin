@@ -101,29 +101,16 @@
         }
 
         /* ---------- Section ---------- */
-        section { margin-top: 8px; }
+        section { margin-top: 14px; }
         section:first-of-type { margin-top: 0; }
 
         .section-hd {
-            font-size: 10.45px;
-            font-weight: 700;
-            letter-spacing: 0.28em;
+            font-size: 9.9px;
+            font-weight: 600;
+            letter-spacing: 0.32em;
             text-transform: uppercase;
-            color: var(--ink);
-            padding-bottom: 3px;
-            margin-bottom: 6px;
-            border-bottom: 1px solid var(--rule);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .section-hd::before {
-            content: "";
-            width: 6px;
-            height: 6px;
-            background: var(--accent);
-            display: inline-block;
-            border-radius: 1px;
+            color: var(--accent);
+            margin-bottom: 7px;
         }
 
         /* ---------- Profile ---------- */
@@ -147,11 +134,10 @@
             display: grid;
             grid-template-columns: 100px 1fr;
             gap: 6px 14px;
-            padding: 3px 0;
-            border-top: 1px solid var(--rule-soft);
+            padding: 4px 0;
             align-items: baseline;
         }
-        .skills-row:first-child { border-top: 0; padding-top: 0; }
+        .skills-row:first-child { padding-top: 0; }
         .skills-row .k {
             font-size: 10.45px;
             font-weight: 700;
@@ -168,9 +154,7 @@
 
         /* ---------- Experience ---------- */
         .role + .role {
-            margin-top: 5px;
-            padding-top: 5px;
-            border-top: 1px dashed var(--rule-soft);
+            margin-top: 10px;
         }
         .role-head {
             display: flex;
@@ -248,11 +232,10 @@
             display: flex;
             justify-content: space-between;
             gap: 12px;
-            padding: 4px 0;
-            border-top: 1px dashed var(--rule-soft);
+            padding: 5px 0;
             font-size: 10.78px;
         }
-        .role-short:first-child { border-top: 0; }
+        .role-short + .role-short { padding-top: 5px; }
         .role-short .lhs { color: var(--ink-2); }
         .role-short .lhs .title { font-weight: 700; color: var(--ink); }
         .role-short .lhs .company { font-weight: 500; color: var(--ink-2); }
@@ -271,10 +254,9 @@
             grid-template-columns: 1fr auto;
             gap: 2px 14px;
             align-items: baseline;
-            padding: 3px 0;
-            border-top: 1px dashed var(--rule-soft);
+            padding: 4px 0;
         }
-        .project:first-child { border-top: 0; padding-top: 0; }
+        .project:first-child { padding-top: 0; }
         .project .lhs { min-width: 0; }
         .project .name {
             font-size: 11px;
@@ -310,9 +292,8 @@
             align-items: baseline;
             gap: 12px;
             padding: 4px 0;
-            border-top: 1px dashed var(--rule-soft);
         }
-        .edu-row:first-child { border-top: 0; padding-top: 0; }
+        .edu-row:first-child { padding-top: 0; }
         .edu-row .lhs .degree {
             font-size: 11px;
             font-weight: 700;
