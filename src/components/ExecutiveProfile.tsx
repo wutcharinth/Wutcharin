@@ -304,13 +304,38 @@ export default function ExecutiveProfile() {
                     ))}
                 </div>
 
-                <RevealOnScroll staggerChildren={0.08} className="mt-24 max-w-3xl">
-                    <div data-reveal-child className="font-mono text-[10px] uppercase tracking-[0.28em] text-violet-300/70 mb-4">
-                        Operating principle
+                <RevealOnScroll staggerChildren={0.08} className="mt-24">
+                    <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-10 md:gap-14 items-end">
+                        <div data-reveal-child className="relative">
+                            <div
+                                aria-hidden="true"
+                                className="pointer-events-none absolute -inset-6 -z-10 rounded-full bg-violet-500/15 blur-3xl"
+                            />
+                            <img
+                                src="/portrait.jpg"
+                                alt="Wutcharin Thatan"
+                                width={600}
+                                height={600}
+                                loading="lazy"
+                                decoding="async"
+                                className="block h-44 w-44 md:h-56 md:w-56 object-cover grayscale-[0.15] [filter:contrast(1.02)_saturate(0.9)]"
+                            />
+                            <div className="mt-4 font-mono text-[10px] uppercase tracking-[0.28em] text-violet-300/70">
+                                Bangkok · 2026
+                            </div>
+                            <div className="mt-1 text-sm font-medium text-white/85 tracking-[-0.005em]">
+                                Wutcharin Thatan
+                            </div>
+                        </div>
+                        <div className="max-w-2xl">
+                            <div data-reveal-child className="font-mono text-[10px] uppercase tracking-[0.28em] text-violet-300/70 mb-4">
+                                Operating principle
+                            </div>
+                            <p data-reveal-child className="text-2xl md:text-4xl font-light text-white/90 tracking-[-0.01em] leading-[1.2]">
+                                "Exceptions deserve people.<br />Patterns deserve code."
+                            </p>
+                        </div>
                     </div>
-                    <p data-reveal-child className="text-2xl md:text-4xl font-light text-white/90 tracking-[-0.01em] leading-[1.2]">
-                        "Exceptions deserve people.<br />Patterns deserve code."
-                    </p>
                 </RevealOnScroll>
             </div>
         </section>
