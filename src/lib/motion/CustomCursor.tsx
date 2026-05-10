@@ -13,9 +13,7 @@ import { usePrefersReducedMotion } from './usePrefersReducedMotion';
 export default function CustomCursor() {
     const ringRef = useRef<HTMLDivElement | null>(null);
     const dotRef = useRef<HTMLDivElement | null>(null);
-    const labelRef = useRef<HTMLDivElement | null>(null);
     const [enabled, setEnabled] = useState(false);
-    const [label, setLabel] = useState('');
     const prefersReduced = usePrefersReducedMotion();
 
     useEffect(() => {
@@ -58,14 +56,11 @@ export default function CustomCursor() {
         };
         gsap.ticker.add(tick);
 
-        const enterHover = (target: HTMLElement) => {
-            const customLabel = target.dataset.cursor || '';
-            setLabel(customLabel);
+        const enterHover = () => {
             gsap.to(ring, { scale: 2.2, borderColor: 'rgba(255,255,255,0.9)', backgroundColor: 'rgba(255,255,255,0.08)', duration: 0.35, ease: 'power3.out' });
             gsap.to(dot, { scale: 0, duration: 0.2 });
         };
         const leaveHover = () => {
-            setLabel('');
             gsap.to(ring, { scale: 1, borderColor: 'rgba(255,255,255,0.5)', backgroundColor: 'transparent', duration: 0.35, ease: 'power3.out' });
             gsap.to(dot, { scale: 1, duration: 0.2 });
         };
@@ -74,7 +69,7 @@ export default function CustomCursor() {
             const el = e.target as HTMLElement | null;
             if (!el) return;
             const hover = el.closest<HTMLElement>('[data-cursor], .cursor-hover, a, button, [role="button"]');
-            if (hover) enterHover(hover);
+            if (hover) enterHover();
         };
         const onOut = (e: MouseEvent) => {
             const el = e.target as HTMLElement | null;
@@ -108,11 +103,6 @@ export default function CustomCursor() {
         };
     }, [enabled]);
 
-    useEffect(() => {
-        if (!labelRef.current) return;
-        gsap.to(labelRef.current, { opacity: label ? 1 : 0, duration: 0.25 });
-    }, [label]);
-
     if (!enabled) return null;
 
     return (
@@ -122,14 +112,7 @@ export default function CustomCursor() {
                 className="pointer-events-none fixed left-0 top-0 z-[9999] h-9 w-9 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/50 mix-blend-difference"
                 style={{ willChange: 'transform' }}
                 aria-hidden="true"
-            >
-                <div
-                    ref={labelRef}
-                    className="absolute inset-0 flex items-center justify-center text-[9px] font-mono uppercase tracking-widest text-white opacity-0"
-                >
-                    {label}
-                </div>
-            </div>
+            />
             <div
                 ref={dotRef}
                 className="pointer-events-none fixed left-0 top-0 z-[9999] h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white mix-blend-difference"
