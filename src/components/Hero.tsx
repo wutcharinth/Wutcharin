@@ -209,7 +209,7 @@ export default function Hero() {
                         onClick={async (e: React.MouseEvent) => {
                             e.preventDefault();
                             try {
-                                const response = await fetch('/Wutcharin_CV_2026.pdf');
+                                const response = await fetch('/Wutcharin_CV_2026.pdf', { cache: 'no-cache' });
                                 const blob = await response.blob();
                                 const url = window.URL.createObjectURL(blob);
                                 const a = document.createElement('a');
@@ -220,7 +220,7 @@ export default function Hero() {
                                 document.body.removeChild(a);
                                 window.URL.revokeObjectURL(url);
                             } catch (err) {
-                                window.open('/Wutcharin_CV_2025.pdf', '_blank');
+                                window.open('/Wutcharin_CV_2026.pdf', '_blank');
                             }
                         }}
                         className="group px-7 py-3 rounded-full border border-violet-400/30 text-violet-200 hover:text-white font-medium text-sm tracking-wide hover:bg-violet-500/10 transition-colors"
