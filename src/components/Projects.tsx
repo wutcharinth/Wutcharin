@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
     ArrowUpRight, ShieldCheck, SquareKanban, StarHalf, Database, MessageSquare,
     FileText, ScanText, Code, Receipt, Map, TrendingUp, Briefcase, Brain,
-    Sparkles, Heart, BarChart2, type LucideIcon,
+    Sparkles, Heart, BarChart2, Inbox, Bot, type LucideIcon,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { SplitText, RevealOnScroll, TiltCard } from '../lib/motion';
@@ -55,6 +55,8 @@ const projectSections: Section[] = [
         category: 'AI Projects & Websites',
         description: 'Full-stack applications and AI-powered tools',
         items: [
+            { title: 'FlowAIOS', role: 'Founder & Builder', desc: 'AI Operating System for Thai/SEA customer ops — unified inbox across LINE, Shopee, Lazada, IG, FB & Email with three AI agents (Service, Operations, Growth) and self-improving brand voice.', tags: ['Gemini', 'Claude', 'Supabase', 'Vercel'], link: 'https://flowaios.vercel.app/', icon: Inbox, accent: '#06b6d4' },
+            { title: 'Jongtoh', role: 'Founder & Builder', desc: 'Multi-channel AI host for Thai hospitality — restaurants, bars, cafés and live venues. LINE OA-first reception, bookings and FAQs, with Messenger and IG on the roadmap.', tags: ['LINE OA', 'Cloudflare', 'Hospitality AI', 'Bilingual'], link: 'https://jongtoh.com/', icon: Bot, accent: '#e8a542' },
             { title: 'Klikr', role: 'Full Stack Developer', desc: 'Real-time audience engagement platform featuring interactive presentations, live quizzes, and instant scoring.', tags: ['React', 'Interactive', 'Platform'], link: 'https://www.klikrapp.com/', icon: Sparkles, accent: '#10b981' },
             { title: 'SplitBill AI', role: 'Creator & Developer', desc: 'Built end-to-end. Features instant receipt scanning with Gemini AI, automatic item parsing, and smart assignment.', tags: ['Gemini AI', 'React', 'Firebase'], link: 'https://splitbill-ai.com/', icon: Receipt, accent: '#ec4899' },
             { title: 'AI Resume Builder', role: 'Full Stack Developer', desc: 'Interactive resume builder with AI-powered content suggestions and real-time preview.', tags: ['React', 'Gemini AI', 'Tailwind CSS'], link: '/resume-builder', icon: Code, accent: '#14b8a6' },
