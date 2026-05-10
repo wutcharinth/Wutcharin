@@ -11,6 +11,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "deploy": "npm run build && wrangler pages deploy dist --project-name=wutcharin --branch=main --commit-dirty=true",
     "setup:vercel": "node scripts/setup-vercel-env.js",
     "video:studio": "remotion studio remotion/index.ts",
     "video:render": "remotion render MidnightConsole public/video/midnight-console.mp4 --codec=h264",
