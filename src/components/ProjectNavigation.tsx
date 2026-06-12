@@ -27,43 +27,45 @@ const ProjectNavigation = ({ currentId }: ProjectNavigationProps) => {
     }
 
     return (
-        <section className="py-20 border-t border-slate-800 bg-[#020617]">
-            <div className="container mx-auto px-6">
-                <div className="flex items-center justify-between mb-10">
-                    <h2 className="text-2xl font-bold text-white uppercase tracking-tight">
-                        {currentProject?.tier === 'agent' ? 'Explore Other Agents' : 'More Interactive Insights'}
-                    </h2>
-                    <Link to="/" className="text-sm font-bold text-slate-400 hover:text-white flex items-center gap-2 transition-colors">
-                        View All <ArrowRight className="w-4 h-4" />
+        <section className="py-20 border-t border-white/[0.06]">
+            <div className="max-w-6xl mx-auto px-6">
+                <div className="flex items-baseline justify-between mb-8 gap-6 flex-wrap">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-violet-300/80">
+                        Next / {currentProject?.tier === 'agent' ? 'Other agents' : 'Other insights'}
+                    </span>
+                    <Link
+                        to="/"
+                        className="font-mono text-[10px] uppercase tracking-[0.28em] text-slate-400 hover:text-white flex items-center gap-2 transition-colors"
+                    >
+                        Full index <ArrowRight className="w-3 h-3" />
                     </Link>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="border-b border-white/[0.06]">
                     {recommendedProjects.map((project) => (
                         <Link
                             key={project.id}
                             to={project.link}
-                            className="group relative overflow-hidden bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-slate-600 transition-all hover:-translate-y-1 hover:shadow-xl"
+                            className="group grid grid-cols-12 gap-x-4 items-center border-t border-white/[0.06] py-4 px-2 -mx-2 transition-colors hover:bg-white/[0.025]"
                         >
-                            <div className="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity" style={{ color: project.accent }}>
-                                <project.icon className="w-24 h-24 -mr-4 -mt-4 transform rotate-12" />
-                            </div>
-
-                            <div className="relative z-10">
-                                <div
-                                    className="w-10 h-10 rounded-lg border flex items-center justify-center mb-4 group-hover:scale-110 transition-transform"
-                                    style={{ backgroundColor: `${project.accent}1A`, borderColor: `${project.accent}33` }}
-                                >
-                                    <project.icon className="w-5 h-5" style={{ color: project.accent }} />
-                                </div>
-
-                                <h3 className="text-lg font-bold text-white mb-1 group-hover:text-blue-400 transition-colors">
-                                    {project.navTitle ?? project.title}
-                                </h3>
-                                <p className="text-sm text-slate-400 font-medium">
-                                    {project.tagline}
-                                </p>
-                            </div>
+                            <span className="col-span-1 flex justify-center" aria-hidden="true">
+                                <span className="relative flex h-1.5 w-1.5">
+                                    <span
+                                        className="absolute inline-flex h-full w-full rounded-full opacity-60 animate-ping [animation-duration:2.4s]"
+                                        style={{ backgroundColor: project.accent }}
+                                    />
+                                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full" style={{ backgroundColor: project.accent }} />
+                                </span>
+                            </span>
+                            <span className="col-span-7 sm:col-span-4 font-mono text-xs md:text-sm text-white/85 tracking-tight group-hover:text-white">
+                                {project.navTitle ?? project.title}
+                            </span>
+                            <span className="hidden sm:block sm:col-span-6 font-mono text-[10px] uppercase tracking-[0.18em] text-white/35 truncate">
+                                {project.tagline}
+                            </span>
+                            <span className="col-span-1 flex justify-end">
+                                <project.icon className="w-3.5 h-3.5 text-white/25 transition-colors group-hover:text-white" aria-hidden="true" />
+                            </span>
                         </Link>
                     ))}
                 </div>

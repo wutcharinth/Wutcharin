@@ -122,17 +122,20 @@ export default function SubPageHero({
                         >
                             {titleLead}
                         </SplitText>
-                        <SplitText
-                            as="h1"
-                            trigger="load"
-                            mode="words"
-                            stagger={0.06}
-                            delay={0.2}
-                            duration={1}
-                            className="text-4xl md:text-6xl lg:text-7xl font-medium tracking-[-0.03em] leading-[1] md:leading-[0.95] block mt-1"
-                        >
-                            {titleAccent}
-                        </SplitText>
+                        {/* Accent line carries the serif italic voice in the project's hue. */}
+                        <span className="block" style={{ color: accentColor }}>
+                            <SplitText
+                                as="h1"
+                                trigger="load"
+                                mode="words"
+                                stagger={0.06}
+                                delay={0.2}
+                                duration={1}
+                                className="font-serif italic font-normal text-4xl md:text-6xl lg:text-7xl tracking-[-0.01em] leading-[1.05] md:leading-[1] block mt-2"
+                            >
+                                {titleAccent}
+                            </SplitText>
+                        </span>
                         {/* Gradient underline under the accent word */}
                         <motion.div
                             initial={{ scaleX: 0 }}

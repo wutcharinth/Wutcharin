@@ -1,5 +1,5 @@
 import { useEffect, type ReactNode } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 
@@ -29,6 +29,8 @@ export default function SubPageShell({
 }: SubPageShellProps) {
     const { scrollYProgress } = useScroll();
     const progress = useSpring(scrollYProgress, { stiffness: 220, damping: 30, mass: 0.25 });
+    const { pathname } = useLocation();
+    const routeId = pathname.replace('/', '') || 'home';
 
     useEffect(() => {
         // Smooth scroll comes from the global ScrollProvider; the shell only
@@ -37,9 +39,18 @@ export default function SubPageShell({
     }, []);
 
     return (
-        <div className="relative min-h-screen bg-[#020617] text-slate-200 font-sans">
+        // Transparent root — the ambient particle field shows through; panels
+        // inside the page carry their own surfaces.
+        <div className="relative min-h-screen text-slate-200 font-sans">
             {/* Ambient noise layer */}
             <div className="pointer-events-none fixed inset-0 bg-noise opacity-[0.03] mix-blend-overlay z-0" aria-hidden="true" />
+
+            {/* Left rail — cross-page wayfinding */}
+            <div className="pointer-events-none fixed left-5 bottom-10 z-40 hidden xl:block" aria-hidden="true">
+                <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/20 [writing-mode:vertical-rl]">
+                    {routeId} / signal
+                </span>
+            </div>
 
             {/* Nav */}
             <motion.nav
@@ -75,7 +86,7 @@ export default function SubPageShell({
 
             <main id="main-content" className="relative pt-28 pb-20 z-10">{children}</main>
 
-            <footer className="relative z-10 py-10 border-t border-white/5 bg-slate-950 text-center">
+            <footer className="relative z-10 py-10 border-t border-white/5 text-center">
                 <p className="text-[10px] font-mono text-slate-500 uppercase tracking-[0.3em]">
                     &copy; {new Date().getFullYear()} Wutcharin Thatan · All rights reserved
                 </p>

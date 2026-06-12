@@ -4,6 +4,7 @@ import { Canvas } from '@react-three/fiber';
 import { PerformanceMonitor } from '@react-three/drei';
 import { sceneBus } from './sceneBus';
 import { detectTier } from './tier';
+import { ROUTE_SCENES, FALLBACK_SCENE } from './routeScenes';
 import ParticleField from './ParticleField';
 import CameraRig from './CameraRig';
 
@@ -11,9 +12,6 @@ import CameraRig from './CameraRig';
  * The persistent world. Mounted once as a sibling of the routes — navigation
  * morphs the field, it never unmounts. mode 'hidden' parks the frameloop so
  * tool-heavy pages pay zero GPU cost while the context stays alive.
- *
- * Phase 3 route map: full scene on the home route, hidden everywhere else.
- * Phase 6 moves this into per-route scene configs.
  */
 export default function SceneRoot() {
     const tier = useMemo(() => detectTier(), []);
@@ -22,11 +20,7 @@ export default function SceneRoot() {
     const [visible, setVisible] = useState(false);
 
     useEffect(() => {
-        if (pathname === '/') {
-            sceneBus.apply({ formation: 'noise', accent: '#a78bfa', mode: 'full', chaos: 1 });
-        } else {
-            sceneBus.apply({ mode: 'hidden' });
-        }
+        sceneBus.apply(ROUTE_SCENES[pathname] ?? FALLBACK_SCENE);
     }, [pathname]);
 
     useEffect(() => {
