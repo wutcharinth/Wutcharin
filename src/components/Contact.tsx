@@ -1,14 +1,23 @@
+import { useMemo } from 'react';
 import { Mail, Linkedin, Github, ArrowRight } from 'lucide-react';
 import { SplitText, MagneticButton, RevealOnScroll } from '../lib/motion';
+import { detectTier } from '../scene/tier';
 
 export default function Contact() {
+    // With the live field converging behind this chapter, the local aurora
+    // orbs only return when WebGL is off.
+    const sceneOff = useMemo(() => detectTier() === null, []);
+
     return (
         <section id="contact" className="relative py-32 px-4 overflow-hidden">
-            {/* Aurora wash */}
             <div className="pointer-events-none absolute inset-0 -z-10">
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-violet-950/30 to-slate-950" />
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[50rem] w-[50rem] rounded-full bg-violet-600/15 blur-[140px] animate-aurora" />
-                <div className="absolute right-[10%] top-[30%] h-[30rem] w-[30rem] rounded-full bg-fuchsia-500/15 blur-[140px] animate-float-slow" />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-violet-950/20 to-[#020617]" />
+                {sceneOff && (
+                    <>
+                        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[50rem] w-[50rem] rounded-full bg-violet-600/15 blur-[140px] animate-aurora" />
+                        <div className="absolute right-[10%] top-[30%] h-[30rem] w-[30rem] rounded-full bg-fuchsia-500/15 blur-[140px] animate-float-slow" />
+                    </>
+                )}
                 <div className="absolute inset-0 bg-noise opacity-[0.05]" />
             </div>
 
@@ -23,7 +32,7 @@ export default function Contact() {
                             as="h2"
                             mode="words"
                             stagger={0.07}
-                            className="text-5xl md:text-7xl lg:text-[7.5rem] font-medium tracking-[-0.04em] text-white leading-[0.9] block"
+                            className="text-5xl md:text-7xl lg:text-[7.5rem] tracking-[-0.03em] text-white leading-[0.9] block"
                         >
                             Let's build
                         </SplitText>
@@ -32,9 +41,9 @@ export default function Contact() {
                             mode="words"
                             stagger={0.07}
                             delay={0.2}
-                            className="text-5xl md:text-7xl lg:text-[7.5rem] font-medium tracking-[-0.04em] leading-[0.9] block text-violet-200 mt-1"
+                            className="font-serif italic font-normal text-5xl md:text-7xl lg:text-[7.5rem] tracking-[-0.01em] leading-[0.95] block text-violet-200 mt-2"
                         >
-                            something together.
+                            the signal.
                         </SplitText>
                     </div>
 
@@ -92,6 +101,16 @@ export default function Contact() {
                         <span className="h-px w-12 bg-white/10" />
                     </div>
                 </RevealOnScroll>
+
+                {/* Footer, absorbed into the terminus chapter */}
+                <div className="mt-28 pt-8 border-t border-white/[0.06] flex items-center justify-between flex-wrap gap-3 text-left">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-slate-600">
+                        &copy; {new Date().getFullYear()} Wutcharin Thatan
+                    </p>
+                    <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-slate-600">
+                        Bangkok · Signal over noise
+                    </p>
+                </div>
             </div>
         </section>
     );

@@ -1,6 +1,7 @@
+import { useEffect } from 'react';
 import Header from '../components/Header';
 import Hero from '../components/Hero';
-import CinematicReel from '../components/CinematicReel';
+import SignalChapter from '../components/SignalChapter';
 import ExecutiveProfile from '../components/ExecutiveProfile';
 import Projects from '../components/Projects';
 import Experience from '../components/Experience';
@@ -8,8 +9,38 @@ import Contact from '../components/Contact';
 import SkillsMarquee from '../components/SkillsMarquee';
 
 import SEO from '../components/SEO';
+import { ScrollTrigger, usePrefersReducedMotion } from '../lib/motion';
+import { sceneBus } from '../scene/sceneBus';
+
+/**
+ * Scroll chapters: each home section re-organizes the particle world as it
+ * enters. The SignalChapter scrubs its own formations; everything below it
+ * flips on section boundaries.
+ */
+const CHAPTERS: Array<[string, Parameters<typeof sceneBus.apply>[0]]> = [
+    ['#about', { formation: 'lattice', mode: 'ambient', chaos: 0.12, accent: '#a78bfa' }],
+    ['#projects', { formation: 'network', mode: 'full', chaos: 0.16, accent: '#a78bfa' }],
+    ['#experience', { formation: 'helix', mode: 'ambient', chaos: 0.1, accent: '#a78bfa' }],
+    ['#contact', { formation: 'terminus', mode: 'full', chaos: 0.08, accent: '#a78bfa' }],
+];
 
 const Home = () => {
+    const reduced = usePrefersReducedMotion();
+
+    useEffect(() => {
+        if (reduced) return;
+        const triggers = CHAPTERS.map(([selector, config]) =>
+            ScrollTrigger.create({
+                trigger: selector,
+                start: 'top 60%',
+                end: 'bottom 60%',
+                onEnter: () => sceneBus.apply(config),
+                onEnterBack: () => sceneBus.apply(config),
+            }),
+        );
+        return () => triggers.forEach((t) => t.kill());
+    }, [reduced]);
+
     return (
         // Transparent root: the body paints midnight and the scene canvas
         // (z-0) lives between body and this content layer.
@@ -22,7 +53,7 @@ const Home = () => {
 
             <main id="main-content">
                 <Hero />
-                <CinematicReel />
+                <SignalChapter />
                 <ExecutiveProfile />
 
                 <SkillsMarquee />
@@ -31,10 +62,6 @@ const Home = () => {
                 <Experience />
                 <Contact />
             </main>
-
-            <footer className="py-8 text-center text-slate-600 text-sm border-t border-slate-800 bg-[#020617]">
-                <p>&copy; {new Date().getFullYear()} Wutcharin Thatan. All rights reserved.</p>
-            </footer>
         </div>
     );
 };

@@ -91,7 +91,7 @@ export default function Experience() {
             <div className="pointer-events-none absolute top-1/3 -right-20 h-[30rem] w-[30rem] rounded-full bg-violet-600/5 blur-[130px]" aria-hidden="true" />
 
             <div className="relative max-w-5xl mx-auto">
-                <div className="text-center mb-20">
+                <div className="mb-20">
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -106,9 +106,9 @@ export default function Experience() {
                         as="h2"
                         mode="words"
                         stagger={0.05}
-                        className="text-5xl md:text-7xl lg:text-8xl font-medium tracking-[-0.03em] text-white leading-[0.92]"
+                        className="text-5xl md:text-7xl lg:text-8xl tracking-[-0.02em] text-white leading-[0.92]"
                     >
-                        Professional Experience
+                        Twenty years of patterns
                     </SplitText>
                 </div>
 
@@ -149,7 +149,7 @@ export default function Experience() {
 
                                 <div
                                     data-reveal-child
-                                    className="group relative rounded-xl border border-white/10 bg-white/[0.02] p-6 md:p-8 hover:border-white/25 transition-colors"
+                                    className="group relative border-t border-white/[0.07] pt-6 pr-2 hover:border-white/20 transition-colors"
                                 >
                                     <div className="flex items-baseline gap-3 flex-wrap mb-2">
                                         <h3 className="text-xl md:text-2xl font-medium text-white tracking-[-0.01em]">

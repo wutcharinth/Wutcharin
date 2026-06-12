@@ -256,7 +256,7 @@ export default function ExecutiveProfile() {
                     className="inline-flex items-center gap-2 mb-8 px-3 py-1 rounded-full border border-white/10"
                 >
                     <span className="h-1 w-1 rounded-full bg-violet-400" />
-                    <span className="text-[10px] font-mono uppercase tracking-[0.28em] text-white/50">01 · Profile</span>
+                    <span className="text-[10px] font-mono uppercase tracking-[0.28em] text-white/50">02 · Profile</span>
                 </motion.div>
 
                 <SplitText
@@ -311,15 +311,21 @@ export default function ExecutiveProfile() {
                                 aria-hidden="true"
                                 className="pointer-events-none absolute -inset-6 -z-10 rounded-full bg-violet-500/15 blur-3xl"
                             />
-                            <img
-                                src="/portrait.jpg"
-                                alt="Wutcharin Thatan"
-                                width={600}
-                                height={600}
-                                loading="lazy"
-                                decoding="async"
-                                className="block h-44 w-44 md:h-56 md:w-56 object-cover grayscale-[0.15] [filter:contrast(1.02)_saturate(0.9)]"
-                            />
+                            {/* Midnight/violet duotone — the lone photo joins the palette
+                                instead of reading like an upload. */}
+                            <div className="relative h-44 w-44 md:h-56 md:w-56 overflow-hidden">
+                                <img
+                                    src="/portrait.jpg"
+                                    alt="Wutcharin Thatan"
+                                    width={600}
+                                    height={600}
+                                    loading="lazy"
+                                    decoding="async"
+                                    className="block h-full w-full object-cover [filter:grayscale(1)_contrast(1.08)_brightness(0.92)]"
+                                />
+                                <div aria-hidden="true" className="absolute inset-0 bg-violet-400/30 mix-blend-color" />
+                                <div aria-hidden="true" className="absolute inset-0 bg-[#020617]/25 mix-blend-multiply" />
+                            </div>
                             <div className="mt-4 font-mono text-[10px] uppercase tracking-[0.28em] text-violet-300/70">
                                 Bangkok · 2026
                             </div>
