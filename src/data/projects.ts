@@ -3,6 +3,7 @@ import {
     FileText, ScanText, Code, Receipt, TrendingUp, Briefcase, Brain,
     Sparkles, Heart, BarChart2, Inbox, Bot, type LucideIcon,
 } from 'lucide-react';
+import type { FormationId } from '../scene/formations';
 
 /**
  * Single source of truth for every showcased project.
@@ -29,12 +30,18 @@ export type Project = {
     /** Hex accent — ambient glow today, scene accent from Phase 3 on. */
     accent: string;
     tier: ProjectTier;
+    /** Case-study rank: presence puts the project in Act 1, value orders it. */
+    featured?: number;
+    /** Formation the world morphs into when this case study takes attention. */
+    formation?: FormationId;
 };
 
 export const projects: Project[] = [
     // --- Interactive lecture insights & data stories ---
     {
         id: 'karpathy-deep-dive',
+        featured: 4,
+        formation: 'wave',
         title: 'Karpathy LLM Guide',
         role: 'Interactive Article',
         badge: 'Lecture Insight',
@@ -75,6 +82,8 @@ export const projects: Project[] = [
     },
     {
         id: 'thai-election',
+        featured: 1,
+        formation: 'network',
         title: 'Thai Election 2566',
         navTitle: 'Thai Election AI',
         role: 'Data Artist & AI Engineer',
@@ -89,6 +98,8 @@ export const projects: Project[] = [
     },
     {
         id: 'election-2026',
+        featured: 5,
+        formation: 'lattice',
         title: 'Thailand 2026 Election Investigation',
         role: 'Data Investigator & Journalist',
         badge: 'Data Story',
@@ -129,6 +140,8 @@ export const projects: Project[] = [
     // --- AI agents & agentic simulations ---
     {
         id: 'risk-guard',
+        featured: 2,
+        formation: 'helix',
         title: 'RiskGuard AI',
         role: 'AI Engineer',
         desc: 'Internal Control System that audits transactions in real-time. Features Policy Checks, Entity Resolution (COI), and Market Benchmarking.',
@@ -204,6 +217,8 @@ export const projects: Project[] = [
     // --- AI products & websites ---
     {
         id: 'flowaios',
+        featured: 3,
+        formation: 'terminus',
         title: 'FlowAIOS',
         role: 'Founder & Builder',
         desc: 'AI Operating System for Thai/SEA customer ops — unified inbox across LINE, Shopee, Lazada, IG, FB & Email with three AI agents (Service, Operations, Growth) and self-improving brand voice.',
@@ -270,28 +285,3 @@ export const projects: Project[] = [
     },
 ];
 
-export type ProjectSection = {
-    category: string;
-    description: string;
-    items: Project[];
-};
-
-const byTier = (tier: ProjectTier) => projects.filter((p) => p.tier === tier);
-
-export const projectSections: ProjectSection[] = [
-    {
-        category: 'Interactive Lecture Insights',
-        description: 'Transforming profound lectures and data into interactive visual experiences',
-        items: byTier('insight'),
-    },
-    {
-        category: 'AI Agents & Agentic Simulations',
-        description: 'Autonomous agents solving complex enterprise workflows',
-        items: byTier('agent'),
-    },
-    {
-        category: 'AI Projects & Websites',
-        description: 'Full-stack applications and AI-powered tools',
-        items: byTier('lab'),
-    },
-];
