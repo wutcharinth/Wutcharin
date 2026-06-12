@@ -1,11 +1,8 @@
-import { useEffect, useRef, lazy, Suspense } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Mail, Download } from 'lucide-react';
-
-// Three.js + fiber weighs ~300KB gzip. Lazy-loading keeps the hero text
-// interactive immediately; fish fade in once the bundle arrives.
-const FishBackground = lazy(() => import('./FishBackground'));
 import { MagneticButton, gsap } from '../lib/motion';
+import { detectTier } from '../scene/tier';
 
 /**
  * Per-letter kinetic text: each char animates in from below with a random
@@ -104,6 +101,8 @@ export default function Hero() {
     const opacity = useTransform(scrollY, [0, 300], [1, 0]);
     const scale = useTransform(scrollY, [0, 500], [1, 0.92]);
 
+    // When the WebGL tier is off, the aurora wash IS the background design.
+    const sceneOff = useMemo(() => detectTier() === null, []);
     const auroraRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -116,33 +115,30 @@ export default function Hero() {
         };
         window.addEventListener('mousemove', onMove, { passive: true });
         return () => window.removeEventListener('mousemove', onMove);
-    }, []);
+    }, [sceneOff]);
 
     return (
-        <section className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden px-4">
-            <Suspense fallback={null}>
-                <FishBackground />
-            </Suspense>
+        <section className="relative min-h-[100svh] flex flex-col justify-center overflow-hidden px-6 md:px-10">
+            {sceneOff && (
+                <div
+                    ref={auroraRef}
+                    className="pointer-events-none absolute inset-0 z-10 transition-transform duration-300 will-change-transform"
+                    aria-hidden="true"
+                >
+                    <div className="absolute left-[15%] top-[20%] h-[36rem] w-[36rem] rounded-full bg-violet-600/20 blur-[120px] animate-aurora" />
+                    <div className="absolute right-[10%] top-[30%] h-[28rem] w-[28rem] rounded-full bg-fuchsia-500/15 blur-[120px] animate-float-slow" />
+                </div>
+            )}
 
-            {/* Aurora wash */}
-            <div
-                ref={auroraRef}
-                className="pointer-events-none absolute inset-0 z-10 transition-transform duration-300 will-change-transform"
-                aria-hidden="true"
-            >
-                <div className="absolute left-[15%] top-[20%] h-[36rem] w-[36rem] rounded-full bg-violet-600/20 blur-[120px] animate-aurora" />
-                <div className="absolute right-[10%] top-[30%] h-[28rem] w-[28rem] rounded-full bg-fuchsia-500/15 blur-[120px] animate-float-slow" />
-            </div>
+            {/* Edge vignette grounds the type against the live field. */}
+            <div className="pointer-events-none absolute inset-0 z-20 bg-[radial-gradient(ellipse_at_center,transparent_30%,#020617_96%)]" aria-hidden="true" />
 
-            <div className="pointer-events-none absolute inset-0 z-20 bg-[radial-gradient(ellipse_at_center,transparent_35%,#020617_92%)]" aria-hidden="true" />
-
-            <div className="relative z-30 max-w-5xl mx-auto w-full text-center">
-                {/* Minimal pill */}
+            <div className="relative z-30 max-w-6xl mx-auto w-full">
                 <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4, duration: 0.8 }}
-                    className="mb-10 flex justify-center"
+                    className="mb-12 flex justify-start"
                 >
                     <div className="flex items-center gap-2 border border-violet-500/20 bg-violet-500/5 px-4 py-1.5 rounded-full">
                         <span className="h-1.5 w-1.5 rounded-full bg-violet-400 animate-pulse" />
@@ -152,25 +148,33 @@ export default function Hero() {
                     </div>
                 </motion.div>
 
-                {/* Kinetic wordmark */}
-                <motion.div
-                    style={{ y: y1, opacity, scale }}
-                    className="mb-6 will-change-transform"
-                >
-                    <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[8rem] font-medium tracking-[-0.035em] leading-[0.9] block">
-                        <KineticWord text="Wutcharin" className="text-white" delay={0.6} />
-                    </h1>
-                    <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[8rem] font-medium tracking-[-0.035em] leading-[0.9] block mt-1">
-                        <KineticWord text="Thatan" className="text-slate-300" delay={0.85} />
+                {/* Kinetic wordmark — staggered editorial lockup */}
+                <motion.div style={{ y: y1, opacity, scale }} className="mb-10 will-change-transform origin-left">
+                    <h1 className="text-[clamp(3.5rem,11vw,9.5rem)] tracking-[-0.02em] leading-[0.92]">
+                        <span className="block">
+                            <KineticWord text="Wutcharin" className="text-white" delay={0.6} />
+                        </span>
+                        <span className="block pl-[10vw] md:pl-[16vw]">
+                            <KineticWord text="Thatan" className="text-slate-400" delay={0.85} />
+                        </span>
                     </h1>
                 </motion.div>
 
-                {/* Role — clean, minimal */}
+                {/* Thesis — the site's operating principle, screen one. */}
                 <motion.p
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.4, duration: 0.8 }}
-                    className="mb-12 text-sm md:text-base text-white/50 font-light tracking-[0.15em] uppercase"
+                    transition={{ delay: 1.35, duration: 0.9 }}
+                    className="mb-4 max-w-xl font-serif italic text-xl md:text-2xl text-slate-200/90 leading-snug"
+                >
+                    Exceptions deserve people. Patterns deserve code.
+                </motion.p>
+
+                <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1.55, duration: 0.8 }}
+                    className="mb-12 text-[10px] font-mono text-white/40 tracking-[0.3em] uppercase"
                 >
                     AI · Automation · Analytics
                 </motion.p>
@@ -180,7 +184,7 @@ export default function Hero() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1.7, duration: 0.8 }}
-                    className="flex items-center justify-center gap-3 flex-wrap"
+                    className="flex items-center justify-start gap-3 flex-wrap"
                 >
                     <MagneticButton
                         as="a"
@@ -219,7 +223,7 @@ export default function Hero() {
                                 a.click();
                                 document.body.removeChild(a);
                                 window.URL.revokeObjectURL(url);
-                            } catch (err) {
+                            } catch {
                                 window.open('/Wutcharin_CV_2026.pdf', '_blank');
                             }
                         }}
@@ -241,6 +245,9 @@ export default function Hero() {
                 transition={{ delay: 2.2, duration: 1 }}
                 className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-3"
             >
+                <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-white/30">
+                    [ Scroll to resolve ]
+                </span>
                 <div className="relative w-[1px] h-10 overflow-hidden bg-white/10">
                     <motion.div
                         className="absolute inset-x-0 top-0 h-4 bg-gradient-to-b from-transparent via-white/60 to-transparent"

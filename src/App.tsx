@@ -1,8 +1,32 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { useEffect, lazy, Suspense } from 'react';
+import { useEffect, useState, lazy, Suspense } from 'react';
 import Home from './pages/Home';
 import { CustomCursor, PageTransition } from './lib/motion';
 import ScrollProvider, { useLenis } from './lib/scroll/ScrollProvider';
+
+// The persistent WebGL world ships in its own chunk and mounts after first
+// paint — the DOM hero owns the LCP, the field fades in behind it.
+const SceneRoot = lazy(() => import('./scene/SceneRoot'));
+
+const DeferredScene = () => {
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    // requestIdleCallback is missing on older Safari — fall back to a timer.
+    const ric: typeof window.requestIdleCallback | undefined = window.requestIdleCallback;
+    if (ric) {
+      const id = ric(() => setReady(true), { timeout: 2500 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const t = window.setTimeout(() => setReady(true), 1200);
+    return () => window.clearTimeout(t);
+  }, []);
+  if (!ready) return null;
+  return (
+    <Suspense fallback={null}>
+      <SceneRoot />
+    </Suspense>
+  );
+};
 
 // Project sub-pages are code-split — each becomes its own chunk loaded on
 // navigation. This keeps the initial bundle lean since most visitors only
@@ -81,6 +105,7 @@ function App() {
       <a href="#main-content" className="skip-link">Skip to main content</a>
       <ScrollProvider>
         <ScrollToTop />
+        <DeferredScene />
         <CustomCursor />
         {/* DOM content layer — sits above the fixed z-0 scene canvas. */}
         <div className="relative z-10">
