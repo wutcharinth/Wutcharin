@@ -5,7 +5,6 @@ import {
     CreditCard, ClipboardList, Zap, Scale, UserCheck,
     Users, DollarSign, Briefcase, ArrowLeft, ArrowDown
 } from 'lucide-react';
-import Lenis from 'lenis';
 import { motion } from 'framer-motion';
 import ProjectNavigation from '../components/ProjectNavigation';
 
@@ -257,13 +256,6 @@ const FutureOfWorkPage = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
-        const lenis = new Lenis();
-        function raf(time: number) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
-        requestAnimationFrame(raf);
-        return () => lenis.destroy();
     }, []);
 
     const disruptionContext = (

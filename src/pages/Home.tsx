@@ -1,6 +1,3 @@
-import { useEffect } from 'react';
-import Lenis from 'lenis';
-
 import Header from '../components/Header';
 import Hero from '../components/Hero';
 import CinematicReel from '../components/CinematicReel';
@@ -13,28 +10,6 @@ import SkillsMarquee from '../components/SkillsMarquee';
 import SEO from '../components/SEO';
 
 const Home = () => {
-    useEffect(() => {
-        // Skip Lenis on touch devices or when the user asks for reduced motion —
-        // smooth-scroll libraries can feel sluggish on low-end phones and
-        // conflict with native scroll assistance.
-        const isTouch = window.matchMedia('(hover: none)').matches;
-        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (isTouch || prefersReduced) return;
-
-        const lenis = new Lenis();
-        let raf = 0;
-        const tick = (time: number) => {
-            lenis.raf(time);
-            raf = requestAnimationFrame(tick);
-        };
-        raf = requestAnimationFrame(tick);
-
-        return () => {
-            cancelAnimationFrame(raf);
-            lenis.destroy();
-        };
-    }, []);
-
     return (
         <div className="relative min-h-screen bg-[#020617] text-slate-200 font-sans selection:bg-violet-500/30">
             <SEO

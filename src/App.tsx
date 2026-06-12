@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { useEffect, lazy, Suspense } from 'react';
 import Home from './pages/Home';
 import { CustomCursor, PageTransition } from './lib/motion';
+import ScrollProvider, { useLenis } from './lib/scroll/ScrollProvider';
 
 // Project sub-pages are code-split — each becomes its own chunk loaded on
 // navigation. This keeps the initial bundle lean since most visitors only
@@ -23,9 +24,16 @@ const KarpathyDeepDivePage = lazy(() => import('./pages/KarpathyDeepDivePage'));
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
+  const lenis = useLenis();
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+    // Reset through Lenis when it owns the scroll, so its internal position
+    // stays in sync; plain window scroll otherwise.
+    if (lenis) {
+      lenis.scrollTo(0, { immediate: true });
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, lenis]);
   return null;
 };
 
@@ -71,9 +79,14 @@ function App() {
   return (
     <Router>
       <a href="#main-content" className="skip-link">Skip to main content</a>
-      <ScrollToTop />
-      <CustomCursor />
-      <AnimatedRoutes />
+      <ScrollProvider>
+        <ScrollToTop />
+        <CustomCursor />
+        {/* DOM content layer — sits above the fixed z-0 scene canvas. */}
+        <div className="relative z-10">
+          <AnimatedRoutes />
+        </div>
+      </ScrollProvider>
     </Router>
   );
 }

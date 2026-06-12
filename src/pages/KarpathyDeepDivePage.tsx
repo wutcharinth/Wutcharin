@@ -5,7 +5,6 @@ import {
     ArrowLeft, Brain, Bot, Circle, Database,
     Eye, FileText, Globe, Layers, Mic, Rocket, Search, Shield, Zap
 } from 'lucide-react';
-import Lenis from 'lenis';
 import { motion } from 'framer-motion';
 import ProjectNavigation from '../components/ProjectNavigation';
 
@@ -76,13 +75,6 @@ const KarpathyDeepDivePage = () => {
     // Scroll handling
     useEffect(() => {
         window.scrollTo(0, 0);
-        const lenis = new Lenis();
-        function raf(time: number) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
-        requestAnimationFrame(raf);
-        return () => lenis.destroy();
     }, []);
 
     // Tooltip State

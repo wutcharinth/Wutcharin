@@ -2,20 +2,12 @@ import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Brain, Shield, Zap, Scale, Building2, Gavel } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import Lenis from 'lenis';
 import CollectionsDemo from '../components/collections/CollectionsDemo';
 import ProjectNavigation from '../components/ProjectNavigation';
 
 export default function CollectionsPage() {
     useEffect(() => {
         window.scrollTo(0, 0);
-        const lenis = new Lenis();
-        function raf(time: number) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
-        requestAnimationFrame(raf);
-        return () => lenis.destroy();
     }, []);
 
     return (

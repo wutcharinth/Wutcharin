@@ -9,7 +9,6 @@ import {
     Lightbulb, Clock, Thermometer, Lock, Network, BarChart,
     X
 } from 'lucide-react';
-import Lenis from 'lenis';
 import ProjectNavigation from '../components/ProjectNavigation';
 
 // ==========================================
@@ -703,13 +702,6 @@ const EvalMatrixViz = () => {
 const AgenticAIPage = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
-        const lenis = new Lenis();
-        function raf(time: number) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
-        requestAnimationFrame(raf);
-        return () => lenis.destroy();
     }, []);
 
     return (

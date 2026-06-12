@@ -2,7 +2,6 @@ import { useEffect, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
-import Lenis from 'lenis';
 
 interface SubPageShellProps {
     /** Tailwind accent color for status dot + selection (e.g. "violet", "rose", "blue") */
@@ -32,23 +31,9 @@ export default function SubPageShell({
     const progress = useSpring(scrollYProgress, { stiffness: 220, damping: 30, mass: 0.25 });
 
     useEffect(() => {
+        // Smooth scroll comes from the global ScrollProvider; the shell only
+        // guarantees each sub-page opens at the top.
         window.scrollTo(0, 0);
-
-        const isTouch = window.matchMedia('(hover: none)').matches;
-        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (isTouch || prefersReduced) return;
-
-        const lenis = new Lenis();
-        let raf = 0;
-        const tick = (time: number) => {
-            lenis.raf(time);
-            raf = requestAnimationFrame(tick);
-        };
-        raf = requestAnimationFrame(tick);
-        return () => {
-            cancelAnimationFrame(raf);
-            lenis.destroy();
-        };
     }, []);
 
     return (
