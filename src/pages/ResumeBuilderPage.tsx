@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button, TextArea, Card } from '../components/resume-builder/UI';
 import { ResumeEditor } from '../components/resume-builder/ResumeEditor';
 import { ResumePreview } from '../components/resume-builder/ResumePreview';
@@ -39,6 +39,11 @@ const COLORS = [
 
 const FONTS: FontFamily[] = ['Inter', 'Roboto', 'Lora', 'Merriweather', 'Playfair Display', 'Space Mono'];
 
+// Resume preview fonts load route-locally so they never block the rest of the
+// site. The link persists once added; htmlExport embeds its own copy.
+const RESUME_FONTS_ID = 'resume-builder-fonts';
+const RESUME_FONTS_HREF = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&family=Roboto:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap';
+
 const ResumeBuilderPage: React.FC = () => {
     const [resumeData, setResumeData] = useState<ResumeData>(INITIAL_DATA);
     const [rawText, setRawText] = useState("");
@@ -56,6 +61,15 @@ const ResumeBuilderPage: React.FC = () => {
     const printRef = useRef<HTMLDivElement>(null);
     const [showExportMenu, setShowExportMenu] = useState(false);
     const [isExporting, setIsExporting] = useState(false);
+
+    useEffect(() => {
+        if (document.getElementById(RESUME_FONTS_ID)) return;
+        const link = document.createElement('link');
+        link.id = RESUME_FONTS_ID;
+        link.rel = 'stylesheet';
+        link.href = RESUME_FONTS_HREF;
+        document.head.appendChild(link);
+    }, []);
 
     const handleParse = async () => {
         if (!rawText.trim()) return;

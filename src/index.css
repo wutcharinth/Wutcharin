@@ -1,12 +1,50 @@
 @import "tailwindcss";
 @plugin "tailwindcss-animate";
 
+/* Identity faces — self-hosted, latin subsets only (~96KB total).
+   Clash Display is the LCP element's face: font-display block (a short block
+   beats a swap flash on the hero). The others swap in quietly. */
+@font-face {
+  font-family: 'Clash Display';
+  src: url('/fonts/ClashDisplay-Variable.woff2') format('woff2');
+  font-weight: 200 700;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'Instrument Serif';
+  src: url('/fonts/InstrumentSerif-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Instrument Serif';
+  src: url('/fonts/InstrumentSerif-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-Variable.woff2') format('woff2');
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Brand tokens — authoritative source of truth.
    See DESIGN.md ("The Midnight Console") for the design system this implements. */
 @layer base {
   :root {
     --color-bg: #020617;            /* Midnight Deep */
     --color-bg-step: #050505;       /* Ink — section break */
+    --color-void: #010109;          /* Void — floor for full-WebGL chapters */
+    --color-veil: rgba(2, 6, 23, 0.78);      /* Veil — text panel over live field */
+    --color-veil-soft: rgba(2, 6, 23, 0.55); /* Veil Soft — secondary panels */
     --color-text: #cbd5e1;          /* Slate Body */
     --color-text-mute: #94a3b8;     /* Slate Mute */
     --color-text-strong: #ffffff;   /* White Pure */
@@ -23,6 +61,9 @@
 @theme {
   --color-bg: var(--color-bg);
   --color-bg-step: var(--color-bg-step);
+  --color-void: var(--color-void);
+  --color-veil: var(--color-veil);
+  --color-veil-soft: var(--color-veil-soft);
   --color-text: var(--color-text);
   --color-text-mute: var(--color-text-mute);
   --color-text-strong: var(--color-text-strong);
@@ -31,8 +72,13 @@
   --color-signal-glow: var(--color-signal-glow);
   --color-cyan: var(--color-cyan);
   --color-fuchsia: var(--color-fuchsia);
-  --font-mono: 'Courier New', Courier, monospace;
+  --font-display: 'Clash Display', 'Helvetica Neue', 'Arial', sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Courier New', monospace;
   --font-sans: 'Helvetica Neue', 'Arial', sans-serif;
+
+  /* Chapter rhythm — generates py-chapter / mt-chapter etc. */
+  --spacing-chapter: clamp(8rem, 18vh, 14rem);
 
   /* Motion tokens — shared across all animated primitives */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -51,14 +97,19 @@
     @apply bg-bg text-text antialiased font-sans;
   }
 
+  /* Headings carry the display face site-wide. Mixed case is the v2 look:
+     uppercase is reserved for mono labels only. Clash at 600 tight reads
+     heavier than Helvetica 900 did. */
   h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
-    @apply font-black uppercase tracking-tighter;
-    line-height: 0.9;
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
   }
 }
 

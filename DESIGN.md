@@ -4,6 +4,9 @@ description: Kinetic executive portfolio for an AI/data leader — dark midnight
 colors:
   midnight-deep: "#020617"
   ink: "#050505"
+  void: "#010109"
+  veil: "#020617c7"
+  veil-soft: "#0206178c"
   violet-signal: "#a78bfa"
   violet-deep: "#7c3aed"
   violet-glow: "#4c1d95"
@@ -15,23 +18,29 @@ colors:
   border-faint: "#ffffff0d"
 typography:
   display:
-    fontFamily: "'Helvetica Neue', Arial, sans-serif"
-    fontSize: "clamp(3rem, 8vw, 7.5rem)"
-    fontWeight: 900
-    lineHeight: 0.9
-    letterSpacing: "-0.04em"
-  headline:
-    fontFamily: "'Helvetica Neue', Arial, sans-serif"
-    fontSize: "clamp(2rem, 4vw, 3.5rem)"
-    fontWeight: 900
-    lineHeight: 1
-    letterSpacing: "-0.03em"
-  title:
-    fontFamily: "'Helvetica Neue', Arial, sans-serif"
-    fontSize: "1.25rem"
+    fontFamily: "'Clash Display', 'Helvetica Neue', Arial, sans-serif"
+    fontSize: "clamp(3.5rem, 9vw, 9rem)"
     fontWeight: 600
+    lineHeight: 0.92
+    letterSpacing: "-0.02em"
+  headline:
+    fontFamily: "'Clash Display', 'Helvetica Neue', Arial, sans-serif"
+    fontSize: "clamp(2rem, 4vw, 3.5rem)"
+    fontWeight: 600
+    lineHeight: 1
+    letterSpacing: "-0.02em"
+  serif-accent:
+    fontFamily: "'Instrument Serif', Georgia, serif"
+    fontSize: "inherit"
+    fontWeight: 400
+    fontStyle: "italic"
+    letterSpacing: "0"
+  title:
+    fontFamily: "'Clash Display', 'Helvetica Neue', Arial, sans-serif"
+    fontSize: "1.25rem"
+    fontWeight: 500
     lineHeight: 1.3
-    letterSpacing: "normal"
+    letterSpacing: "-0.01em"
   body:
     fontFamily: "'Helvetica Neue', Arial, sans-serif"
     fontSize: "1rem"
@@ -39,7 +48,7 @@ typography:
     lineHeight: 1.6
     letterSpacing: "normal"
   label:
-    fontFamily: "'Courier New', Courier, monospace"
+    fontFamily: "'JetBrains Mono', ui-monospace, monospace"
     fontSize: "0.625rem"
     fontWeight: 500
     lineHeight: 1
@@ -124,6 +133,8 @@ A dim operator's room with one signal color, two cool accents reserved for ident
 ### Neutral
 
 - **Ink** (`#050505`): Section breaks darker than Midnight Deep. Used to mark a tonal step between sections without introducing a border.
+- **Void** (`#010109`): Deeper than midnight — the floor under full-WebGL chapters so the particle glow has true black headroom. Never a section background on its own.
+- **Veil** (`rgba(2,6,23,0.78)`) / **Veil Soft** (`rgba(2,6,23,0.55)`): The glass-panel tokens that sit between the live particle field and reading text. Veil guarantees ≥4.5:1 body contrast over the worst-case particle frame; Veil Soft is for secondary panels. Solid rgba, not backdrop-blur, by default.
 - **Slate Body** (`#cbd5e1`): The default body-text color against Midnight Deep. Hits 9.4:1 contrast — well above WCAG AA.
 - **Slate Mute** (`#94a3b8`): Secondary text, captions, deprecated meta. Hits 5.7:1 contrast.
 - **White Pure** (`#ffffff`): Reserved for the most important typographic weight on a surface. Never the default text color.
@@ -139,23 +150,27 @@ A dim operator's room with one signal color, two cool accents reserved for ident
 
 ## 3. Typography
 
-**Display Font:** Helvetica Neue (with Arial fallback) — set very heavy (900) and very tight (`-0.04em`).
-**Body Font:** Helvetica Neue (with Arial fallback) — regular weight, generous line-height, never tracked.
-**Label/Mono Font:** Courier New — used exclusively for uppercase meta-labels at extreme letter-spacing.
+**Display Font:** Clash Display (variable 200–700, self-hosted, Fontshare FFL) — set semibold (600) and tight (`-0.02em`), mixed case. Its angular counters rhyme with the particle geometry of the v2 scene.
+**Editorial Accent:** Instrument Serif italic (self-hosted, OFL) — the human voice. Single accent words and pull quotes only, never full headlines.
+**Body Font:** Helvetica Neue (system stack) — regular weight, generous line-height, never tracked. Zero bytes; the identity faces above do the brand work.
+**Label/Mono Font:** JetBrains Mono (variable, self-hosted, OFL) — uppercase meta-labels at extreme letter-spacing; tabular numerals for metrics.
 
-**Character:** A single sans family carrying both display and body, with weight + size + tracking doing all the hierarchy work. Mono appears as a deliberate counter-voice on labels — terminal-adjacent without being terminal-cosplay.
+**Character:** An engineered grotesk carries display, a serif italic interrupts it with a human voice, and mono carries state. Weight + size + tracking still do the hierarchy work; uppercase now belongs to mono labels alone.
 
 ### Hierarchy
 
-- **Display** (900, `clamp(3rem, 8vw, 7.5rem)`, line-height 0.9, tracking `-0.04em`): Hero only. Often broken letter-by-letter for kinetic entry.
-- **Headline** (900, `clamp(2rem, 4vw, 3.5rem)`, line-height 1, tracking `-0.03em`): Section openers. UPPERCASE.
-- **Title** (600, `1.25rem`, line-height 1.3): Card titles, project names. Sentence case.
+- **Display** (Clash 600, `clamp(3.5rem, 9vw, 9rem)`, line-height 0.92, tracking `-0.02em`): Hero only. Often broken letter-by-letter for kinetic entry. Mixed case.
+- **Headline** (Clash 600, `clamp(2rem, 4vw, 3.5rem)`, line-height 1, tracking `-0.02em`): Section openers. Mixed case.
+- **Serif Accent** (Instrument Serif italic 400, inherits size): One or two words inside a display/headline lockup, or a standalone pull quote. The only italic in the system.
+- **Title** (Clash 500, `1.25rem`, line-height 1.3): Card titles, project names. Sentence case.
 - **Body** (400, `1rem`, line-height 1.6): Default reading text. Cap line length at 65–75ch.
-- **Label** (Courier New 500, `0.625rem`, line-height 1, tracking `0.28em`, UPPERCASE): Meta-labels (`AI / DATA / OPS`), section eyebrows, status pings. Always violet-300 (`#c4b5fd`) at 70% opacity.
+- **Label** (JetBrains Mono 500, `0.625rem`, line-height 1, tracking `0.28em`, UPPERCASE): Meta-labels (`AI / DATA / OPS`), section eyebrows, status pings. Always violet-300 (`#c4b5fd`) at 70% opacity.
 
 ### Named Rules
 
-**The Heavy-and-Tight Rule.** Display weight is 900, never 700. Display tracking is `-0.04em`, never default. Anything lighter or looser at hero scale reads as a different brand.
+**The Display-Voice Rule.** Display is Clash 600 tight (`-0.02em`), mixed case, never uppercase. Clash at 600 reads heavier than Helvetica at 900; anything looser at hero scale reads as a different brand.
+
+**The Serif-Interrupt Rule.** Instrument Serif appears only in italic, only on one or two words per lockup or a standalone quote. It marks the human exception inside the engineered pattern. A full serif headline is forbidden.
 
 **The Mono-Label Rule.** Mono is reserved for labels at `≥0.25em` letter-spacing in UPPERCASE. Never used for body, never for headlines. It is a status-indicator typeface in this system, not a code-display typeface.
 

@@ -86,11 +86,12 @@
       }
     },
     "typographyMeta": {
-      "display": { "displayName": "Display", "purpose": "Hero only. Often broken letter-by-letter for kinetic entry." },
-      "headline": { "displayName": "Headline", "purpose": "Section openers. UPPERCASE." },
-      "title": { "displayName": "Title", "purpose": "Card titles, project names. Sentence case." },
-      "body": { "displayName": "Body", "purpose": "Default reading text. 65 to 75ch line length." },
-      "label": { "displayName": "Label", "purpose": "Mono uppercase meta-labels at 0.28em letter-spacing — status indicators, eyebrows, badges." }
+      "display": { "displayName": "Display", "purpose": "Hero only. Clash Display 600, mixed case. Often broken letter-by-letter for kinetic entry." },
+      "headline": { "displayName": "Headline", "purpose": "Section openers. Clash Display 600, mixed case." },
+      "serifAccent": { "displayName": "Serif Accent", "purpose": "Instrument Serif italic. One or two words inside a lockup, or a standalone pull quote. The only italic in the system." },
+      "title": { "displayName": "Title", "purpose": "Card titles, project names. Clash Display 500, sentence case." },
+      "body": { "displayName": "Body", "purpose": "Default reading text. System grotesk. 65 to 75ch line length." },
+      "label": { "displayName": "Label", "purpose": "JetBrains Mono uppercase meta-labels at 0.28em letter-spacing — status indicators, eyebrows, badges. Tabular numerals for metrics." }
     },
     "shadows": [
       { "name": "ambient-violet-glow", "value": "0 0 18px rgba(139, 92, 246, 0.6)", "purpose": "Live-status indicator only — pulse dots, active nav pill, hover on primary CTA. Signals 'running'." },
@@ -138,7 +139,7 @@
       "refersTo": "chip-meta",
       "description": "Violet pill with optional pulsing dot — section eyebrows, project badges, status indicators.",
       "html": "<span class=\"ds-chip-meta\"><span class=\"ds-chip-dot\"></span>AI / DATA / OPS</span>",
-      "css": ".ds-chip-meta { display: inline-flex; align-items: center; gap: 8px; background: rgba(76, 29, 149, 0.08); color: #c4b5fd; padding: 6px 16px; font-family: 'Courier New', Courier, monospace; font-size: 0.625rem; font-weight: 500; letter-spacing: 0.28em; text-transform: uppercase; border: 1px solid rgba(167, 139, 250, 0.2); border-radius: 9999px; } .ds-chip-dot { width: 6px; height: 6px; background: #a78bfa; border-radius: 9999px; animation: ds-chip-pulse 2s cubic-bezier(0.16, 1, 0.3, 1) infinite; } @keyframes ds-chip-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.85); } }"
+      "css": ".ds-chip-meta { display: inline-flex; align-items: center; gap: 8px; background: rgba(76, 29, 149, 0.08); color: #c4b5fd; padding: 6px 16px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.625rem; font-weight: 500; letter-spacing: 0.28em; text-transform: uppercase; border: 1px solid rgba(167, 139, 250, 0.2); border-radius: 9999px; } .ds-chip-dot { width: 6px; height: 6px; background: #a78bfa; border-radius: 9999px; animation: ds-chip-pulse 2s cubic-bezier(0.16, 1, 0.3, 1) infinite; } @keyframes ds-chip-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.85); } }"
     },
     {
       "name": "Section Card",
@@ -154,7 +155,7 @@
       "refersTo": "display",
       "description": "Hero-only display type. Heavy and tight. Often broken letter-by-letter for kinetic entry.",
       "html": "<h1 class=\"ds-display\">Wutcharin</h1>",
-      "css": ".ds-display { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: clamp(3rem, 8vw, 7.5rem); font-weight: 900; line-height: 0.9; letter-spacing: -0.04em; color: #ffffff; text-transform: none; margin: 0; }"
+      "css": ".ds-display { font-family: 'Clash Display', 'Helvetica Neue', Arial, sans-serif; font-size: clamp(3.5rem, 9vw, 9rem); font-weight: 600; line-height: 0.92; letter-spacing: -0.02em; color: #ffffff; text-transform: none; margin: 0; }"
     },
     {
       "name": "Mono Label",
@@ -162,7 +163,7 @@
       "refersTo": "label",
       "description": "Mono uppercase eyebrow — the system's status-indicator typeface.",
       "html": "<span class=\"ds-label\">Section / 02 — Projects</span>",
-      "css": ".ds-label { font-family: 'Courier New', Courier, monospace; font-size: 0.625rem; font-weight: 500; line-height: 1; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(196, 181, 253, 0.8); }"
+      "css": ".ds-label { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.625rem; font-weight: 500; line-height: 1; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(196, 181, 253, 0.8); font-variant-numeric: tabular-nums; }"
     },
     {
       "name": "Nav Pill",
@@ -187,8 +188,9 @@
       { "name": "The 10% Rule", "body": "Violet Signal is used on no more than 10% of any given screen by visual area. Its rarity is the point.", "section": "colors" },
       { "name": "The Identity Lane Rule", "body": "Cyan Pulse and Fuchsia Flare belong to specific named artifacts. They are project identities, not global colors.", "section": "colors" },
       { "name": "The No-Black Rule", "body": "#000 and #fff are forbidden as raw values. Use Midnight Deep (#020617) and tinted neutrals.", "section": "colors" },
-      { "name": "The Heavy-and-Tight Rule", "body": "Display weight is 900, never 700. Display tracking is -0.04em, never default.", "section": "typography" },
-      { "name": "The Mono-Label Rule", "body": "Mono is reserved for labels at 0.25em letter-spacing or more in UPPERCASE. A status-indicator typeface, not a code typeface.", "section": "typography" },
+      { "name": "The Display-Voice Rule", "body": "Display is Clash Display 600 tight (-0.02em), mixed case, never uppercase. Clash at 600 reads heavier than Helvetica at 900.", "section": "typography" },
+      { "name": "The Serif-Interrupt Rule", "body": "Instrument Serif appears only in italic, only on one or two words per lockup or a standalone quote. A full serif headline is forbidden.", "section": "typography" },
+      { "name": "The Mono-Label Rule", "body": "Mono (JetBrains Mono) is reserved for labels at 0.25em letter-spacing or more in UPPERCASE. A status-indicator typeface, not a code typeface.", "section": "typography" },
       { "name": "The No-Gradient-Text Rule", "body": "background-clip: text combined with a gradient is forbidden by name. Emphasis through weight and size.", "section": "typography" },
       { "name": "The Flat-By-Default Rule", "body": "New components ship with no box-shadow at rest. Shadows appear only as a response to state.", "section": "elevation" },
       { "name": "The Aurora Is Color Rule", "body": "Large blurred violet/fuchsia orbs are backgrounds tinted by blur, not elevation cues.", "section": "elevation" }
