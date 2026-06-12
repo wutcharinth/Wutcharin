@@ -24,6 +24,12 @@ function KineticWord({
         const el = ref.current;
         const letters = el.querySelectorAll<HTMLElement>('[data-letter]');
 
+        // GSAP ignores the global CSS reduced-motion kill — gate explicitly.
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            gsap.set(letters, { yPercent: 0, opacity: 1, rotate: 0 });
+            return;
+        }
+
         // Use gsap.fromTo so the start state is enforced even if a previous
         // ctx.revert() cleared the inline transform/opacity. Avoids the
         // StrictMode / HMR race where letters could otherwise strand at 0 opacity.
