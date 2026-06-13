@@ -5,7 +5,7 @@ import { sceneBus } from './sceneBus';
 import { bakeFormation, type FormationId } from './formations';
 import { particleVertex, particleFragment } from './shaders';
 
-const MODE_OPACITY = { full: 0.9, ambient: 0.32, hidden: 0 } as const;
+const MODE_OPACITY = { full: 0.82, ambient: 0.3, hidden: 0 } as const;
 const MODE_DENSITY = { full: 1, ambient: 0.18, hidden: 0.18 } as const;
 const MODE_TIMESCALE = { full: 1, ambient: 0.45, hidden: 0 } as const;
 const MORPH_SECONDS = 1.15;

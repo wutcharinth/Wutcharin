@@ -164,10 +164,11 @@ void main() {
 
     // Brightest particles take the accent; the rest stay near-base. Additive
     // blending over the void floor gives the glow without post-processing.
+    // Core add kept small so dense clusters don't accumulate to a white-out.
     vec3 col = mix(uColorBase, uAccent, smoothstep(0.55, 0.95, vRand));
-    float core = smoothstep(0.18, 0.0, d) * 0.5;
+    float core = smoothstep(0.18, 0.0, d) * 0.3;
     col += core;
 
-    gl_FragColor = vec4(col, disc * uOpacity * (0.35 + 0.65 * vFade) * (0.45 + 0.55 * vRand));
+    gl_FragColor = vec4(col, disc * uOpacity * (0.3 + 0.6 * vFade) * (0.4 + 0.5 * vRand));
 }
 `;

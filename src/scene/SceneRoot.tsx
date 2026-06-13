@@ -85,7 +85,7 @@ export default function SceneRoot() {
                 className="absolute inset-0"
                 style={{
                     background:
-                        'linear-gradient(180deg, rgba(2,6,23,0.30) 0%, rgba(2,6,23,0.52) 55%, rgba(2,6,23,0.60) 100%)',
+                        'linear-gradient(180deg, rgba(2,6,23,0.28) 0%, rgba(2,6,23,0.46) 55%, rgba(2,6,23,0.52) 100%)',
                 }}
             />
         </div>
