@@ -15,8 +15,8 @@ export interface Tier {
 }
 
 const TIERS: Record<Exclude<TierId, 'off'>, Tier> = {
-    high: { id: 'high', texSize: 256, dprMax: 1.75 },
-    mid: { id: 'mid', texSize: 128, dprMax: 1.25 },
+    high: { id: 'high', texSize: 160, dprMax: 1.5 },
+    mid: { id: 'mid', texSize: 112, dprMax: 1.15 },
     low: { id: 'low', texSize: 64, dprMax: 1 },
 };
 

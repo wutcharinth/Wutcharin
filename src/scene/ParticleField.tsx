@@ -5,7 +5,7 @@ import { sceneBus } from './sceneBus';
 import { bakeFormation, type FormationId } from './formations';
 import { particleVertex, particleFragment } from './shaders';
 
-const MODE_OPACITY = { full: 1, ambient: 0.4, hidden: 0 } as const;
+const MODE_OPACITY = { full: 0.9, ambient: 0.32, hidden: 0 } as const;
 const MODE_DENSITY = { full: 1, ambient: 0.18, hidden: 0.18 } as const;
 const MODE_TIMESCALE = { full: 1, ambient: 0.45, hidden: 0 } as const;
 const MORPH_SECONDS = 1.15;
@@ -56,7 +56,7 @@ export default function ParticleField({ texSize }: { texSize: number }) {
             uMorph: { value: 1 },
             uChaos: { value: sceneBus.targets.chaos },
             uTime: { value: 0 },
-            uSize: { value: texSize >= 256 ? 7.2 : texSize >= 128 ? 9.0 : 12.0 },
+            uSize: { value: texSize >= 160 ? 0.9 : texSize >= 112 ? 1.15 : 1.7 },
             uDensity: { value: 1 },
             uPointerWorld: { value: new THREE.Vector3(0, 0, -50) },
             uRepel: { value: 0 },

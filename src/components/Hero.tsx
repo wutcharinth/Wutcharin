@@ -161,7 +161,7 @@ export default function Hero() {
                             <KineticWord text="Wutcharin" className="text-white" delay={0.6} />
                         </span>
                         <span className="block pl-[10vw] md:pl-[16vw]">
-                            <KineticWord text="Thatan" className="text-slate-400" delay={0.85} />
+                            <KineticWord text="Thatan" className="text-slate-300" delay={0.85} />
                         </span>
                     </h1>
                 </motion.div>
@@ -180,7 +180,7 @@ export default function Hero() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1.55, duration: 0.8 }}
-                    className="mb-12 text-[10px] font-mono text-white/40 tracking-[0.3em] uppercase"
+                    className="mb-12 text-[10px] font-mono text-white/55 tracking-[0.3em] uppercase"
                 >
                     AI · Automation · Analytics
                 </motion.p>
@@ -251,7 +251,7 @@ export default function Hero() {
                 transition={{ delay: 2.2, duration: 1 }}
                 className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-3"
             >
-                <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-white/30">
+                <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-white/45">
                     [ Scroll to resolve ]
                 </span>
                 <div className="relative w-[1px] h-10 overflow-hidden bg-white/10">

@@ -77,6 +77,17 @@ export default function SceneRoot() {
                     <CameraRig />
                 </PerformanceMonitor>
             </Canvas>
+
+            {/* Readability scrim — a graduated floor between the live field and
+                the DOM text layer. Lighter at the top so the hero stays vivid,
+                heavier lower down where reading copy sits. */}
+            <div
+                className="absolute inset-0"
+                style={{
+                    background:
+                        'linear-gradient(180deg, rgba(2,6,23,0.30) 0%, rgba(2,6,23,0.52) 55%, rgba(2,6,23,0.60) 100%)',
+                }}
+            />
         </div>
     );
 }

@@ -114,25 +114,36 @@ void main() {
     m = m * m * (3.0 - 2.0 * m);
     vec3 pos = mix(a.xyz, b.xyz, m);
 
-    // Chaos: curl-noise drift, the "unresolved data" state.
-    float amp = uChaos * 2.4;
-    if (amp > 0.001) {
-        pos += curl(pos * 0.16 + uTime * 0.045) * amp * (0.55 + 0.9 * vRand);
-        pos.x += snoise(vec3(vRand * 17.0, uTime * 0.07, 0.0)) * uChaos * 0.6;
-    }
+    // Culled particles skip every expensive per-vertex op (noise + repulsion).
+    if (keep > 0.5) {
+        // Chaos drift — three simplex samples (cheaper than a full curl).
+        float amp = uChaos * 2.2;
+        if (amp > 0.001) {
+            float t = uTime * 0.05;
+            vec3 q = pos * 0.16;
+            vec3 drift = vec3(
+                snoise(q + vec3(0.0, 0.0, t)),
+                snoise(q + vec3(31.4, 0.0, t)),
+                snoise(q + vec3(0.0, 62.8, t))
+            );
+            pos += drift * amp * (0.5 + 0.8 * vRand);
+        }
 
-    // Pointer repulsion — the field notices attention.
-    vec3 away = pos - uPointerWorld;
-    float dist = length(away);
-    float force = exp(-dist * dist * 0.14) * uRepel;
-    pos += normalize(away + 0.0001) * force;
+        // Pointer repulsion — the field notices attention.
+        vec3 away = pos - uPointerWorld;
+        float force = exp(-dot(away, away) * 0.14) * uRepel;
+        pos += normalize(away + 0.0001) * force;
+    }
 
     vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
     float depth = -mvPosition.z;
     vFade = smoothstep(34.0, 10.0, depth);
 
     gl_Position = projectionMatrix * mvPosition;
-    gl_PointSize = keep * uSize * (0.6 + 0.9 * vRand) * (160.0 / max(depth, 0.001));
+    // Small, crisp sprites — additive overdraw was the lag. Hard-capped so a
+    // near particle can never blow up into a screen-filling blob.
+    float size = keep * uSize * (0.7 + 0.7 * vRand) * (42.0 / max(depth, 0.001));
+    gl_PointSize = clamp(size, 0.0, 6.0);
 }
 `;
 
