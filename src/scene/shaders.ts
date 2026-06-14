@@ -153,6 +153,7 @@ precision highp float;
 uniform vec3 uColorBase;
 uniform vec3 uAccent;
 uniform float uOpacity;
+uniform float uGlow;
 
 varying float vRand;
 varying float vFade;
@@ -169,6 +170,7 @@ void main() {
     float core = smoothstep(0.18, 0.0, d) * 0.42;
     col += core;
 
-    gl_FragColor = vec4(col, disc * uOpacity * (0.3 + 0.6 * vFade) * (0.4 + 0.5 * vRand));
+    // uGlow scales emitted brightness (additive) — the live brightness knob.
+    gl_FragColor = vec4(col * uGlow, disc * uOpacity * (0.3 + 0.6 * vFade) * (0.4 + 0.5 * vRand));
 }
 `;

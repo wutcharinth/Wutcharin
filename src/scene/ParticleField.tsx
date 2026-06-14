@@ -10,6 +10,16 @@ const MODE_DENSITY = { full: 1, ambient: 0.18, hidden: 0.18 } as const;
 const MODE_TIMESCALE = { full: 1, ambient: 0.45, hidden: 0 } as const;
 const MORPH_SECONDS = 1.15;
 
+// Field brightness multiplier (additive). Baked default plus a live override:
+// append ?glow=1.8 to any URL to tune it in real time, then tell me the value
+// to bake in. Clamped to a sane range.
+const GLOW_DEFAULT = 1.6;
+const GLOW = (() => {
+    if (typeof window === 'undefined') return GLOW_DEFAULT;
+    const raw = parseFloat(new URLSearchParams(window.location.search).get('glow') ?? '');
+    return Number.isFinite(raw) ? Math.min(4, Math.max(0.2, raw)) : GLOW_DEFAULT;
+})();
+
 function makeTexture(id: FormationId, size: number) {
     const tex = new THREE.DataTexture(bakeFormation(id, size), size, size, THREE.RGBAFormat, THREE.FloatType);
     tex.minFilter = THREE.NearestFilter;
@@ -63,6 +73,7 @@ export default function ParticleField({ texSize }: { texSize: number }) {
             uColorBase: { value: new THREE.Color('#8e9bb8').multiplyScalar(0.55) },
             uAccent: { value: new THREE.Color(sceneBus.targets.accent) },
             uOpacity: { value: 0 },
+            uGlow: { value: GLOW },
         };
         return { geometry, uniforms };
         // eslint-disable-next-line react-hooks/exhaustive-deps
