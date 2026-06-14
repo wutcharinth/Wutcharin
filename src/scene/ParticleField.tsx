@@ -13,7 +13,7 @@ const MORPH_SECONDS = 1.15;
 // Field brightness multiplier (additive). Baked default plus a live override:
 // append ?glow=1.8 to any URL to tune it in real time, then tell me the value
 // to bake in. Clamped to a sane range.
-const GLOW_DEFAULT = 1.6;
+const GLOW_DEFAULT = 2.5;
 const GLOW = (() => {
     if (typeof window === 'undefined') return GLOW_DEFAULT;
     const raw = parseFloat(new URLSearchParams(window.location.search).get('glow') ?? '');
