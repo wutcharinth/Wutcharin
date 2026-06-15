@@ -77,11 +77,11 @@ export default function SignalChapter() {
                 <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-12 mt-16">
                     {STATS.map((s) => (
                         <div key={s.label}>
-                            <div className="text-5xl md:text-6xl text-white tabular-nums">{s.value}</div>
-                            <div className="mt-2 font-mono text-[10px] uppercase tracking-[0.28em] text-violet-300/70">
+                            <div className="text-5xl md:text-6xl text-text-strong tabular-nums">{s.value}</div>
+                            <div className="mt-2 font-mono text-[10px] uppercase tracking-[0.28em] text-signal/70">
                                 {s.unit} · {s.label}
                             </div>
-                            <p className="mt-4 text-sm text-white/50 font-light leading-relaxed">{s.detail}</p>
+                            <p className="mt-4 text-sm text-text-strong/50 font-light leading-relaxed">{s.detail}</p>
                         </div>
                     ))}
                 </div>
@@ -110,18 +110,18 @@ export default function SignalChapter() {
                                     }}
                                 >
                                     <div className="flex items-baseline gap-3 mb-3">
-                                        <span className="font-mono text-[10px] text-white/30 tracking-[0.28em] tabular-nums">
+                                        <span className="font-mono text-[10px] text-text-strong/30 tracking-[0.28em] tabular-nums">
                                             0{i + 1} / 03
                                         </span>
-                                        <span className="font-mono text-[10px] text-violet-300/70 tracking-[0.28em] uppercase">
+                                        <span className="font-mono text-[10px] text-signal/70 tracking-[0.28em] uppercase">
                                             {s.unit}
                                         </span>
                                     </div>
-                                    <div className="text-[clamp(4.5rem,13vw,11rem)] leading-[0.85] tracking-[-0.04em] text-white tabular-nums font-display font-semibold">
+                                    <div className="text-[clamp(4.5rem,13vw,11rem)] leading-[0.85] tracking-[-0.04em] text-text-strong tabular-nums font-display font-semibold">
                                         {s.value}
                                     </div>
-                                    <p className="mt-5 text-xl md:text-2xl text-white/65 font-light">{s.label}</p>
-                                    <p className="mt-3 max-w-md text-sm md:text-base text-white/45 font-light leading-relaxed">
+                                    <p className="mt-5 text-xl md:text-2xl text-text-strong/65 font-light">{s.label}</p>
+                                    <p className="mt-3 max-w-md text-sm md:text-base text-text-strong/45 font-light leading-relaxed">
                                         {s.detail}
                                     </p>
                                 </div>
@@ -148,12 +148,12 @@ export default function SignalChapter() {
 function ChapterHeading() {
     return (
         <div>
-            <div className="inline-flex items-center gap-2 mb-6 px-3 py-1 rounded-full border border-white/10">
+            <div className="inline-flex items-center gap-2 mb-6 px-3 py-1 rounded-full border border-text-strong/10">
                 <span className="h-1 w-1 rounded-full bg-violet-400" />
-                <span className="text-[10px] font-mono uppercase tracking-[0.28em] text-slate-300">01 · Signal</span>
+                <span className="text-[10px] font-mono uppercase tracking-[0.28em] text-text">01 · Signal</span>
             </div>
-            <h2 className="text-3xl md:text-5xl tracking-[-0.02em] text-white leading-[0.98] max-w-2xl">
-                Noise resolves into <span className="font-serif italic font-normal text-violet-200">signal</span>.
+            <h2 className="text-3xl md:text-5xl tracking-[-0.02em] text-text-strong leading-[0.98] max-w-2xl">
+                Noise resolves into <span className="font-serif italic font-normal text-signal">signal</span>.
             </h2>
         </div>
     );

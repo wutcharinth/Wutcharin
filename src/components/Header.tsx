@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useSpring, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
+import ThemeToggle from './ThemeToggle';
 
 const navLinks = [
     { name: 'Home', href: '#', id: '' },
@@ -78,7 +79,7 @@ export default function Header() {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                 className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
-                    ? 'bg-slate-950/60 backdrop-blur-xl pb-3 border-b border-white/5 shadow-[0_1px_0_0_rgba(255,255,255,0.04)_inset]'
+                    ? 'bg-bg/60 backdrop-blur-xl pb-3 border-b border-text-strong/5 shadow-[0_1px_0_0_rgba(255,255,255,0.04)_inset]'
                     : 'bg-transparent pb-5'
                     }`}
             style={{ paddingTop: `calc(env(safe-area-inset-top) + ${isScrolled ? '0.75rem' : '1.25rem'})` }}
@@ -86,14 +87,14 @@ export default function Header() {
                 <div className="max-w-7xl mx-auto px-6 flex justify-between items-center gap-6">
                     <a
                         href="#"
-                        className="group flex items-center gap-1 text-xl font-medium text-white tracking-tight cursor-hover"
+                        className="group flex items-center gap-1 text-xl font-medium text-text-strong tracking-tight cursor-hover"
                         data-cursor="home"
                     >
                         <span className="relative">
                             WT
-                            <span className="absolute -bottom-1 left-0 h-px bg-white scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 w-full" />
+                            <span className="absolute -bottom-1 left-0 h-px bg-text-strong scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 w-full" />
                         </span>
-                        <span className="text-violet-400">.</span>
+                        <span className="text-signal">.</span>
                     </a>
 
                     <nav ref={navRef} className="hidden md:flex items-center relative">
@@ -102,7 +103,7 @@ export default function Header() {
                             {indicator && (
                                 <motion.div
                                     layoutId="navActivePill"
-                                    className="absolute inset-y-1 rounded-full bg-white/10 border border-white/10"
+                                    className="absolute inset-y-1 rounded-full bg-text-strong/10 border border-text-strong/10"
                                     animate={{ left: indicator.left, width: indicator.width, opacity: 1 }}
                                     initial={{ opacity: 0 }}
                                     exit={{ opacity: 0 }}
@@ -117,7 +118,7 @@ export default function Header() {
                                     key={link.name}
                                     href={link.href}
                                     data-nav-id={link.id}
-                                    className={`relative px-4 py-2 text-[11px] font-mono uppercase tracking-[0.28em] transition-colors cursor-hover ${isActive ? 'text-white' : 'text-slate-400 hover:text-white'
+                                    className={`relative px-4 py-2 text-[11px] font-mono uppercase tracking-[0.28em] transition-colors cursor-hover ${isActive ? 'text-text-strong' : 'text-text-mute hover:text-text-strong'
                                         }`}
                                 >
                                     {link.name}
@@ -126,9 +127,10 @@ export default function Header() {
                         })}
                     </nav>
 
-                    <div className="md:hidden flex items-center gap-4">
+                    <div className="flex items-center gap-3">
+                        <ThemeToggle />
                         <button
-                            className="text-white p-2 hover:bg-white/10 rounded-lg transition-colors"
+                            className="md:hidden text-text-strong p-2 hover:bg-text-strong/10 rounded-lg transition-colors"
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                             aria-label="Toggle menu"
                         >
@@ -140,7 +142,7 @@ export default function Header() {
                 {/* Scroll progress bar — single Violet Signal, 10% Rule */}
                 <motion.div
                     style={{ scaleX }}
-                    className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-violet-400 origin-left"
+                    className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-signal origin-left"
                 />
             </motion.header>
 
@@ -151,7 +153,7 @@ export default function Header() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.25 }}
-                        className="fixed top-[60px] left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-xl border-b border-white/10 p-8 md:hidden"
+                        className="fixed top-[60px] left-0 right-0 z-40 bg-bg/95 backdrop-blur-xl border-b border-text-strong/10 p-8 md:hidden"
                     >
                         <nav className="flex flex-col gap-5">
                             {navLinks.map((link, i) => (
@@ -161,7 +163,7 @@ export default function Header() {
                                     initial={{ opacity: 0, x: -20 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     transition={{ delay: i * 0.05, duration: 0.4 }}
-                                    className="text-2xl font-medium text-white hover:text-violet-300 tracking-tight"
+                                    className="text-2xl font-medium text-text-strong hover:text-signal tracking-tight"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                 >
                                     {link.name}

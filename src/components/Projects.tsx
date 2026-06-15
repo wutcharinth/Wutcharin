@@ -54,12 +54,12 @@ function ActLabel({ index, title, note }: { index: string; title: string; note: 
     return (
         <RevealOnScroll className="mb-10 mt-24 first:mt-0">
             <div data-reveal-child className="flex items-baseline justify-between gap-6 flex-wrap">
-                <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-violet-300/80">
+                <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-signal/80">
                     Act {index} / {title}
                 </span>
-                <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-white/30">{note}</span>
+                <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-text-strong/30">{note}</span>
             </div>
-            <div data-reveal-child className="mt-4 h-px w-full bg-gradient-to-r from-white/20 via-white/5 to-transparent" />
+            <div data-reveal-child className="mt-4 h-px w-full bg-gradient-to-r from-text-strong/20 via-text-strong/5 to-transparent" />
         </RevealOnScroll>
     );
 }
@@ -80,18 +80,18 @@ function CaseStudyRow({ project, index }: { project: Project; index: number }) {
             project={project}
             onMouseEnter={takeAttention}
             onFocus={takeAttention}
-            className="group block border-t border-white/[0.08] py-10 md:py-12 transition-colors hover:border-white/20 focus-visible:border-white/20"
+            className="group block border-t border-text-strong/[0.08] py-10 md:py-12 transition-colors hover:border-text-strong/20 focus-visible:border-text-strong/20"
         >
             <div className="grid grid-cols-12 gap-x-6 gap-y-4 items-baseline">
-                <span className="col-span-2 md:col-span-1 font-mono text-[10px] md:text-xs text-white/30 tracking-[0.28em] tabular-nums">
+                <span className="col-span-2 md:col-span-1 font-mono text-[10px] md:text-xs text-text-strong/30 tracking-[0.28em] tabular-nums">
                     0{index + 1}
                 </span>
 
                 <div className="col-span-10 md:col-span-7">
-                    <h3 className="text-3xl md:text-5xl lg:text-6xl tracking-[-0.02em] leading-[0.95] text-white transition-transform duration-500 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-3">
+                    <h3 className="text-3xl md:text-5xl lg:text-6xl tracking-[-0.02em] leading-[0.95] text-text-strong transition-transform duration-500 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-3">
                         {project.title}
                     </h3>
-                    <p className="mt-3 text-sm md:text-base text-white/45 font-light max-w-xl">
+                    <p className="mt-3 text-sm md:text-base text-text-strong/45 font-light max-w-xl">
                         {project.tagline ?? project.desc}
                     </p>
                     <span
@@ -102,14 +102,14 @@ function CaseStudyRow({ project, index }: { project: Project; index: number }) {
                 </div>
 
                 <div className="col-span-10 col-start-3 md:col-span-4 md:col-start-9 flex md:flex-col md:items-end justify-between gap-2">
-                    <div className="font-mono text-[10px] uppercase tracking-[0.28em] text-white/40">
+                    <div className="font-mono text-[10px] uppercase tracking-[0.28em] text-text-strong/40">
                         {project.badge ?? project.role}
                     </div>
-                    <div className="hidden md:block font-mono text-[10px] uppercase tracking-[0.2em] text-white/25 text-right">
+                    <div className="hidden md:block font-mono text-[10px] uppercase tracking-[0.2em] text-text-strong/25 text-right">
                         {project.tags.slice(0, 3).join(' · ')}
                     </div>
                     <ArrowUpRight
-                        className="w-5 h-5 text-white/30 transition-all duration-500 group-hover:text-white group-hover:translate-x-1 group-hover:-translate-y-1"
+                        className="w-5 h-5 text-text-strong/30 transition-all duration-500 group-hover:text-text-strong group-hover:translate-x-1 group-hover:-translate-y-1"
                         aria-hidden="true"
                     />
                 </div>
@@ -123,7 +123,7 @@ function FleetRow({ project }: { project: Project }) {
     return (
         <ProjectLink
             project={project}
-            className="group grid grid-cols-12 gap-x-4 items-center border-t border-white/[0.06] py-4 px-2 -mx-2 transition-colors hover:bg-white/[0.025] focus-visible:bg-white/[0.025]"
+            className="group grid grid-cols-12 gap-x-4 items-center border-t border-text-strong/[0.06] py-4 px-2 -mx-2 transition-colors hover:bg-text-strong/[0.025] focus-visible:bg-text-strong/[0.025]"
         >
             <span className="col-span-1 flex justify-center" aria-hidden="true">
                 <span className="relative flex h-1.5 w-1.5">
@@ -134,17 +134,17 @@ function FleetRow({ project }: { project: Project }) {
                     <span className="relative inline-flex h-1.5 w-1.5 rounded-full" style={{ backgroundColor: project.accent }} />
                 </span>
             </span>
-            <span className="col-span-7 sm:col-span-4 font-mono text-xs md:text-sm text-white/85 tracking-tight group-hover:text-white">
+            <span className="col-span-7 sm:col-span-4 font-mono text-xs md:text-sm text-text-strong/85 tracking-tight group-hover:text-text-strong">
                 {project.navTitle ?? project.title}
             </span>
-            <span className="hidden sm:block sm:col-span-4 font-mono text-[10px] uppercase tracking-[0.18em] text-white/35 truncate">
+            <span className="hidden sm:block sm:col-span-4 font-mono text-[10px] uppercase tracking-[0.18em] text-text-strong/35 truncate">
                 {project.tagline}
             </span>
-            <span className="col-span-3 sm:col-span-2 font-mono text-[10px] uppercase tracking-[0.18em] text-white/25 truncate text-right">
+            <span className="col-span-3 sm:col-span-2 font-mono text-[10px] uppercase tracking-[0.18em] text-text-strong/25 truncate text-right">
                 {project.tags[0]}
             </span>
             <span className="col-span-1 flex justify-end">
-                <ArrowUpRight className="w-3.5 h-3.5 text-white/25 transition-all group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+                <ArrowUpRight className="w-3.5 h-3.5 text-text-strong/25 transition-all group-hover:text-text-strong group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
             </span>
         </ProjectLink>
     );
@@ -155,19 +155,19 @@ function LabItem({ project }: { project: Project }) {
     return (
         <ProjectLink
             project={project}
-            className="group flex items-baseline justify-between gap-4 border-t border-white/[0.06] py-5 transition-colors hover:border-white/15"
+            className="group flex items-baseline justify-between gap-4 border-t border-text-strong/[0.06] py-5 transition-colors hover:border-text-strong/15"
         >
             <div className="min-w-0">
                 <ScrambleText
                     text={project.title}
                     onHover
-                    className="text-base md:text-lg text-white/85 tracking-tight group-hover:text-white font-medium"
+                    className="text-base md:text-lg text-text-strong/85 tracking-tight group-hover:text-text-strong font-medium"
                 />
-                <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-white/30 truncate">
+                <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-text-strong/30 truncate">
                     {project.role}
                 </p>
             </div>
-            <ArrowUpRight className="w-4 h-4 shrink-0 text-white/25 transition-all group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+            <ArrowUpRight className="w-4 h-4 shrink-0 text-text-strong/25 transition-all group-hover:text-text-strong group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
         </ProjectLink>
     );
 }
@@ -184,17 +184,17 @@ export default function Projects() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                        className="inline-flex items-center gap-2 mb-6 px-3 py-1 rounded-full border border-white/10"
+                        className="inline-flex items-center gap-2 mb-6 px-3 py-1 rounded-full border border-text-strong/10"
                     >
                         <span className="h-1 w-1 rounded-full bg-violet-400" />
-                        <span className="text-[10px] font-mono uppercase tracking-[0.28em] text-slate-300">03 · Work</span>
+                        <span className="text-[10px] font-mono uppercase tracking-[0.28em] text-text">03 · Work</span>
                     </motion.div>
 
                     <SplitText
                         as="h2"
                         mode="words"
                         stagger={0.06}
-                        className="text-5xl md:text-7xl lg:text-8xl tracking-[-0.02em] text-white leading-[0.92] block max-w-3xl"
+                        className="text-5xl md:text-7xl lg:text-8xl tracking-[-0.02em] text-text-strong leading-[0.92] block max-w-3xl"
                     >
                         Selected work
                     </SplitText>
@@ -203,16 +203,16 @@ export default function Projects() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.4, duration: 0.8 }}
-                        className="mt-8 max-w-2xl text-base md:text-lg text-slate-400 font-light leading-relaxed"
+                        className="mt-8 max-w-2xl text-base md:text-lg text-text-mute font-light leading-relaxed"
                     >
                         Rapid AI prototypes, often shipped in days, alongside intelligent systems running at enterprise scale.
-                        <span className="hidden md:inline text-white/35"> Rest on a case study and the field behind it reorganizes.</span>
+                        <span className="hidden md:inline text-text-strong/35"> Rest on a case study and the field behind it reorganizes.</span>
                     </motion.p>
                 </div>
 
                 {/* Act 1 — case studies */}
                 <ActLabel index="01" title="Case studies" note="05 selected" />
-                <div onMouseLeave={restoreScene} onBlur={restoreScene} className="border-b border-white/[0.08]">
+                <div onMouseLeave={restoreScene} onBlur={restoreScene} className="border-b border-text-strong/[0.08]">
                     {featured.map((p, i) => (
                         <CaseStudyRow key={p.id} project={p} index={i} />
                     ))}
@@ -220,7 +220,7 @@ export default function Projects() {
 
                 {/* Act 2 — agent fleet manifest */}
                 <ActLabel index="02" title="Agent fleet" note={`${String(fleet.length).padStart(2, '0')} in production`} />
-                <div className="border-b border-white/[0.06]">
+                <div className="border-b border-text-strong/[0.06]">
                     {fleet.map((p) => (
                         <FleetRow key={p.id} project={p} />
                     ))}
@@ -228,7 +228,7 @@ export default function Projects() {
 
                 {/* Act 3 — the lab */}
                 <ActLabel index="03" title="Lab" note={`${String(lab.length).padStart(2, '0')} experiments`} />
-                <div className="grid md:grid-cols-2 gap-x-12 border-b border-white/[0.06]">
+                <div className="grid md:grid-cols-2 gap-x-12 border-b border-text-strong/[0.06]">
                     {lab.map((p) => (
                         <LabItem key={p.id} project={p} />
                     ))}

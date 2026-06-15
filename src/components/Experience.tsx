@@ -97,16 +97,16 @@ export default function Experience() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                        className="inline-flex items-center gap-2 mb-6 px-3 py-1 rounded-full border border-white/10"
+                        className="inline-flex items-center gap-2 mb-6 px-3 py-1 rounded-full border border-text-strong/10"
                     >
                         <span className="h-1 w-1 rounded-full bg-violet-400" />
-                        <span className="text-[10px] font-mono uppercase tracking-[0.28em] text-slate-300">04 · Journey</span>
+                        <span className="text-[10px] font-mono uppercase tracking-[0.28em] text-text">04 · Journey</span>
                     </motion.div>
                     <SplitText
                         as="h2"
                         mode="words"
                         stagger={0.05}
-                        className="text-5xl md:text-7xl lg:text-8xl tracking-[-0.02em] text-white leading-[0.92]"
+                        className="text-5xl md:text-7xl lg:text-8xl tracking-[-0.02em] text-text-strong leading-[0.92]"
                     >
                         Twenty years of patterns
                     </SplitText>
@@ -114,7 +114,7 @@ export default function Experience() {
 
                 <div ref={sectionRef} className="relative">
                     {/* Track line (faded) */}
-                    <div className="absolute left-4 md:left-6 top-0 bottom-0 w-px bg-white/10" aria-hidden="true" />
+                    <div className="absolute left-4 md:left-6 top-0 bottom-0 w-px bg-text-strong/10" aria-hidden="true" />
                     {/* Progress line — single Violet Signal, no rainbow */}
                     <motion.div
                         style={{ height: lineHeight }}
@@ -142,26 +142,26 @@ export default function Experience() {
                                 {/* Period badge above card */}
                                 <div
                                     data-reveal-child
-                                    className="font-mono text-[10px] uppercase tracking-[0.28em] text-violet-300/80 mb-3"
+                                    className="font-mono text-[10px] uppercase tracking-[0.28em] text-signal/80 mb-3"
                                 >
                                     {exp.period}
                                 </div>
 
                                 <div
                                     data-reveal-child
-                                    className="group relative border-t border-white/[0.07] pt-6 pr-2 hover:border-white/20 transition-colors"
+                                    className="group relative border-t border-text-strong/[0.07] pt-6 pr-2 hover:border-text-strong/20 transition-colors"
                                 >
                                     <div className="flex items-baseline gap-3 flex-wrap mb-2">
-                                        <h3 className="text-xl md:text-2xl font-medium text-white tracking-[-0.01em]">
+                                        <h3 className="text-xl md:text-2xl font-medium text-text-strong tracking-[-0.01em]">
                                             {exp.company}
                                         </h3>
-                                        <span className="h-1 w-1 rounded-full bg-white/20" />
-                                        <p className="text-sm md:text-base text-slate-300 font-light">{exp.role}</p>
+                                        <span className="h-1 w-1 rounded-full bg-text-strong/20" />
+                                        <p className="text-sm md:text-base text-text font-light">{exp.role}</p>
                                     </div>
 
                                     <ul className="space-y-2.5 mt-5">
                                         {exp.points.map((point, i) => (
-                                            <li key={i} className="relative flex gap-3 text-sm md:text-[15px] text-slate-400 leading-relaxed font-light">
+                                            <li key={i} className="relative flex gap-3 text-sm md:text-[15px] text-text-mute leading-relaxed font-light">
                                                 <span className="mt-[0.6em] block h-[3px] w-2.5 shrink-0 bg-violet-400/60 rounded-full" />
                                                 <span>{point}</span>
                                             </li>
@@ -169,15 +169,15 @@ export default function Experience() {
                                     </ul>
 
                                     {exp.link && (
-                                        <div className="mt-6 pt-5 border-t border-white/5">
+                                        <div className="mt-6 pt-5 border-t border-text-strong/5">
                                             <a
                                                 href={exp.link}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="inline-flex items-center gap-2 text-[11px] font-mono text-violet-300 hover:text-white uppercase tracking-[0.2em] transition-colors group/link"
+                                                className="inline-flex items-center gap-2 text-[11px] font-mono text-signal hover:text-text-strong uppercase tracking-[0.2em] transition-colors group/link"
                                                 data-cursor="read"
                                             >
-                                                <span className="border-b border-violet-500/30 group-hover/link:border-white">
+                                                <span className="border-b border-violet-500/30 group-hover/link:border-text-strong">
                                                     {exp.linkText || 'View related news'}
                                                 </span>
                                                 <ArrowUpRight className="w-3 h-3 transition-transform group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5" />

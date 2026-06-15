@@ -11,7 +11,7 @@ export default function Contact() {
     return (
         <section id="contact" className="relative py-32 px-4 overflow-hidden">
             <div className="pointer-events-none absolute inset-0 -z-10">
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-violet-950/20 to-[#020617]" />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-violet-950/20 to-bg" />
                 {sceneOff && (
                     <>
                         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[50rem] w-[50rem] rounded-full bg-violet-600/15 blur-[140px] animate-aurora" />
@@ -23,16 +23,16 @@ export default function Contact() {
 
             <div className="relative max-w-5xl mx-auto text-center">
                 <RevealOnScroll staggerChildren={0.1} duration={1}>
-                    <div data-reveal-child className="inline-flex items-center gap-2 mb-8 px-3 py-1 rounded-full border border-white/10">
+                    <div data-reveal-child className="inline-flex items-center gap-2 mb-8 px-3 py-1 rounded-full border border-text-strong/10">
                         <span className="h-1 w-1 rounded-full bg-violet-400" />
-                        <span className="text-[10px] font-mono uppercase tracking-[0.28em] text-slate-300">05 · Connect</span>
+                        <span className="text-[10px] font-mono uppercase tracking-[0.28em] text-text">05 · Connect</span>
                     </div>
                     <div data-reveal-child>
                         <SplitText
                             as="h2"
                             mode="words"
                             stagger={0.07}
-                            className="text-5xl md:text-7xl lg:text-[7.5rem] tracking-[-0.03em] text-white leading-[0.9] block"
+                            className="text-5xl md:text-7xl lg:text-[7.5rem] tracking-[-0.03em] text-text-strong leading-[0.9] block"
                         >
                             Let's build
                         </SplitText>
@@ -41,13 +41,13 @@ export default function Contact() {
                             mode="words"
                             stagger={0.07}
                             delay={0.2}
-                            className="font-serif italic font-normal text-5xl md:text-7xl lg:text-[7.5rem] tracking-[-0.01em] leading-[0.95] block text-violet-200 mt-2"
+                            className="font-serif italic font-normal text-5xl md:text-7xl lg:text-[7.5rem] tracking-[-0.01em] leading-[0.95] block text-signal mt-2"
                         >
                             the signal.
                         </SplitText>
                     </div>
 
-                    <p data-reveal-child className="mt-10 mx-auto max-w-xl text-base md:text-lg text-slate-400 font-light leading-relaxed">
+                    <p data-reveal-child className="mt-10 mx-auto max-w-xl text-base md:text-lg text-text-mute font-light leading-relaxed">
                         Open to discussing new projects, bold ideas, and ambitious visions: an enterprise AI initiative, a startup bet, or a weekend prototype.
                     </p>
 
@@ -55,7 +55,7 @@ export default function Contact() {
                         <MagneticButton
                             as="a"
                             href="mailto:wutcharin.th@gmail.com"
-                            className="group inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-slate-950 font-medium text-sm tracking-wide"
+                            className="group inline-flex items-center gap-3 px-8 py-4 rounded-full bg-text-strong text-bg font-medium text-sm tracking-wide"
                             data-cursor="email"
                         >
                             <Mail className="w-4 h-4" />
@@ -68,7 +68,7 @@ export default function Contact() {
                             href="https://linkedin.com/in/Wutcharin"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-white/20 text-white font-medium text-sm tracking-wide hover:bg-white/5 transition-colors"
+                            className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-text-strong/20 text-text-strong font-medium text-sm tracking-wide hover:bg-text-strong/5 transition-colors"
                             data-cursor="linkedin"
                         >
                             <Linkedin className="w-4 h-4" />
@@ -80,7 +80,7 @@ export default function Contact() {
                             href="https://github.com/wutcharinth"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-white/20 text-white font-medium text-sm tracking-wide hover:bg-white/5 transition-colors"
+                            className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-text-strong/20 text-text-strong font-medium text-sm tracking-wide hover:bg-text-strong/5 transition-colors"
                             data-cursor="github"
                         >
                             <Github className="w-4 h-4" />
@@ -89,25 +89,25 @@ export default function Contact() {
                     </div>
 
                     {/* Decorative email plate */}
-                    <div data-reveal-child className="mt-20 inline-flex items-center gap-3 font-mono text-xs text-slate-500 tracking-[0.28em]">
-                        <span className="h-px w-12 bg-white/10" />
+                    <div data-reveal-child className="mt-20 inline-flex items-center gap-3 font-mono text-xs text-text-mute tracking-[0.28em]">
+                        <span className="h-px w-12 bg-text-strong/10" />
                         <a
                             href="mailto:wutcharin.th@gmail.com"
-                            className="hover:text-white transition-colors"
+                            className="hover:text-text-strong transition-colors"
                             data-cursor="copy"
                         >
                             WUTCHARIN.TH@GMAIL.COM
                         </a>
-                        <span className="h-px w-12 bg-white/10" />
+                        <span className="h-px w-12 bg-text-strong/10" />
                     </div>
                 </RevealOnScroll>
 
                 {/* Footer, absorbed into the terminus chapter */}
-                <div className="mt-28 pt-8 border-t border-white/[0.06] flex items-center justify-between flex-wrap gap-3 text-left">
-                    <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-slate-600">
+                <div className="mt-28 pt-8 border-t border-text-strong/[0.06] flex items-center justify-between flex-wrap gap-3 text-left">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-text-mute">
                         &copy; {new Date().getFullYear()} Wutcharin Thatan
                     </p>
-                    <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-slate-600">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-text-mute">
                         Bangkok · Signal over noise
                     </p>
                 </div>

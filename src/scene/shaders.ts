@@ -154,6 +154,7 @@ uniform vec3 uColorBase;
 uniform vec3 uAccent;
 uniform float uOpacity;
 uniform float uGlow;
+uniform float uLight;
 
 varying float vRand;
 varying float vFade;
@@ -162,6 +163,15 @@ void main() {
     float d = length(gl_PointCoord - 0.5);
     float disc = smoothstep(0.5, 0.06, d);
     if (disc < 0.01) discard;
+
+    if (uLight > 0.5) {
+        // Light mode: dark / violet specks on the light surface, drawn with
+        // normal blending (set on the material) — no glow, no white core.
+        vec3 lc = mix(vec3(0.16, 0.19, 0.30), vec3(0.40, 0.18, 0.78), smoothstep(0.55, 0.95, vRand));
+        float a = disc * uOpacity * (0.18 + 0.34 * vRand) * (0.4 + 0.55 * vFade);
+        gl_FragColor = vec4(lc, a);
+        return;
+    }
 
     // Brightest particles take the accent; the rest stay near-base. Additive
     // blending over the void floor gives the glow without post-processing.

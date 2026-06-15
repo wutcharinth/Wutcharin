@@ -7,6 +7,12 @@ import { detectTier } from './tier';
 import { ROUTE_SCENES, FALLBACK_SCENE } from './routeScenes';
 import ParticleField from './ParticleField';
 import CameraRig from './CameraRig';
+import { useTheme } from '../lib/theme';
+
+const SCRIM = {
+    dark: 'linear-gradient(180deg, rgba(2,6,23,0.28) 0%, rgba(2,6,23,0.46) 55%, rgba(2,6,23,0.52) 100%)',
+    light: 'linear-gradient(180deg, rgba(244,245,249,0.30) 0%, rgba(244,245,249,0.48) 55%, rgba(244,245,249,0.55) 100%)',
+} as const;
 
 /**
  * The persistent world. Mounted once as a sibling of the routes — navigation
@@ -51,6 +57,7 @@ export default function SceneRoot() {
     }, [tier]);
 
     const mode = useSyncExternalStore(sceneBus.subscribe, () => sceneBus.targets.mode);
+    const light = useTheme() === 'light';
 
     if (!tier) return null;
 
@@ -73,7 +80,7 @@ export default function SceneRoot() {
                 camera={{ fov: 50, near: 0.1, far: 60, position: [0, 0, 14] }}
             >
                 <PerformanceMonitor onDecline={() => setDegraded(true)}>
-                    <ParticleField texSize={tier.texSize} />
+                    <ParticleField texSize={tier.texSize} light={light} />
                     <CameraRig />
                 </PerformanceMonitor>
             </Canvas>
@@ -81,13 +88,7 @@ export default function SceneRoot() {
             {/* Readability scrim — a graduated floor between the live field and
                 the DOM text layer. Lighter at the top so the hero stays vivid,
                 heavier lower down where reading copy sits. */}
-            <div
-                className="absolute inset-0"
-                style={{
-                    background:
-                        'linear-gradient(180deg, rgba(2,6,23,0.28) 0%, rgba(2,6,23,0.46) 55%, rgba(2,6,23,0.52) 100%)',
-                }}
-            />
+            <div className="absolute inset-0" style={{ background: light ? SCRIM.light : SCRIM.dark }} />
         </div>
     );
 }

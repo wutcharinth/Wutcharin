@@ -41,13 +41,13 @@ export default function SubPageShell({
     return (
         // Transparent root — the ambient particle field shows through; panels
         // inside the page carry their own surfaces.
-        <div className="relative min-h-screen text-slate-200 font-sans">
+        <div className="relative min-h-screen text-text font-sans">
             {/* Ambient noise layer */}
             <div className="pointer-events-none fixed inset-0 bg-noise opacity-[0.03] mix-blend-overlay z-0" aria-hidden="true" />
 
             {/* Left rail — cross-page wayfinding */}
             <div className="pointer-events-none fixed left-5 bottom-10 z-40 hidden xl:block" aria-hidden="true">
-                <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/20 [writing-mode:vertical-rl]">
+                <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-text-strong/20 [writing-mode:vertical-rl]">
                     {routeId} / signal
                 </span>
             </div>
@@ -57,13 +57,13 @@ export default function SubPageShell({
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                className="fixed top-0 left-0 right-0 z-50 bg-slate-950/70 backdrop-blur-xl border-b border-white/5"
+                className="fixed top-0 left-0 right-0 z-50 bg-bg/70 backdrop-blur-xl border-b border-text-strong/5"
             >
                 <div className="max-w-7xl mx-auto px-6 flex justify-between items-center" style={{ paddingTop: 'calc(env(safe-area-inset-top) + 1rem)', paddingBottom: '1rem' }}>
                     <Link
                         to="/"
                         data-cursor="back"
-                        className="group flex items-center gap-2 text-[10px] font-mono text-slate-400 hover:text-white uppercase tracking-[0.25em] transition-colors cursor-hover"
+                        className="group flex items-center gap-2 text-[10px] font-mono text-text-mute hover:text-text-strong uppercase tracking-[0.25em] transition-colors cursor-hover"
                     >
                         <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
                         Back to portfolio
@@ -86,8 +86,8 @@ export default function SubPageShell({
 
             <main id="main-content" className="relative pt-28 pb-20 z-10">{children}</main>
 
-            <footer className="relative z-10 py-10 border-t border-white/5 text-center">
-                <p className="text-[10px] font-mono text-slate-500 uppercase tracking-[0.3em]">
+            <footer className="relative z-10 py-10 border-t border-text-strong/5 text-center">
+                <p className="text-[10px] font-mono text-text-mute uppercase tracking-[0.3em]">
                     &copy; {new Date().getFullYear()} Wutcharin Thatan · All rights reserved
                 </p>
             </footer>

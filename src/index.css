@@ -55,6 +55,37 @@
     --color-fuchsia: #e879f9;       /* Fuchsia Flare — identity-lane only */
     --color-border-faint: rgba(255, 255, 255, 0.05);
     --color-border-soft: rgba(255, 255, 255, 0.15);
+
+    /* Semantic ink tokens — flipped wholesale in light mode so components
+       theme through a fixed set instead of hardcoded white-alphas. */
+    --color-hairline: rgba(255, 255, 255, 0.10);
+    --color-hairline-strong: rgba(255, 255, 255, 0.18);
+    --color-panel: rgba(255, 255, 255, 0.03);
+    --color-panel-strong: rgba(255, 255, 255, 0.06);
+  }
+
+  /* Light mode — "Daylight Console". Same violet signal, inverted surface.
+     Only the surface/ink tokens flip; the brand accent stays violet
+     (deepened for contrast on white). */
+  html.light {
+    --color-bg: #f4f5f9;
+    --color-bg-step: #e9ebf2;
+    --color-void: #e6e8f0;
+    --color-veil: rgba(244, 245, 249, 0.80);
+    --color-veil-soft: rgba(244, 245, 249, 0.55);
+    --color-text: #3b4456;
+    --color-text-mute: #697184;
+    --color-text-strong: #0b1020;
+    --color-signal: #6d28d9;
+    --color-signal-deep: #5b21b6;
+    --color-signal-glow: #ddd6fe;
+    --color-border-faint: rgba(11, 16, 32, 0.06);
+    --color-border-soft: rgba(11, 16, 32, 0.16);
+    --color-hairline: rgba(11, 16, 32, 0.12);
+    --color-hairline-strong: rgba(11, 16, 32, 0.22);
+    --color-panel: rgba(11, 16, 32, 0.035);
+    --color-panel-strong: rgba(11, 16, 32, 0.06);
+    color-scheme: light;
   }
 }
 
@@ -72,6 +103,10 @@
   --color-signal-glow: var(--color-signal-glow);
   --color-cyan: var(--color-cyan);
   --color-fuchsia: var(--color-fuchsia);
+  --color-hairline: var(--color-hairline);
+  --color-hairline-strong: var(--color-hairline-strong);
+  --color-panel: var(--color-panel);
+  --color-panel-strong: var(--color-panel-strong);
   --font-display: 'Clash Display', 'Helvetica Neue', 'Arial', sans-serif;
   --font-serif: 'Instrument Serif', Georgia, serif;
   --font-mono: 'JetBrains Mono', ui-monospace, 'Courier New', monospace;
@@ -93,8 +128,20 @@
 }
 
 @layer base {
+  html {
+    background: var(--color-bg);
+  }
+
   body {
     @apply bg-bg text-text antialiased font-sans;
+  }
+
+  /* Ease the surface/ink swap when toggling theme. */
+  html.theme-ready body,
+  html.theme-ready body * {
+    transition: background-color var(--dur-base) var(--ease-out-quart),
+      border-color var(--dur-base) var(--ease-out-quart),
+      color var(--dur-base) var(--ease-out-quart);
   }
 
   /* Headings carry the display face site-wide. Mixed case is the v2 look:
@@ -119,7 +166,7 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #020617;
+  background: var(--color-bg);
 }
 
 ::-webkit-scrollbar-thumb {

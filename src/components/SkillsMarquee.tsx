@@ -15,11 +15,11 @@ const SKILLS = [
 
 export default function SkillsMarquee() {
     return (
-        <section aria-label="Skills" className="relative overflow-hidden border-y border-white/5 py-10">
+        <section aria-label="Skills" className="relative overflow-hidden border-y border-text-strong/5 py-10">
             <Marquee speed={85} direction="left" gap={0}>
                 {SKILLS.map((s) => (
                     <span key={s} className="shrink-0 inline-flex items-center">
-                        <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-slate-500 hover:text-slate-200 transition-colors whitespace-nowrap">
+                        <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-text-mute hover:text-text transition-colors whitespace-nowrap">
                             {s}
                         </span>
                         <span className="mx-6 h-1 w-1 rounded-full bg-violet-400/40" aria-hidden="true" />

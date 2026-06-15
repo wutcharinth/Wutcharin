@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { sceneBus } from './sceneBus';
@@ -28,7 +28,7 @@ function makeTexture(id: FormationId, size: number) {
     return tex;
 }
 
-export default function ParticleField({ texSize }: { texSize: number }) {
+export default function ParticleField({ texSize, light = false }: { texSize: number; light?: boolean }) {
     const { camera } = useThree();
     const material = useRef<THREE.ShaderMaterial>(null);
 
@@ -74,6 +74,7 @@ export default function ParticleField({ texSize }: { texSize: number }) {
             uAccent: { value: new THREE.Color(sceneBus.targets.accent) },
             uOpacity: { value: 0 },
             uGlow: { value: GLOW },
+            uLight: { value: light ? 1 : 0 },
         };
         return { geometry, uniforms };
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -88,6 +89,15 @@ export default function ParticleField({ texSize }: { texSize: number }) {
         pointer: new THREE.Vector3(0, 0, -50),
         ray: new THREE.Vector3(),
     });
+
+    // Theme swap: additive glow on dark, normal-blended dark specks on light.
+    useEffect(() => {
+        const m = material.current;
+        if (!m) return;
+        m.blending = light ? THREE.NormalBlending : THREE.AdditiveBlending;
+        m.needsUpdate = true;
+        uniforms.uLight.value = light ? 1 : 0;
+    }, [light, uniforms]);
 
     useFrame((_, rawDelta) => {
         const u = uniforms;
@@ -151,7 +161,7 @@ export default function ParticleField({ texSize }: { texSize: number }) {
                 uniforms={uniforms}
                 transparent
                 depthWrite={false}
-                blending={THREE.AdditiveBlending}
+                blending={light ? THREE.NormalBlending : THREE.AdditiveBlending}
             />
         </points>
     );

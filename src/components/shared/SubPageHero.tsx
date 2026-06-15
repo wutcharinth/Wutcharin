@@ -84,9 +84,9 @@ export default function SubPageHero({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6, duration: 0.8 }}
-                className="hidden lg:flex absolute top-8 right-10 items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-white/30 z-10"
+                className="hidden lg:flex absolute top-8 right-10 items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-text-strong/30 z-10"
             >
-                <span className="h-px w-10 bg-white/20" />
+                <span className="h-px w-10 bg-text-strong/20" />
                 {index} / Project
             </motion.div>
 
@@ -118,7 +118,7 @@ export default function SubPageHero({
                             mode="words"
                             stagger={0.06}
                             duration={1}
-                            className="text-4xl md:text-6xl lg:text-7xl font-medium tracking-[-0.03em] text-white leading-[1] md:leading-[0.95] block"
+                            className="text-4xl md:text-6xl lg:text-7xl font-medium tracking-[-0.03em] text-text-strong leading-[1] md:leading-[0.95] block"
                         >
                             {titleLead}
                         </SplitText>
@@ -151,7 +151,7 @@ export default function SubPageHero({
                         initial={{ opacity: 0, y: 16 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 1.2, duration: 0.8 }}
-                        className="max-w-2xl text-base md:text-lg text-slate-300 font-light leading-relaxed mb-12 pl-6 border-l"
+                        className="max-w-2xl text-base md:text-lg text-text font-light leading-relaxed mb-12 pl-6 border-l"
                         style={{ borderColor: `${accentColor}66` }}
                     >
                         {description}
@@ -208,8 +208,8 @@ function CtaButton({
             target={external ? '_blank' : undefined}
             rel={external ? 'noopener noreferrer' : undefined}
             className={`group relative px-6 py-3 rounded-full text-sm font-medium tracking-wide transition-colors flex items-center gap-2 ${primary
-                ? 'text-slate-950'
-                : 'text-white border border-white/15 hover:bg-white/5'
+                ? 'text-bg'
+                : 'text-text-strong border border-text-strong/15 hover:bg-text-strong/5'
                 }`}
             data-cursor={primary ? 'view' : 'open'}
             style={primary ? { backgroundColor: '#fff' } : {

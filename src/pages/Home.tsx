@@ -44,7 +44,7 @@ const Home = () => {
     return (
         // Transparent root: the body paints midnight and the scene canvas
         // (z-0) lives between body and this content layer.
-        <div className="relative min-h-screen text-slate-200 font-sans selection:bg-violet-500/30">
+        <div className="relative min-h-screen text-text font-sans selection:bg-violet-500/30">
             <SEO
                 title="Executive Leader & AI Innovator"
                 description="Wutcharin Thatan is an Executive Leader and Data Strategist specializing in AI Automation, Machine Learning, and Business Intelligence."

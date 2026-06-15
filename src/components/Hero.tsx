@@ -137,7 +137,7 @@ export default function Hero() {
             )}
 
             {/* Edge vignette grounds the type against the live field. */}
-            <div className="pointer-events-none absolute inset-0 z-20 bg-[radial-gradient(ellipse_at_center,transparent_30%,#020617_96%)]" aria-hidden="true" />
+            <div className="pointer-events-none absolute inset-0 z-20 bg-[radial-gradient(ellipse_at_center,transparent_30%,var(--color-bg)_96%)]" aria-hidden="true" />
 
             <div className="relative z-30 max-w-6xl mx-auto w-full">
                 <motion.div
@@ -148,7 +148,7 @@ export default function Hero() {
                 >
                     <div className="flex items-center gap-2 border border-violet-500/20 bg-violet-500/5 px-4 py-1.5 rounded-full">
                         <span className="h-1.5 w-1.5 rounded-full bg-violet-400 animate-pulse" />
-                        <span className="text-[10px] font-mono text-violet-300/70 uppercase tracking-[0.28em]">
+                        <span className="text-[10px] font-mono text-signal/70 uppercase tracking-[0.28em]">
                             AI Expert · Advisory · Consulting
                         </span>
                     </div>
@@ -158,10 +158,10 @@ export default function Hero() {
                 <motion.div style={{ y: y1, opacity, scale }} className="mb-10 will-change-transform origin-left">
                     <h1 className="text-[clamp(3.5rem,11vw,9.5rem)] tracking-[-0.02em] leading-[0.92]">
                         <span className="block">
-                            <KineticWord text="Wutcharin" className="text-white" delay={0.6} />
+                            <KineticWord text="Wutcharin" className="text-text-strong" delay={0.6} />
                         </span>
                         <span className="block pl-[10vw] md:pl-[16vw]">
-                            <KineticWord text="Thatan" className="text-slate-300" delay={0.85} />
+                            <KineticWord text="Thatan" className="text-text" delay={0.85} />
                         </span>
                     </h1>
                 </motion.div>
@@ -171,7 +171,7 @@ export default function Hero() {
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 1.35, duration: 0.9 }}
-                    className="mb-4 max-w-xl font-serif italic text-xl md:text-2xl text-slate-200/90 leading-snug"
+                    className="mb-4 max-w-xl font-serif italic text-xl md:text-2xl text-text/90 leading-snug"
                 >
                     Exceptions deserve people. Patterns deserve code.
                 </motion.p>
@@ -180,7 +180,7 @@ export default function Hero() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1.55, duration: 0.8 }}
-                    className="mb-12 text-[10px] font-mono text-white/55 tracking-[0.3em] uppercase"
+                    className="mb-12 text-[10px] font-mono text-text-strong/55 tracking-[0.3em] uppercase"
                 >
                     AI · Automation · Analytics
                 </motion.p>
@@ -195,7 +195,7 @@ export default function Hero() {
                     <MagneticButton
                         as="a"
                         href="#projects"
-                        className="group relative px-7 py-3 rounded-full bg-white text-slate-950 font-medium text-sm tracking-wide"
+                        className="group relative px-7 py-3 rounded-full bg-text-strong text-bg font-medium text-sm tracking-wide"
                         data-cursor="view"
                     >
                         <span className="flex items-center gap-2">
@@ -206,7 +206,7 @@ export default function Hero() {
                     <MagneticButton
                         as="a"
                         href="#contact"
-                        className="group px-7 py-3 rounded-full border border-white/15 text-white/80 hover:text-white font-medium text-sm tracking-wide hover:bg-white/5 transition-colors"
+                        className="group px-7 py-3 rounded-full border border-text-strong/15 text-text-strong/80 hover:text-text-strong font-medium text-sm tracking-wide hover:bg-text-strong/5 transition-colors"
                         data-cursor="contact"
                     >
                         <span className="flex items-center gap-2">
@@ -233,7 +233,7 @@ export default function Hero() {
                                 window.open('/Wutcharin_CV_2026.pdf', '_blank');
                             }
                         }}
-                        className="group px-7 py-3 rounded-full border border-violet-400/30 text-violet-200 hover:text-white font-medium text-sm tracking-wide hover:bg-violet-500/10 transition-colors"
+                        className="group px-7 py-3 rounded-full border border-violet-400/30 text-signal hover:text-text-strong font-medium text-sm tracking-wide hover:bg-violet-500/10 transition-colors"
                         data-cursor="download"
                     >
                         <span className="flex items-center gap-2">
@@ -251,12 +251,12 @@ export default function Hero() {
                 transition={{ delay: 2.2, duration: 1 }}
                 className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-3"
             >
-                <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-white/45">
+                <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-text-strong/45">
                     [ Scroll to resolve ]
                 </span>
-                <div className="relative w-[1px] h-10 overflow-hidden bg-white/10">
+                <div className="relative w-[1px] h-10 overflow-hidden bg-text-strong/10">
                     <motion.div
-                        className="absolute inset-x-0 top-0 h-4 bg-gradient-to-b from-transparent via-white/60 to-transparent"
+                        className="absolute inset-x-0 top-0 h-4 bg-gradient-to-b from-transparent via-text-strong/60 to-transparent"
                         animate={{ y: ['-100%', '400%'] }}
                         transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
                     />
