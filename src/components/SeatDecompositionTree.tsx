@@ -81,7 +81,7 @@ const TreeNode = ({ node, depth = 0 }: { node: TreeNodeData; depth?: number }) =
                         className="w-6 h-6 rounded-full overflow-hidden shrink-0 flex items-center justify-center"
                         style={{ backgroundColor: ['เพื่อไทย', 'ไทยสร้างไทย', 'Pheu Thai', 'Thai Sang Thai'].includes(node.label) ? 'white' : node.color }}
                     >
-                        <img src={node.logo} alt={node.label} className="w-full h-full object-contain p-0.5" />
+                        <img src={node.logo} alt={node.label} width={24} height={24} loading="lazy" decoding="async" className="w-full h-full object-contain p-0.5" />
                     </div>
                 ) : (
                     <div 
@@ -299,7 +299,7 @@ export const SeatDecompositionTree: React.FC<SeatDecompositionTreeProps> = ({ pa
                             } as React.CSSProperties}
                         >
                             {party.logo && (
-                                <img src={party.logo} alt="" className="w-4 h-4 object-contain" />
+                                <img src={party.logo} alt="" width={16} height={16} loading="lazy" decoding="async" className="w-4 h-4 object-contain" />
                             )}
                             {party.name}
                         </button>

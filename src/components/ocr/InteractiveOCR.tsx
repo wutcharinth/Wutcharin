@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { motion } from 'framer-motion';
 import { Upload, Scan, FileText, RefreshCw, AlertCircle, CheckCircle2, Sparkles } from 'lucide-react';
+import { InlineError } from '../shared/States';
 
 interface OCRResult {
     text: string;
@@ -220,6 +221,10 @@ export default function InteractiveOCR() {
                             Reset
                         </button>
                     </div>
+
+                    {error && (
+                        <InlineError accent="#f87171">{error}</InlineError>
+                    )}
                 </div>
 
                 {/* Right Panel: Data Output */}

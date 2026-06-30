@@ -211,12 +211,12 @@ export const ResumeEditor: React.FC<ResumeEditorProps> = ({ data, onChange }) =>
         <div className="space-y-8 pb-12">
             {/* AI Modal */}
             {activeAIField && (
-                <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <div className="w-full max-w-md bg-zinc-900 rounded-xl shadow-2xl p-6 animate-in zoom-in-95 duration-200 border border-zinc-800">
-                        <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-white">
-                            <Wand2 className="w-5 h-5 text-purple-500" /> AI Writer
+                <div className="fixed inset-0 bg-bg/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div className="w-full max-w-md bg-veil backdrop-blur-xl rounded-xl p-6 animate-in zoom-in-95 duration-200 border border-hairline">
+                        <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-text-strong">
+                            <Wand2 className="w-5 h-5 text-signal" /> AI Writer
                         </h3>
-                        <p className="text-sm mb-4 text-gray-400 bg-zinc-800 p-3 rounded-lg border border-zinc-700 italic line-clamp-3">
+                        <p className="text-sm mb-4 text-text-mute bg-panel p-3 rounded-lg border border-hairline italic line-clamp-3">
                             "{activeAIField.text}"
                         </p>
                         <div className="grid grid-cols-1 gap-2">
@@ -225,16 +225,16 @@ export const ResumeEditor: React.FC<ResumeEditorProps> = ({ data, onChange }) =>
                                     key={type}
                                     onClick={() => handleAIAssist(type)}
                                     disabled={aiLoading}
-                                    className="text-left px-4 py-3 rounded-lg border border-zinc-700 hover:border-purple-500/50 hover:bg-purple-900/20 transition-colors text-sm font-medium text-gray-300 flex justify-between items-center group"
+                                    className="text-left px-4 py-3 rounded-lg border border-hairline hover:border-signal/50 hover:bg-signal/10 transition-colors text-sm font-medium text-text flex justify-between items-center group"
                                 >
                                     {type}
-                                    {aiLoading && <span className="text-xs text-purple-400 animate-pulse">Thinking...</span>}
+                                    {aiLoading && <span className="text-xs text-signal animate-pulse">Thinking...</span>}
                                 </button>
                             ))}
                         </div>
                         <button
                             onClick={() => setActiveAIField(null)}
-                            className="mt-4 w-full py-2 text-sm text-gray-500 hover:text-gray-300 font-medium"
+                            className="mt-4 w-full py-2 text-sm text-text-mute hover:text-text-strong font-medium"
                         >
                             Cancel
                         </button>
@@ -244,8 +244,8 @@ export const ResumeEditor: React.FC<ResumeEditorProps> = ({ data, onChange }) =>
 
             {/* Profile Header */}
             <section className="space-y-4">
-                <h3 className="text-lg font-bold text-white flex items-center gap-2 border-b border-zinc-800 pb-2">
-                    <User className="w-5 h-5 text-blue-500" /> Personal Details
+                <h3 className="text-lg font-bold text-text-strong flex items-center gap-2 border-b border-hairline pb-2">
+                    <User className="w-5 h-5 text-signal" /> Personal Details
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Input
@@ -290,18 +290,18 @@ export const ResumeEditor: React.FC<ResumeEditorProps> = ({ data, onChange }) =>
 
             {/* Experience */}
             <section className="space-y-4">
-                <div className="flex justify-between items-center border-b border-zinc-800 pb-2 flex-wrap gap-2">
-                    <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                        <Briefcase className="w-5 h-5 text-blue-500" /> Experience
+                <div className="flex justify-between items-center border-b border-hairline pb-2 flex-wrap gap-2">
+                    <h3 className="text-lg font-bold text-text-strong flex items-center gap-2">
+                        <Briefcase className="w-5 h-5 text-signal" /> Experience
                     </h3>
                     <div className="flex gap-2">
                         {/* Mass Format Controls */}
                         {data.experience.length > 0 && (
-                            <div className="flex bg-zinc-800 rounded-md p-1 items-center mr-2">
-                                <span className="text-[10px] uppercase font-bold text-gray-500 mx-2">Format All</span>
+                            <div className="flex bg-panel rounded-md p-1 items-center mr-2">
+                                <span className="text-[10px] uppercase font-bold text-text-mute mx-2">Format All</span>
                                 <button
                                     onClick={() => massFormatDescription('bullets')}
-                                    className="p-1.5 rounded bg-zinc-900 shadow-sm border border-zinc-700 text-gray-400 hover:text-blue-400 mr-1 flex items-center gap-1"
+                                    className="p-1.5 rounded bg-panel-strong border border-hairline text-text-mute hover:text-signal mr-1 flex items-center gap-1"
                                     title="Convert ALL to Bullets"
                                 >
                                     <List size={14} />
@@ -309,7 +309,7 @@ export const ResumeEditor: React.FC<ResumeEditorProps> = ({ data, onChange }) =>
                                 </button>
                                 <button
                                     onClick={() => massFormatDescription('paragraph')}
-                                    className="p-1.5 rounded bg-zinc-900 shadow-sm border border-zinc-700 text-gray-400 hover:text-blue-400 flex items-center gap-1"
+                                    className="p-1.5 rounded bg-panel-strong border border-hairline text-text-mute hover:text-signal flex items-center gap-1"
                                     title="Convert ALL to Paragraphs"
                                 >
                                     <AlignLeft size={14} />
@@ -336,14 +336,14 @@ export const ResumeEditor: React.FC<ResumeEditorProps> = ({ data, onChange }) =>
                         >
                             <Card className="relative group">
                                 <div
-                                    className="absolute top-4 -left-3 cursor-move text-gray-600 hover:text-gray-400 p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                                    className="absolute top-4 -left-3 cursor-move text-text-mute hover:text-text p-1 opacity-0 group-hover:opacity-100 transition-opacity"
                                     title="Drag to reorder"
                                 >
                                     <GripVertical className="w-5 h-5" />
                                 </div>
                                 <button
                                     onClick={() => removeListLocation('experience', exp.id)}
-                                    className="absolute top-4 right-4 text-gray-600 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100"
+                                    className="absolute top-4 right-4 text-text-mute hover:text-rose-400 transition-colors opacity-0 group-hover:opacity-100"
                                     title="Remove Item"
                                 >
                                     <Trash2 className="w-4 h-4" />
@@ -374,18 +374,18 @@ export const ResumeEditor: React.FC<ResumeEditorProps> = ({ data, onChange }) =>
                                     onAIRequest={() => setActiveAIField({ path: `experience.${exp.id}.description`, text: exp.description })}
                                     rows={5}
                                     topRight={
-                                        <div className="flex bg-zinc-800 rounded-md p-0.5 border border-zinc-700">
+                                        <div className="flex bg-panel rounded-md p-0.5 border border-hairline">
                                             <button
                                                 onClick={() => formatDescription(exp.id, 'bullets')}
-                                                className="p-1 rounded hover:bg-zinc-700 hover:shadow-sm text-gray-400 hover:text-white transition-all"
+                                                className="p-1 rounded hover:bg-panel-strong text-text-mute hover:text-text-strong transition-all"
                                                 title="Format as Bullets"
                                             >
                                                 <List size={14} />
                                             </button>
-                                            <div className="w-px bg-zinc-600 my-1 mx-0.5"></div>
+                                            <div className="w-px bg-hairline my-1 mx-0.5"></div>
                                             <button
                                                 onClick={() => formatDescription(exp.id, 'paragraph')}
-                                                className="p-1 rounded hover:bg-zinc-700 hover:shadow-sm text-gray-400 hover:text-white transition-all"
+                                                className="p-1 rounded hover:bg-panel-strong text-text-mute hover:text-text-strong transition-all"
                                                 title="Format as Paragraph"
                                             >
                                                 <AlignLeft size={14} />
@@ -401,9 +401,9 @@ export const ResumeEditor: React.FC<ResumeEditorProps> = ({ data, onChange }) =>
 
             {/* Education */}
             <section className="space-y-4">
-                <div className="flex justify-between items-center border-b border-zinc-800 pb-2">
-                    <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                        <GraduationCap className="w-5 h-5 text-blue-500" /> Education
+                <div className="flex justify-between items-center border-b border-hairline pb-2">
+                    <h3 className="text-lg font-bold text-text-strong flex items-center gap-2">
+                        <GraduationCap className="w-5 h-5 text-signal" /> Education
                     </h3>
                     <Button variant="outline" onClick={addEducation} className="py-1 px-3 text-xs">
                         <Plus className="w-3 h-3 mr-1" /> Add Education
@@ -418,17 +418,17 @@ export const ResumeEditor: React.FC<ResumeEditorProps> = ({ data, onChange }) =>
                             onDragStart={(e) => handleDragStart(e, 'education', index)}
                             onDragOver={handleDragOver}
                             onDrop={(e) => handleDrop(e, 'education', index)}
-                            className={`flex gap-4 items-end bg-zinc-900 p-4 rounded-lg border border-zinc-800 relative group transition-all duration-200 ${draggedItem?.type === 'education' && draggedItem.index === index ? 'opacity-40 scale-[0.99]' : 'opacity-100'}`}
+                            className={`flex gap-4 items-end bg-panel p-4 rounded-lg border border-hairline relative group transition-all duration-200 ${draggedItem?.type === 'education' && draggedItem.index === index ? 'opacity-40 scale-[0.99]' : 'opacity-100'}`}
                         >
                             <div
-                                className="absolute top-1/2 -translate-y-1/2 -left-3 cursor-move text-gray-600 hover:text-gray-400 p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                                className="absolute top-1/2 -translate-y-1/2 -left-3 cursor-move text-text-mute hover:text-text p-1 opacity-0 group-hover:opacity-100 transition-opacity"
                                 title="Drag to reorder"
                             >
                                 <GripVertical className="w-4 h-4" />
                             </div>
                             <button
                                 onClick={() => removeListLocation('education', edu.id)}
-                                className="absolute -top-2 -right-2 bg-zinc-800 rounded-full p-1 border border-zinc-700 shadow-sm text-gray-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all z-10"
+                                className="absolute -top-2 -right-2 bg-panel-strong rounded-full p-1 border border-hairline text-text-mute hover:text-rose-400 opacity-0 group-hover:opacity-100 transition-all z-10"
                             >
                                 <Trash2 className="w-3 h-3" />
                             </button>
@@ -460,9 +460,9 @@ export const ResumeEditor: React.FC<ResumeEditorProps> = ({ data, onChange }) =>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Hard Skills */}
                 <section className="space-y-4">
-                    <div className="flex justify-between items-center border-b border-zinc-800 pb-2">
-                        <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                            <Star className="w-5 h-5 text-blue-500" /> Skills
+                    <div className="flex justify-between items-center border-b border-hairline pb-2">
+                        <h3 className="text-lg font-bold text-text-strong flex items-center gap-2">
+                            <Star className="w-5 h-5 text-signal" /> Skills
                         </h3>
                         <Button variant="outline" onClick={addSkill} className="py-1 px-3 text-xs">
                             <Plus className="w-3 h-3 mr-1" /> Add
@@ -472,13 +472,13 @@ export const ResumeEditor: React.FC<ResumeEditorProps> = ({ data, onChange }) =>
                         {data.skills.map(skill => (
                             <div key={skill.id} className="flex items-center">
                                 <input
-                                    className="bg-zinc-900 border border-zinc-700 text-white text-sm rounded-l-md px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500 w-32"
+                                    className="bg-panel border border-hairline text-text-strong text-sm rounded-l-md px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-signal w-32"
                                     value={skill.name}
                                     onChange={(e) => handleSkillChange(skill.id, e.target.value)}
                                 />
                                 <button
                                     onClick={() => removeListLocation('skills', skill.id)}
-                                    className="bg-zinc-800 border-y border-r border-zinc-700 rounded-r-md px-2 py-1.5 hover:bg-zinc-700 text-gray-400 hover:text-red-400"
+                                    className="bg-panel-strong border-y border-r border-hairline rounded-r-md px-2 py-1.5 hover:bg-panel text-text-mute hover:text-rose-400"
                                 >
                                     <Trash2 className="w-4 h-4" />
                                 </button>
@@ -489,9 +489,9 @@ export const ResumeEditor: React.FC<ResumeEditorProps> = ({ data, onChange }) =>
 
                 {/* Competencies */}
                 <section className="space-y-4">
-                    <div className="flex justify-between items-center border-b border-zinc-800 pb-2">
-                        <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                            <Award className="w-5 h-5 text-blue-500" /> Competencies
+                    <div className="flex justify-between items-center border-b border-hairline pb-2">
+                        <h3 className="text-lg font-bold text-text-strong flex items-center gap-2">
+                            <Award className="w-5 h-5 text-signal" /> Competencies
                         </h3>
                         <Button variant="outline" onClick={addCompetency} className="py-1 px-3 text-xs">
                             <Plus className="w-3 h-3 mr-1" /> Add
@@ -501,13 +501,13 @@ export const ResumeEditor: React.FC<ResumeEditorProps> = ({ data, onChange }) =>
                         {(data.competencies || []).map(comp => (
                             <div key={comp.id} className="flex items-center">
                                 <input
-                                    className="bg-zinc-900 border border-zinc-700 text-white text-sm rounded-l-md px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500 w-32"
+                                    className="bg-panel border border-hairline text-text-strong text-sm rounded-l-md px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-signal w-32"
                                     value={comp.name}
                                     onChange={(e) => handleCompetencyChange(comp.id, e.target.value)}
                                 />
                                 <button
                                     onClick={() => removeListLocation('competencies', comp.id)}
-                                    className="bg-zinc-800 border-y border-r border-zinc-700 rounded-r-md px-2 py-1.5 hover:bg-zinc-700 text-gray-400 hover:text-red-400"
+                                    className="bg-panel-strong border-y border-r border-hairline rounded-r-md px-2 py-1.5 hover:bg-panel text-text-mute hover:text-rose-400"
                                 >
                                     <Trash2 className="w-4 h-4" />
                                 </button>

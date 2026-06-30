@@ -85,7 +85,35 @@
     --color-hairline-strong: rgba(11, 16, 32, 0.22);
     --color-panel: rgba(11, 16, 32, 0.035);
     --color-panel-strong: rgba(11, 16, 32, 0.06);
+    /* Identity-lane accents deepened so they stay legible as text on the
+       light surface (they don't otherwise flip with the surface tokens). */
+    --color-cyan: #0891b2;
+    --color-fuchsia: #c026d3;
     color-scheme: light;
+  }
+
+  /* Pin a subtree to the dark Midnight Console tokens regardless of the global
+     light-mode flip. For bespoke dark-only tool pages (e.g. the resume builder)
+     whose chrome is tokenized but is hardcoded dark and has no theme toggle. */
+  .surface-dark {
+    --color-bg: #020617;
+    --color-bg-step: #050505;
+    --color-void: #010109;
+    --color-veil: rgba(2, 6, 23, 0.78);
+    --color-veil-soft: rgba(2, 6, 23, 0.55);
+    --color-text: #cbd5e1;
+    --color-text-mute: #94a3b8;
+    --color-text-strong: #ffffff;
+    --color-signal: #a78bfa;
+    --color-signal-deep: #7c3aed;
+    --color-signal-glow: #4c1d95;
+    --color-cyan: #22d3ee;
+    --color-fuchsia: #e879f9;
+    --color-hairline: rgba(255, 255, 255, 0.10);
+    --color-hairline-strong: rgba(255, 255, 255, 0.18);
+    --color-panel: rgba(255, 255, 255, 0.03);
+    --color-panel-strong: rgba(255, 255, 255, 0.06);
+    color-scheme: dark;
   }
 }
 
@@ -130,6 +158,9 @@
 @layer base {
   html {
     background: var(--color-bg);
+    /* Firefox scrollbar — theme-aware via the same tokens as the WebKit thumb. */
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-signal-glow) var(--color-bg);
   }
 
   body {
@@ -170,13 +201,13 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #4c1d95;
+  background: var(--color-signal-glow);
   border-radius: 4px;
 }
 
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #6d28d9;
+  background: var(--color-signal-deep);
 }
 
 @keyframes gradient-x {

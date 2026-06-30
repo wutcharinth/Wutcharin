@@ -10,6 +10,7 @@ import type { ResumeData, FontFamily } from '../components/resume-builder/types'
 import { ArrowRight, Palette, Wand2, Layout, PanelLeft, PanelRight, RectangleVertical, Type, ZoomIn, ZoomOut, FileText, ArrowLeft, ChevronDown, Download, Code } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
+import { InlineError, Spinner, Skeleton } from '../components/shared/States';
 
 // Start with empty data
 const INITIAL_DATA: ResumeData = {
@@ -61,6 +62,7 @@ const ResumeBuilderPage: React.FC = () => {
     const printRef = useRef<HTMLDivElement>(null);
     const [showExportMenu, setShowExportMenu] = useState(false);
     const [isExporting, setIsExporting] = useState(false);
+    const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
     useEffect(() => {
         if (document.getElementById(RESUME_FONTS_ID)) return;
@@ -74,6 +76,7 @@ const ResumeBuilderPage: React.FC = () => {
     const handleParse = async () => {
         if (!rawText.trim()) return;
         setIsParsing(true);
+        setErrorMsg(null);
         try {
             const data = await parseLinkedInProfile(rawText);
             setResumeData(prev => ({ ...prev, ...data }));
@@ -90,7 +93,7 @@ const ResumeBuilderPage: React.FC = () => {
             const errorMessage = error instanceof Error
                 ? `We couldn't parse that text: ${error.message}. Please try pasting different text or fill in the details manually.`
                 : "We couldn't parse that text efficiently. Please try pasting different text or fill in the details manually.";
-            alert(errorMessage);
+            setErrorMsg(errorMessage);
         } finally {
             setIsParsing(false);
         }
@@ -99,6 +102,7 @@ const ResumeBuilderPage: React.FC = () => {
     const handleWordExport = async () => {
         setIsExporting(true);
         setShowExportMenu(false);
+        setErrorMsg(null);
         try {
             await exportToWord(resumeData, {
                 accentColor,
@@ -108,7 +112,7 @@ const ResumeBuilderPage: React.FC = () => {
             });
         } catch (error) {
             console.error('Word export failed:', error);
-            alert('Failed to export Word document. Please try again.');
+            setErrorMsg('Failed to export Word document. Please try again.');
         } finally {
             setIsExporting(false);
         }
@@ -117,6 +121,7 @@ const ResumeBuilderPage: React.FC = () => {
     const handleHTMLExport = async () => {
         setIsExporting(true);
         setShowExportMenu(false);
+        setErrorMsg(null);
         try {
             const element = printRef.current?.querySelector('.resume-preview-container') as HTMLElement;
             if (!element) throw new Error('Resume preview not found');
@@ -128,7 +133,7 @@ const ResumeBuilderPage: React.FC = () => {
             });
         } catch (error) {
             console.error('HTML export failed:', error);
-            alert('Failed to export HTML. Please try again.');
+            setErrorMsg('Failed to export HTML. Please try again.');
         } finally {
             setIsExporting(false);
         }
@@ -150,7 +155,7 @@ const ResumeBuilderPage: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#050505] pb-20 font-sans text-white print:!min-h-0 print:!h-auto print:!bg-white print:!pb-0 print:!text-black print:!p-0 print:!m-0">
+        <div className="surface-dark min-h-screen bg-[#050505] pb-20 font-sans text-white print:!min-h-0 print:!h-auto print:!bg-white print:!pb-0 print:!text-black print:!p-0 print:!m-0">
             <SEO
                 title="AI Resume Builder"
                 description="Create a professional, ATS-optimized resume in seconds using AI. Import from LinkedIn or paste your text to get started."
@@ -351,6 +356,21 @@ const ResumeBuilderPage: React.FC = () => {
                                             {isParsing ? 'Analyzing...' : 'Generate Resume'} <ArrowRight className="ml-2 w-5 h-5" />
                                         </Button>
                                     </div>
+
+                                    {isParsing && (
+                                        <div className="mt-6 space-y-3" aria-hidden="true">
+                                            <Skeleton className="h-4 w-1/3" />
+                                            <Skeleton className="h-3 w-full" />
+                                            <Skeleton className="h-3 w-5/6" />
+                                            <Skeleton className="h-3 w-2/3" />
+                                        </div>
+                                    )}
+
+                                    {errorMsg && (
+                                        <div className="mt-6">
+                                            <InlineError>{errorMsg}</InlineError>
+                                        </div>
+                                    )}
                                 </Card>
                             </div>
                         </section>
@@ -366,7 +386,7 @@ const ResumeBuilderPage: React.FC = () => {
                                         Preview Resume <ArrowRight className="ml-2 w-4 h-4" />
                                     </Button>
                                 </div>
-                                <div className="bg-zinc-900 rounded-xl shadow-sm border border-zinc-800 p-6 md:p-8">
+                                <div className="bg-panel rounded-xl border border-hairline p-6 md:p-8">
                                     <ResumeEditor data={resumeData} onChange={setResumeData} />
                                 </div>
                             </div>
@@ -375,6 +395,12 @@ const ResumeBuilderPage: React.FC = () => {
                         {/* PREVIEW TAB */}
                         {activeTab === 'preview' && (
                             <div className="animate-in fade-in zoom-in-95 duration-200 flex flex-col items-center print:!block print:!p-0 print:!m-0">
+
+                                {errorMsg && (
+                                    <div className="w-full max-w-5xl mb-4 print:hidden">
+                                        <InlineError>{errorMsg}</InlineError>
+                                    </div>
+                                )}
 
                                 {/* TOOLBAR */}
                                 <div className="w-full max-w-5xl mb-6 bg-zinc-900 rounded-xl p-4 border border-zinc-800 shadow-sm flex flex-col xl:flex-row gap-6 items-start xl:items-center justify-between print:hidden sticky top-20 z-30">
@@ -503,10 +529,7 @@ const ResumeBuilderPage: React.FC = () => {
                                         >
                                             {isExporting ? (
                                                 <>
-                                                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                                    </svg>
+                                                    <Spinner size={16} className="-ml-1 mr-2" />
                                                     Exporting...
                                                 </>
                                             ) : (

@@ -160,6 +160,8 @@ export default function ThaiElectionPage() {
                                                 <img
                                                     src={party.logo}
                                                     alt={party.name}
+                                                    loading="lazy"
+                                                    decoding="async"
                                                     className="w-full h-full object-contain p-2"
                                                     onError={(e) => {
                                                         (e.target as HTMLImageElement).style.display = 'none';
@@ -267,7 +269,7 @@ export default function ThaiElectionPage() {
                                                             >
                                                                 <div className="absolute inset-0 flex items-center justify-center transition-opacity">
                                                                     {district.logo ? (
-                                                                        <img src={district.logo} alt={district.winner} className="w-3/4 h-3/4 object-contain drop-shadow-md" />
+                                                                        <img src={district.logo} alt={district.winner} loading="lazy" decoding="async" className="w-3/4 h-3/4 object-contain drop-shadow-md" />
                                                                     ) : (
                                                                         <span className={`text-[8px] font-bold drop-shadow-md ${['Pheu Thai', 'Thai Sang Thai'].includes(district.winner) ? '' : 'text-white'}`}>{district.winner.substring(0, 1)}</span>
                                                                     )}
@@ -324,7 +326,7 @@ export default function ThaiElectionPage() {
                                                 <div className="flex items-center gap-4 mb-6 p-4 bg-black/40 rounded-xl border border-gray-800">
                                                     <div className={`w-16 h-16 rounded-full flex items-center justify-center overflow-hidden shrink-0 ${['Pheu Thai', 'Thai Sang Thai'].includes(selectedDistrict.winner) ? 'bg-white' : 'bg-white/10'}`} style={{ backgroundColor: ['Pheu Thai', 'Thai Sang Thai'].includes(selectedDistrict.winner) ? 'white' : selectedDistrict.color }}>
                                                         {selectedDistrict.logo ? (
-                                                            <img src={selectedDistrict.logo} alt={selectedDistrict.winner} className="w-full h-full object-contain p-2" />
+                                                            <img src={selectedDistrict.logo} alt={selectedDistrict.winner} loading="lazy" decoding="async" className="w-full h-full object-contain p-2" />
                                                         ) : (
                                                             <span className="text-2xl font-bold">{selectedDistrict.winner.substring(0, 1)}</span>
                                                         )}
