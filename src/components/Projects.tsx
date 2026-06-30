@@ -80,7 +80,7 @@ function CaseStudyRow({ project, index }: { project: Project; index: number }) {
             project={project}
             onMouseEnter={takeAttention}
             onFocus={takeAttention}
-            className="group block border-t border-text-strong/[0.08] py-10 md:py-12 transition-colors hover:border-text-strong/20 focus-visible:border-text-strong/20"
+            className="group block border-t border-text-strong/[0.08] py-10 md:py-12 px-2 -mx-2 rounded-lg transition-colors hover:border-text-strong/20 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-signal/70 focus-visible:bg-panel"
         >
             <div className="grid grid-cols-12 gap-x-6 gap-y-4 items-baseline">
                 <span className="col-span-2 md:col-span-1 font-mono text-[10px] md:text-xs text-text-strong/30 tracking-[0.28em] tabular-nums">
@@ -123,7 +123,7 @@ function FleetRow({ project }: { project: Project }) {
     return (
         <ProjectLink
             project={project}
-            className="group grid grid-cols-12 gap-x-4 items-center border-t border-text-strong/[0.06] py-4 px-2 -mx-2 transition-colors hover:bg-text-strong/[0.025] focus-visible:bg-text-strong/[0.025]"
+            className="group grid grid-cols-12 gap-x-4 items-center border-t border-text-strong/[0.06] py-4 px-2 -mx-2 rounded-lg transition-colors hover:bg-text-strong/[0.025] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-signal/70 focus-visible:bg-text-strong/[0.025]"
         >
             <span className="col-span-1 flex justify-center" aria-hidden="true">
                 <span className="relative flex h-1.5 w-1.5">
@@ -155,7 +155,7 @@ function LabItem({ project }: { project: Project }) {
     return (
         <ProjectLink
             project={project}
-            className="group flex items-baseline justify-between gap-4 border-t border-text-strong/[0.06] py-5 transition-colors hover:border-text-strong/15"
+            className="group flex items-baseline justify-between gap-4 border-t border-text-strong/[0.06] py-5 px-2 -mx-2 rounded-lg transition-colors hover:border-text-strong/15 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-signal/70 focus-visible:bg-panel"
         >
             <div className="min-w-0">
                 <ScrambleText

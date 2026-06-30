@@ -7,6 +7,8 @@ interface MarqueeProps {
     direction?: 'left' | 'right';
     /** Pause animation while the user hovers */
     pauseOnHover?: boolean;
+    /** Controlled pause — overrides hover. Use for an explicit pause/play toggle. */
+    paused?: boolean;
     /** Gap between repeated content in px */
     gap?: number;
     className?: string;
@@ -21,6 +23,7 @@ export default function Marquee({
     speed = 40,
     direction = 'left',
     pauseOnHover = true,
+    paused = false,
     gap = 48,
     className = '',
 }: MarqueeProps) {
@@ -47,13 +50,13 @@ export default function Marquee({
                     gap: `${gap}px`,
                     paddingRight: `${gap}px`,
                     animation: `${keyframeName} ${speed}s linear infinite`,
-                    animationPlayState: pauseOnHover ? undefined : 'running',
+                    animationPlayState: paused ? 'paused' : 'running',
                 }}
                 onMouseEnter={(e) => {
-                    if (pauseOnHover) (e.currentTarget as HTMLElement).style.animationPlayState = 'paused';
+                    if (!paused && pauseOnHover) (e.currentTarget as HTMLElement).style.animationPlayState = 'paused';
                 }}
                 onMouseLeave={(e) => {
-                    if (pauseOnHover) (e.currentTarget as HTMLElement).style.animationPlayState = 'running';
+                    if (!paused && pauseOnHover) (e.currentTarget as HTMLElement).style.animationPlayState = 'running';
                 }}
             >
                 {children}

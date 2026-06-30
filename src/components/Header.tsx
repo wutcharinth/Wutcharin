@@ -16,20 +16,26 @@ export default function Header() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [active, setActive] = useState<string>('');
     const navRef = useRef<HTMLElement | null>(null);
+    const menuButtonRef = useRef<HTMLButtonElement | null>(null);
     const [indicator, setIndicator] = useState<{ left: number; width: number } | null>(null);
 
     const { scrollYProgress } = useScroll();
     const scaleX = useSpring(scrollYProgress, { stiffness: 200, damping: 30, mass: 0.2 });
 
+    // One scroll listener drives both the condensed-header state and the
+    // near-top active-link reset (no item highlighted while the hero shows).
     useEffect(() => {
-        const handleScroll = () => setIsScrolled(window.scrollY > 40);
+        const handleScroll = () => {
+            const y = window.scrollY;
+            setIsScrolled(y > 40);
+            if (y < window.innerHeight * 0.4) setActive('');
+        };
         handleScroll();
         window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
     // Section-aware active link via IntersectionObserver.
-    // Clears to '' when near the top (hero visible) so no item is highlighted.
     useEffect(() => {
         const sections = navLinks
             .filter((l) => l.id)
@@ -47,17 +53,27 @@ export default function Header() {
         );
         sections.forEach((s) => obs.observe(s.el));
 
-        const onScroll = () => {
-            if (window.scrollY < window.innerHeight * 0.4) setActive('');
-        };
-        onScroll();
-        window.addEventListener('scroll', onScroll, { passive: true });
-
-        return () => {
-            obs.disconnect();
-            window.removeEventListener('scroll', onScroll);
-        };
+        return () => obs.disconnect();
     }, []);
+
+    // Mobile menu: lock body scroll, close on Escape, and manage focus
+    // (move into the menu on open, return to the toggle on close).
+    useEffect(() => {
+        if (!isMobileMenuOpen) return;
+        const toggleButton = menuButtonRef.current;
+        const prevOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        document.querySelector<HTMLAnchorElement>('#mobile-menu a')?.focus();
+        const onKey = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') setIsMobileMenuOpen(false);
+        };
+        window.addEventListener('keydown', onKey);
+        return () => {
+            document.body.style.overflow = prevOverflow;
+            window.removeEventListener('keydown', onKey);
+            toggleButton?.focus();
+        };
+    }, [isMobileMenuOpen]);
 
     // Update indicator position to current active link
     useEffect(() => {
@@ -130,9 +146,12 @@ export default function Header() {
                     <div className="flex items-center gap-3">
                         <ThemeToggle />
                         <button
+                            ref={menuButtonRef}
                             className="md:hidden text-text-strong p-2 hover:bg-text-strong/10 rounded-lg transition-colors"
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                             aria-label="Toggle menu"
+                            aria-expanded={isMobileMenuOpen}
+                            aria-controls="mobile-menu"
                         >
                             {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
                         </button>
@@ -149,6 +168,20 @@ export default function Header() {
             <AnimatePresence>
                 {isMobileMenuOpen && (
                     <motion.div
+                        key="mobile-backdrop"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.25 }}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="fixed inset-0 z-30 bg-bg/60 backdrop-blur-sm md:hidden"
+                        aria-hidden="true"
+                    />
+                )}
+                {isMobileMenuOpen && (
+                    <motion.div
+                        key="mobile-panel"
+                        id="mobile-menu"
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}

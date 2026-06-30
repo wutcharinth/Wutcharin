@@ -10,6 +10,7 @@ interface Message {
     role: 'user' | 'ai';
     text: string;
     timestamp: Date;
+    isError?: boolean;
 }
 
 const DEFAULT_INSIGHT = `The 2023 Thai General Election marked a seismic shift in the kingdom's political landscape. 
@@ -102,7 +103,8 @@ export default function ThaiElectionChatbot() {
                 id: (Date.now() + 1).toString(),
                 role: 'ai',
                 text: errorMessage,
-                timestamp: new Date()
+                timestamp: new Date(),
+                isError: true
             }]);
         } finally {
             setIsLoading(false);
@@ -162,8 +164,10 @@ export default function ThaiElectionChatbot() {
                                 >
                                     <div
                                         className={`max-w-[85%] p-3 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap ${msg.role === 'user'
-                                            ? 'bg-blue-600 text-white rounded-br-none'
-                                            : 'bg-zinc-800 text-zinc-200 rounded-bl-none border border-zinc-700'
+                                            ? 'bg-[#F47524] text-white rounded-br-none'
+                                            : msg.isError
+                                                ? 'bg-red-500/10 text-red-300 rounded-bl-none border border-red-500/40'
+                                                : 'bg-zinc-800 text-zinc-200 rounded-bl-none border border-zinc-700'
                                             }`}
                                     >
                                         {msg.role === 'ai' ? (
