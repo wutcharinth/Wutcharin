@@ -3,6 +3,7 @@ import { useEffect, useState, lazy, Suspense } from 'react';
 import Home from './pages/Home';
 import { CustomCursor, PageTransition } from './lib/motion';
 import ScrollProvider, { useLenis } from './lib/scroll/ScrollProvider';
+import CommandPalette from './components/console/CommandPalette';
 
 // The persistent WebGL world ships in its own chunk and mounts after first
 // paint — the DOM hero owns the LCP, the field fades in behind it.
@@ -110,6 +111,7 @@ function App() {
         <ScrollToTop />
         <DeferredScene />
         <CustomCursor />
+        <CommandPalette />
         {/* DOM content layer — sits above the fixed z-0 scene canvas. */}
         <div className="relative z-10">
           <AnimatedRoutes />

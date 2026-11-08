@@ -17,7 +17,7 @@ A portfolio / executive resume site that doubles as proof-of-craft. Replaces the
 **Kinetic. Executive. Technical.**
 
 - **Kinetic** — motion is the medium, not garnish. Type breaks, scroll-driven choreography, and pre-rendered video belong here only when they earn their place. Stillness is a deliberate choice against this baseline, not the default.
-- **Executive** — the work shown is at the level of running orgs, not shipping side projects. Tone is confident without bragging; metrics are concrete (12k hours saved, 20 AI agents shipped, 50 people led) and never inflated.
+- **Executive** — the work shown is at the level of running orgs, not shipping side projects. Tone is confident without bragging; metrics are concrete (15k hours saved a year, 20+ AI agents shipped, a 12-person Analytics Engineering team today, 50+ data professionals led across a career) and never inflated.
 - **Technical** — the implementation itself is part of the pitch. React 19, Three.js, GSAP, Remotion-rendered video, custom motion tokens — all visible to a technical visitor inspecting the source.
 
 ## Anti-references

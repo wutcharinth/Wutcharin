@@ -1,66 +1,66 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Header from '../components/Header';
-import Hero from '../components/Hero';
-import SignalChapter from '../components/SignalChapter';
-import ExecutiveProfile from '../components/ExecutiveProfile';
-import Projects from '../components/Projects';
-import Experience from '../components/Experience';
-import Contact from '../components/Contact';
-import SkillsMarquee from '../components/SkillsMarquee';
-
 import SEO from '../components/SEO';
-import { ScrollTrigger, usePrefersReducedMotion } from '../lib/motion';
-import { sceneBus } from '../scene/sceneBus';
+import Arrival from '../components/home/Arrival';
+import Proof from '../components/home/Proof';
+import Principle from '../components/home/Principle';
+import Work from '../components/home/Work';
+import FlightLog from '../components/home/FlightLog';
+import Terminus from '../components/home/Terminus';
+import BootLoader from '../components/home/BootLoader';
+import { portraitScene } from '../components/home/scenes';
+import { useChapterScene } from '../components/home/useChapterScene';
+import { useScrollTo } from '../components/home/useScrollTo';
+import { ScrollTrigger } from '../lib/motion';
 
 /**
- * Scroll chapters: each home section re-organizes the particle world as it
- * enters. The SignalChapter scrubs its own formations; everything below it
- * flips on section boundaries.
+ * Home: six chapters, one particle world that tells the story.
+ *   00 Arrival   the field resolves into the person
+ *   01 Proof     the field becomes each number
+ *   02 Principle the field triages: patterns to code, exceptions to people
+ *   03 Work      the field becomes each case study
+ *   04 Path      the field draws the career as a flight route
+ *   05 Connect   the field converges into the address
+ * Each chapter owns its scene; this page only composes them.
  */
-const CHAPTERS: Array<[string, Parameters<typeof sceneBus.apply>[0]]> = [
-    ['#about', { formation: 'lattice', mode: 'ambient', chaos: 0.12, accent: '#a78bfa' }],
-    ['#projects', { formation: 'network', mode: 'full', chaos: 0.16, accent: '#a78bfa' }],
-    ['#experience', { formation: 'helix', mode: 'ambient', chaos: 0.1, accent: '#a78bfa' }],
-    ['#contact', { formation: 'terminus', mode: 'full', chaos: 0.08, accent: '#a78bfa' }],
-];
-
 const Home = () => {
-    const reduced = usePrefersReducedMotion();
+    const topRef = useRef<HTMLDivElement>(null);
+    // Scrolling back up to the top re-resolves the portrait.
+    useChapterScene(topRef, portraitScene);
+    const scrollTo = useScrollTo();
 
+    // Deep links (/#work from a project page or the console) land on the
+    // chapter once pinned sections have measured themselves.
     useEffect(() => {
-        if (reduced) return;
-        const triggers = CHAPTERS.map(([selector, config]) =>
-            ScrollTrigger.create({
-                trigger: selector,
-                start: 'top 60%',
-                end: 'bottom 60%',
-                onEnter: () => sceneBus.apply(config),
-                onEnterBack: () => sceneBus.apply(config),
-            }),
-        );
-        return () => triggers.forEach((t) => t.kill());
-    }, [reduced]);
+        const id = window.location.hash.slice(1);
+        if (!id) return;
+        const t = window.setTimeout(() => {
+            ScrollTrigger.refresh();
+            scrollTo(`#${id}`, { immediate: true });
+        }, 350);
+        return () => window.clearTimeout(t);
+    }, [scrollTo]);
 
     return (
         // Transparent root: the body paints midnight and the scene canvas
         // (z-0) lives between body and this content layer.
-        <div className="relative min-h-screen text-text font-sans selection:bg-violet-500/30">
+        <div className="relative min-h-screen font-sans text-text selection:bg-violet-500/30">
             <SEO
-                title="Executive Leader & AI Innovator"
-                description="Wutcharin Thatan is an Executive Leader and Data Strategist specializing in AI Automation, Machine Learning, and Business Intelligence."
+                title="Associate Director, FinTech Data & Automation"
+                description="Wutcharin Thatan leads FinTech Data & Automation at Agoda: a 12-person Analytics Engineering team, 15,000+ hours automated a year and 20+ AI agents in production."
             />
+            <BootLoader />
             <Header />
 
             <main id="main-content">
-                <Hero />
-                <SignalChapter />
-                <ExecutiveProfile />
-
-                <SkillsMarquee />
-
-                <Projects />
-                <Experience />
-                <Contact />
+                <div ref={topRef}>
+                    <Arrival />
+                </div>
+                <Proof />
+                <Principle />
+                <Work />
+                <FlightLog />
+                <Terminus />
             </main>
         </div>
     );
