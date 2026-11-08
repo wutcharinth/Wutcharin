@@ -27,13 +27,14 @@ const derived = Object.fromEntries(
                 accent: p.accent,
                 mode: 'ambient',
                 chaos: 0.15,
+                repel: 1,
             } satisfies Partial<SceneTargets>,
         ]),
 );
 
 export const ROUTE_SCENES: Record<string, Partial<SceneTargets>> = {
     ...derived,
-    '/': { formation: 'noise', accent: '#a78bfa', mode: 'full', chaos: 1 },
+    '/': { formation: 'noise', accent: '#a78bfa', mode: 'full', chaos: 1, repel: 1 },
     '/resume-builder': { mode: 'hidden' },
     '/agentic-ai': { mode: 'hidden' },
     '/human-edge': { mode: 'hidden' },

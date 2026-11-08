@@ -2,7 +2,8 @@ import { useEffect, useMemo, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { sceneBus } from './sceneBus';
-import { bakeFormation, type FormationId } from './formations';
+import { bakeFormation, isProcedural, type FormationKey } from './formations';
+import { getSampledProvider } from './sampled';
 import { particleVertex, particleFragment } from './shaders';
 
 const MODE_OPACITY = { full: 1.0, ambient: 0.4, hidden: 0 } as const;
@@ -20,8 +21,8 @@ const GLOW = (() => {
     return Number.isFinite(raw) ? Math.min(4, Math.max(0.2, raw)) : GLOW_DEFAULT;
 })();
 
-function makeTexture(id: FormationId, size: number) {
-    const tex = new THREE.DataTexture(bakeFormation(id, size), size, size, THREE.RGBAFormat, THREE.FloatType);
+function makeTexture(data: Float32Array, size: number) {
+    const tex = new THREE.DataTexture(data, size, size, THREE.RGBAFormat, THREE.FloatType);
     tex.minFilter = THREE.NearestFilter;
     tex.magFilter = THREE.NearestFilter;
     tex.needsUpdate = true;
@@ -33,13 +34,20 @@ export default function ParticleField({ texSize, light = false }: { texSize: num
     const material = useRef<THREE.ShaderMaterial>(null);
 
     // Formations bake lazily and stay cached for the canvas lifetime.
-    const cache = useMemo(() => new Map<FormationId, THREE.DataTexture>(), []);
-    const getTexture = (id: FormationId) => {
+    // Sampled shapes whose source is still loading resolve to noise without
+    // being cached; the bus re-targets once the source registers.
+    const cache = useMemo(() => new Map<FormationKey, THREE.DataTexture>(), []);
+    const getTexture = (id: FormationKey): THREE.DataTexture => {
         let tex = cache.get(id);
-        if (!tex) {
-            tex = makeTexture(id, texSize);
-            cache.set(id, tex);
+        if (tex) return tex;
+        if (isProcedural(id)) {
+            tex = makeTexture(bakeFormation(id, texSize), texSize);
+        } else {
+            const provider = getSampledProvider(id);
+            if (!provider) return getTexture('noise');
+            tex = makeTexture(provider(texSize * texSize), texSize);
         }
+        cache.set(id, tex);
         return tex;
     };
 
@@ -59,11 +67,14 @@ export default function ParticleField({ texSize, light = false }: { texSize: num
         geometry.setAttribute('aSeed', new THREE.BufferAttribute(seeds, 2));
         geometry.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 30);
 
+        // Every arrival resolves out of noise: start in the noise bake and
+        // morph into whatever the route asked for.
+        const noise = getTexture('noise');
         const initial = getTexture(sceneBus.targets.formation);
         const uniforms = {
-            uTexA: { value: initial },
+            uTexA: { value: noise },
             uTexB: { value: initial },
-            uMorph: { value: 1 },
+            uMorph: { value: initial === noise ? 1 : 0 },
             uChaos: { value: sceneBus.targets.chaos },
             uTime: { value: 0 },
             uSize: { value: texSize >= 160 ? 0.9 : texSize >= 112 ? 1.15 : 1.7 },
@@ -148,7 +159,7 @@ export default function ParticleField({ texSize, light = false }: { texSize: num
             l.pointer.copy(camera.position).addScaledVector(l.ray, reach);
         }
         (u.uPointerWorld.value as THREE.Vector3).lerp(l.pointer, Math.min(1, delta * 6));
-        const repelTarget = t.mode === 'full' ? 1.6 : 0;
+        const repelTarget = t.mode === 'full' ? 1.6 * t.repel : 0;
         u.uRepel.value += (repelTarget - u.uRepel.value) * Math.min(1, delta * 3);
     });
 

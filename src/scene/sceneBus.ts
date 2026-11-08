@@ -1,4 +1,4 @@
-import type { FormationId } from './formations';
+import type { FormationKey } from './formations';
 
 /**
  * Frame-rate-safe scene state. Routes and scroll handlers write targets here;
@@ -10,7 +10,7 @@ import type { FormationId } from './formations';
 export type SceneMode = 'full' | 'ambient' | 'hidden';
 
 export interface SceneTargets {
-    formation: FormationId;
+    formation: FormationKey;
     /** Hex accent the field tints toward. */
     accent: string;
     mode: SceneMode;
@@ -18,6 +18,8 @@ export interface SceneTargets {
     chaos: number;
     /** Page scroll progress 0..1 — drives the camera dolly. */
     progress: number;
+    /** Pointer repulsion strength multiplier (1 = default). */
+    repel: number;
 }
 
 const DEFAULTS: SceneTargets = {
@@ -26,6 +28,7 @@ const DEFAULTS: SceneTargets = {
     mode: 'hidden',
     chaos: 1,
     progress: 0,
+    repel: 1,
 };
 
 class SceneBus {
@@ -34,6 +37,12 @@ class SceneBus {
     revision = 0;
     /** Pointer in NDC (-1..1), written by the canvas host, read per frame. */
     pointer = { x: 0, y: 0 };
+    /**
+     * World to viewport-% projector through the live camera, published by
+     * CameraRig while the canvas is mounted. DOM overlays use it so labels
+     * stay registered through parallax and depth.
+     */
+    project: ((x: number, y: number, z: number) => [number, number]) | null = null;
 
     private listeners = new Set<() => void>();
 
@@ -53,6 +62,14 @@ class SceneBus {
         if (next.mode !== prev.mode) {
             this.listeners.forEach((fn) => fn());
         }
+    }
+
+    /**
+     * A formation's source just became available (sampled shapes load
+     * async). If the bus is already pointing at it, force a retarget.
+     */
+    invalidate(key: FormationKey) {
+        if (this.targets.formation === key) this.revision++;
     }
 
     /** High-frequency writers skip object churn and notifications. */
