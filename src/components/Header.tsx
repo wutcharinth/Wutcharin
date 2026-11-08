@@ -5,11 +5,10 @@ import ThemeToggle from './ThemeToggle';
 import { CHAPTERS } from './home/chapters';
 import { useActiveChapter } from './home/useActiveChapter';
 import { useScrollTo } from './home/useScrollTo';
-import { INTRO_MAILTO } from './home/contact';
 import { openConsole, isMac } from './console/consoleBus';
 
 /**
- * Home chrome. The top bar stays deliberately small (mark, console, intro,
+ * Home chrome. The top bar stays deliberately small (mark, console,
  * theme): navigation lives in the chapter rail on wide screens and in the
  * ⌘K console everywhere, including the mobile menu button.
  */
@@ -60,12 +59,6 @@ export default function Header() {
                             Search or jump
                             <kbd className="rounded-full border border-hairline px-2 py-0.5 font-mono text-[10px] tracking-normal text-text">{mac ? '⌘K' : 'Ctrl K'}</kbd>
                         </button>
-                        <a
-                            href={INTRO_MAILTO}
-                            className="hidden rounded-full bg-text-strong px-4 py-2 text-xs font-medium text-bg transition-colors hover:bg-signal sm:inline-flex"
-                        >
-                            Request intro
-                        </a>
                         <ThemeToggle />
                         <button
                             type="button"

@@ -4,7 +4,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { ArrowUpRight, CornerDownLeft, Copy, Download, FileText, Github, Hash, Linkedin, Mail, Search, SunMoon } from 'lucide-react';
 import { projects } from '../../data/projects';
 import { CHAPTERS } from '../home/chapters';
-import { EMAIL, INTRO_MAILTO, LINKEDIN, GITHUB, RESUME, copyEmail } from '../home/contact';
+import { EMAIL, LINKEDIN, GITHUB, RESUME, copyEmail } from '../home/contact';
+import { openIntro } from '../intro/introBus';
 import { toggleTheme } from '../../lib/theme';
 import { useScrollTo } from '../home/useScrollTo';
 import { onConsoleOpen } from './consoleBus';
@@ -163,7 +164,7 @@ export default function CommandPalette() {
                 icon: <Mail className="h-4 w-4" />,
                 run: () => {
                     close();
-                    window.location.href = INTRO_MAILTO;
+                    window.setTimeout(openIntro, 220);
                 },
             },
             {

@@ -8,7 +8,7 @@ import KineticWord from './KineticWord';
 import { portraitScene } from './scenes';
 import { useBangkokTime } from './useBangkokTime';
 import { openConsole, isMac } from '../console/consoleBus';
-import { INTRO_MAILTO, RESUME } from './contact';
+import { RESUME } from './contact';
 
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -123,14 +123,6 @@ export default function Arrival() {
                                 See the work
                                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
                             </span>
-                        </MagneticButton>
-                        <MagneticButton
-                            as="a"
-                            href={INTRO_MAILTO}
-                            className="rounded-full border border-violet-400/30 px-7 py-3 text-sm font-medium tracking-wide text-signal transition-colors hover:bg-violet-500/10 hover:text-text-strong"
-                            data-cursor="email"
-                        >
-                            Request an intro
                         </MagneticButton>
                         <a
                             href={RESUME}

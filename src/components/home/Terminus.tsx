@@ -6,6 +6,7 @@ import { addressScene } from './scenes';
 import { useChapterScene } from './useChapterScene';
 import { useBangkokTime } from './useBangkokTime';
 import { EMAIL, INTRO_MAILTO, LINKEDIN, GITHUB, RESUME, copyEmail } from './contact';
+import { openIntro } from '../intro/introBus';
 
 const terminusScene = () => addressScene(EMAIL);
 
@@ -25,7 +26,8 @@ export default function Terminus() {
             setCopied(true);
             window.setTimeout(() => setCopied(false), 2200);
         } else {
-            window.location.href = INTRO_MAILTO;
+            // Clipboard blocked: the intro panel has every other route.
+            openIntro();
         }
     };
 
@@ -74,6 +76,11 @@ export default function Terminus() {
                         </MagneticButton>
                         <a
                             href={INTRO_MAILTO}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                openIntro();
+                            }}
+                            aria-haspopup="dialog"
                             className="inline-flex items-center gap-2 rounded-full border border-violet-400/30 px-7 py-4 text-sm font-medium text-signal transition-colors hover:bg-violet-500/10 hover:text-text-strong"
                         >
                             Write an intro <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
