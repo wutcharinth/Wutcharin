@@ -33,8 +33,7 @@ const SlipVerifyPage = () => {
                 index="04"
                 description={
                     <>
-                        An intelligent revenue protection agent that autonomously verifies bank slips, detects fraud, and manages transaction lifecycles using{' '}
-                        <span className="text-white font-normal">LangGraph</span>.
+                        An agent that checks bank slips, flags fraud and tracks each transaction to the end. Built on <span className="font-normal text-text-strong">LangGraph</span>.
                     </>
                 }
                 primaryCta={{ label: 'Live simulation', href: '#demo', icon: Zap }}

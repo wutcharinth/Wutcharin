@@ -22,6 +22,7 @@ export default function Arrival() {
     const sceneOff = useMemo(() => detectTier() === null, []);
     const time = useBangkokTime();
     const [mac] = useState(isMac);
+    const [touch] = useState(() => window.matchMedia('(hover: none)').matches);
 
     const { scrollY } = useScroll();
     const lift = useTransform(scrollY, [0, 600], [0, -80]);
@@ -94,7 +95,7 @@ export default function Arrival() {
                         className="mt-5 max-w-xl font-display text-lg font-medium leading-snug tracking-[-0.01em] text-text-strong md:mt-8 md:text-2xl"
                     >
                         Associate Director, FinTech Data &amp; Automation.
-                        <span className="hidden text-text-mute sm:inline"> Twenty years turning operations into systems.</span>
+                        <span className="hidden text-text-mute sm:block">I turn manual work into systems that run.</span>
                     </motion.p>
 
                     <motion.p
@@ -189,10 +190,12 @@ export default function Arrival() {
                         className="flex items-center gap-2 rounded-full px-2 py-1 transition-colors hover:text-text-strong"
                         data-cursor="open"
                     >
-                        <kbd className="rounded border border-hairline px-1.5 py-0.5 font-mono text-[10px] tracking-normal text-text">
-                            {mac ? '⌘K' : 'Ctrl K'}
-                        </kbd>
-                        Console
+                        {!touch && (
+                            <kbd className="rounded border border-hairline px-1.5 py-0.5 font-mono text-[10px] tracking-normal text-text">
+                                {mac ? '⌘K' : 'Ctrl K'}
+                            </kbd>
+                        )}
+                        {touch ? 'Search' : 'Console'}
                     </button>
                 </div>
             </motion.div>

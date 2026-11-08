@@ -57,7 +57,7 @@ export default function Principle() {
             {!sceneOff && (
                 <>
                     <Lane x={5.2} y={3.6} title="Patterns → code" note="The volume · automated" />
-                    <Lane x={5.2} y={-3.9} title="Exceptions → people" note="The edge cases · judgement" accent />
+                    <Lane x={5.2} y={-3.9} title="Exceptions → people" note="The edge cases · a person decides" accent />
                 </>
             )}
 
@@ -67,17 +67,17 @@ export default function Principle() {
                         <ChapterLabel index="02" name="Principle" className="mb-6" />
                     </div>
                     <h2 data-reveal-child className="text-4xl leading-[0.98] tracking-[-0.02em] text-text-strong md:text-6xl">
-                        Most work is pattern. The craft is knowing{' '}
-                        <span className="font-serif font-normal italic text-signal">which part isn&rsquo;t</span>.
+                        Most work repeats. The skill is to see{' '}
+                        <span className="font-serif font-normal italic text-signal">what does not</span>.
                     </h2>
                     <p data-reveal-child className="mt-8 text-base font-light leading-relaxed text-text-mute md:text-lg">
-                        Twenty years translating complex data into C-suite strategy: a hands-on builder scaling AI, automation and
-                        analytics functions across hyper-growth tech and aviation.
+                        20 years of data work for C-level leaders. I build AI, automation and analytics teams, in fast-growth tech
+                        and in aviation.
                     </p>
                     <p data-reveal-child className="mt-4 text-base font-light leading-relaxed text-text-mute md:text-lg">
-                        Not just agents, but the <span className="text-text-strong">systems around them</span>: orchestration, memory,
-                        tool surfaces, guardrails and evaluation that keep multi-step workflows reliable in production, not only in the
-                        demo. Twenty reusable Claude Skills now carry that practice across the team.
+                        An agent is only one part. The <span className="text-text-strong">system around it</span> matters more: orchestration,
+                        memory, tools, guardrails and tests. That system keeps the agent reliable in production, not only in a demo. 20
+                        reusable Claude Skills now share this practice with the team.
                     </p>
                 </RevealOnScroll>
 
@@ -89,7 +89,7 @@ export default function Principle() {
                     </div>
                     <div>
                         <dt className="font-mono text-[10px] uppercase tracking-[0.28em] text-signal">Exceptions → people</dt>
-                        <dd className="mt-2 text-sm text-text-mute">The edge cases, routed to judgement, context and care.</dd>
+                        <dd className="mt-2 text-sm text-text-mute">The edge cases go to a person.</dd>
                     </div>
                 </dl>
             </div>

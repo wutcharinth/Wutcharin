@@ -15,14 +15,13 @@ const GeminiOCRPage = () => {
                 badgeLabel="AI · Multimodal Vision"
                 BadgeIcon={Sparkles}
                 titleLead="Gemini Vision"
-                titleAccent="Intelligence."
+                titleAccent="OCR."
                 accentColor={ACCENT}
                 accentColor2={ACCENT2}
                 index="02"
                 description={
                     <>
-                        Next-generation optical character recognition and document understanding powered by Google's{' '}
-                        <span className="text-white font-normal">Gemini 2.5 Flash</span> multimodal model.
+                        Read complex documents and get structured data back. Built on Google <span className="font-normal text-text-strong">Gemini 2.5 Flash</span>.
                     </>
                 }
                 primaryCta={{ label: 'Live demo', href: '#demo', icon: ScanText }}

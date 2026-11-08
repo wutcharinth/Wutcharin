@@ -66,8 +66,7 @@ const ReviewFlowPage = () => {
                 index="05"
                 description={
                     <>
-                        An autonomous agent that turns customer feedback into operational action. It monitors
-                        reviews, analyzes sentiment, and triggers real-time workflows for staff and kitchen teams.
+                        An agent that turns customer reviews into action. It reads each review, finds the sentiment and alerts the right team at once.
                     </>
                 }
                 primaryCta={{ label: 'Live simulation', href: '#demo', icon: Zap }}

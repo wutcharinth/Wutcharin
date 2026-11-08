@@ -13,19 +13,19 @@ import { usePrefersReducedMotion } from './usePrefersReducedMotion';
 export default function CustomCursor() {
     const ringRef = useRef<HTMLDivElement | null>(null);
     const dotRef = useRef<HTMLDivElement | null>(null);
-    const [enabled, setEnabled] = useState(false);
     const prefersReduced = usePrefersReducedMotion();
+    const [canHover] = useState(() => typeof window !== 'undefined' && !window.matchMedia('(hover: none)').matches);
+    // Derived, not latched: if reduced motion turns on after mount (or the
+    // preference resolves late), the custom cursor goes away again.
+    const enabled = canHover && !prefersReduced;
 
     useEffect(() => {
-        if (prefersReduced) return;
-        const isTouch = window.matchMedia('(hover: none)').matches;
-        if (isTouch) return;
-        setEnabled(true);
+        if (!enabled) return;
         document.body.classList.add('cursor-enhanced');
         return () => {
             document.body.classList.remove('cursor-enhanced');
         };
-    }, [prefersReduced]);
+    }, [enabled]);
 
     useEffect(() => {
         if (!enabled) return;

@@ -66,8 +66,7 @@ const RiskGuardPage = () => {
                 index="03"
                 description={
                     <>
-                        An intelligent internal audit agent that autonomously validates purchase orders, detects conflicts of interest, and ensures compliance using{' '}
-                        <span className="text-white font-normal">LangGraph</span>.
+                        An audit agent that checks purchase orders, finds conflicts of interest and keeps each step compliant. Built on <span className="font-normal text-text-strong">LangGraph</span>.
                     </>
                 }
                 primaryCta={{ label: 'Live simulation', href: '#demo', icon: Zap }}

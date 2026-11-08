@@ -16,9 +16,7 @@ export default function CollectionsPage() {
                 titleAccent="Collections AI"
                 description={
                     <>
-                        An intelligent agent that recovers lost revenue from <strong>Virtual Credit Card (VCC)</strong>{' '}
-                        overcharges. It autonomously validates cancellation policies, negotiates with hotels, and
-                        executes chargebacks at scale.
+                        An agent that gets back money lost to <span className="font-normal text-text-strong">virtual card (VCC)</span> overcharges. It checks the cancellation policy, talks to the hotel and files the chargeback. At scale.
                     </>
                 }
                 accentColor={ACCENT}

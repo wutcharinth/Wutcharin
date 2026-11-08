@@ -66,9 +66,7 @@ const ProjectFlowPage = () => {
                 index="02"
                 description={
                     <>
-                        An autonomous project management agent that grooms backlogs, assigns tickets
-                        based on developer velocity, and enforces Definition of Done using{' '}
-                        <span className="text-white font-normal">LangChain</span>.
+                        An agent that grooms the backlog, gives each ticket to the right developer and checks the definition of done. Built on <span className="font-normal text-text-strong">LangChain</span>.
                     </>
                 }
                 primaryCta={{ label: 'Live simulation', href: '#demo', icon: Zap }}

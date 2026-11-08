@@ -1,177 +1,145 @@
-import { useEffect, useRef, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 import { ArrowRight, type LucideIcon } from 'lucide-react';
-import { MagneticButton, SplitText, gsap } from '../../lib/motion';
+import { MagneticButton, SplitText } from '../../lib/motion';
+import { projects } from '../../data/projects';
 
 interface SubPageHeroProps {
-    /** Small text badge (e.g. "Data Storytelling") */
+    /** Small mono label (e.g. "Interactive Simulation"). */
     badgeLabel: string;
     BadgeIcon?: LucideIcon;
-    /** The main title. First word(s) white, gradient word/line appended after a line break. */
+    /** Title, set in the display face. */
     titleLead: string;
+    /** Second line, set in the serif italic voice in the project's hue. */
     titleAccent: string;
-    /** Description paragraph */
     description: ReactNode;
-    /** Accent color used for the aurora glow, CTAs, gradient, and borders (hex/rgb) */
+    /** The project's identity hue (hex). Used sparingly: dot, accent line, rule. */
     accentColor: string;
-    /** Secondary accent for the gradient (optional — defaults to lighter variant) */
+    /** Kept for API compatibility; no longer drawn (no gradients). */
     accentColor2?: string;
-    /** Primary CTA — use anchor href (#demo) or external URL */
     primaryCta?: { label: string; href: string; icon?: LucideIcon; external?: boolean };
-    /** Secondary CTA */
     secondaryCta?: { label: string; href: string; icon?: LucideIcon; external?: boolean };
-    /** Section number shown in the corner meta (e.g. "01") */
+    /** Kept for API compatibility; the case number now comes from the data. */
     index?: string;
 }
 
+const ease = [0.16, 1, 0.3, 1] as const;
+const featuredCount = projects.filter((p) => p.featured !== undefined).length;
+
 /**
- * Consistent cinematic hero for every project sub-page:
- *   • Mouse-parallaxed aurora glow
- *   • Kinetic SplitText title with gradient accent word
- *   • Border-left description quote
- *   • Magnetic CTAs
- *   • Corner meta (section index, scroll hint)
- *   • Subtle scroll-based fade/parallax so it dissolves into the content below
+ * Hero for every project page, in the home page's system: mono eyebrow,
+ * display title with a serif accent line, plain description, an executive
+ * meta row (role, stack, case number) read from the project data, and
+ * two CTAs. Flat by default; the project hue appears only as a signal.
  */
-export default function SubPageHero({
-    badgeLabel,
-    BadgeIcon,
-    titleLead,
-    titleAccent,
-    description,
-    accentColor,
-    accentColor2,
-    primaryCta,
-    secondaryCta,
-    index = '01',
-}: SubPageHeroProps) {
-    const auroraRef = useRef<HTMLDivElement>(null);
-    const heroRef = useRef<HTMLElement>(null);
-    const gradColor2 = accentColor2 || accentColor;
+export default function SubPageHero({ badgeLabel, BadgeIcon, titleLead, titleAccent, description, accentColor, primaryCta, secondaryCta }: SubPageHeroProps) {
+    const { pathname } = useLocation();
+    const project = projects.find((p) => p.link === pathname);
 
     const { scrollY } = useScroll();
-    const parallaxY = useTransform(scrollY, [0, 500], [0, 100]);
-    const fadeOpacity = useTransform(scrollY, [0, 400], [1, 0.2]);
-
-    useEffect(() => {
-        const el = auroraRef.current;
-        if (!el) return;
-        const onMove = (e: MouseEvent) => {
-            const nx = (e.clientX / window.innerWidth - 0.5) * 2;
-            const ny = (e.clientY / window.innerHeight - 0.5) * 2;
-            gsap.to(el, { x: nx * 18, y: ny * 18, duration: 0.8, ease: 'power2.out' });
-        };
-        window.addEventListener('mousemove', onMove, { passive: true });
-        return () => window.removeEventListener('mousemove', onMove);
-    }, []);
+    const lift = useTransform(scrollY, [0, 500], [0, -60]);
+    const fade = useTransform(scrollY, [0, 420], [1, 0.25]);
 
     return (
-        <section ref={heroRef} className="relative overflow-hidden">
-            {/* Aurora wash */}
-            <div ref={auroraRef} className="pointer-events-none absolute inset-0 will-change-transform" aria-hidden="true">
-                <div
-                    className="absolute -top-24 right-[-10%] h-[44rem] w-[44rem] rounded-full blur-[140px]"
-                    style={{ backgroundColor: accentColor, opacity: 0.18 }}
-                />
-                <div
-                    className="absolute top-[30%] left-[-12%] h-[30rem] w-[30rem] rounded-full blur-[140px] animate-float-slow"
-                    style={{ backgroundColor: gradColor2, opacity: 0.1 }}
-                />
-            </div>
+        <section className="relative overflow-hidden">
+            <motion.div style={{ y: lift, opacity: fade }} className="relative mx-auto max-w-6xl px-6 pb-20 pt-14 md:px-10 md:pb-28 md:pt-20">
+                <motion.div
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.15, duration: 0.6, ease }}
+                    className="mb-8 inline-flex items-center gap-2 rounded-full border border-hairline px-3 py-1"
+                >
+                    {BadgeIcon ? (
+                        <BadgeIcon className="h-3 w-3" style={{ color: accentColor }} aria-hidden="true" />
+                    ) : (
+                        <span className="h-1 w-1 rounded-full" style={{ backgroundColor: accentColor }} aria-hidden="true" />
+                    )}
+                    <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-text">{badgeLabel}</span>
+                </motion.div>
 
-            {/* Corner meta */}
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.6, duration: 0.8 }}
-                className="hidden lg:flex absolute top-8 right-10 items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-text-strong/30 z-10"
-            >
-                <span className="h-px w-10 bg-text-strong/20" />
-                {index} / Project
-            </motion.div>
-
-            {/* Content */}
-            <motion.div
-                style={{ y: parallaxY, opacity: fadeOpacity }}
-                className="relative max-w-7xl mx-auto px-6 pt-14 pb-20 md:pt-16 md:pb-28 lg:pt-20 lg:pb-32 will-change-transform"
-            >
-                <div className="max-w-4xl">
-                    {/* Badge */}
-                    <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2, duration: 0.6 }}
-                        className="inline-flex items-center gap-2 mb-8 px-3 py-1 rounded-full border backdrop-blur-sm"
-                        style={{ borderColor: `${accentColor}33`, backgroundColor: `${accentColor}10` }}
+                <h1 className="max-w-4xl">
+                    <SplitText
+                        as="span"
+                        trigger="load"
+                        mode="words"
+                        stagger={0.06}
+                        duration={1}
+                        className="block text-5xl leading-[0.95] tracking-[-0.02em] text-text-strong md:text-7xl lg:text-8xl"
                     >
-                        {BadgeIcon && <BadgeIcon className="w-3 h-3" style={{ color: accentColor }} />}
-                        <span className="text-[10px] font-mono uppercase tracking-[0.3em]" style={{ color: accentColor }}>
-                            {badgeLabel}
-                        </span>
-                    </motion.div>
-
-                    {/* Title */}
-                    <div className="mb-8">
+                        {titleLead}
+                    </SplitText>
+                    <span className="block" style={{ color: accentColor }}>
                         <SplitText
-                            as="h1"
+                            as="span"
                             trigger="load"
                             mode="words"
                             stagger={0.06}
+                            delay={0.2}
                             duration={1}
-                            className="text-4xl md:text-6xl lg:text-7xl font-medium tracking-[-0.03em] text-text-strong leading-[1] md:leading-[0.95] block"
+                            className="mt-1 block font-serif text-5xl font-normal italic leading-[1] tracking-[-0.01em] md:text-7xl lg:text-8xl"
                         >
-                            {titleLead}
+                            {titleAccent}
                         </SplitText>
-                        {/* Accent line carries the serif italic voice in the project's hue. */}
-                        <span className="block" style={{ color: accentColor }}>
-                            <SplitText
-                                as="h1"
-                                trigger="load"
-                                mode="words"
-                                stagger={0.06}
-                                delay={0.2}
-                                duration={1}
-                                className="font-serif italic font-normal text-4xl md:text-6xl lg:text-7xl tracking-[-0.01em] leading-[1.05] md:leading-[1] block mt-2"
-                            >
-                                {titleAccent}
-                            </SplitText>
-                        </span>
-                        {/* Gradient underline under the accent word */}
-                        <motion.div
-                            initial={{ scaleX: 0 }}
-                            animate={{ scaleX: 1 }}
-                            transition={{ delay: 1.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                            className="mt-6 h-[2px] w-32 origin-left"
-                            style={{ background: `linear-gradient(90deg, ${accentColor}, ${gradColor2}, transparent)` }}
-                        />
-                    </div>
+                    </span>
+                </h1>
 
-                    {/* Description */}
+                <motion.div
+                    initial={{ opacity: 0, y: 14 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.9, duration: 0.8, ease }}
+                    className="mt-10 max-w-2xl text-lg font-light leading-relaxed text-text md:text-xl"
+                >
+                    {description}
+                </motion.div>
+
+                {(primaryCta || secondaryCta) && (
                     <motion.div
-                        initial={{ opacity: 0, y: 16 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 1.2, duration: 0.8 }}
-                        className="max-w-2xl text-base md:text-lg text-text font-light leading-relaxed mb-12 pl-6 border-l"
-                        style={{ borderColor: `${accentColor}66` }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 1.1, duration: 0.8 }}
+                        className="mt-10 flex flex-wrap gap-3"
                     >
-                        {description}
+                        {primaryCta && <CtaButton {...primaryCta} primary accentColor={accentColor} />}
+                        {secondaryCta && <CtaButton {...secondaryCta} accentColor={accentColor} />}
                     </motion.div>
+                )}
 
-                    {/* CTAs */}
-                    {(primaryCta || secondaryCta) && (
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 1.4, duration: 0.8 }}
-                            className="flex flex-wrap gap-3"
-                        >
-                            {primaryCta && <CtaButton {...primaryCta} primary accentColor={accentColor} />}
-                            {secondaryCta && <CtaButton {...secondaryCta} accentColor={accentColor} />}
-                        </motion.div>
-                    )}
-                </div>
+                {project && (
+                    <motion.dl
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 1.3, duration: 0.8 }}
+                        className="mt-16 grid max-w-4xl grid-cols-2 gap-x-8 gap-y-6 border-t border-hairline pt-6 md:grid-cols-4"
+                    >
+                        <Meta label="Role">{project.role}</Meta>
+                        <Meta label="Stack">{project.tags.slice(0, 3).join(' · ')}</Meta>
+                        <Meta label="Type">{project.badge ?? (project.tier === 'agent' ? 'AI agent' : project.tier === 'lab' ? 'Lab build' : 'Insight')}</Meta>
+                        <Meta label={project.featured ? 'Case study' : 'Status'}>
+                            {project.featured ? (
+                                <span className="tabular-nums">
+                                    {String(project.featured).padStart(2, '0')} / {String(featuredCount).padStart(2, '0')}
+                                </span>
+                            ) : (
+                                <span className="inline-flex items-center gap-2">
+                                    <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: accentColor }} aria-hidden="true" />
+                                    {project.tier === 'agent' ? 'Live demo' : 'Interactive'}
+                                </span>
+                            )}
+                        </Meta>
+                    </motion.dl>
+                )}
             </motion.div>
         </section>
+    );
+}
+
+function Meta({ label, children }: { label: string; children: ReactNode }) {
+    return (
+        <div>
+            <dt className="font-mono text-[10px] uppercase tracking-[0.28em] text-text-mute">{label}</dt>
+            <dd className="mt-2 text-sm text-text-strong">{children}</dd>
+        </div>
     );
 }
 
@@ -192,12 +160,9 @@ function CtaButton({
 }) {
     const isHash = href.startsWith('#');
     const handleClick = (e: React.MouseEvent) => {
-        if (isHash) {
-            e.preventDefault();
-            const id = href.slice(1);
-            const el = document.getElementById(id);
-            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
+        if (!isHash) return;
+        e.preventDefault();
+        document.getElementById(href.slice(1))?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
     return (
@@ -207,17 +172,16 @@ function CtaButton({
             onClick={handleClick}
             target={external ? '_blank' : undefined}
             rel={external ? 'noopener noreferrer' : undefined}
-            className={`group relative px-6 py-3 rounded-full text-sm font-medium tracking-wide transition-colors flex items-center gap-2 ${primary
-                ? 'text-bg'
-                : 'text-text-strong border border-text-strong/15 hover:bg-text-strong/5'
-                }`}
+            className={`group rounded-full px-6 py-3 text-sm font-medium tracking-wide transition-colors ${
+                primary ? 'bg-text-strong text-bg hover:bg-signal' : 'border border-hairline-strong text-text-strong hover:bg-text-strong/5'
+            }`}
             data-cursor={primary ? 'view' : 'open'}
-            style={primary ? { backgroundColor: '#fff' } : {
-                // Outline CTA — accent-tinted hover handled by the border + hover:bg above
-            }}
         >
-            <Icon className="w-4 h-4" style={primary ? { color: accentColor } : undefined} />
-            <span>{label}</span>
+            {/* MagneticButton wraps children in an inline-block span: lay out here. */}
+            <span className="flex items-center gap-2">
+                <Icon className="h-4 w-4" style={primary ? undefined : { color: accentColor }} aria-hidden="true" />
+                {label}
+            </span>
         </MagneticButton>
     );
 }

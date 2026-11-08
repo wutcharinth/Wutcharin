@@ -260,7 +260,7 @@ export default function CommandPalette() {
                                     setQuery(e.target.value);
                                     setCursor(0);
                                 }}
-                                placeholder="Search projects, jump to a chapter, or act"
+                                placeholder="Search, jump to a chapter, or act"
                                 className="h-14 w-full bg-transparent text-base text-text-strong outline-none placeholder:text-text-mute focus-visible:outline-none"
                                 role="combobox"
                                 aria-expanded="true"
