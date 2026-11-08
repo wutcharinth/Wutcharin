@@ -82,36 +82,55 @@ function Motif({ project }: { project: Project }) {
 
 export default function Poster({ project, index, compact = false }: { project: Project; index: number; compact?: boolean }) {
     const Icon = project.icon;
+    const real = Boolean(project.poster) && !compact;
     return (
         <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-hairline bg-void text-text-strong">
-            <div
-                aria-hidden="true"
-                className="absolute inset-0"
-                style={{ background: `radial-gradient(60% 70% at 70% 40%, ${project.accent}33, transparent 70%)` }}
-            />
-            <svg aria-hidden="true" viewBox="0 0 640 360" className="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid slice">
-                <defs>
-                    <pattern id={`dots-${project.id}`} width="16" height="16" patternUnits="userSpaceOnUse">
-                        <circle cx="1" cy="1" r="1" fill="currentColor" fillOpacity="0.08" />
-                    </pattern>
-                </defs>
-                <rect width="640" height="360" fill={`url(#dots-${project.id})`} />
-                <Motif project={project} />
-            </svg>
-            <Icon
-                aria-hidden="true"
-                strokeWidth={1}
-                className={`absolute ${compact ? 'right-4 top-4 h-10 w-10' : 'right-[8%] top-[14%] h-[28%] w-[28%]'}`}
-                style={{ color: project.accent, opacity: 0.85 }}
-            />
+            {real ? (
+                <>
+                    {/* The real thing: a screenshot of the live project. */}
+                    <img
+                        src={project.poster}
+                        alt={`Screenshot of ${project.title}`}
+                        width={1600}
+                        height={900}
+                        loading="lazy"
+                        decoding="async"
+                        className="absolute inset-0 h-full w-full object-cover object-top"
+                    />
+                    <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,transparent_55%,rgba(1,1,9,0.85)_100%)]" />
+                </>
+            ) : (
+                <>
+                    <div
+                        aria-hidden="true"
+                        className="absolute inset-0"
+                        style={{ background: `radial-gradient(60% 70% at 70% 40%, ${project.accent}33, transparent 70%)` }}
+                    />
+                    <svg aria-hidden="true" viewBox="0 0 640 360" className="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid slice">
+                        <defs>
+                            <pattern id={`dots-${project.id}`} width="16" height="16" patternUnits="userSpaceOnUse">
+                                <circle cx="1" cy="1" r="1" fill="currentColor" fillOpacity="0.08" />
+                            </pattern>
+                        </defs>
+                        <rect width="640" height="360" fill={`url(#dots-${project.id})`} />
+                        <Motif project={project} />
+                    </svg>
+                    <Icon
+                        aria-hidden="true"
+                        strokeWidth={1}
+                        className={`absolute ${compact ? 'right-4 top-4 h-10 w-10' : 'right-[8%] top-[14%] h-[28%] w-[28%]'}`}
+                        style={{ color: project.accent, opacity: 0.85 }}
+                    />
+                </>
+            )}
             {/* Letterbox scan: the frame reads as a running reel, not a card. */}
             <div aria-hidden="true" className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent_0,transparent_3px,rgba(255,255,255,0.025)_3px,rgba(255,255,255,0.025)_4px)]" />
             {!compact && (
                 <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-[5%] font-mono text-[10px] uppercase tracking-[0.28em]">
-                    <span className="text-text-strong/70">
+                    <span className={real ? 'text-white/80' : 'text-text-strong/70'}>
                         Fig. {String(index + 1).padStart(2, '0')} · {project.badge ?? project.role}
                     </span>
-                    <span className="hidden text-text-strong/40 sm:inline">{project.tags.slice(0, 2).join(' / ')}</span>
+                    <span className={`hidden sm:inline ${real ? 'text-white/50' : 'text-text-strong/40'}`}>{project.tags.slice(0, 2).join(' / ')}</span>
                 </div>
             )}
         </div>

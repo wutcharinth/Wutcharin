@@ -177,15 +177,21 @@ function Theatre() {
             onKeyDown={onKey}
         >
             <div className="sticky top-0 flex h-[100svh] flex-col overflow-hidden">
-                <div className="mx-auto flex w-full max-w-6xl items-end justify-between gap-6 px-10 pt-24">
+                {/* Reading floor: the active plate's copy sits left, so the
+                    left of the stage settles the field without hiding it. */}
+                <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,var(--color-bg)_0%,color-mix(in_srgb,var(--color-bg)_70%,transparent)_42%,transparent_68%)]"
+                />
+                <div className="relative mx-auto flex w-full max-w-6xl items-end justify-between gap-6 px-10 pt-24">
                     <Heading />
                     <p className="hidden max-w-xs pb-2 text-right font-mono text-[10px] uppercase leading-relaxed tracking-[0.24em] text-text-mute lg:block">
-                        Five case studies · scroll or use ← → <br />
-                        the field behind becomes each one
+                        Five case studies · scroll or press ← → <br />
+                        the background changes with each one
                     </p>
                 </div>
 
-                <div className="flex flex-1 items-center">
+                <div className="relative flex flex-1 items-center">
                     <div ref={trackRef} className="flex h-[62vh] items-center gap-[8vw] pl-[max(2.5rem,calc((100vw-72rem)/2+2.5rem))] pr-[10vw] will-change-transform">
                         {featured.map((p, i) => (
                             <div
@@ -203,7 +209,7 @@ function Theatre() {
                 </div>
 
                 {/* Counter + progress: always know where you are. */}
-                <div className="mx-auto flex w-full max-w-6xl items-center gap-6 px-10 pb-10 font-mono text-[10px] uppercase tracking-[0.28em] text-text-mute">
+                <div className="relative mx-auto flex w-full max-w-6xl items-center gap-6 px-10 pb-10 font-mono text-[10px] uppercase tracking-[0.28em] text-text-mute">
                     <span className="tabular-nums text-text-strong">
                         {String(active + 1).padStart(2, '0')} <span className="text-text-mute">/ {String(n).padStart(2, '0')}</span>
                     </span>
@@ -301,6 +307,16 @@ function IndexRow({ project, onHover }: { project: Project; onHover: (p: Project
 }
 
 function Index() {
+    const sectionRef = useRef<HTMLElement>(null);
+    const reduced = usePrefersReducedMotion();
+    // The index is for reading: the field steps back to an ambient network.
+    useEffect(() => {
+        const el = sectionRef.current;
+        if (!el || reduced || detectTier() === null) return;
+        const apply = () => sceneBus.apply({ formation: 'network', mode: 'ambient', chaos: 0.16, accent: '#a78bfa', repel: 1 });
+        const st = ScrollTrigger.create({ trigger: el, start: 'top 60%', end: 'bottom 40%', onEnter: apply, onEnterBack: apply });
+        return () => st.kill();
+    }, [reduced]);
     const [filter, setFilter] = useState<Filter>('all');
     const [hovered, setHovered] = useState<Project | null>(null);
     const [pointerFine] = useState(() => window.matchMedia('(hover: hover) and (pointer: fine)').matches);
@@ -323,7 +339,7 @@ function Index() {
     const sorted = [...visible].sort((a, b) => order[a.tier] - order[b.tier]);
 
     return (
-        <section id="index" aria-label="Project index" className="relative px-6 pb-chapter md:px-10">
+        <section ref={sectionRef} id="index" aria-label="Project index" className="relative px-6 pb-chapter md:px-10">
             <div
                 className="mx-auto max-w-6xl"
                 onMouseMove={(e) => {
@@ -335,7 +351,7 @@ function Index() {
                     <div>
                         <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-signal">Index</p>
                         <p className="mt-2 max-w-md text-sm font-light text-text-mute">
-                            Agents running in production, data stories, and the lab: prototypes often shipped in days.
+                            Agents in production. Data stories. Lab builds, often shipped in days.
                         </p>
                     </div>
                     <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Filter projects">

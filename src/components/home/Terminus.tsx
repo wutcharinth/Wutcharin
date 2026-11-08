@@ -46,7 +46,7 @@ export default function Terminus() {
                         Let&rsquo;s build <span className="block font-serif font-normal italic tracking-[-0.01em] text-signal">the signal.</span>
                     </h2>
                     <p data-reveal-child className="mx-auto mt-8 max-w-xl text-base font-light leading-relaxed text-text-mute md:text-lg">
-                        An enterprise AI programme, a data organisation to scale, or a prototype that should exist by Friday.
+                        Tell me what you want to build. A large AI program, a data team, or a prototype by Friday.
                     </p>
                 </RevealOnScroll>
 

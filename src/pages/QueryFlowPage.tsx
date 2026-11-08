@@ -66,11 +66,7 @@ const QueryFlowPage = () => {
                 index="04"
                 description={
                     <>
-                        An intelligent data agent that bridges the gap between natural language and
-                        enterprise data warehouses. It autonomously scouts metadata, generates SQL, and
-                        executes federated queries across{' '}
-                        <span className="text-white font-normal">Snowflake</span> and{' '}
-                        <span className="text-white font-normal">Postgres</span>.
+                        Ask in plain words. Get the data. The agent finds the right tables, writes the SQL and runs it across <span className="font-normal text-text-strong">Snowflake</span> and <span className="font-normal text-text-strong">Postgres</span>.
                     </>
                 }
                 primaryCta={{ label: 'Live simulation', href: '#demo', icon: Zap }}

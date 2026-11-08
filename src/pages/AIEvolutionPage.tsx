@@ -13,16 +13,14 @@ const AIEvolutionPage = () => {
             <SubPageHero
                 badgeLabel="Data Storytelling"
                 BadgeIcon={Brain}
-                titleLead="The Evolution of"
+                titleLead="The Growth of"
                 titleAccent="Intelligence."
                 accentColor={ACCENT}
                 accentColor2="#e879f9"
                 index="01"
                 description={
                     <>
-                        Visualizing the exponential rise of Artificial Intelligence — from{' '}
-                        <span className="text-white font-normal">parameter explosions</span> to the{' '}
-                        <span className="text-white font-normal">context revolution</span>.
+                        AI grows fast. See how fast, in data: from <span className="font-normal text-text-strong">model size</span> to <span className="font-normal text-text-strong">context length</span>.
                     </>
                 }
                 primaryCta={{ label: 'Start story', href: '#story', icon: PlayCircle }}

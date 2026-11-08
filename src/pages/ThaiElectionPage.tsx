@@ -120,7 +120,7 @@ export default function ThaiElectionPage() {
                 index="05"
                 description={
                     <>
-                        An interactive deep dive into the historic <span className="text-white font-normal">"Orange Wave"</span> that reshaped Thailand's political landscape.
+                        The <span className="font-normal text-text-strong">Orange Wave</span> changed Thai politics. See how, seat by seat.
                     </>
                 }
             />
