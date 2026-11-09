@@ -95,7 +95,7 @@ export default function Arrival() {
                         className="mt-5 max-w-xl font-display text-lg font-medium leading-snug tracking-[-0.01em] text-text-strong md:mt-8 md:text-2xl"
                     >
                         Associate Director, FinTech Data &amp; Automation.
-                        <span className="hidden text-text-mute sm:block">I turn manual work into systems that run.</span>
+                        <span className="block text-text-mute">AI strategy that ships.</span>
                     </motion.p>
 
                     <motion.p
