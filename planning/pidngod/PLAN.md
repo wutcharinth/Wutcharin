@@ -23,6 +23,7 @@
 | 7 | Thai-region data, 7-year immutable originals, append-only audit trail | [0007](docs/adr/0007-residency-retention.md) |
 | 8 | TypeScript modular monolith, Postgres, PDFs rendered from HTML in Chromium | [0008](docs/adr/0008-stack.md) |
 | 9 | Two-sided and led by the accountant: an Owner app for SMEs and a later marketplace for SMEs without an accountant | [0009](docs/adr/0009-two-sided-accountant-led.md) |
+| 10 | Encrypt and mask national ID and bank numbers; keep AI calls in-region; no personal data in LINE pushes. See [security-privacy.md](docs/security-privacy.md) | [0010](docs/adr/0010-pii-handling.md) |
 
 ---
 
