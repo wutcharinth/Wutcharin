@@ -10,6 +10,7 @@ import ChapterLabel from './ChapterLabel';
 import { SIGNAL } from './scenes';
 import { useScrollTo } from './useScrollTo';
 import { useOverlayLoop } from './useOverlayLoop';
+import Rise from './Rise';
 
 /**
  * Chapter 04: Path. The career began in airline planning, so it reads as a
@@ -24,9 +25,10 @@ function Heading() {
     return (
         <div>
             <ChapterLabel index="04" name="Path" className="mb-6" />
-            <h2 className="max-w-xl text-4xl leading-[0.95] tracking-[-0.02em] text-text-strong md:text-6xl">
-                From airline networks <span className="font-serif font-normal italic text-signal">to agent networks</span>.
-            </h2>
+            <Rise
+                className="max-w-xl text-4xl leading-[0.95] tracking-[-0.02em] text-text-strong md:text-6xl"
+                parts={['From airline networks', { text: 'to agent networks', accent: true }, { text: '.', glue: true }]}
+            />
         </div>
     );
 }

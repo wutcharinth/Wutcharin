@@ -7,6 +7,7 @@ import { useChapterScene } from './useChapterScene';
 import { useBangkokTime } from './useBangkokTime';
 import { EMAIL, INTRO_MAILTO, LINKEDIN, GITHUB, RESUME, copyEmail } from './contact';
 import { openIntro } from '../intro/introBus';
+import Rise from './Rise';
 
 const terminusScene = () => addressScene(EMAIL);
 
@@ -33,20 +34,15 @@ export default function Terminus() {
 
     return (
         <section ref={ref} id="contact" aria-label="Contact" className="relative flex min-h-[100svh] flex-col overflow-hidden px-6 md:px-10">
-            {sceneOff && (
-                <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
-                    <div className="absolute left-1/2 top-1/2 h-[46rem] w-[46rem] -translate-x-1/2 -translate-y-1/2 animate-aurora rounded-full bg-violet-600/15 blur-[140px]" />
-                </div>
-            )}
-
             <div className="relative mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-between pb-10 pt-chapter text-center">
                 <RevealOnScroll staggerChildren={0.1} className="flex flex-col items-center">
                     <div data-reveal-child>
                         <ChapterLabel index="05" name="Connect" className="mb-8" />
                     </div>
-                    <h2 data-reveal-child className="text-5xl leading-[0.9] tracking-[-0.03em] text-text-strong md:text-7xl lg:text-8xl">
-                        Let&rsquo;s build <span className="block font-serif font-normal italic tracking-[-0.01em] text-signal">the signal.</span>
-                    </h2>
+                    <Rise
+                        className="text-5xl leading-[0.9] tracking-[-0.03em] text-text-strong md:text-7xl lg:text-8xl"
+                        parts={['Let\u2019s build', { text: 'the signal.', accent: true, line: true }]}
+                    />
                     <p data-reveal-child className="mx-auto mt-8 max-w-xl text-base font-light leading-relaxed text-text-mute md:text-lg">
                         Tell me what you want to build. A large AI program, a data team, or a prototype by Friday.
                     </p>

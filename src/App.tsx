@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useEffect, useState, lazy, Suspense } from 'react';
 import Home from './pages/Home';
 import { CustomCursor, PageTransition } from './lib/motion';
@@ -34,9 +34,9 @@ const DeferredScene = () => {
 // navigation. This keeps the initial bundle lean since most visitors only
 // hit a handful of routes.
 const GeminiOCRPage = lazy(() => import('./pages/GeminiOCRPage'));
-const ThaiElectionPage = lazy(() => import('./pages/ThaiElectionPage'));
 const ResumeBuilderPage = lazy(() => import('./pages/ResumeBuilderPage'));
 const SlipVerifyPage = lazy(() => import('./pages/SlipVerifyPage'));
+const PidngodPage = lazy(() => import('./pages/PidngodPage'));
 const CollectionsPage = lazy(() => import('./pages/CollectionsPage'));
 const RiskGuardPage = lazy(() => import('./pages/RiskGuardPage'));
 const ProjectFlowPage = lazy(() => import('./pages/ProjectFlowPage'));
@@ -85,9 +85,9 @@ const AnimatedRoutes = () => {
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<Home />} />
           <Route path="/gemini-ocr" element={<GeminiOCRPage />} />
-          <Route path="/thai-election" element={<ThaiElectionPage />} />
           <Route path="/resume-builder" element={<ResumeBuilderPage />} />
           <Route path="/slip-verify" element={<SlipVerifyPage />} />
+          <Route path="/pidngod" element={<PidngodPage />} />
           <Route path="/collections" element={<CollectionsPage />} />
           <Route path="/risk-guard" element={<RiskGuardPage />} />
           <Route path="/project-flow" element={<ProjectFlowPage />} />
@@ -98,6 +98,8 @@ const AnimatedRoutes = () => {
           <Route path="/agentic-ai" element={<AgenticAIPage />} />
           <Route path="/human-edge" element={<HumanEdgePage />} />
           <Route path="/karpathy-deep-dive" element={<KarpathyDeepDivePage />} />
+          {/* Retired or mistyped paths go home rather than to a blank page. */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>
     </PageTransition>

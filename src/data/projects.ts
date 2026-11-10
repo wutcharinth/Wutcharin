@@ -1,7 +1,7 @@
 import {
-    ShieldCheck, SquareKanban, StarHalf, Database, MessageSquare,
+    ShieldCheck, SquareKanban, StarHalf, Database,
     FileText, ScanText, Code, Receipt, TrendingUp, Briefcase, Brain,
-    Sparkles, Heart, BarChart2, Inbox, Bot, type LucideIcon,
+    Sparkles, Heart, Inbox, Bot, BookCheck, type LucideIcon,
 } from 'lucide-react';
 import type { FormationId } from '../scene/formations';
 
@@ -80,39 +80,6 @@ export const projects: Project[] = [
         link: '/agentic-ai',
         icon: Brain,
         accent: '#a78bfa',
-        tier: 'insight',
-    },
-    {
-        id: 'thai-election',
-        poster: '/work/thai-election.webp',
-        featured: 1,
-        formation: 'network',
-        title: 'Thai Election 2566',
-        navTitle: 'Thai Election AI',
-        role: 'Data Artist & AI Engineer',
-        badge: 'Data Story',
-        desc: "The 2023 Thai election in charts. Ask the RAG chatbot about any result.",
-        tagline: "Ask the election anything",
-        tags: ['Data Viz', 'RAG', 'Gemini AI', 'React'],
-        link: '/thai-election',
-        icon: MessageSquare,
-        accent: '#fb923c',
-        tier: 'insight',
-    },
-    {
-        id: 'election-2026',
-        poster: '/work/election-2026.webp',
-        featured: 5,
-        formation: 'lattice',
-        title: 'Thailand 2026 Election Investigation',
-        role: 'Data Investigator & Journalist',
-        badge: 'Data Story',
-        desc: "A data check of the 8 February 2026 election. It uses official ECT data from 382 districts. It covers ballot QR codes, count mismatches, the 1:1 ratio and annulment petitions.",
-        tagline: "The count, checked with data",
-        tags: ['ECT Data', 'ECharts', 'Bilingual', 'Investigation'],
-        link: '/election-2026.html',
-        icon: BarChart2,
-        accent: '#ef4444',
         tier: 'insight',
     },
     {
@@ -220,6 +187,22 @@ export const projects: Project[] = [
     },
 
     // --- AI products & websites ---
+    {
+        id: 'pidngod',
+        poster: '/work/pidngod.webp',
+        featured: 1,
+        formation: 'lattice',
+        title: 'Pidngod',
+        role: 'Founder & Builder',
+        badge: 'POC',
+        desc: "A proof of concept: the month-end workbench for Thai bookkeepers. It checks each document against the Revenue Code, catches duplicates and suggests the account code. Try the real check engine on 18 sample documents.",
+        tagline: "Month-end close for Thai bookkeepers",
+        tags: ['Cloudflare Workers', 'D1', 'Gemini', 'Thai tax'],
+        link: '/pidngod',
+        icon: BookCheck,
+        accent: '#43c190',
+        tier: 'lab',
+    },
     {
         id: 'flowaios',
         featured: 3,
