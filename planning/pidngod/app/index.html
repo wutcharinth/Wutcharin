@@ -2,7 +2,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Noto+Serif+Thai:wght@700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Noto+Serif+Thai:wght@700;800&family=Sarabun:wght@400;700&display=swap">
 <style>
 /* Layout: a working desk. Header with client switcher, a left rail of four work areas, and a review table with a detail drawer. */
 :root{
@@ -128,6 +128,56 @@ table.t tr.flash td{animation:flash .7s ease}
 .empty{padding:28px;text-align:center;color:var(--muted)}
 .prog{height:4px;background:var(--panel-2);border-radius:2px;overflow:hidden;margin-top:8px}
 .prog i{display:block;height:100%;background:var(--ledger);transition:width .2s}
+
+/* ---- v2 ---- */
+.rail-h{font-size:.72rem;color:var(--muted);font-weight:600;letter-spacing:.04em;margin:12px 12px 2px;text-transform:none}
+@media (max-width:900px){.rail-h{display:none}}
+.linkish{border:0;background:transparent;padding:0;cursor:pointer;text-align:left;color:var(--ink);font:inherit}
+.linkish:hover b{text-decoration:underline}
+.obbtn{border:0;background:transparent;padding:0;cursor:pointer}
+.ob{display:inline-flex;align-items:center;justify-content:center;min-width:76px;height:24px;padding:0 8px;border-radius:6px;font-size:.72rem;font-weight:600;white-space:nowrap}
+.ob.a{background:var(--amber-soft);color:var(--amber)}.ob.b{background:var(--blue-soft);color:var(--blue)}
+.ob.g{color:var(--ledger);box-shadow:inset 0 0 0 1.5px var(--ledger)}
+.ob.r{color:var(--stamp);box-shadow:inset 0 0 0 2px var(--stamp);transform:rotate(-3deg)}
+.ob.gf{background:var(--ledger);color:var(--ledger-ink)}
+.board th small{display:block;font-weight:500;font-family:var(--f-mono);font-size:.66rem;color:var(--muted)}
+.board td{vertical-align:middle}
+.board td:first-child{min-width:190px}
+.board th{white-space:normal;min-width:96px}
+.lock{background:var(--stamp-soft);color:var(--stamp);border-radius:12px;padding:10px 14px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-weight:600;font-size:.85rem}
+.clist{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.clist li{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:8px;align-items:center;padding:7px 0;border-bottom:1px dashed var(--rule);font-size:.86rem}
+.clist small{display:block;color:var(--muted);font-size:.74rem}
+.clist .bx{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--rule);display:grid;place-items:center;font-size:.7rem}
+.clist li.done .bx{background:var(--ledger);border-color:var(--ledger);color:var(--ledger-ink)}
+.pp td{vertical-align:middle}
+.numin{width:10em;text-align:right;border:1px solid var(--rule);background:var(--panel-2);border-radius:6px;padding:3px 6px;font-size:.8rem}
+tr.tot td{background:var(--ledger-soft);color:var(--ledger)}
+tr.tot.refund td{background:var(--blue-soft);color:var(--blue)}
+.warnline{background:var(--amber-soft);color:var(--amber);border-radius:8px;padding:6px 10px;font-size:.8rem;margin:0 0 10px}
+.bsel{border:1px solid var(--rule);background:var(--panel);border-radius:6px;padding:2px 4px;font-size:.74rem;max-width:200px}
+.modal{position:fixed;inset:0;background:rgba(10,20,15,.55);z-index:95;display:grid;place-items:center;padding:16px}
+.modal[hidden]{display:none!important}
+.mbox{background:var(--panel);border-radius:16px;padding:18px;max-width:640px;width:100%;max-height:calc(100% - 32px);overflow:auto;box-shadow:var(--shadow)}
+.cert{font-family:"Sarabun","IBM Plex Sans Thai",sans-serif;background:#FFFEF9;color:#1d1d1d;border:1px solid #E3E0D3;border-radius:6px;padding:16px;font-size:.8rem;line-height:1.55;position:relative}
+.cert .ct{text-align:center;font-weight:700;font-size:1.05rem}.cert .ct small{display:block;font-weight:400;font-size:.72rem}
+.cert .no{position:absolute;right:14px;top:12px;font-size:.72rem}
+.cert .box{border:1px solid #CFCBBE;border-radius:4px;padding:6px 8px;margin-top:8px}
+.cert .lbl{font-size:.68rem;color:#666}
+.cert .cb{display:flex;gap:14px;margin-top:4px}.cert .cb span::before{content:"☐ "}.cert .cb span.on::before{content:"☑ ";color:#0B6A4E}
+.cert table{width:100%;border-collapse:collapse;margin-top:8px;font-size:.74rem}.cert th,.cert td{border:1px solid #CFCBBE;padding:4px 6px}.cert td.r{text-align:right}
+.cert .words{margin-top:6px;font-weight:700}.cert .foot{margin-top:6px;font-size:.7rem;color:#555}
+.phone-mini{background:#9DB6DA;border-radius:16px;padding:12px;margin-bottom:8px}
+.phone-mini .bub{background:#fff;color:#111;border-radius:14px;border-top-left-radius:4px;padding:9px 12px;font-size:.8rem;line-height:1.55}
+.phone-mini .qr{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.phone-mini .qr span{background:#fff;color:#06C755;border:1px solid #06C755;border-radius:999px;padding:2px 10px;font-size:.72rem;font-weight:600}
+.mform{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.mform label{display:grid;gap:3px;font-size:.76rem;color:var(--muted)}
+.mform .w2{grid-column:1/-1}
+.mform input,.mform select{border:1px solid var(--rule);background:var(--panel-2);border-radius:8px;padding:6px 9px;font-size:.85rem;color:var(--ink)}
+.tl{display:grid;border-left:2px solid var(--rule);padding-left:14px;margin-bottom:10px}
+.tl div{display:grid;grid-template-columns:7.5em 9em minmax(0,1fr);gap:8px;padding:6px 0;font-size:.82rem;position:relative}
+.tl div::before{content:"";position:absolute;left:-20px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--panel);border:2px solid var(--ledger)}
+@media (max-width:620px){.tl div{grid-template-columns:minmax(0,1fr)}}
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 </style>
 
@@ -148,6 +198,7 @@ table.t tr.flash td{animation:flash .7s ease}
   <main id="main"></main>
 </div>
 <div class="toast" id="toast" hidden></div>
+<div class="modal" id="modal" hidden></div>
 
 <script>
 (() => {
@@ -177,7 +228,7 @@ function seed() {
       ["5130", "วัสดุสิ้นเปลือง", "กระดาษ|หมึก|ปากกา|เครื่องเขียน|แฟ้ม"], ["5210", "ค่าขนส่ง", "ขนส่ง|ส่งของ|รถรับจ้าง|ไปรษณีย์"], ["5220", "ค่าน้ำมันเชื้อเพลิง", "น้ำมัน|ดีเซล|แก๊สโซฮอล์|เบนซิน"],
       ["5250", "ค่าซ่อมแซมยานพาหนะ", "ซ่อมบำรุงรถ|ซ่อมรถ|ยางรถ|ศูนย์บริการ"], ["5310", "ค่าเช่า", "เช่า"], ["5320", "ค่าอินเทอร์เน็ตและโทรศัพท์", "อินเทอร์เน็ต|โทรศัพท์|มือถือ|ไฟเบอร์"],
       ["5325", "ค่าไฟฟ้าและน้ำประปา", "ไฟฟ้า|ประปา"], ["5330", "ค่าซอฟต์แวร์และบริการคลาวด์", "ซอฟต์แวร์|software|cloud|subscription|license"], ["5340", "ค่ารับรอง", "รับรอง|เลี้ยง|ห้องอาหาร|ภัตตาคาร"],
-      ["5350", "ค่าโฆษณา", "โฆษณา|advertising|ป้าย"], ["5360", "ค่าธรรมเนียมวิชาชีพ", "ทนาย|กฎหมาย|ที่ปรึกษา|สอบบัญชี"], ["5380", "สวัสดิการพนักงาน", "น้ำดื่ม|ขนม|สวัสดิการ|เครื่องดื่ม"],
+      ["5350", "ค่าโฆษณา", "โฆษณา|advertising|ป้าย"], ["5360", "ค่าธรรมเนียมวิชาชีพ", "ทนาย|กฎหมาย|ที่ปรึกษา|สอบบัญชี"], ["5370", "ค่าธรรมเนียมธนาคาร", "ธรรมเนียมธนาคาร|ค่าธรรมเนียม"], ["5380", "สวัสดิการพนักงาน", "น้ำดื่ม|ขนม|สวัสดิการ|เครื่องดื่ม"],
       ["5990", "ค่าใช้จ่ายเบ็ดเตล็ด", ""],
     ],
     vendorRules: { "บจ. ออฟฟิศเมท ซัพพลาย": { code: "5130", n: 6, src: "hist" }, "บจ. น้ำยาสะอาดไทย": { code: "5120", n: 4, src: "hist" }, "บจ. ทองดีโลจิสติกส์": { code: "5210", n: 9, src: "hist" }, "บจ. อินเทอร์เน็ตไทย": { code: "5320", n: 12, src: "hist" }, "นางสมศรี มีที่ดิน": { code: "5310", n: 10, src: "hist" } },
@@ -209,7 +260,7 @@ function seed() {
     coa: [
       ["120101", "เครื่องครัวและอุปกรณ์", "ตู้แช่|เตา|เครื่อง"], ["510101", "ต้นทุนวัตถุดิบอาหาร", "ผัก|หมู|ไก่|ข้าวสาร|น้ำมันพืช|วัตถุดิบ|ตลาด|เครื่องปรุง"], ["510102", "ก๊าซหุงต้ม", "ก๊าซ|แก๊ส"],
       ["530101", "ค่าคอมมิชชันแพลตฟอร์ม", "คอมมิชชัน|commission|เดลิเวอรี|แพลตฟอร์ม"], ["530201", "ค่าเช่าร้าน", "เช่า"], ["530301", "ค่าไฟฟ้า", "ไฟฟ้า"], ["530302", "ค่าน้ำประปา", "ประปา"],
-      ["530401", "บรรจุภัณฑ์และวัสดุสิ้นเปลือง", "กล่อง|ถุง|ภาชนะ|ทิชชู่|ช้อน"], ["530501", "ค่าซ่อมแซม", "ซ่อม"], ["539999", "ค่าใช้จ่ายเบ็ดเตล็ด", ""],
+      ["530401", "บรรจุภัณฑ์และวัสดุสิ้นเปลือง", "กล่อง|ถุง|ภาชนะ|ทิชชู่|ช้อน"], ["530501", "ค่าซ่อมแซม", "ซ่อม"], ["530601", "ค่าธรรมเนียมธนาคาร", "ธรรมเนียมธนาคาร|ค่าธรรมเนียม"], ["539999", "ค่าใช้จ่ายเบ็ดเตล็ด", ""],
     ],
     vendorRules: { "ห้างค้าส่งสยาม สาขาบางนา": { code: "510101", n: 8, src: "hist" }, "นายวิชัย เจ้าของตึก": { code: "530201", n: 14, src: "hist" } },
     docs: [
@@ -231,7 +282,7 @@ function seed() {
     capThreshold: 10000, assetCode: "1250", miscCode: "5990", vatxCodes: [], ctrl: { vat: "1154", ap: "2110", wht: "2132" },
     coa: [
       ["1250", "เครื่องจักรและอุปกรณ์", "เครื่องเชื่อม|เครื่องตัด|เครื่อง"], ["5010", "วัตถุดิบเหล็ก", "เหล็ก|ท่อ|เหล็กกล่อง|เหล็กฉาก"], ["5020", "วัสดุสิ้นเปลืองโรงงาน", "ลวดเชื่อม|ใบตัด|สี|ออกซิเจน|แก๊สเชื่อม"],
-      ["5030", "ค่าแรงรับเหมาช่วง", "รับเหมา|ค่าแรง|ติดตั้ง"], ["5210", "ค่าขนส่ง", "ขนส่ง"], ["5220", "ค่าน้ำมันเชื้อเพลิง", "น้ำมัน|ดีเซล"], ["5310", "ค่าเช่าโรงงาน", "เช่า"], ["5325", "ค่าไฟฟ้า", "ไฟฟ้า"], ["5990", "ค่าใช้จ่ายเบ็ดเตล็ด", ""],
+      ["5030", "ค่าแรงรับเหมาช่วง", "รับเหมา|ค่าแรง|ติดตั้ง"], ["5210", "ค่าขนส่ง", "ขนส่ง"], ["5220", "ค่าน้ำมันเชื้อเพลิง", "น้ำมัน|ดีเซล"], ["5310", "ค่าเช่าโรงงาน", "เช่า"], ["5325", "ค่าไฟฟ้า", "ไฟฟ้า"], ["5370", "ค่าธรรมเนียมธนาคาร", "ธรรมเนียมธนาคาร|ค่าธรรมเนียม"], ["5990", "ค่าใช้จ่ายเบ็ดเตล็ด", ""],
     ],
     vendorRules: { "บจ. สยามสตีล เทรดดิ้ง": { code: "5010", n: 7, src: "hist" } },
     docs: [
@@ -249,13 +300,27 @@ function seed() {
   for (const c of Object.values(CL)) {
     c.docs = c.docs.map((a, i) => ({ id: c.id + "-" + (i + 1), date: a[0], no: a[1], vendor: a[2], tin: a[3], desc: a[4], base: a[5], vat: a[6], wht: a[7], type: a[8], src: a[9], buyerTin: (a[10] && "buyerTin" in a[10]) ? a[10].buyerTin : c.tin, vatReg: a[10] && a[10].vatReg === false ? false : true, status: c.processed ? "ready" : "new", code: null, exported: false }));
   }
-  return { clientId: "siam", tab: "review", filter: "all", sel: "siam-1", clients: CL };
+
+  CL.siam.sales = { total: 1284560, zero: 0, exempt: 12000, carry: 0 };
+  CL.siam.payroll = { emp: 8, pnd1: 7339.58, sso: 11850, status: "ready" };
+  CL.siam.bank = [["2026-10-02", "โอนออก บจ. ทองดีโลจิสติกส์", -19610], ["2026-10-05", "รับโอน บจ. เมกะมอลล์", 145500, "in"], ["2026-10-10", "โอนออก OFFICEMATE SUPPLY", -2835.50], ["2026-10-12", "ชำระ ร้านป้ายสวยงาม", -3210], ["2026-10-15", "หักบัญชีอัตโนมัติ การไฟฟ้านครหลวง", -10550.20], ["2026-10-18", "โอนออก ไม่ระบุผู้รับ", -4800], ["2026-10-20", "โอนออก พร้อมเพย์ 08x-xxx-5521", -1605], ["2026-10-26", "โอนออก ห้องอาหารบ้านไทย", -5136], ["2026-10-30", "โอนออก สยามแม่บ้านเซอร์วิส", -68480], ["2026-10-31", "โอนออก สมศรี มีที่ดิน", -28500], ["2026-10-31", "ค่าธรรมเนียมธนาคาร", -25, "fee"]];
+  CL.yai.sales = { total: 612400, zero: 0, exempt: 0, carry: 5120 };
+  CL.yai.payroll = { emp: 5, pnd1: 0, sso: 4850, status: "waiting" };
+  CL.yai.bank = [["2026-10-01", "โอนออก วิชัย เจ้าของตึก", -23750], ["2026-10-08", "โอนออก ไทยคูลลิ่ง", -20223], ["2026-10-20", "หักบัญชี การไฟฟ้าส่วนภูมิภาค", -6997.80], ["2026-10-27", "โอนออก ก๊าซหุงต้มไทย", -2889], ["2026-10-31", "รับโอน แพลตฟอร์มเดลิเวอรี A", 89980, "in"], ["2026-10-31", "ถอนเงินสด ATM", -5000]];
+  CL.lek.sales = { total: 398000, zero: 0, exempt: 0, carry: 0 };
+  CL.lek.payroll = { emp: 6, pnd1: 1240, sso: 6300, status: "ready" };
+  CL.lek.bank = [["2026-10-01", "โอนออก นิคมพัฒนา", -45900], ["2026-10-06", "โอนออก สยามสตีล เทรดดิ้ง", -92448], ["2026-10-16", "โอนออก มานพ ช่างดี", -33950], ["2026-10-21", "โอนออก ทองดีโลจิสติกส์", -7950], ["2026-10-22", "โอนออก ไทยออกซิเจน", -2332.60], ["2026-10-29", "รับโอน บจ. อาคารสูงไทย", 214000, "in"]];
+  for (const c of Object.values(CL)) {
+    c.bank = c.bank.map((b, i) => ({ id: c.id + "-b" + (i + 1), date: b[0], desc: b[1], amt: b[2], kind: b[3] || "out", manual: null, requested: false }));
+    c.filed = {}; c.certs = {}; c.certSeq = c.id === "siam" ? 41 : 1; c.requests = {}; c.closed = false;
+  }
+  return { v: 2, view: "board", tab: "review", channel: "e", clientId: "siam", filter: "all", sel: "siam-1", log: [], clients: CL };
 }
 
 /* ---------- Storage (per viewer) ---------- */
-const KEY = "pidngod-proto-v1";
+const KEY = "pidngod-proto-v2";
 let S;
-try { S = JSON.parse(localStorage.getItem(KEY)) || seed(); } catch (e) { S = seed(); }
+try { S = JSON.parse(localStorage.getItem(KEY)); if (!S || S.v !== 2) S = seed(); } catch (e) { S = seed(); }
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
 const C = () => S.clients[S.clientId];
 
@@ -323,83 +388,175 @@ function analyze(c, d, docs) {
 }
 const AN = {};
 function analyzeAll() { const c = C(); for (const d of c.docs) AN[d.id] = analyze(c, d, c.docs); }
-function stateOf(d, a) {
-  if (d.status === "new") return ["ยังไม่ประมวลผล", ""];
-  if (d.status === "confirmed") return [d.exported ? "ส่งออกแล้ว" : "ยืนยันแล้ว", d.exported ? "b" : "g"];
-  if (d.status === "requested") return ["ขอเอกสารใหม่แล้ว", "a"];
-  if (a.dupOf) return ["ซ้ำ · ข้าม", ""];
-  if (a.blocks) return ["ติดปัญหา", "r"];
-  if (a.review) return ["ให้คนตรวจ", "a"];
-  return ["รอยืนยัน", ""];
+
+/* ---------- Extra engine: money, bank, obligations, due dates ---------- */
+const vat7 = b => r2(b * 0.07);
+const payable = (d) => r2(d.base + (d.type === "foreign" ? 0 : d.vat) - d.wht);
+const core = s => s.replace(/^(บจ\.|บริษัท|หจก\.|ห้างหุ้นส่วนจำกัด|นางสาว|นาง|นาย|ร้าน)\s*/, "").replace(/\s*(จำกัด|\(มหาชน\))$/, "").trim();
+function bankMatch(c) {
+  const out = {}, used = new Set();
+  const docs = c.docs.filter(d => d.status !== "new" && !AN[d.id].dupOf);
+  for (const b of c.bank) if (b.manual && b.manual !== "none") used.add(b.manual);
+  for (const b of c.bank) {
+    if (b.kind === "in") { out[b.id] = { st: "in", note: "รับชำระจากลูกค้า · บันทึกฝั่งรายได้" }; continue; }
+    if (b.kind === "fee") { out[b.id] = { st: "rule", note: "กฎ: ค่าธรรมเนียมธนาคาร → สร้างรายการค่าใช้จ่ายอัตโนมัติ" }; continue; }
+    if (b.manual === "none") { out[b.id] = { st: b.requested ? "requested" : "none", note: "ไม่มีเอกสาร" }; continue; }
+    if (b.manual) { out[b.id] = { st: "manual", doc: b.manual, score: 100, note: "จับคู่โดยผู้ทำบัญชี" }; continue; }
+    let best = null;
+    for (const d of docs) {
+      if (used.has(d.id) || Math.abs(payable(d) - Math.abs(b.amt)) > 0.01) continue;
+      const diff = Math.abs((new Date(b.date) - new Date(d.date)) / 864e5);
+      if (diff > 35) continue;
+      const nm = core(d.vendor), name = b.desc.includes(nm) || b.desc.includes(nm.slice(0, 6));
+      const score = 55 + (name ? 35 : 0) + (diff <= 3 ? 10 : diff <= 10 ? 5 : 0);
+      if (!best || score > best.score) best = { doc: d.id, score, name };
+    }
+    if (best) { used.add(best.doc); out[b.id] = { st: best.score >= 90 ? "auto" : "suggest", doc: best.doc, score: best.score, note: best.name ? "ยอดเงินและชื่อผู้รับตรง" : "ยอดเงินตรง แต่ชื่อผู้รับไม่ตรง ควรยืนยัน" }; }
+    else out[b.id] = { st: b.requested ? "requested" : "none", note: "ยังไม่มีเอกสารรองรับ" };
+  }
+  return out;
 }
+const TODAY = new Date(2026, 10, 10);
+function dueDate(paper, efile) {
+  const day = S.channel === "e" ? efile : paper; let d = new Date(2026, 10, day), moved = "";
+  while (d.getDay() === 0 || d.getDay() === 6) { moved = moved || ["อาทิตย์", "", "", "", "", "", "เสาร์"][d.getDay()]; d = new Date(2026, 10, d.getDate() + 1); }
+  return { d, moved, iso: `2026-11-${String(d.getDate()).padStart(2, "0")}` };
+}
+const OB_STATUS = { waiting: ["รอเอกสาร", "a"], review: ["กำลังตรวจ", "b"], ready: ["พร้อมยื่น", "g"], filed: ["ยื่นแล้ว", "r"], paid: ["ชำระแล้ว", "gf"] };
+function obligations(c) {
+  const docs = c.docs.filter(d => !AN[d.id].dupOf), list = [];
+  const stOf = (ds, extra) => { if (ds.some(d => d.status === "new")) return "waiting"; if (ds.some(d => d.status !== "confirmed" && d.status !== "requested") || extra) return "review"; return "ready"; };
+  const withFiled = (k, st) => c.filed[k] || st;
+  list.push({ k: "pp30", form: "ภ.พ.30", tab: "vat", due: dueDate(15, 23), st: withFiled("pp30", stOf(docs)) });
+  for (const f of ["ภ.ง.ด.3", "ภ.ง.ด.53", "ภ.ง.ด.54"]) { const ds = docs.filter(d => d.status !== "new" ? AN[d.id].whtForm === f : (d.wht > 0 && f === (d.type === "foreign" ? "ภ.ง.ด.54" : d.tin && d.tin[0] === "0" ? "ภ.ง.ด.53" : "ภ.ง.ด.3"))); if (ds.length) list.push({ k: f, form: f, tab: "wht", due: dueDate(7, 15), st: withFiled(f, stOf(ds, ds.some(d => d.status === "confirmed" && !c.certs[d.id]))) }); }
+  if (docs.some(d => d.type === "foreign")) list.push({ k: "pp36", form: "ภ.พ.36", tab: "vat", due: dueDate(7, 15), st: withFiled("pp36", stOf(docs.filter(d => d.type === "foreign"))) });
+  list.push({ k: "pnd1", form: "ภ.ง.ด.1", tab: "wht", due: dueDate(7, 15), st: withFiled("pnd1", c.payroll.status) });
+  list.push({ k: "sso", form: "สปส.1-10", tab: "wht", due: dueDate(15, 15), st: withFiled("sso", c.payroll.status) });
+  return list;
+}
+const DIG = ["", "หนึ่ง", "สอง", "สาม", "สี่", "ห้า", "หก", "เจ็ด", "แปด", "เก้า"], POS = ["", "สิบ", "ร้อย", "พัน", "หมื่น", "แสน"];
+function chunk(n, hi) { const s = String(n); let o = ""; for (let i = 0; i < s.length; i++) { const d = +s[i], p = s.length - i - 1; if (!d) continue; if (p === 1) o += d === 1 ? "สิบ" : d === 2 ? "ยี่สิบ" : DIG[d] + "สิบ"; else if (p === 0) o += d === 1 && (n > 9 || hi) ? "เอ็ด" : DIG[d]; else o += DIG[d] + POS[p]; } return o; }
+const thNum = n => n >= 1e6 ? thNum(Math.floor(n / 1e6)) + "ล้าน" + (n % 1e6 ? chunk(n % 1e6, true) : "") : chunk(n, false);
+const bahtText = x => { const c = Math.round(x * 100), b = Math.floor(c / 100), st = c % 100; if (!b && !st) return "ศูนย์บาทถ้วน"; return (b ? thNum(b) + "บาท" : "") + (st ? thNum(st) + "สตางค์" : "ถ้วน"); };
+const INCOME_TYPE = d => /ขนส่ง/.test(d.desc) ? "ค่าขนส่ง" : /เช่า/.test(d.desc) ? "ค่าเช่า" : /โฆษณา/.test(d.desc) ? "ค่าโฆษณา" : /ซอฟต์แวร์|software/i.test(d.desc) ? "ค่าบริการจากต่างประเทศ" : /ที่ปรึกษา|กฎหมาย/.test(d.desc) ? "ค่าวิชาชีพ" : "ค่าบริการ / ค่าจ้างทำของ";
+function log(m) { S.log.unshift({ t: Date.now(), c: S.clientId, m }); if (S.log.length > 400) S.log.length = 400; }
+const tstamp = t => { const d = new Date(t); return `${d.getDate()} ${TH_M[d.getMonth()]} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`; };
 
-/* ---------- AI (Claude, when opened in Claude) ---------- */
-let sampleFn = null;
-(async () => { try { if (window.claude && claude.use) { sampleFn = await claude.use("sample"); render(); } } catch (e) {} })();
-let downloadsNS = null;
+/* ---------- Claude runtime (only inside Claude) ---------- */
+let sampleFn = null, imgOK = false, downloadsNS = null;
+(async () => { try { if (window.claude && claude.use) { sampleFn = await claude.use("sample"); if (sampleFn) { const lim = await sampleFn.limits().catch(() => null); imgOK = !!(lim && lim.images); } render(); } } catch (e) {} })();
 (async () => { try { if (window.claude && claude.use) { downloadsNS = await claude.use("downloads"); render(); } } catch (e) {} })();
+async function saveFile(name, data) {
+  if (downloadsNS) { try { await downloadsNS.save({ filename: name, data }); toast("บันทึกไฟล์แล้ว"); return true; } catch (e) { if (e && e.code === "declined") { toast("ยกเลิกการบันทึกไฟล์"); return false; } } }
+  try { await navigator.clipboard.writeText(data); toast("หน้าจอนี้บันทึกไฟล์ไม่ได้ จึงคัดลอกเนื้อหาไว้ให้แล้ว วางใน Excel ได้เลย"); return true; } catch (e) { toast("บันทึกไฟล์และคัดลอกไม่ได้ในหน้าจอนี้"); return false; }
+}
+const csvOf = rows => "﻿" + rows.map(r => r.map(v => { const s = String(v ?? ""); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; }).join(",")).join("\n");
 
-/* ---------- UI ---------- */
-const TABS = [["dash", "ภาพรวม"], ["review", "ตรวจและจัดประเภท"], ["import", "นำเข้าข้อมูล"], ["coa", "ผังบัญชีและกฎ"], ["export", "ส่งออก"]];
-function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => t.hidden = true, 2600); }
+/* ---------- Shell ---------- */
+const CTABS = [["dash", "ภาพรวมและปิดงวด"], ["review", "ตรวจและจัดประเภท"], ["bank", "กระทบยอดธนาคาร"], ["vat", "ภาษีซื้อ · ภ.พ.30"], ["wht", "หัก ณ ที่จ่าย · 50 ทวิ"], ["req", "ขอเอกสารลูกค้า"], ["import", "นำเข้าข้อมูล"], ["coa", "ผังบัญชีและกฎ"], ["export", "ส่งออก"], ["log", "ประวัติการทำงาน"]];
+function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => t.hidden = true, 2800); }
 function counts() {
   const c = C(); let k = { all: c.docs.length, review: 0, block: 0, dup: 0, ready: 0, confirmed: 0, new: 0, toExport: 0 };
   for (const d of c.docs) { const a = AN[d.id]; if (d.status === "new") k.new++; else if (d.status === "confirmed") { k.confirmed++; if (!d.exported) k.toExport++; } else if (d.status === "requested") k.block++; else if (a.dupOf) k.dup++; else if (a.blocks) k.block++; else if (a.review) k.review++; else k.ready++; }
   return k;
 }
-function rail() {
-  const k = counts();
-  $("#rail").innerHTML = TABS.map(([id, l]) => `<button type="button" data-act="tab" data-tab="${id}" aria-current="${S.tab === id ? "page" : "false"}">${l}${id === "review" ? `<span class="ct ${k.review + k.block ? "hot" : ""}">${k.review + k.block + k.ready}</span>` : id === "export" ? `<span class="ct">${k.toExport}</span>` : ""}</button>`).join("") +
-    `<div class="rail-note"><b>ต้นแบบนี้ทำงานในเบราว์เซอร์</b><br>ข้อมูลทั้งหมดเป็นตัวอย่าง การแก้ไขของคุณเก็บไว้ในเบราว์เซอร์นี้เท่านั้น<br><br>คีย์ลัดในหน้าตรวจ: <span class="kbd">↑</span> <span class="kbd">↓</span> เลือก · <span class="kbd">Enter</span> ยืนยัน</div>`;
+function requestsOf(c) {
+  const R = [], bm = bankMatch(c);
+  for (const d of c.docs) { const a = AN[d.id]; if (d.status === "new" || a.dupOf || d.status === "confirmed") continue; if (a.blocks) R.push({ key: "doc:" + d.id, what: `${d.vendor} · ${d.no}`, why: a.F.filter(f => f.sev === "block").map(f => f.text).join(" · "), ask: `ใบกำกับภาษีจาก ${d.vendor} เลขที่ ${d.no} ยังใช้ไม่ได้ เพราะ${a.F.filter(f => f.sev === "block").map(f => f.text).join(" และ ")} รบกวนขอใบใหม่จากผู้ขาย โดยระบุชื่อ เลขผู้เสียภาษี และสาขาของกิจการให้ครบค่ะ` }); }
+  for (const b of c.bank) { const m = bm[b.id]; if (m.st === "none" || m.st === "requested") R.push({ key: "bank:" + b.id, what: `${b.desc} ${fmt(Math.abs(b.amt))} บาท (${thDate(b.date)})`, why: "รายการในบัญชีธนาคารยังไม่มีเอกสารรองรับ", ask: `รายการ${b.desc} วันที่ ${thDate(b.date)} จำนวน ${fmt(Math.abs(b.amt))} บาท ยังไม่มีเอกสารค่ะ รบกวนส่งใบเสร็จหรือใบกำกับภาษี หรือแจ้งว่าจ่ายค่าอะไรค่ะ` }); }
+  if (c.payroll.status === "waiting") R.push({ key: "payroll", what: "สรุปเงินเดือน ต.ค. 2569", why: "ใช้ทำ ภ.ง.ด.1 และ สปส.1-10", ask: "รบกวนส่งสรุปเงินเดือนเดือน ต.ค. 2569 (ไฟล์ Excel หรือรูปถ่ายก็ได้) เพื่อทำ ภ.ง.ด.1 และประกันสังคมค่ะ" });
+  return R;
 }
-function header() {
-  $("#clientSel").innerHTML = Object.values(S.clients).map(c => `<option value="${c.id}" ${c.id === S.clientId ? "selected" : ""}>${c.name} · ${c.sw}</option>`).join("");
+function header() { $("#clientSel").innerHTML = Object.values(S.clients).map(c => `<option value="${c.id}" ${c.id === S.clientId ? "selected" : ""}>${c.name} · ${c.sw}${c.closed ? " · ปิดงวดแล้ว" : ""}</option>`).join(""); }
+function rail() {
+  const k = counts(), c = C(), R = requestsOf(c), bm = bankMatch(c), bOpen = Object.values(bm).filter(m => m.st === "none" || m.st === "suggest").length;
+  const badge = id => id === "review" ? `<span class="ct ${k.review + k.block ? "hot" : ""}">${k.review + k.block + k.ready + k.new}</span>` : id === "export" ? `<span class="ct">${k.toExport}</span>` : id === "bank" ? `<span class="ct ${bOpen ? "hot" : ""}">${bOpen}</span>` : id === "req" ? `<span class="ct ${R.filter(r => !c.requests[r.key]).length ? "hot" : ""}">${R.length}</span>` : "";
+  $("#rail").innerHTML = `<button type="button" data-act="board" aria-current="${S.view === "board" ? "page" : "false"}"><b>กระดานกำหนดยื่น</b><span class="ct">${Object.keys(S.clients).length} ลูกค้า</span></button>
+    <div class="rail-h">${esc(c.name)}</div>` + CTABS.map(([id, l]) => `<button type="button" data-act="tab" data-tab="${id}" aria-current="${S.view === "client" && S.tab === id ? "page" : "false"}">${l}${badge(id)}</button>`).join("") +
+    `<div class="rail-note"><b>ต้นแบบทำงานในเบราว์เซอร์</b><br>ข้อมูลทั้งหมดเป็นตัวอย่าง การแก้ไขเก็บในเบราว์เซอร์นี้เท่านั้น<br><br>คีย์ลัดหน้าตรวจ <span class="kbd">↑</span> <span class="kbd">↓</span> เลือก · <span class="kbd">Enter</span> ยืนยัน</div>`;
 }
 function render() {
   analyzeAll(); header(); rail();
-  const m = $("#main");
-  if (S.tab === "dash") m.innerHTML = vDash();
-  else if (S.tab === "review") m.innerHTML = vReview();
-  else if (S.tab === "import") m.innerHTML = vImport();
-  else if (S.tab === "coa") m.innerHTML = vCoa();
-  else m.innerHTML = vExport();
+  const m = $("#main"), V = { dash: vDash, review: vReview, bank: vBank, vat: vVat, wht: vWht, req: vReq, import: vImport, coa: vCoa, export: vExport, log: vLog };
+  m.innerHTML = S.view === "board" ? vBoard() : (C().closed && S.tab !== "dash" && S.tab !== "log" ? lockedBanner() : "") + V[S.tab]();
   save();
 }
+const lockedBanner = () => `<div class="lock">งวด ต.ค. 2569 ของลูกค้ารายนี้ปิดแล้ว ข้อมูลแก้ไขไม่ได้ <button class="btn sm" type="button" data-act="reopen">เปิดงวดอีกครั้ง</button></div>`;
+const pillS = st => { const [l, cl] = OB_STATUS[st]; return `<span class="ob ${cl}">${l}</span>`; };
 
-/* Dashboard */
+/* ---------- Board (all clients) ---------- */
+function vBoard() {
+  const cs = Object.values(S.clients), saveSel = S.clientId;
+  const rows = cs.map(c => { S.clientId = c.id; analyzeAll(); return { c, obs: obligations(c), k: counts(), req: requestsOf(c).length }; });
+  S.clientId = saveSel; analyzeAll();
+  const FORMS = ["ภ.พ.30", "ภ.ง.ด.1", "ภ.ง.ด.3", "ภ.ง.ด.53", "ภ.ง.ด.54", "ภ.พ.36", "สปส.1-10"];
+  const all = rows.flatMap(r => r.obs), done = all.filter(o => o.st === "filed" || o.st === "paid").length;
+  const nexts = all.filter(o => o.st !== "filed" && o.st !== "paid").map(o => o.due.d).sort((a, b) => a - b);
+  const days = nexts.length ? Math.round((nexts[0] - TODAY) / 864e5) : null;
+  const dueOf = f => { const r = rows.flatMap(x => x.obs).find(o => o.form === f); return r ? r.due : null; };
+  return `<div class="kpis">
+    <div class="kpi"><small>ลูกค้าที่ดูแล</small><b>${cs.length}</b><small>เดือนภาษี ต.ค. 2569</small></div>
+    <div class="kpi"><small>แบบที่ต้องยื่นรอบนี้</small><b>${all.length}</b><small>ยื่นแล้ว ${done}</small></div>
+    <div class="kpi"><small>พร้อมยื่น</small><b class="g">${all.filter(o => o.st === "ready").length}</b><small>กำลังตรวจ ${all.filter(o => o.st === "review").length} · รอเอกสาร ${all.filter(o => o.st === "waiting").length}</small></div>
+    <div class="kpi"><small>กำหนดยื่นถัดไป</small><b class="${days !== null && days <= 3 ? "r" : "a"}">${days === null ? "—" : days + " วัน"}</b><small>${nexts.length ? thDate(nexts[0].toISOString().slice(0, 10)) : "ยื่นครบแล้ว"}</small></div>
+  </div>
+  <div class="card" style="margin-top:16px"><div class="card-h"><h2>กระดานกำหนดยื่น · เดือนภาษี ต.ค. 2569</h2>
+    <div class="chips"><button type="button" data-act="channel" data-ch="e" aria-pressed="${S.channel === "e"}">ยื่นออนไลน์</button><button type="button" data-act="channel" data-ch="p" aria-pressed="${S.channel === "p"}">ยื่นกระดาษ</button></div></div>
+    <div class="scroll-x"><table class="t board"><thead><tr><th>ลูกค้า</th>${FORMS.map(f => { const d = dueOf(f); return `<th>${f}${d ? `<small>${d.d.getDate()} พ.ย.${d.moved ? " · เลื่อนจาก" + d.moved : ""}</small>` : ""}</th>`; }).join("")}<th>ขอเอกสาร</th></tr></thead><tbody>
+    ${rows.map(r => `<tr><td><button class="linkish" type="button" data-act="openClient" data-c="${r.c.id}"><b>${esc(r.c.name)}</b></button><small class="muted" style="display:block">${r.c.sw} · ${r.c.closed ? "ปิดงวดแล้ว" : `เอกสาร ${r.c.docs.length}`}</small></td>${FORMS.map(f => { const o = r.obs.find(x => x.form === f); return `<td>${o ? `<button class="obbtn" type="button" data-act="openClient" data-c="${r.c.id}" data-tab="${o.tab}">${pillS(o.st)}</button>` : `<span class="muted">—</span>`}</td>`; }).join("")}<td>${r.req ? `<button class="obbtn" type="button" data-act="openClient" data-c="${r.c.id}" data-tab="req"><span class="ob a">${r.req} รายการ</span></button>` : `<span class="muted">—</span>`}</td></tr>`).join("")}
+    </tbody></table></div>
+    <div class="card-b"><small class="muted">วันครบกำหนดคำนวณจากช่องทางยื่นและวันหยุด ถ้าตรงวันเสาร์หรืออาทิตย์จะเลื่อนเป็นวันทำการถัดไป สถานะคำนวณจากเอกสารจริงของแต่ละลูกค้า คลิกสถานะเพื่อไปทำงานต่อ</small></div></div>`;
+}
+
+/* ---------- Client overview + close ---------- */
+function closeItems(c) {
+  const k = counts(), bm = Object.values(bankMatch(c)), obs = obligations(c);
+  const certsMissing = c.docs.filter(d => d.status === "confirmed" && d.wht > 0 && !AN[d.id].dupOf && !c.certs[d.id]).length;
+  return [
+    ["เอกสารประมวลผลครบ", k.new === 0, k.new ? `ยังไม่ประมวลผล ${k.new} ใบ` : "ครบ", "review"],
+    ["ยืนยันหรือขอเอกสารใหม่ครบทุกใบ", k.new === 0 && c.docs.every(d => d.status === "confirmed" || d.status === "requested" || AN[d.id].dupOf), `${c.docs.filter(d => d.status === "ready" && !AN[d.id].dupOf).length} ใบรอยืนยันหรือขอเอกสาร`, "review"],
+    ["กระทบยอดธนาคารครบ", !bm.some(m => m.st === "none" || m.st === "suggest"), `${bm.filter(m => m.st === "none" || m.st === "suggest").length} รายการค้าง`, "bank"],
+    ["ออก 50 ทวิ ครบ", certsMissing === 0, `ขาด ${certsMissing} ฉบับ`, "wht"],
+    ["ยื่นแบบภาษีครบ", obs.every(o => o.st === "filed" || o.st === "paid"), `ยื่นแล้ว ${obs.filter(o => o.st === "filed" || o.st === "paid").length}/${obs.length}`, "vat"],
+    ["ส่งออกเข้าโปรแกรมบัญชีครบ", k.toExport === 0 && k.confirmed > 0, k.confirmed ? `รอส่งออก ${k.toExport}` : "ยังไม่มีรายการ", "export"],
+  ];
+}
 function vDash() {
   const c = C(), k = counts(), docs = c.docs.filter(d => d.status !== "new");
-  let claim = 0, vatx = 0, pp36 = 0, exp = 0; const wht = { "ภ.ง.ด.3": 0, "ภ.ง.ด.53": 0, "ภ.ง.ด.54": 0 };
-  const byCode = {};
+  let claim = 0, vatx = 0, pp36 = 0, exp = 0; const wht = { "ภ.ง.ด.3": 0, "ภ.ง.ด.53": 0, "ภ.ง.ด.54": 0 }, byCode = {};
   for (const d of docs) { const a = AN[d.id]; if (a.dupOf) continue; if (a.claimVat) claim += d.vat; else if (a.vatx && d.vat) vatx += d.vat; pp36 += a.pp36; if (a.whtForm) wht[a.whtForm] += d.wht; exp += a.expense; byCode[a.code] = (byCode[a.code] || 0) + a.expense; }
-  const top = Object.entries(byCode).sort((a, b) => b[1] - a[1]).slice(0, 6), max = top[0] ? top[0][1] : 1;
-  const confs = docs.filter(d => !AN[d.id].dupOf).map(d => AN[d.id].conf), hi = confs.filter(x => x >= 90).length, mid = confs.filter(x => x >= 85 && x < 90).length, lo = confs.filter(x => x < 85).length;
+  const top = Object.entries(byCode).sort((a, b) => b[1] - a[1]).slice(0, 7), max = top[0] ? top[0][1] : 1;
+  const items = closeItems(c), okN = items.filter(i => i[1]).length;
   return `<div class="kpis">
     <div class="kpi"><small>เอกสารเดือนนี้</small><b>${c.docs.length}</b><small>ซ้ำ ${k.dup} · ยังไม่ประมวลผล ${k.new}</small></div>
     <div class="kpi"><small>ภาษีซื้อที่ใช้ได้</small><b class="g">${fmt(claim)}</b><small>ภาษีซื้อต้องห้าม ${fmt(vatx)}</small></div>
-    <div class="kpi"><small>ติดปัญหา และให้คนตรวจ</small><b class="${k.block ? "r" : "a"}">${k.block} · ${k.review}</b><small>เปิดหน้าตรวจเพื่อจัดการ</small></div>
-    <div class="kpi"><small>ยืนยันแล้ว · รอส่งออก</small><b>${k.confirmed} · ${k.toExport}</b><small>ไปยัง ${c.sw}</small></div>
+    <div class="kpi"><small>ติดปัญหา · ให้คนตรวจ</small><b class="${k.block ? "r" : "a"}">${k.block} · ${k.review}</b><small>ขอเอกสาร ${requestsOf(c).length} รายการ</small></div>
+    <div class="kpi"><small>ปิดงวด</small><b class="${okN === items.length ? "g" : ""}">${okN}/${items.length}</b><small>${c.closed ? "ปิดงวดแล้ว" : "ขั้นตอนที่เสร็จ"}</small></div>
   </div>
-  <div class="card" style="margin-top:16px"><div class="card-h"><h2>${esc(c.full)}</h2><span class="muted">${esc(c.biz)} · ${c.sw} · เลขผู้เสียภาษี ${maskTin(c.tin)}</span></div>
-  <div class="card-b"><div class="pipe"><div>ยังไม่ประมวลผล<b>${k.new}</b></div><div>ติดปัญหา<b>${k.block}</b></div><div>ให้คนตรวจ<b>${k.review}</b></div><div>รอยืนยัน<b>${k.ready}</b></div><div>ยืนยันแล้ว<b>${k.confirmed}</b></div></div>
-  ${k.new ? `<div style="margin-top:12px"><button class="btn pri" type="button" data-act="run">ตรวจและจัดประเภท ${k.new} เอกสาร</button></div>` : ""}</div></div>
   <div class="grid2">
-    <div class="card"><div class="card-h"><h2>ค่าใช้จ่ายตามรหัสบัญชี</h2></div><div class="card-b">${top.length ? top.map(([code, v]) => `<div class="bar"><span>${code} ${esc(coaName(c, code))}</span><div class="tr"><i style="width:${v / max * 100}%"></i></div><span class="num" style="font-size:.7rem">${Math.round(v).toLocaleString("en-US")}</span></div>`).join("") : `<div class="empty">ยังไม่มีข้อมูล กดตรวจและจัดประเภทก่อน</div>`}</div></div>
-    <div class="card"><div class="card-h"><h2>ภาษีที่เกี่ยวข้อง</h2></div><div class="card-b">
-      <dl class="kv"><dt>ภ.ง.ด.3</dt><dd class="num">${fmt(wht["ภ.ง.ด.3"])}</dd><dt>ภ.ง.ด.53</dt><dd class="num">${fmt(wht["ภ.ง.ด.53"])}</dd><dt>ภ.ง.ด.54</dt><dd class="num">${fmt(wht["ภ.ง.ด.54"])}</dd><dt>ภ.พ.36</dt><dd class="num">${fmt(pp36)}</dd><dt>ค่าใช้จ่ายรวม</dt><dd class="num">${fmt(exp)}</dd></dl>
-      <div class="sec"><h3>ความมั่นใจของรหัสที่เสนอ</h3><div class="chips"><span class="pill g">90% ขึ้นไป ${hi}</span><span class="pill">85–89% ${mid}</span><span class="pill a">ต่ำกว่า 85% ${lo}</span></div></div>
+    <div class="card"><div class="card-h"><h2>เช็กลิสต์ปิดงวด ต.ค. 2569</h2>${c.closed ? `<span class="pill r">ปิดงวดแล้ว</span>` : ""}</div><div class="card-b">
+      <ul class="clist">${items.map(i => `<li class="${i[1] ? "done" : ""}"><span class="bx">${i[1] ? "✓" : ""}</span><span>${i[0]}<small>${i[1] ? "เรียบร้อย" : i[2]}</small></span>${i[1] ? "" : `<button class="btn sm" type="button" data-act="tab" data-tab="${i[3]}">ไปทำ</button>`}</li>`).join("")}</ul>
+      <div style="margin-top:12px">${c.closed ? `<button class="btn" type="button" data-act="reopen">เปิดงวดอีกครั้ง</button>` : `<button class="btn pri" type="button" data-act="closePeriod" ${okN === items.length ? "" : "disabled"}>ปิดงวดและล็อกข้อมูล</button>`} ${k.new ? `<button class="btn" type="button" data-act="run">ตรวจและจัดประเภท ${k.new} เอกสาร</button>` : ""}</div>
+    </div></div>
+    <div class="card"><div class="card-h"><h2>ค่าใช้จ่ายตามรหัสบัญชี</h2><span class="muted num">${fmt(exp)}</span></div><div class="card-b">${top.length ? top.map(([code, v]) => `<div class="bar"><span>${code} ${esc(coaName(c, code))}</span><div class="tr"><i style="width:${v / max * 100}%"></i></div><span class="num" style="font-size:.7rem">${Math.round(v).toLocaleString("en-US")}</span></div>`).join("") : `<div class="empty">ยังไม่มีข้อมูล กดตรวจและจัดประเภทก่อน</div>`}
+      <div class="sec"><h3>ภาษีที่เกี่ยวข้อง</h3><dl class="kv"><dt>ภ.ง.ด.3</dt><dd class="num">${fmt(wht["ภ.ง.ด.3"])}</dd><dt>ภ.ง.ด.53</dt><dd class="num">${fmt(wht["ภ.ง.ด.53"])}</dd><dt>ภ.ง.ด.54</dt><dd class="num">${fmt(wht["ภ.ง.ด.54"])}</dd><dt>ภ.พ.36</dt><dd class="num">${fmt(pp36)}</dd></dl></div>
     </div></div>
   </div>`;
 }
 
-/* Review */
+/* ---------- Review ---------- */
 const FILTERS = [["all", "ทั้งหมด"], ["attention", "ต้องดู"], ["ready", "รอยืนยัน"], ["confirmed", "ยืนยันแล้ว"], ["dup", "ซ้ำ"]];
+function stateOf(d, a) {
+  if (d.status === "new") return ["ยังไม่ประมวลผล", ""];
+  if (d.status === "confirmed") return [d.exported ? "ส่งออกแล้ว" : "ยืนยันแล้ว", d.exported ? "b" : "g"];
+  if (d.status === "requested") return ["ขอเอกสารใหม่แล้ว", "a"];
+  if (a.dupOf) return ["ซ้ำ · ข้าม", ""]; if (a.blocks) return ["ติดปัญหา", "r"]; if (a.review) return ["ให้คนตรวจ", "a"]; return ["รอยืนยัน", ""];
+}
 function visibleDocs() {
   const c = C();
   return c.docs.filter(d => { const a = AN[d.id];
-    if (S.filter === "all") return true;
     if (S.filter === "attention") return d.status !== "new" && d.status !== "confirmed" && !a.dupOf && (a.blocks || a.review || d.status === "requested");
-    if (S.filter === "ready") return d.status === "ready" && !a.dupOf && !a.blocks && !a.review;
+    if (S.filter === "ready") return d.status === "ready" && !a.dupOf && !a.review;
     if (S.filter === "confirmed") return d.status === "confirmed";
     if (S.filter === "dup") return !!a.dupOf; return true; });
 }
@@ -409,62 +566,130 @@ function vReview() {
   const hiReady = c.docs.filter(d => d.status === "ready" && !AN[d.id].review && !AN[d.id].dupOf && AN[d.id].conf >= 90).length;
   return `<div class="layout"><div class="card">
     <div class="card-h"><h2>ตรวจและจัดประเภท · ${esc(c.name)}</h2>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">${k.new ? `<button class="btn pri" type="button" data-act="run">ตรวจและจัดประเภท ${k.new} เอกสาร</button>` : ""}<button class="btn" type="button" data-act="confirmHigh" ${hiReady ? "" : "disabled"}>ยืนยันทั้งหมดที่มั่นใจ 90% ขึ้นไป (${hiReady})</button></div></div>
-    <div class="card-b" style="padding-bottom:6px"><div class="chips">${FILTERS.map(([id, l]) => `<button type="button" data-act="filter" data-f="${id}" aria-pressed="${S.filter === id}">${l}${id === "attention" ? ` ${k.block + k.review}` : id === "ready" ? ` ${k.ready}` : id === "confirmed" ? ` ${k.confirmed}` : id === "dup" ? ` ${k.dup}` : ` ${k.all}`}</button>`).join("")}</div><div class="prog" id="runProg" hidden><i></i></div></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">${k.new ? `<button class="btn pri" type="button" data-act="run">ตรวจและจัดประเภท ${k.new} เอกสาร</button>` : ""}<button class="btn" type="button" data-act="confirmHigh" ${hiReady && !c.closed ? "" : "disabled"}>ยืนยันทั้งหมดที่ไม่มีคำเตือนและมั่นใจ 90% ขึ้นไป (${hiReady})</button></div></div>
+    <div class="card-b" style="padding-bottom:6px"><div class="chips">${FILTERS.map(([id, l]) => `<button type="button" data-act="filter" data-f="${id}" aria-pressed="${S.filter === id}">${l} ${{ all: k.all, attention: k.block + k.review, ready: k.ready, confirmed: k.confirmed, dup: k.dup }[id]}</button>`).join("")}</div><div class="prog" id="runProg" hidden><i></i></div></div>
     <div class="scroll-x"><table class="t" id="revT"><thead><tr><th>#</th><th>เอกสาร</th><th class="r">ยอดรวม</th><th>ผลตรวจ</th><th>รหัสบัญชีที่เสนอ · มั่นใจ</th><th>สถานะ</th></tr></thead><tbody>
     ${list.length ? list.map(d => rowHTML(c, d)).join("") : `<tr><td colspan="6"><div class="empty">ไม่มีเอกสารในมุมมองนี้</div></td></tr>`}</tbody></table></div>
   </div><aside class="drawer" id="drawer">${drawerHTML()}</aside></div>`;
 }
 function rowHTML(c, d) {
   const a = AN[d.id], [st, cls] = stateOf(d, a), n = d.id.split("-")[1];
-  if (d.status === "new") return `<tr class="row ${S.sel === d.id ? "sel" : ""}" data-act="sel" data-id="${d.id}"><td class="num">${n}</td><td class="vend"><b>${esc(d.vendor)}</b><small>${esc(d.desc)} · ${esc(d.no)}<span class="src">${esc(d.src)}</span></small></td><td class="r num">${fmt(d.base + d.vat)}</td><td colspan="2"><span class="muted">รอประมวลผล</span></td><td><span class="pill">${st}</span></td></tr>`;
-  const fs = a.F.filter(f => f.sev !== "ok"), lo = a.conf < 85 && !d.code;
-  return `<tr class="row ${S.sel === d.id ? "sel" : ""} ${a.dupOf ? "dup" : ""}" data-act="sel" data-id="${d.id}"><td class="num">${n}</td>
-    <td class="vend"><b>${esc(d.vendor)}</b><small>${esc(d.desc)} · ${esc(d.no)} · ${thDate(d.date)}<span class="src">${esc(d.src)}</span></small></td>
+  const vend = `<td class="vend"><b>${esc(d.vendor)}</b><small>${esc(d.desc)} · ${esc(d.no)} · ${thDate(d.date)}<span class="src">${esc(d.src)}</span></small></td>`;
+  if (d.status === "new") return `<tr class="row ${S.sel === d.id ? "sel" : ""}" data-act="sel" data-id="${d.id}" data-id2="${d.id}"><td class="num">${n}</td>${vend}<td class="r num">${fmt(d.base + d.vat)}</td><td colspan="2"><span class="muted">รอประมวลผล</span></td><td><span class="pill">${st}</span></td></tr>`;
+  const fs = a.F.filter(f => f.sev !== "ok"), lo = a.conf < 85 && !d.code, lock = c.closed || (d.status === "confirmed" && d.exported);
+  return `<tr class="row ${S.sel === d.id ? "sel" : ""} ${a.dupOf ? "dup" : ""}" data-act="sel" data-id="${d.id}"><td class="num">${n}</td>${vend}
     <td class="r num">${fmt(d.base + d.vat)}</td>
-    <td><div class="find">${fs.length ? fs.slice(0, 3).map(f => `<span class="pill ${f.sev === "block" ? "r" : f.sev === "warn" ? "a" : "b"}" title="${esc(f.text)}">${f.sev === "block" ? "ติด" : f.sev === "warn" ? "เตือน" : "ข้อมูล"}: ${esc(f.text.slice(0, 26))}${f.text.length > 26 ? "…" : ""}</span>`).join("") : `<span class="pill g">ผ่านทุกข้อ</span>`}</div></td>
-    <td class="codecell">${a.dupOf ? `<span class="muted">—</span>` : `<select data-act="code" data-id="${d.id}" aria-label="รหัสบัญชี ${esc(d.vendor)}" ${d.status === "confirmed" && d.exported ? "disabled" : ""}>${c.coa.map(x => `<option value="${x[0]}" ${x[0] === a.code ? "selected" : ""}>${x[0]} ${esc(x[1])}</option>`).join("")}</select><div class="cf">${d.code ? `<span class="pill b">แก้โดยผู้ทำบัญชี</span>` : `<span class="conf ${lo ? "lo" : ""}"><i style="width:${a.conf}%"></i></span><span class="num">${a.conf}%</span>`}</div><small>${d.code ? "จำไว้สำหรับผู้ขายรายนี้" : esc(a.sugg[0] ? a.sugg[0].why : "")}</small>`}</td>
+    <td><div class="find">${fs.length ? fs.slice(0, 3).map(f => `<span class="pill ${f.sev === "block" ? "r" : f.sev === "warn" ? "a" : "b"}" title="${esc(f.text)}">${f.sev === "block" ? "ติด" : f.sev === "warn" ? "เตือน" : "ข้อมูล"}: ${esc(f.text.slice(0, 24))}${f.text.length > 24 ? "…" : ""}</span>`).join("") : `<span class="pill g">ผ่านทุกข้อ</span>`}</div></td>
+    <td class="codecell">${a.dupOf ? `<span class="muted">—</span>` : `<select data-act="code" data-id="${d.id}" aria-label="รหัสบัญชี ${esc(d.vendor)}" ${lock ? "disabled" : ""}>${c.coa.map(x => `<option value="${x[0]}" ${x[0] === a.code ? "selected" : ""}>${x[0]} ${esc(x[1])}</option>`).join("")}</select><div class="cf">${d.code ? `<span class="pill b">แก้โดยผู้ทำบัญชี</span>` : `<span class="conf ${lo ? "lo" : ""}"><i style="width:${a.conf}%"></i></span><span class="num">${a.conf}%</span>`}</div><small>${d.code ? "จำไว้สำหรับผู้ขายรายนี้" : esc(a.sugg[0] ? a.sugg[0].why : "")}</small>`}</td>
     <td><span class="pill ${cls}">${st}</span></td></tr>`;
 }
 function drawerHTML() {
   const c = C(), d = c.docs.find(x => x.id === S.sel);
   if (!d) return `<div class="card"><div class="empty">เลือกเอกสารเพื่อดูรายละเอียด</div></div>`;
-  const a = AN[d.id];
-  const acts = d.status === "new" ? `<button class="btn pri" type="button" data-act="run">ประมวลผลเอกสาร</button>`
+  const a = AN[d.id], lock = c.closed;
+  const acts = lock ? `<span class="muted">งวดนี้ปิดแล้ว</span>` : d.status === "new" ? `<button class="btn pri" type="button" data-act="run">ประมวลผลเอกสาร</button>`
     : a.dupOf ? `<span class="muted">เอกสารซ้ำ จะไม่ถูกส่งออก</span> <button class="btn sm" type="button" data-act="notdup" data-id="${d.id}">ไม่ใช่เอกสารซ้ำ</button>`
     : d.status === "confirmed" ? `<button class="btn" type="button" data-act="unconfirm" data-id="${d.id}" ${d.exported ? "disabled" : ""}>ยกเลิกการยืนยัน</button>`
     : a.blocks ? `<button class="btn" type="button" data-act="request" data-id="${d.id}">ขอเอกสารใหม่ทาง LINE</button><button class="btn" type="button" data-act="confirm" data-id="${d.id}">ยืนยันเป็นค่าใช้จ่าย ไม่หักภาษีซื้อ</button>`
     : `<button class="btn pri" type="button" data-act="confirm" data-id="${d.id}">ยืนยัน <span class="kbd" style="background:transparent;border-color:currentColor">Enter</span></button>`;
+  const bm = bankMatch(c), bl = c.bank.find(b => bm[b.id] && bm[b.id].doc === d.id);
   return `<div class="card"><div class="card-h"><h2 style="font-size:1rem">${esc(d.vendor)}</h2><span class="pill">${{ full: "ใบกำกับเต็มรูป", etax: "e-Tax Invoice", abb: "ใบกำกับอย่างย่อ", cash: "บิล / ใบเสร็จ", foreign: "ต่างประเทศ" }[d.type]}</span></div>
   <div class="card-b">
-    <dl class="kv"><dt>เลขที่</dt><dd>${esc(d.no)}</dd><dt>วันที่</dt><dd>${thDate(d.date)}</dd><dt>เลขผู้เสียภาษี</dt><dd class="num">${d.tin ? maskTin(d.tin) : "—"}</dd><dt>รายการ</dt><dd>${esc(d.desc)}</dd><dt>มูลค่า</dt><dd class="num">${fmt(d.base)}</dd><dt>VAT</dt><dd class="num">${fmt(d.vat)}</dd>${d.wht ? `<dt>หัก ณ ที่จ่าย</dt><dd class="num">${fmt(d.wht)} · ${a.whtForm}</dd>` : ""}<dt>ที่มา</dt><dd>${esc(d.src)}</dd></dl>
+    <dl class="kv"><dt>เลขที่</dt><dd>${esc(d.no)}</dd><dt>วันที่</dt><dd>${thDate(d.date)}</dd><dt>เลขผู้เสียภาษี</dt><dd class="num">${d.tin ? maskTin(d.tin) : "—"}</dd><dt>รายการ</dt><dd>${esc(d.desc)}</dd><dt>มูลค่า · VAT</dt><dd class="num">${fmt(d.base)} · ${fmt(d.vat)}</dd>${d.wht ? `<dt>หัก ณ ที่จ่าย</dt><dd class="num">${fmt(d.wht)} · ${a.whtForm || ""}</dd>` : ""}<dt>ยอดจ่าย</dt><dd class="num">${fmt(payable(d))}</dd><dt>ที่มา</dt><dd>${esc(d.src)}</dd><dt>ธนาคาร</dt><dd>${bl ? `<span class="pill g">จับคู่แล้ว ${thDate(bl.date)}</span>` : `<span class="muted">ยังไม่พบรายการจ่าย</span>`}</dd></dl>
     ${d.status === "new" ? "" : `<div class="sec"><h3>ผลตรวจ</h3><div class="fl">${a.F.map(f => `<div><span class="sev ${f.sev}">${{ ok: "ผ่าน", warn: "เตือน", block: "ติด", info: "ข้อมูล" }[f.sev]}</span><span>${esc(f.text)}</span></div>`).join("")}</div></div>
     ${a.dupOf ? "" : `<div class="sec"><h3>รหัสบัญชีที่เสนอ · ผลต่อการบันทึก</h3>
-      <div class="alts">${a.sugg.slice(0, 3).map(s => `<button type="button" data-act="pick" data-id="${d.id}" data-code="${s.code}" ${s.code === a.code ? 'style="border-color:var(--ledger)"' : ""}><span><b>${s.code}</b> ${esc(coaName(c, s.code))}</span><span class="num">${s.score}%</span><small>${esc(s.why)}</small></button>`).join("")}</div>
-      <dl class="kv" style="margin-top:10px"><dt>เดบิต ${esc(a.code)}</dt><dd class="num">${fmt(a.expense)}</dd>${a.claimVat ? `<dt>เดบิต ${c.ctrl.vat} ภาษีซื้อ</dt><dd class="num">${fmt(d.vat)}</dd>` : ""}${d.wht ? `<dt>เครดิต ${c.ctrl.wht} WHT</dt><dd class="num">${fmt(d.wht)}</dd>` : ""}<dt>เครดิต ${c.ctrl.ap} เจ้าหนี้</dt><dd class="num">${fmt(a.expense + (a.claimVat ? d.vat : 0) - d.wht)}</dd></dl>
-      ${sampleFn ? `<button class="btn" type="button" data-act="ai" data-id="${d.id}" style="margin-top:10px">ถาม AI ให้เสนอรหัส</button><div class="ai-out" id="aiOut"></div>` : `<p class="muted" style="font-size:.74rem;margin:10px 0 0">ปุ่ม "ถาม AI" ใช้ได้เมื่อเปิดต้นแบบนี้ใน Claude ส่วนรหัสที่เสนอด้านบนมาจากกฎของระบบ</p>`}
+      <div class="alts">${a.sugg.slice(0, 3).map(s => `<button type="button" data-act="pick" data-id="${d.id}" data-code="${s.code}" ${s.code === a.code ? 'style="border-color:var(--ledger)"' : ""} ${lock ? "disabled" : ""}><span><b>${s.code}</b> ${esc(coaName(c, s.code))}</span><span class="num">${s.score}%</span><small>${esc(s.why)}</small></button>`).join("")}</div>
+      <dl class="kv" style="margin-top:10px"><dt>Dr ${esc(a.code)}</dt><dd class="num">${fmt(a.expense)}</dd>${a.claimVat ? `<dt>Dr ${c.ctrl.vat} ภาษีซื้อ</dt><dd class="num">${fmt(d.vat)}</dd>` : ""}${d.wht ? `<dt>Cr ${c.ctrl.wht} WHT</dt><dd class="num">${fmt(d.wht)}</dd>` : ""}<dt>Cr ${c.ctrl.ap} เจ้าหนี้</dt><dd class="num">${fmt(a.expense + (a.claimVat ? d.vat : 0) - d.wht)}</dd></dl>
+      ${sampleFn ? `<button class="btn" type="button" data-act="ai" data-id="${d.id}" style="margin-top:10px" ${lock ? "disabled" : ""}>ถาม AI ให้เสนอรหัส</button><div class="ai-out" id="aiOut"></div>` : `<p class="muted" style="font-size:.74rem;margin:10px 0 0">ปุ่ม "ถาม AI" ใช้ได้เมื่อเปิดต้นแบบนี้ใน Claude รหัสด้านบนมาจากกฎของระบบ</p>`}
     </div>`}`}
     <div class="sec" style="display:flex;gap:8px;flex-wrap:wrap">${acts}</div>
   </div></div>`;
 }
 
-/* Import */
-function vImport() {
-  const c = C();
-  return `<div class="card"><div class="card-h"><h2>นำเข้าข้อมูล · ${esc(c.name)}</h2><span class="muted">วางจาก Excel หรือ Google Sheets ได้เลย หรือเลือกไฟล์ CSV</span></div>
-  <div class="card-b form">
-    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><input type="file" id="csvFile" accept=".csv,.tsv,.txt"><button class="btn sm" type="button" data-act="sampleCsv">ใส่ข้อมูลตัวอย่าง</button></div>
-    <textarea id="csvText" placeholder="วางตารางที่นี่ บรรทัดแรกเป็นหัวตาราง เช่น วันที่, เลขที่, ผู้ขาย, เลขผู้เสียภาษี, รายการ, มูลค่า, VAT, หัก ณ ที่จ่าย"></textarea>
-    <div><button class="btn" type="button" data-act="parse">ตรวจหัวตาราง</button></div>
-    <div id="mapOut"></div>
-    <p class="muted" style="font-size:.76rem;margin:0">ระบบจับคู่หัวตารางภาษาไทยหรืออังกฤษให้อัตโนมัติ วันที่รับได้ทั้ง พ.ศ. และ ค.ศ. รายการที่นำเข้าจะเข้าคิวตรวจด้วยกฎชุดเดียวกับเอกสารจาก LINE</p>
+/* ---------- Bank reconciliation ---------- */
+function vBank() {
+  const c = C(), bm = bankMatch(c), docs = c.docs.filter(d => d.status !== "new" && !AN[d.id].dupOf);
+  const n = st => Object.values(bm).filter(m => m.st === st).length;
+  const usedDocs = new Set(Object.values(bm).map(m => m.doc).filter(Boolean));
+  const unpaid = docs.filter(d => !usedDocs.has(d.id));
+  const lbl = { auto: ["จับคู่อัตโนมัติ", "g"], manual: ["จับคู่โดยคุณ", "g"], suggest: ["เสนอให้ยืนยัน", "a"], none: ["ไม่มีเอกสาร", "r"], requested: ["ขอเอกสารแล้ว", "a"], in: ["รายรับ", "b"], rule: ["ตามกฎ", "b"] };
+  return `<div class="kpis"><div class="kpi"><small>รายการในบัญชี</small><b>${c.bank.length}</b><small>KBank · กระแสรายวัน · ต.ค. 2569</small></div><div class="kpi"><small>จับคู่แล้ว</small><b class="g">${n("auto") + n("manual") + n("in") + n("rule")}</b><small>อัตโนมัติ ${n("auto")} · โดยคุณ ${n("manual")}</small></div><div class="kpi"><small>รอยืนยัน</small><b class="a">${n("suggest")}</b><small>ยอดตรงแต่ชื่อไม่ตรง</small></div><div class="kpi"><small>ไม่มีเอกสาร</small><b class="r">${n("none") + n("requested")}</b><small>ขอแล้ว ${n("requested")}</small></div></div>
+  <div class="card" style="margin-top:16px"><div class="card-h"><h2>กระทบยอดธนาคาร · ${esc(c.name)}</h2><span class="muted">จับคู่จากยอดจ่ายสุทธิ (รวม VAT หัก ณ ที่จ่าย) วันที่ และชื่อผู้รับ</span></div>
+  <div class="scroll-x"><table class="t"><thead><tr><th>วันที่</th><th>รายการในบัญชี</th><th class="r">จำนวนเงิน</th><th>เอกสารที่จับคู่</th><th>ผล</th><th></th></tr></thead><tbody>
+  ${c.bank.map(b => { const m = bm[b.id], d = m.doc ? c.docs.find(x => x.id === m.doc) : null, [l, cl] = lbl[m.st];
+    const act = c.closed ? "" : m.st === "suggest" ? `<button class="btn sm pri" type="button" data-act="bankOk" data-b="${b.id}" data-d="${m.doc}">ยืนยัน</button> <button class="btn sm" type="button" data-act="bankNo" data-b="${b.id}">ไม่ใช่</button>`
+      : m.st === "none" ? `<select class="bsel" data-act="bankPick" data-b="${b.id}" aria-label="เลือกเอกสาร"><option value="">เลือกเอกสาร…</option>${unpaid.map(x => `<option value="${x.id}">${esc(x.vendor)} · ${fmt(payable(x))}</option>`).join("")}</select> <button class="btn sm" type="button" data-act="bankReq" data-b="${b.id}">ขอเอกสาร</button>`
+      : m.st === "manual" ? `<button class="btn sm" type="button" data-act="bankUndo" data-b="${b.id}">ยกเลิก</button>` : "";
+    return `<tr><td class="num">${thDate(b.date)}</td><td>${esc(b.desc)}</td><td class="r num" style="color:${b.amt > 0 ? "var(--ledger)" : "inherit"}">${b.amt > 0 ? "+" : ""}${fmt(b.amt)}</td><td>${d ? `<b>${esc(d.vendor)}</b><small class="muted" style="display:block">${esc(d.no)} · ยอดจ่าย ${fmt(payable(d))}</small>` : `<small class="muted">${esc(m.note)}</small>`}</td><td><span class="pill ${cl}">${l}</span>${m.score && m.st !== "manual" ? ` <small class="muted num">${m.score}%</small>` : ""}${m.doc ? `<small class="muted" style="display:block">${esc(m.note)}</small>` : ""}</td><td style="white-space:nowrap">${act}</td></tr>`; }).join("")}
+  </tbody></table></div>
+  ${unpaid.length ? `<div class="card-b"><div class="sec" style="border:0;margin:0;padding:0"><h3>เอกสารที่ยังไม่พบการจ่ายในบัญชีนี้ (${unpaid.length})</h3><div class="chips">${unpaid.map(d => `<span class="pill">${esc(d.vendor)} · ${fmt(payable(d))}</span>`).join("")}</div><small class="muted">อาจจ่ายด้วยเงินสด บัตรเครดิต หรือบัญชีอื่น หรือยังไม่ได้จ่าย</small></div></div>` : ""}</div>`;
+}
+
+/* ---------- VAT: purchase tax report + PP30 + PP36 ---------- */
+function vatCalc(c) {
+  const conf = c.docs.filter(d => d.status === "confirmed" && !AN[d.id].dupOf && AN[d.id].claimVat);
+  const pend = c.docs.filter(d => d.status === "ready" && !AN[d.id].dupOf && AN[d.id].claimVat);
+  const s = c.sales, taxable = s.total - s.zero - s.exempt, out = r2(taxable * 0.07), purch = r2(conf.reduce((a, d) => a + d.base, 0)), inp = r2(conf.reduce((a, d) => a + d.vat, 0));
+  const net = r2(out - inp - s.carry);
+  return { conf, pend, taxable, out, purch, inp, net };
+}
+function vVat() {
+  const c = C(), v = vatCalc(c), f = c.filed.pp30, fore = c.docs.filter(d => d.type === "foreign" && !AN[d.id].dupOf && d.status !== "new"), f36 = c.filed.pp36;
+  const rows = [["1", "ยอดขายในเดือนนี้", "sales_total", c.sales.total], ["2", "หัก ยอดขายที่เสียภาษีในอัตราร้อยละ 0", "sales_zero", c.sales.zero], ["3", "หัก ยอดขายที่ได้รับยกเว้น", "sales_exempt", c.sales.exempt], ["4", "ยอดขายที่ต้องเสียภาษี", null, v.taxable], ["5", "ภาษีขายเดือนนี้", null, v.out], ["6", "ยอดซื้อที่มีสิทธินำภาษีซื้อมาหัก", null, v.purch], ["7", "ภาษีซื้อเดือนนี้", null, v.inp], ["10", "หัก ภาษีที่ชำระเกินยกมา", "sales_carry", c.sales.carry]];
+  return `<div class="grid2" style="margin-top:0">
+  <div class="card"><div class="card-h"><h2>ภ.พ.30 · ต.ค. 2569</h2>${f ? pillS(f) : `<span class="pill">ร่าง</span>`}</div>
+    <table class="t pp">${rows.map(r => `<tr><td class="num muted">${r[0]}</td><td>${r[1]}</td><td class="r">${r[2] && !f && !c.closed ? `<input class="numin num" data-act="salesIn" data-k="${r[2].split("_")[1]}" value="${fmt(r[3])}" aria-label="${r[1]}">` : `<span class="num">${fmt(r[3])}</span>`}</td></tr>`).join("")}
+    <tr class="tot ${v.net < 0 ? "refund" : ""}"><td class="num">${v.net >= 0 ? "8" : "9"}</td><td><b>${v.net >= 0 ? "ภาษีที่ต้องชำระเดือนนี้" : "ภาษีที่ชำระเกินเดือนนี้"}</b></td><td class="r num"><b>${fmt(Math.abs(v.net))}</b></td></tr></table>
+    <div class="card-b">${v.pend.length ? `<p class="warnline">ยังมี ${v.pend.length} ใบรอยืนยัน ภาษีซื้อ ${fmt(v.pend.reduce((a, d) => a + d.vat, 0))} ยังไม่รวมในแบบ</p>` : ""}
+      <div style="display:flex;gap:8px;flex-wrap:wrap">${!f ? `<button class="btn pri" type="button" data-act="file" data-k="pp30" ${c.closed ? "disabled" : ""}>บันทึกว่ายื่นแล้ว</button>` : f === "filed" ? `<button class="btn pri" type="button" data-act="pay" data-k="pp30">บันทึกว่าชำระแล้ว</button><button class="btn" type="button" data-act="unfile" data-k="pp30">ยกเลิกการยื่น</button>` : `<button class="btn" type="button" data-act="unfile" data-k="pp30">ยกเลิกสถานะ</button>`}<button class="btn" type="button" data-act="dlPurch">ดาวน์โหลดรายงานภาษีซื้อ</button></div>
+      <small class="muted" style="display:block;margin-top:8px">ยอดขายเป็นข้อมูลตัวอย่าง แก้ไขได้ ภาษีขายคำนวณที่อัตรา 7% จากตารางกฎ ยื่นจริงทำผ่าน e-Filing ของกรมสรรพากรด้วยบัญชีของลูกค้า</small></div></div>
+  <div class="card"><div class="card-h"><h2>ภ.พ.36 · บริการจากต่างประเทศ</h2>${fore.length ? (f36 ? pillS(f36) : `<span class="pill">ร่าง</span>`) : ""}</div><div class="card-b">${fore.length ? `<dl class="kv">${fore.map(d => `<dt>${esc(d.vendor)}</dt><dd class="num">${fmt(d.base)} × 7% = ${fmt(vat7(d.base))}</dd>`).join("")}<dt><b>รวมนำส่ง</b></dt><dd class="num"><b>${fmt(fore.reduce((a, d) => a + vat7(d.base), 0))}</b></dd></dl><small class="muted">ชำระแล้วนำไปใช้เป็นภาษีซื้อในเดือนถัดไปได้</small><div style="margin-top:10px">${!f36 ? `<button class="btn" type="button" data-act="file" data-k="pp36" ${c.closed ? "disabled" : ""}>บันทึกว่ายื่นแล้ว</button>` : `<button class="btn" type="button" data-act="unfile" data-k="pp36">ยกเลิกสถานะ</button>`}</div>` : `<div class="empty">ไม่มีบริการจากต่างประเทศเดือนนี้</div>`}</div></div></div>
+  <div class="card" style="margin-top:16px"><div class="card-h"><h2>รายงานภาษีซื้อ · ต.ค. 2569</h2><span class="muted">${v.conf.length} ใบ · เฉพาะเอกสารที่ยืนยันแล้วและใช้ภาษีซื้อได้</span></div>
+  <div class="scroll-x"><table class="t"><thead><tr><th>ลำดับ</th><th>วันที่</th><th>เลขที่</th><th>ผู้ขาย</th><th>เลขผู้เสียภาษี</th><th>สาขา</th><th class="r">มูลค่า</th><th class="r">ภาษีซื้อ</th></tr></thead><tbody>
+  ${v.conf.length ? v.conf.map((d, i) => `<tr><td class="num">${i + 1}</td><td>${thDate(d.date)}</td><td>${esc(d.no)}</td><td>${esc(d.vendor)}</td><td class="num">${maskTin(d.tin)}</td><td>สำนักงานใหญ่</td><td class="r num">${fmt(d.base)}</td><td class="r num">${fmt(d.vat)}</td></tr>`).join("") + `<tr class="tot"><td colspan="6"><b>รวม</b></td><td class="r num"><b>${fmt(v.purch)}</b></td><td class="r num"><b>${fmt(v.inp)}</b></td></tr>` : `<tr><td colspan="8"><div class="empty">ยังไม่มีเอกสารที่ยืนยันแล้ว</div></td></tr>`}
+  </tbody></table></div></div>`;
+}
+
+/* ---------- WHT + 50 ทวิ + payroll ---------- */
+function vWht() {
+  const c = C(), docs = c.docs.filter(d => d.wht > 0 && d.status !== "new" && !AN[d.id].dupOf);
+  const forms = ["ภ.ง.ด.3", "ภ.ง.ด.53", "ภ.ง.ด.54"].map(f => ({ f, ds: docs.filter(d => AN[d.id].whtForm === f) })).filter(x => x.ds.length);
+  const pr = c.payroll;
+  return `${forms.length ? forms.map(({ f, ds }) => { const st = c.filed[f]; return `<div class="card" style="margin-bottom:16px"><div class="card-h"><h2>${f} · ต.ค. 2569</h2><div style="display:flex;gap:8px;align-items:center">${st ? pillS(st) : `<span class="pill">ร่าง</span>`}${!st ? `<button class="btn sm pri" type="button" data-act="file" data-k="${f}" ${c.closed ? "disabled" : ""}>บันทึกว่ายื่นแล้ว</button>` : `<button class="btn sm" type="button" data-act="unfile" data-k="${f}">ยกเลิกสถานะ</button>`}<button class="btn sm" type="button" data-act="dlWht" data-f="${f}">ไฟล์แนบ ${f}</button></div></div>
+    <div class="scroll-x"><table class="t"><thead><tr><th>ผู้รับเงิน</th><th>เลขผู้เสียภาษี</th><th>ประเภทเงินได้</th><th class="r">จ่าย</th><th class="r">อัตรา</th><th class="r">ภาษีที่หัก</th><th>50 ทวิ</th></tr></thead><tbody>
+    ${ds.map(d => `<tr><td>${esc(d.vendor)}${d.status !== "confirmed" ? ` <span class="pill a">ยังไม่ยืนยัน</span>` : ""}</td><td class="num">${d.tin ? maskTin(d.tin) : "ต่างประเทศ"}</td><td>${INCOME_TYPE(d)}</td><td class="r num">${fmt(d.base)}</td><td class="r num">${Math.round(d.wht / d.base * 100)}%</td><td class="r num">${fmt(d.wht)}</td><td>${c.certs[d.id] ? `<button class="btn sm" type="button" data-act="viewCert" data-id="${d.id}">เลขที่ ${c.certs[d.id]}</button>` : `<button class="btn sm pri" type="button" data-act="issueCert" data-id="${d.id}" ${d.status !== "confirmed" || c.closed ? "disabled" : ""}>ออก 50 ทวิ</button>`}</td></tr>`).join("")}
+    <tr class="tot"><td colspan="5"><b>รวม ${ds.length} ราย</b></td><td class="r num"><b>${fmt(ds.reduce((a, d) => a + d.wht, 0))}</b></td><td></td></tr></tbody></table></div></div>`; }).join("") : `<div class="card"><div class="empty">ยังไม่มีรายการหัก ณ ที่จ่ายที่ประมวลผลแล้ว</div></div>`}
+  <div class="card"><div class="card-h"><h2>ภ.ง.ด.1 และ สปส.1-10 · เงินเดือน ต.ค. 2569</h2>${pillS(c.filed.pnd1 || pr.status)}</div><div class="card-b">
+    ${pr.status === "waiting" ? `<p style="margin:0 0 10px">ยังไม่ได้รับสรุปเงินเดือนจากลูกค้า</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" type="button" data-act="tab" data-tab="req">ขอสรุปเงินเดือนทาง LINE</button><button class="btn pri" type="button" data-act="payrollIn">นำเข้าสรุปเงินเดือนตัวอย่าง</button></div>`
+      : `<dl class="kv"><dt>พนักงาน</dt><dd>${pr.emp} คน</dd><dt>ภ.ง.ด.1</dt><dd class="num">${fmt(pr.pnd1)}</dd><dt>สปส. นำส่งรวม</dt><dd class="num">${fmt(pr.sso)} (ลูกจ้างและนายจ้าง)</dd></dl><div style="display:flex;gap:8px;margin-top:10px">${!c.filed.pnd1 ? `<button class="btn" type="button" data-act="filePay" ${c.closed ? "disabled" : ""}>บันทึกว่ายื่น ภ.ง.ด.1 และ สปส. แล้ว</button>` : `<button class="btn" type="button" data-act="unfilePay">ยกเลิกสถานะ</button>`}</div>`}
   </div></div>`;
 }
+function certHTML(c, d) {
+  const a = AN[d.id], jur = d.tin && d.tin[0] === "0";
+  return `<div class="cert"><div class="no">เลขที่ ${c.certs[d.id]}</div><div class="ct">หนังสือรับรองการหักภาษี ณ ที่จ่าย<small>ตามมาตรา 50 ทวิ แห่งประมวลรัษฎากร</small></div>
+  <div class="box"><div class="lbl">ผู้มีหน้าที่หักภาษี ณ ที่จ่าย</div>${esc(c.full)} · เลขประจำตัวผู้เสียภาษี ${maskTin(c.tin)}</div>
+  <div class="box"><div class="lbl">ผู้ถูกหักภาษี ณ ที่จ่าย</div>${esc(d.vendor)} · ${d.tin ? "เลขประจำตัวผู้เสียภาษี " + maskTin(d.tin) : "ผู้รับเงินต่างประเทศ"}<div class="cb"><span class="${a.whtForm === "ภ.ง.ด.3" ? "on" : ""}">ภ.ง.ด.3</span><span class="${a.whtForm === "ภ.ง.ด.53" ? "on" : ""}">ภ.ง.ด.53</span><span class="${a.whtForm === "ภ.ง.ด.54" ? "on" : ""}">ภ.ง.ด.54</span></div></div>
+  <table><thead><tr><th>ประเภทเงินได้ที่จ่าย</th><th>วันที่จ่าย</th><th>จำนวนเงินที่จ่าย</th><th>ภาษีที่หักและนำส่งไว้</th></tr></thead><tbody><tr><td>${INCOME_TYPE(d)}</td><td>${thDate(d.date)}</td><td class="r">${fmt(d.base)}</td><td class="r">${fmt(d.wht)}</td></tr></tbody></table>
+  <div class="words">ภาษีที่หักและนำส่ง (ตัวอักษร): ${bahtText(d.wht)}</div><div class="foot">ผู้จ่ายเงิน ☑ หัก ณ ที่จ่าย · ออกโดยต้นแบบปิดงวด</div></div>`;
+}
+function modal(html) { $("#modal").innerHTML = `<div class="mbox" role="dialog" aria-modal="true">${html}<div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px"><button class="btn" type="button" data-act="closeModal">ปิด</button></div></div>`; $("#modal").hidden = false; }
+
+/* ---------- Client requests (LINE) ---------- */
+function vReq() {
+  const c = C(), R = requestsOf(c);
+  return `<div class="layout"><div class="card"><div class="card-h"><h2>ขอเอกสารลูกค้า · ${esc(c.name)}</h2><button class="btn pri" type="button" data-act="sendAll" ${R.filter(r => !c.requests[r.key]).length && !c.closed ? "" : "disabled"}>ส่งทาง LINE ทั้งหมด (${R.filter(r => !c.requests[r.key]).length})</button></div>
+    <div class="scroll-x"><table class="t"><thead><tr><th>ต้องการ</th><th>เหตุผล</th><th>สถานะ</th><th></th></tr></thead><tbody>
+    ${R.length ? R.map(r => `<tr><td><b>${esc(r.what)}</b></td><td><small>${esc(r.why)}</small></td><td>${c.requests[r.key] ? `<span class="pill a">ส่งแล้ว ${tstamp(c.requests[r.key])}</span>` : `<span class="pill">ยังไม่ส่ง</span>`}</td><td style="white-space:nowrap"><button class="btn sm" type="button" data-act="previewReq" data-k="${esc(r.key)}">ดูข้อความ</button> ${c.requests[r.key] ? "" : `<button class="btn sm pri" type="button" data-act="sendReq" data-k="${esc(r.key)}" ${c.closed ? "disabled" : ""}>ส่ง</button>`}</td></tr>`).join("") : `<tr><td colspan="4"><div class="empty">ไม่มีเอกสารที่ต้องขอเพิ่ม</div></td></tr>`}
+    </tbody></table></div></div>
+    <aside class="drawer"><div class="card"><div class="card-h"><h2 style="font-size:1rem">ตัวอย่างข้อความใน LINE</h2></div><div class="card-b"><div class="phone-mini" id="reqPrev">${R[0] ? lineMsg(c, R[0]) : `<div class="empty">ไม่มีข้อความ</div>`}</div><small class="muted">ส่งจาก LINE Official Account ของสำนักงาน ข้อความไม่มีเลขบัตรประชาชนหรือข้อมูลส่วนบุคคล (สาธิต ยังไม่ได้ส่งจริง)</small></div></div></aside></div>`;
+}
+const lineMsg = (c, r) => `<div class="bub">สวัสดีค่ะ คุณลูกค้า ${esc(c.name)} 🙏<br>${esc(r.ask)}<br><br>ส่งรูปหรือไฟล์ในแชตนี้ได้เลยค่ะ ระบบจะเข้าแฟ้ม ต.ค. 2569 ให้อัตโนมัติ</div><div class="qr"><span>ส่งเอกสาร</span><span>สอบถามสำนักงาน</span></div>`;
+
+/* ---------- Import ---------- */
 const HMAP = { date: ["วันที่", "date", "วันที่เอกสาร", "doc date"], no: ["เลขที่", "invoice no", "เลขที่เอกสาร", "no", "inv", "เลขที่ใบกำกับ"], vendor: ["ผู้ขาย", "vendor", "supplier", "ชื่อผู้ขาย", "คู่ค้า"], tin: ["เลขผู้เสียภาษี", "tax id", "tin", "เลขประจำตัวผู้เสียภาษี"], desc: ["รายการ", "รายละเอียด", "description", "detail"], base: ["มูลค่า", "amount", "ยอดก่อนภาษี", "มูลค่าก่อนภาษี", "ยอดเงิน"], vat: ["vat", "ภาษี", "ภาษีซื้อ", "ภาษีมูลค่าเพิ่ม"], wht: ["หัก ณ ที่จ่าย", "wht", "withholding", "ภาษีหัก ณ ที่จ่าย"] };
 const FLAB = { date: "วันที่", no: "เลขที่", vendor: "ผู้ขาย", tin: "เลขผู้เสียภาษี", desc: "รายการ", base: "มูลค่า", vat: "VAT", wht: "หัก ณ ที่จ่าย" };
 function parseTable(txt) {
-  const lines = txt.replace(/\r/g, "").split("\n").filter(l => l.trim());
-  if (!lines.length) return null;
+  const lines = txt.replace(/\r/g, "").split("\n").filter(l => l.trim()); if (!lines.length) return null;
   const sep = lines[0].includes("\t") ? "\t" : ",";
   const split = l => { if (sep === "\t") return l.split("\t"); const out = []; let cur = "", q = false; for (const ch of l) { if (ch === '"') q = !q; else if (ch === "," && !q) { out.push(cur); cur = ""; } else cur += ch; } out.push(cur); return out; };
   const head = split(lines[0]).map(h => h.trim().toLowerCase());
@@ -472,12 +697,7 @@ function parseTable(txt) {
   for (const pass of [0, 1]) for (const f of order) { if (f in map) continue; const i = head.findIndex((h, j) => !used.has(j) && HMAP[f].some(s => pass === 0 ? h === s.toLowerCase() : h.includes(s.toLowerCase()))); if (i >= 0) { map[f] = i; used.add(i); } }
   return { head, map, rows: lines.slice(1).map(split) };
 }
-function toIso(s) {
-  s = (s || "").trim(); let m;
-  if ((m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/))) { let y = +m[1]; if (y > 2400) y -= 543; return `${y}-${m[2].padStart(2, "0")}-${m[3].padStart(2, "0")}`; }
-  if ((m = s.match(/^(\d{1,2})[\/.](\d{1,2})[\/.](\d{2,4})/))) { let y = +m[3]; if (y < 100) y += 2500; if (y > 2400) y -= 543; return `${y}-${m[2].padStart(2, "0")}-${m[1].padStart(2, "0")}`; }
-  return "2026-10-31";
-}
+function toIso(s) { s = (s || "").trim(); let m; if ((m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/))) { let y = +m[1]; if (y > 2400) y -= 543; return `${y}-${m[2].padStart(2, "0")}-${m[3].padStart(2, "0")}`; } if ((m = s.match(/^(\d{1,2})[\/.](\d{1,2})[\/.](\d{2,4})/))) { let y = +m[3]; if (y < 100) y += 2500; if (y > 2400) y -= 543; return `${y}-${m[2].padStart(2, "0")}-${m[1].padStart(2, "0")}`; } return "2026-10-31"; }
 const numv = s => parseFloat(String(s || "0").replace(/[,฿\s]/g, "")) || 0;
 let parsed = null;
 const SAMPLE_CSV = `วันที่\tเลขที่\tผู้ขาย\tเลขผู้เสียภาษี\tรายการ\tมูลค่า\tVAT\tหัก ณ ที่จ่าย
@@ -485,164 +705,179 @@ const SAMPLE_CSV = `วันที่\tเลขที่\tผู้ขาย\t
 11/10/2569\tTX-7781\tบจ. ปั๊มน้ำมันไทยรุ่งเรือง\t${T("099999900019")}\tน้ำมันดีเซล รถกระบะ\t1200\t84\t0
 15/10/2569\tLW-2569-15\tบจ. สำนักงานกฎหมายนิติธรรม\t${T("099999900033")}\tค่าที่ปรึกษากฎหมาย ต.ค.\t20000\t1400\t600
 20/10/2569\tIV6910-0611\tบจ. ออฟฟิศเมท ซัพพลาย\t0999999000012\tปากกา แฟ้ม เครื่องเขียน\t860\t60.20\t0`;
-function mapHTML(p) {
-  const ok = Object.keys(FLAB).filter(f => f in p.map);
-  return `<div class="maprow">${Object.keys(FLAB).map(f => f in p.map ? `<span>${esc(p.head[p.map[f]])} → ${FLAB[f]}</span>` : `<span class="miss">${FLAB[f]}: ไม่พบ</span>`).join("")}</div>
-  <p style="margin:8px 0">${p.rows.length} แถว · จับคู่ได้ ${ok.length}/${Object.keys(FLAB).length} คอลัมน์</p>
-  <button class="btn pri" type="button" data-act="doImport" ${"vendor" in p.map && "base" in p.map ? "" : "disabled"}>นำเข้า ${p.rows.length} รายการเข้าคิวตรวจ</button>`;
+function mapHTML(p) { const ok = Object.keys(FLAB).filter(f => f in p.map); return `<div class="maprow">${Object.keys(FLAB).map(f => f in p.map ? `<span>${esc(p.head[p.map[f]])} → ${FLAB[f]}</span>` : `<span class="miss">${FLAB[f]}: ไม่พบ</span>`).join("")}</div><p style="margin:8px 0">${p.rows.length} แถว · จับคู่ได้ ${ok.length}/${Object.keys(FLAB).length} คอลัมน์</p><button class="btn pri" type="button" data-act="doImport" ${"vendor" in p.map && "base" in p.map ? "" : "disabled"}>นำเข้า ${p.rows.length} รายการเข้าคิวตรวจ</button>`; }
+function vImport() {
+  const c = C();
+  return `<div class="grid2" style="margin-top:0">
+  <div class="card"><div class="card-h"><h2>วางจาก Excel หรือ Google Sheets</h2></div><div class="card-b form">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><input type="file" id="csvFile" accept=".csv,.tsv,.txt" aria-label="เลือกไฟล์ CSV"><button class="btn sm" type="button" data-act="sampleCsv">ใส่ข้อมูลตัวอย่าง</button></div>
+    <textarea id="csvText" aria-label="ข้อมูลตาราง" placeholder="วางตารางที่นี่ บรรทัดแรกเป็นหัวตาราง"></textarea>
+    <div><button class="btn" type="button" data-act="parse">ตรวจหัวตาราง</button></div><div id="mapOut"></div>
+    <small class="muted">จับคู่หัวตารางไทยหรืออังกฤษอัตโนมัติ วันที่รับได้ทั้ง พ.ศ. และ ค.ศ.</small></div></div>
+  <div>
+  <div class="card"><div class="card-h"><h2>อ่านรูปใบเสร็จด้วย AI</h2></div><div class="card-b form">${sampleFn && imgOK ? `<input type="file" id="imgFile" accept="image/*" aria-label="รูปใบเสร็จ"><div id="imgOut" class="ai-out"></div><small class="muted">รูปถูกส่งให้ Claude อ่านด้วยบัญชีของผู้ชม ผลลัพธ์เข้าคิวตรวจด้วยกฎชุดเดียวกัน</small>` : `<p class="muted" style="margin:0">ใช้ได้เมื่อเปิดต้นแบบนี้ใน Claude ในระบบจริงรูปจาก LINE อีเมล และ Drive จะถูกอ่านอัตโนมัติ</p>`}</div></div>
+  <div class="card" style="margin-top:16px"><div class="card-h"><h2>เพิ่มเอกสารเอง</h2></div><div class="card-b">
+    <div class="mform">
+      <label>ประเภท<select id="mType"><option value="full">ใบกำกับเต็มรูป</option><option value="abb">ใบกำกับอย่างย่อ</option><option value="cash">บิล / ใบเสร็จ</option><option value="etax">e-Tax Invoice</option><option value="foreign">ต่างประเทศ</option></select></label>
+      <label>วันที่<input id="mDate" type="date" value="2026-10-31"></label>
+      <label class="w2">ผู้ขาย<input id="mVendor" type="text" placeholder="เช่น บจ. ตัวอย่าง"></label>
+      <label>เลขผู้เสียภาษี<input id="mTin" type="text" inputmode="numeric" maxlength="13"></label>
+      <label>เลขที่<input id="mNo" type="text"></label>
+      <label class="w2">รายการ<input id="mDesc" type="text" placeholder="เช่น ค่าขนส่งสินค้า"></label>
+      <label>มูลค่า<input id="mBase" type="text" inputmode="decimal"></label>
+      <label>VAT<input id="mVat" type="text" inputmode="decimal" placeholder="ว่าง = คำนวณ 7%"></label>
+      <label>หัก ณ ที่จ่าย<input id="mWht" type="text" inputmode="decimal" value="0"></label>
+    </div><button class="btn pri" type="button" data-act="addManual" style="margin-top:10px" ${c.closed ? "disabled" : ""}>เพิ่มเข้าคิวตรวจ</button></div></div>
+  </div></div>`;
 }
 
-/* COA */
+/* ---------- COA ---------- */
 function vCoa() {
   const c = C(), vr = Object.entries(c.vendorRules);
   return `<div class="grid2" style="margin-top:0">
   <div class="card"><div class="card-h"><h2>ผังบัญชีของลูกค้า</h2><span class="muted">${c.coa.length} รหัส · จาก ${c.sw}</span></div>
     <div class="scroll-x"><table class="t"><thead><tr><th>รหัส</th><th>ชื่อบัญชี</th><th>คำที่ใช้จับคู่</th></tr></thead><tbody>${c.coa.map(a => `<tr><td class="num">${a[0]}</td><td>${esc(a[1])}</td><td><small class="muted">${esc(a[2].split("|").filter(Boolean).join(", ")) || "—"}</small></td></tr>`).join("")}</tbody></table></div>
-    <div class="card-b form"><b style="font-size:.85rem">นำเข้าผังบัญชีที่ส่งออกจาก ${c.sw}</b><textarea id="coaText" style="min-height:90px" placeholder="รหัส,ชื่อบัญชี (บรรทัดละหนึ่งบัญชี)"></textarea><div><button class="btn" type="button" data-act="importCoa">แทนที่ผังบัญชี</button></div></div>
-  </div>
+    <div class="card-b form"><b style="font-size:.85rem">นำเข้าผังบัญชีที่ส่งออกจาก ${c.sw}</b><textarea id="coaText" style="min-height:90px" aria-label="ผังบัญชี" placeholder="รหัส,ชื่อบัญชี บรรทัดละหนึ่งบัญชี"></textarea><div><button class="btn" type="button" data-act="importCoa">แทนที่ผังบัญชี</button></div></div></div>
   <div><div class="card"><div class="card-h"><h2>กฎของลูกค้า</h2></div><div class="card-b form">
     <label>บันทึกเป็นสินทรัพย์เมื่อราคาตั้งแต่ (บาท) <input type="number" id="capIn" value="${c.capThreshold}" min="0" step="500" style="width:9em"></label>
     <label>รหัสบัญชีสินทรัพย์ <select id="assetIn">${c.coa.map(a => `<option value="${a[0]}" ${a[0] === c.assetCode ? "selected" : ""}>${a[0]} ${esc(a[1])}</option>`).join("")}</select></label>
-    <div><button class="btn" type="button" data-act="saveRules">บันทึกกฎ</button></div></div></div>
+    <div><button class="btn" type="button" data-act="saveRules">บันทึกกฎ</button></div>
+    <div class="sec"><h3>ตารางกฎภาษีที่ใช้ (มีผล ต.ค. 2569)</h3><dl class="kv"><dt>VAT</dt><dd>7% (ลดจาก 10% ตามพระราชกฤษฎีกา)</dd><dt>กำหนดภาษีซื้อ</dt><dd>6 เดือนนับจากเดือนที่ออกใบกำกับ</dd><dt>หัก ณ ที่จ่าย</dt><dd>ขนส่ง 1% · โฆษณา 2% · บริการ 3% · เช่า 5% · ต่างประเทศ 15%</dd><dt>กำหนดยื่น</dt><dd>ภ.ง.ด. 7 (ออนไลน์ 15) · ภ.พ.30 15 (ออนไลน์ 23)</dd></dl><small class="muted">ค่าในตารางกฎเป็นข้อมูลที่มีวันมีผลบังคับ ต้องยืนยันกับกรมสรรพากรก่อนใช้งานจริง</small></div></div></div>
   <div class="card" style="margin-top:16px"><div class="card-h"><h2>ผู้ขายที่ระบบจำไว้</h2><span class="muted">${vr.length} ราย</span></div>
-    <div class="scroll-x"><table class="t"><thead><tr><th>ผู้ขาย</th><th>รหัส</th><th>ที่มา</th><th></th></tr></thead><tbody>${vr.length ? vr.map(([v, r]) => `<tr><td>${esc(v)}</td><td class="num">${r.code} <small class="muted">${esc(coaName(c, r.code))}</small></td><td>${r.src === "edit" ? `<span class="pill b">ผู้ทำบัญชีกำหนด</span>` : `<span class="pill">ประวัติ ${r.n} ครั้ง</span>`}</td><td><button class="btn sm" type="button" data-act="forget" data-v="${esc(v)}">ลืม</button></td></tr>`).join("") : `<tr><td colspan="4"><div class="empty">ยังไม่มี</div></td></tr>`}</tbody></table></div></div></div>
-  </div>`;
+    <div class="scroll-x"><table class="t"><thead><tr><th>ผู้ขาย</th><th>รหัส</th><th>ที่มา</th><th></th></tr></thead><tbody>${vr.length ? vr.map(([v, r]) => `<tr><td>${esc(v)}</td><td class="num">${r.code} <small class="muted">${esc(coaName(c, r.code))}</small></td><td>${r.src === "edit" ? `<span class="pill b">ผู้ทำบัญชีกำหนด</span>` : `<span class="pill">ประวัติ ${r.n} ครั้ง</span>`}</td><td><button class="btn sm" type="button" data-act="forget" data-v="${esc(v)}">ลืม</button></td></tr>`).join("") : `<tr><td colspan="4"><div class="empty">ยังไม่มี</div></td></tr>`}</tbody></table></div></div></div></div>`;
 }
 
-/* Export */
+/* ---------- Export ---------- */
 let expFmt = "peak";
-function exportRows() { const c = C(); return c.docs.filter(d => d.status === "confirmed" && !d.exported && !AN[d.id].dupOf); }
-function buildCsv(fmtName) {
-  const c = C(), rows = exportRows();
-  const q = v => { const s = String(v); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
-  let out = [];
-  if (fmtName === "peak") {
-    out.push(["วันที่เอกสาร", "เลขที่เอกสาร", "ชื่อผู้ขาย", "เลขประจำตัวผู้เสียภาษี", "รหัสบัญชี", "ชื่อบัญชี", "รายละเอียด", "มูลค่า", "ภาษีซื้อ", "ภาษีหัก ณ ที่จ่าย", "ยอดชำระ"]);
-    for (const d of rows) { const a = AN[d.id]; const v = a.claimVat ? d.vat : 0; out.push([beSlash(d.date), d.no, d.vendor, d.tin, a.code, coaName(c, a.code), d.desc, a.expense.toFixed(2), v.toFixed(2), d.wht.toFixed(2), (a.expense + v - d.wht).toFixed(2)]); }
-  } else {
-    out.push(["วันที่", "เลขที่", "รหัสบัญชี", "ชื่อบัญชี", "เดบิต", "เครดิต", "คำอธิบาย"]);
-    for (const d of rows) { const a = AN[d.id], v = a.claimVat ? d.vat : 0, dt = beSlash(d.date);
-      out.push([dt, d.no, a.code, coaName(c, a.code), a.expense.toFixed(2), "", `${d.vendor} ${d.desc}`]);
-      if (v) out.push([dt, d.no, c.ctrl.vat, "ภาษีซื้อ", v.toFixed(2), "", ""]);
-      if (d.wht) out.push([dt, d.no, c.ctrl.wht, "ภาษีหัก ณ ที่จ่ายค้างจ่าย", "", d.wht.toFixed(2), a.whtForm]);
-      out.push([dt, d.no, c.ctrl.ap, "เจ้าหนี้", "", (a.expense + v - d.wht).toFixed(2), d.vendor]); }
-  }
-  return "﻿" + out.map(r => r.map(q).join(",")).join("\n");
+const exportRows = () => C().docs.filter(d => d.status === "confirmed" && !d.exported && !AN[d.id].dupOf);
+function buildRows(fmtName) {
+  const c = C(), rows = exportRows(), out = [];
+  if (fmtName === "peak") { out.push(["วันที่เอกสาร", "เลขที่เอกสาร", "ชื่อผู้ขาย", "เลขประจำตัวผู้เสียภาษี", "รหัสบัญชี", "ชื่อบัญชี", "รายละเอียด", "มูลค่า", "ภาษีซื้อ", "ภาษีหัก ณ ที่จ่าย", "ยอดชำระ"]); for (const d of rows) { const a = AN[d.id], v = a.claimVat ? d.vat : 0; out.push([beSlash(d.date), d.no, d.vendor, d.tin, a.code, coaName(c, a.code), d.desc, a.expense.toFixed(2), v.toFixed(2), d.wht.toFixed(2), (a.expense + v - d.wht).toFixed(2)]); } }
+  else { out.push(["วันที่", "เลขที่", "รหัสบัญชี", "ชื่อบัญชี", "เดบิต", "เครดิต", "คำอธิบาย"]); for (const d of rows) { const a = AN[d.id], v = a.claimVat ? d.vat : 0, dt = beSlash(d.date); out.push([dt, d.no, a.code, coaName(c, a.code), a.expense.toFixed(2), "", `${d.vendor} ${d.desc}`]); if (v) out.push([dt, d.no, c.ctrl.vat, "ภาษีซื้อ", v.toFixed(2), "", ""]); if (d.wht) out.push([dt, d.no, c.ctrl.wht, "ภาษีหัก ณ ที่จ่ายค้างจ่าย", "", d.wht.toFixed(2), a.whtForm]); out.push([dt, d.no, c.ctrl.ap, "เจ้าหนี้", "", (a.expense + v - d.wht).toFixed(2), d.vendor]); } }
+  return out;
 }
 function vExport() {
-  const c = C(), rows = exportRows(), done = c.docs.filter(d => d.exported);
-  let tE = 0, tV = 0, tW = 0; rows.forEach(d => { const a = AN[d.id]; tE += a.expense; tV += a.claimVat ? d.vat : 0; tW += d.wht; });
+  const c = C(), rows = exportRows(), done = c.docs.filter(d => d.exported), tbl = buildRows(expFmt);
   return `<div class="card"><div class="card-h"><h2>ส่งออก · ${esc(c.name)}</h2>
-    <div class="chips"><button type="button" data-act="fmt" data-f="peak" aria-pressed="${expFmt === "peak"}">ไฟล์นำเข้า PEAK (ตัวอย่างโครงสร้าง)</button><button type="button" data-act="fmt" data-f="jv" aria-pressed="${expFmt === "jv"}">สมุดรายวัน เดบิต เครดิต</button><button type="button" disabled title="แผนงาน">Express · แผนงาน</button></div></div>
-  <div class="card-b">
-    ${rows.length ? `<p style="margin:0 0 10px">${rows.length} รายการที่ยืนยันแล้วและยังไม่เคยส่งออก · ค่าใช้จ่าย <b class="num">${fmt(tE)}</b> · ภาษีซื้อ <b class="num">${fmt(tV)}</b> · หัก ณ ที่จ่าย <b class="num">${fmt(tW)}</b></p>
-    <div class="scroll-x"><table class="t"><thead><tr>${(expFmt === "peak" ? ["วันที่", "เลขที่", "ผู้ขาย", "รหัสบัญชี", "มูลค่า", "ภาษีซื้อ", "หัก ณ ที่จ่าย", "ยอดชำระ"] : ["วันที่", "เลขที่", "รหัสบัญชี", "เดบิต", "เครดิต"]).map((h, i) => `<th class="${i > 3 || (expFmt === "jv" && i > 2) ? "r" : ""}">${h}</th>`).join("")}</tr></thead><tbody>
-    ${expFmt === "peak" ? rows.map(d => { const a = AN[d.id], v = a.claimVat ? d.vat : 0; return `<tr><td>${beSlash(d.date)}</td><td>${esc(d.no)}</td><td>${esc(d.vendor)}</td><td>${a.code} ${esc(coaName(c, a.code))}</td><td class="r num">${fmt(a.expense)}</td><td class="r num">${fmt(v)}</td><td class="r num">${fmt(d.wht)}</td><td class="r num">${fmt(a.expense + v - d.wht)}</td></tr>`; }).join("")
-      : rows.map(d => { const a = AN[d.id], v = a.claimVat ? d.vat : 0, L = [[a.code, a.expense, 0], v ? [c.ctrl.vat, v, 0] : null, d.wht ? [c.ctrl.wht, 0, d.wht] : null, [c.ctrl.ap, 0, a.expense + v - d.wht]].filter(Boolean); return L.map((l, i) => `<tr><td>${i ? "" : beSlash(d.date)}</td><td>${i ? "" : esc(d.no)}</td><td>${l[0]} ${esc(coaName(c, l[0]) === "?" ? "" : coaName(c, l[0]))}</td><td class="r num">${l[1] ? fmt(l[1]) : ""}</td><td class="r num">${l[2] ? fmt(l[2]) : ""}</td></tr>`).join(""); }).join("")}
-    </tbody></table></div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">${downloadsNS ? `<button class="btn pri" type="button" data-act="download">ดาวน์โหลด CSV</button>` : ""}<button class="btn" type="button" data-act="copyCsv">คัดลอก CSV</button><button class="btn" type="button" data-act="markExported">ทำเครื่องหมายว่าส่งออกแล้ว</button></div>
-    <p class="muted" style="font-size:.76rem;margin:10px 0 0">คอลัมน์ของไฟล์ PEAK เป็นตัวอย่างโครงสร้าง จะตั้งให้ตรงกับแม่แบบนำเข้าที่สำนักงานใช้จริง รายการที่ส่งออกแล้วจะไม่ถูกส่งซ้ำ ภาษีซื้อต้องห้ามรวมอยู่ในมูลค่าค่าใช้จ่ายแล้ว</p>`
-    : `<div class="empty">ยังไม่มีรายการที่ยืนยันแล้วและรอส่งออก<br>ไปที่หน้าตรวจและจัดประเภท แล้วกดยืนยันเอกสาร</div>`}
-    ${done.length ? `<div class="sec"><h3>ส่งออกแล้ว ${done.length} รายการ</h3><button class="btn sm" type="button" data-act="unexport">ยกเลิกสถานะส่งออกทั้งหมด (สาธิต)</button></div>` : ""}
-  </div></div>`;
+    <div class="chips"><button type="button" data-act="fmt" data-f="peak" aria-pressed="${expFmt === "peak"}">ไฟล์นำเข้า PEAK (ตัวอย่างโครงสร้าง)</button><button type="button" data-act="fmt" data-f="jv" aria-pressed="${expFmt === "jv"}">สมุดรายวัน เดบิต เครดิต</button><button type="button" disabled>Express · แผนงาน</button><button type="button" disabled>FlowAccount · แผนงาน</button></div></div>
+  <div class="card-b">${rows.length ? `<p style="margin:0 0 10px">${rows.length} รายการที่ยืนยันแล้วและยังไม่เคยส่งออก · ${tbl.length - 1} แถวในไฟล์</p>
+    <div class="scroll-x"><table class="t"><thead><tr>${tbl[0].map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${tbl.slice(1).map(r => `<tr>${r.map(v => `<td class="${/^-?\d+(\.\d+)?$/.test(v) ? "r num" : ""}">${esc(/^-?\d+\.\d\d$/.test(v) ? fmt(+v) : maskTin(String(v)))}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="btn pri" type="button" data-act="download">${downloadsNS ? "ดาวน์โหลด CSV" : "คัดลอก CSV"}</button><button class="btn" type="button" data-act="markExported">ทำเครื่องหมายว่าส่งออกแล้ว</button></div>
+    <small class="muted" style="display:block;margin-top:10px">คอลัมน์ของไฟล์ PEAK เป็นตัวอย่างโครงสร้าง จะตั้งให้ตรงกับแม่แบบนำเข้าที่สำนักงานใช้จริง ไฟล์จริงมีเลขผู้เสียภาษีเต็ม ส่วนบนหน้าจอแสดงแบบปิดบัง รายการที่ส่งออกแล้วจะไม่ถูกส่งซ้ำ</small>`
+    : `<div class="empty">ยังไม่มีรายการที่ยืนยันแล้วและรอส่งออก</div>`}
+    ${done.length ? `<div class="sec"><h3>ส่งออกแล้ว ${done.length} รายการ</h3><button class="btn sm" type="button" data-act="unexport">ยกเลิกสถานะส่งออกทั้งหมด (สาธิต)</button></div>` : ""}</div></div>`;
+}
+
+/* ---------- Log ---------- */
+function vLog() {
+  const L = S.log.filter(l => l.c === S.clientId);
+  return `<div class="card"><div class="card-h"><h2>ประวัติการทำงาน · ${esc(C().name)}</h2><span class="muted">${L.length} รายการ</span></div><div class="card-b">${L.length ? `<div class="tl">${L.map(l => `<div><span class="num muted">${tstamp(l.t)}</span><b>คุณ (ผู้ทำบัญชี)</b><span>${esc(l.m)}</span></div>`).join("")}</div>` : `<div class="empty">ยังไม่มีการทำงานในต้นแบบนี้ ลองยืนยันเอกสาร แก้รหัสบัญชี หรือส่งออก แล้วกลับมาดู</div>`}<small class="muted">ระบบจริงเก็บประวัติแบบแก้ไขไม่ได้ 7 ปี รวมถึงการเปิดดูเลขบัตรประชาชนเต็ม</small></div></div>`;
 }
 
 /* ---------- Actions ---------- */
 function learn(c, d, code, src) { const k = vkey(d), r = c.vendorRules[k]; c.vendorRules[k] = { code, n: r && r.code === code ? r.n + 1 : 1, src: src || (r && r.code === code ? r.src : "hist") }; }
-function confirmDoc(c, d) { const a = AN[d.id]; if (a.dupOf) return; d.status = "confirmed"; d.code = d.code || a.code; learn(c, d, d.code, d.codeEdited ? "edit" : null); }
+function confirmDoc(c, d) { const a = AN[d.id]; if (a.dupOf) return; d.status = "confirmed"; d.code = d.code || a.code; learn(c, d, d.code, d.codeEdited ? "edit" : null); log(`ยืนยัน ${d.vendor} ${d.no} → ${d.code} ${coaName(c, d.code)}`); }
 async function runProcess() {
-  const c = C(), news = c.docs.filter(d => d.status === "new");
-  if (!news.length) return;
-  S.tab = "review"; S.filter = "all"; render();
-  const bar = $("#runProg"); if (bar) bar.hidden = false;
+  const c = C(), news = c.docs.filter(d => d.status === "new"); if (!news.length) return;
+  S.view = "client"; S.tab = "review"; S.filter = "all"; render();
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   for (let i = 0; i < news.length; i++) {
-    news[i].status = "ready"; S.sel = news[i].id;
-    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!reduce) await new Promise(r => setTimeout(r, 160));
+    news[i].status = "ready"; S.sel = news[i].id; if (!reduce) await new Promise(r => setTimeout(r, 140));
     render(); const row = $(`#revT tr[data-id="${news[i].id}"]`); if (row) row.classList.add("flash");
     const b = $("#runProg"); if (b) { b.hidden = false; $("i", b).style.width = ((i + 1) / news.length * 100) + "%"; }
   }
-  const k = counts(); toast(`ประมวลผล ${news.length} เอกสาร · ติดปัญหา ${k.block} · ให้คนตรวจ ${k.review} · ซ้ำ ${k.dup}`);
+  const k = counts(); log(`ประมวลผล ${news.length} เอกสาร · ติดปัญหา ${k.block} · ให้คนตรวจ ${k.review} · ซ้ำ ${k.dup}`); render();
+  toast(`ประมวลผล ${news.length} เอกสาร · ติดปัญหา ${k.block} · ให้คนตรวจ ${k.review} · ซ้ำ ${k.dup}`);
 }
-document.addEventListener("click", async e => {
-  const el = e.target.closest("[data-act]"); if (!el || el.tagName === "SELECT") return;
-  const act = el.dataset.act, c = C(), d = el.dataset.id ? c.docs.find(x => x.id === el.dataset.id) : null;
-  if (act === "tab") { S.tab = el.dataset.tab; render(); }
-  else if (act === "filter") { S.filter = el.dataset.f; render(); }
-  else if (act === "sel") { S.sel = el.dataset.id; render(); }
-  else if (act === "run") runProcess();
-  else if (act === "confirm" && d) { confirmDoc(c, d); toast(`ยืนยันแล้ว · ${d.vendor} → ${d.code}`); nextSel(); render(); }
-  else if (act === "unconfirm" && d) { d.status = "ready"; render(); }
-  else if (act === "request" && d) { d.status = "requested"; toast(`ส่งข้อความขอเอกสารใหม่ถึงเจ้าของกิจการทาง LINE แล้ว (สาธิต)`); render(); }
-  else if (act === "notdup" && d) { d.no = d.no + " (2)"; render(); }
-  else if (act === "pick" && d) { setCode(c, d, el.dataset.code); }
-  else if (act === "confirmHigh") { let n = 0; for (const x of c.docs) { const a = AN[x.id]; if (x.status === "ready" && !a.review && a.conf >= 90) { confirmDoc(c, x); n++; } } toast(`ยืนยัน ${n} รายการที่มั่นใจ 90% ขึ้นไป`); render(); }
-  else if (act === "reset") { S = seed(); render(); toast("รีเซ็ตข้อมูลตัวอย่างแล้ว"); }
-  else if (act === "ai" && d) askAI(c, d);
-  else if (act === "sampleCsv") { $("#csvText").value = SAMPLE_CSV; }
-  else if (act === "parse") { parsed = parseTable($("#csvText").value); $("#mapOut").innerHTML = parsed ? mapHTML(parsed) : `<p class="muted">ไม่พบข้อมูล</p>`; }
-  else if (act === "doImport" && parsed) {
-    const m = parsed.map, g = (r, f) => f in m ? (r[m[f]] || "").trim() : "";
-    let n = 0; for (const r of parsed.rows) { const vendor = g(r, "vendor"); if (!vendor) continue; const vat = numv(g(r, "vat")), tin = g(r, "tin").replace(/\D/g, "");
-      c.docs.push({ id: c.id + "-" + (c.docs.length + 1), date: toIso(g(r, "date")), no: g(r, "no") || "-", vendor, tin, desc: g(r, "desc") || "-", base: numv(g(r, "base")), vat, wht: numv(g(r, "wht")), type: vat > 0 ? "full" : "cash", src: "Excel", buyerTin: c.tin, vatReg: true, status: "new", code: null, exported: false }); n++; }
-    parsed = null; toast(`นำเข้า ${n} รายการ · กดตรวจและจัดประเภทเพื่อประมวลผล`); S.tab = "review"; render();
-  }
-  else if (act === "importCoa") {
-    const lines = $("#coaText").value.split("\n").map(l => l.split(/[,\t]/).map(s => s.trim())).filter(a => a[0] && a[1]);
-    if (!lines.length) { toast("ไม่พบรายการ ใส่ รหัส,ชื่อบัญชี บรรทัดละหนึ่งบัญชี"); return; }
-    c.coa = lines.map(([code, name]) => { const old = c.coa.find(a => a[0] === code); return [code, name, old ? old[2] : name.replace(/^ค่า/, "").replace(/[()]/g, "").split(/\s+/)[0]]; });
-    if (!c.coa.find(a => a[0] === c.miscCode)) c.miscCode = c.coa[c.coa.length - 1][0];
-    if (!c.coa.find(a => a[0] === c.assetCode)) c.assetCode = c.coa[0][0];
-    toast(`นำเข้าผังบัญชี ${c.coa.length} รหัส`); render();
-  }
-  else if (act === "saveRules") { c.capThreshold = +$("#capIn").value || 0; c.assetCode = $("#assetIn").value; toast("บันทึกกฎแล้ว รหัสที่เสนอคำนวณใหม่"); render(); }
-  else if (act === "forget") { delete c.vendorRules[el.dataset.v]; render(); }
-  else if (act === "fmt") { expFmt = el.dataset.f; render(); }
-  else if (act === "copyCsv") { const csv = buildCsv(expFmt); try { await navigator.clipboard.writeText(csv); toast("คัดลอก CSV แล้ว วางใน Excel ได้เลย"); } catch (err) { toast("คัดลอกไม่ได้ในหน้าจอนี้"); } }
-  else if (act === "download") {
-    const csv = buildCsv(expFmt), name = `${expFmt === "peak" ? "PEAK_import" : "journal"}_${c.slug}_2569-10.csv`;
-    try { await downloadsNS.save({ filename: name, data: csv }); exportRows().forEach(x => x.exported = true); toast("บันทึกไฟล์แล้ว · ทำเครื่องหมายว่าส่งออกแล้ว"); render(); }
-    catch (err) { toast(err && err.code === "declined" ? "ยกเลิกการบันทึกไฟล์" : "บันทึกไฟล์ไม่ได้ในหน้าจอนี้ ใช้คัดลอก CSV แทน"); }
-  }
-  else if (act === "markExported") { const n = exportRows().length; exportRows().forEach(x => x.exported = true); toast(`ทำเครื่องหมาย ${n} รายการว่าส่งออกแล้ว`); render(); }
-  else if (act === "unexport") { c.docs.forEach(x => x.exported = false); render(); }
-});
-function setCode(c, d, code) { d.code = code; d.codeEdited = true; c.vendorRules[vkey(d)] = { code, n: 1, src: "edit" }; toast(`จำไว้แล้ว: ${d.vendor} → ${code} ${coaName(c, code)}`); render(); }
-document.addEventListener("change", e => {
-  const el = e.target;
-  if (el.id === "clientSel") { S.clientId = el.value; S.sel = null; S.filter = "all"; render(); }
-  else if (el.dataset && el.dataset.act === "code") { const c = C(), d = c.docs.find(x => x.id === el.dataset.id); if (d) setCode(c, d, el.value); }
-  else if (el.id === "csvFile" && el.files && el.files[0]) { const fr = new FileReader(); fr.onload = () => { $("#csvText").value = String(fr.result); parsed = parseTable(fr.result); $("#mapOut").innerHTML = parsed ? mapHTML(parsed) : ""; }; fr.readAsText(el.files[0], "utf-8"); }
-});
+function setCode(c, d, code) { if (c.closed) return; d.code = code; d.codeEdited = true; c.vendorRules[vkey(d)] = { code, n: 1, src: "edit" }; log(`เปลี่ยนรหัสบัญชี ${d.vendor} เป็น ${code} ${coaName(c, code)} และจำไว้สำหรับผู้ขายรายนี้`); toast(`จำไว้แล้ว: ${d.vendor} → ${code} ${coaName(c, code)}`); render(); }
 function nextSel() { const list = visibleDocs().filter(d => d.status !== "confirmed" && !AN[d.id].dupOf); const i = list.findIndex(d => d.id === S.sel); S.sel = (list[i + 1] || list[0] || {}).id || S.sel; }
+document.addEventListener("click", async e => {
+  const el = e.target.closest("[data-act]"); if (!el || el.tagName === "SELECT" || el.tagName === "INPUT") return;
+  if (el.disabled) return;
+  const act = el.dataset.act, c = C(), d = el.dataset.id ? c.docs.find(x => x.id === el.dataset.id) : null;
+  const R = () => requestsOf(c);
+  switch (act) {
+    case "board": S.view = "board"; render(); break;
+    case "openClient": S.clientId = el.dataset.c; S.view = "client"; S.tab = el.dataset.tab || "dash"; S.sel = null; S.filter = "all"; render(); break;
+    case "channel": S.channel = el.dataset.ch; render(); break;
+    case "tab": S.view = "client"; S.tab = el.dataset.tab; render(); break;
+    case "filter": S.filter = el.dataset.f; render(); break;
+    case "sel": S.sel = el.dataset.id; render(); break;
+    case "run": runProcess(); break;
+    case "confirm": if (d && !c.closed) { confirmDoc(c, d); toast(`ยืนยันแล้ว · ${d.vendor} → ${d.code}`); nextSel(); render(); } break;
+    case "unconfirm": if (d) { d.status = "ready"; log(`ยกเลิกการยืนยัน ${d.vendor} ${d.no}`); render(); } break;
+    case "request": if (d) { d.status = "requested"; c.requests["doc:" + d.id] = Date.now(); log(`ขอเอกสารใหม่ทาง LINE: ${d.vendor} ${d.no}`); toast("ส่งข้อความขอเอกสารใหม่ทาง LINE แล้ว (สาธิต)"); render(); } break;
+    case "notdup": if (d) { d.no = d.no + " (2)"; log(`ระบุว่าไม่ใช่เอกสารซ้ำ: ${d.vendor}`); render(); } break;
+    case "pick": if (d) setCode(c, d, el.dataset.code); break;
+    case "confirmHigh": { let n = 0; for (const x of c.docs) { const a = AN[x.id]; if (x.status === "ready" && !a.review && !a.dupOf && a.conf >= 90) { confirmDoc(c, x); n++; } } toast(`ยืนยัน ${n} รายการที่ไม่มีคำเตือนและมั่นใจ 90% ขึ้นไป`); render(); break; }
+    case "reset": S = seed(); render(); toast("รีเซ็ตข้อมูลตัวอย่างแล้ว"); break;
+    case "ai": if (d) askAI(c, d); break;
+    case "bankOk": { const b = c.bank.find(x => x.id === el.dataset.b); b.manual = el.dataset.d; log(`ยืนยันการจับคู่ ${b.desc} กับเอกสาร ${c.docs.find(x => x.id === el.dataset.d).vendor}`); render(); break; }
+    case "bankNo": { const b = c.bank.find(x => x.id === el.dataset.b); b.manual = "none"; render(); break; }
+    case "bankUndo": { const b = c.bank.find(x => x.id === el.dataset.b); b.manual = null; render(); break; }
+    case "bankReq": { const b = c.bank.find(x => x.id === el.dataset.b); b.manual = "none"; b.requested = true; c.requests["bank:" + b.id] = Date.now(); log(`ขอเอกสารสำหรับรายการธนาคาร ${b.desc} ${fmt(Math.abs(b.amt))}`); toast("ส่งคำขอเอกสารทาง LINE แล้ว (สาธิต)"); render(); break; }
+    case "file": c.filed[el.dataset.k] = "filed"; log(`บันทึกว่ายื่น ${el.dataset.k === "pp30" ? "ภ.พ.30" : el.dataset.k === "pp36" ? "ภ.พ.36" : el.dataset.k} แล้ว`); render(); break;
+    case "pay": c.filed[el.dataset.k] = "paid"; log(`บันทึกว่าชำระ ${el.dataset.k === "pp30" ? "ภ.พ.30" : el.dataset.k} แล้ว`); render(); break;
+    case "unfile": delete c.filed[el.dataset.k]; render(); break;
+    case "filePay": c.filed.pnd1 = "filed"; c.filed.sso = "filed"; log("บันทึกว่ายื่น ภ.ง.ด.1 และ สปส.1-10 แล้ว"); render(); break;
+    case "unfilePay": delete c.filed.pnd1; delete c.filed.sso; render(); break;
+    case "payrollIn": c.payroll = { emp: 5, pnd1: 0, sso: 4850, status: "ready" }; log("นำเข้าสรุปเงินเดือน ต.ค. 2569 (5 คน)"); toast("นำเข้าสรุปเงินเดือนแล้ว · ไม่มีพนักงานถึงเกณฑ์ภาษี · สปส. 4,850.00"); render(); break;
+    case "issueCert": if (d) { c.certs[d.id] = `2569/${String(c.certSeq++).padStart(4, "0")}`; log(`ออก 50 ทวิ เลขที่ ${c.certs[d.id]} ให้ ${d.vendor} ภาษี ${fmt(d.wht)}`); render(); modal(certHTML(c, d)); } break;
+    case "viewCert": if (d) modal(certHTML(c, d)); break;
+    case "closeModal": $("#modal").hidden = true; break;
+    case "dlWht": { const f = el.dataset.f, ds = c.docs.filter(x => x.wht > 0 && x.status === "confirmed" && AN[x.id].whtForm === f); const rows = [["ลำดับ", "เลขประจำตัวผู้เสียภาษี", "สาขา", "ชื่อผู้มีเงินได้", "วันที่จ่าย", "ประเภทเงินได้", "อัตราภาษี", "จำนวนเงินที่จ่าย", "ภาษีที่หัก", "เงื่อนไข"]]; ds.forEach((x, i) => rows.push([i + 1, x.tin, "00000", x.vendor, beSlash(x.date), INCOME_TYPE(x), Math.round(x.wht / x.base * 100), x.base.toFixed(2), x.wht.toFixed(2), 1])); if (await saveFile(`${f.replace(/\./g, "")}_attach_${c.slug}_2569-10.csv`, csvOf(rows))) log(`ส่งออกไฟล์แนบ ${f} ${ds.length} ราย`); break; }
+    case "dlPurch": { const v = vatCalc(c), rows = [["ลำดับ", "วันที่", "เลขที่", "ผู้ขาย", "เลขประจำตัวผู้เสียภาษี", "สาขา", "มูลค่า", "ภาษีซื้อ"]]; v.conf.forEach((x, i) => rows.push([i + 1, beSlash(x.date), x.no, x.vendor, x.tin, "สำนักงานใหญ่", x.base.toFixed(2), x.vat.toFixed(2)])); if (await saveFile(`purchase_tax_report_${c.slug}_2569-10.csv`, csvOf(rows))) log(`ส่งออกรายงานภาษีซื้อ ${v.conf.length} ใบ`); break; }
+    case "previewReq": { const r = R().find(x => x.key === el.dataset.k); if (r) $("#reqPrev").innerHTML = lineMsg(c, r); break; }
+    case "sendReq": { const r = R().find(x => x.key === el.dataset.k); if (r) { c.requests[r.key] = Date.now(); if (r.key.startsWith("bank:")) { const b = c.bank.find(x => "bank:" + x.id === r.key); b.manual = "none"; b.requested = true; } if (r.key.startsWith("doc:")) { const x = c.docs.find(y => "doc:" + y.id === r.key); x.status = "requested"; } log(`ส่งคำขอทาง LINE: ${r.what}`); toast("ส่งทาง LINE แล้ว (สาธิต)"); render(); } break; }
+    case "sendAll": { const rs = R().filter(r => !c.requests[r.key]); rs.forEach(r => { c.requests[r.key] = Date.now(); if (r.key.startsWith("bank:")) { const b = c.bank.find(x => "bank:" + x.id === r.key); b.manual = "none"; b.requested = true; } if (r.key.startsWith("doc:")) { c.docs.find(y => "doc:" + y.id === r.key).status = "requested"; } }); log(`ส่งคำขอเอกสารทาง LINE ${rs.length} รายการ`); toast(`ส่ง ${rs.length} คำขอทาง LINE แล้ว (สาธิต)`); render(); break; }
+    case "closePeriod": c.closed = true; log("ปิดงวด ต.ค. 2569 และล็อกข้อมูล"); toast("ปิดงวดแล้ว ข้อมูลถูกล็อก"); render(); break;
+    case "reopen": c.closed = false; log("เปิดงวด ต.ค. 2569 อีกครั้ง"); render(); break;
+    case "sampleCsv": $("#csvText").value = SAMPLE_CSV; break;
+    case "parse": parsed = parseTable($("#csvText").value); $("#mapOut").innerHTML = parsed ? mapHTML(parsed) : `<p class="muted">ไม่พบข้อมูล</p>`; break;
+    case "doImport": if (parsed) { const m = parsed.map, g = (r, f) => f in m ? (r[m[f]] || "").trim() : ""; let n = 0; for (const r of parsed.rows) { const vendor = g(r, "vendor"); if (!vendor) continue; const vat = numv(g(r, "vat")); addDoc(c, { date: toIso(g(r, "date")), no: g(r, "no") || "-", vendor, tin: g(r, "tin").replace(/\D/g, ""), desc: g(r, "desc") || "-", base: numv(g(r, "base")), vat, wht: numv(g(r, "wht")), type: vat > 0 ? "full" : "cash", src: "Excel" }); n++; } parsed = null; log(`นำเข้า ${n} รายการจากตาราง`); toast(`นำเข้า ${n} รายการ · กดตรวจและจัดประเภทเพื่อประมวลผล`); S.tab = "review"; render(); } break;
+    case "addManual": { const base = numv($("#mBase").value), vendor = $("#mVendor").value.trim(); if (!vendor || !base) { toast("ใส่ชื่อผู้ขายและมูลค่าก่อน"); break; } const type = $("#mType").value, vIn = $("#mVat").value.trim(); const vat = vIn === "" ? (type === "full" || type === "etax" || type === "abb" ? r2(base * 0.07) : 0) : numv(vIn); addDoc(c, { date: $("#mDate").value || "2026-10-31", no: $("#mNo").value.trim() || "-", vendor, tin: $("#mTin").value.replace(/\D/g, ""), desc: $("#mDesc").value.trim() || "-", base, vat, wht: numv($("#mWht").value), type, src: "เพิ่มเอง" }); log(`เพิ่มเอกสาร ${vendor} ด้วยมือ`); toast("เพิ่มเข้าคิวตรวจแล้ว"); S.tab = "review"; render(); break; }
+    case "importCoa": { const lines = $("#coaText").value.split("\n").map(l => l.split(/[,\t]/).map(s => s.trim())).filter(a => a[0] && a[1]); if (!lines.length) { toast("ใส่ รหัส,ชื่อบัญชี บรรทัดละหนึ่งบัญชี"); break; } c.coa = lines.map(([code, name]) => { const old = c.coa.find(a => a[0] === code); return [code, name, old ? old[2] : name.replace(/^ค่า/, "").replace(/[()]/g, "").split(/\s+/)[0]]; }); if (!c.coa.find(a => a[0] === c.miscCode)) c.miscCode = c.coa[c.coa.length - 1][0]; if (!c.coa.find(a => a[0] === c.assetCode)) c.assetCode = c.coa[0][0]; log(`นำเข้าผังบัญชี ${c.coa.length} รหัส`); toast(`นำเข้าผังบัญชี ${c.coa.length} รหัส`); render(); break; }
+    case "saveRules": c.capThreshold = +$("#capIn").value || 0; c.assetCode = $("#assetIn").value; log(`ตั้งกฎสินทรัพย์ ${c.capThreshold} บาท → ${c.assetCode}`); toast("บันทึกกฎแล้ว รหัสที่เสนอคำนวณใหม่"); render(); break;
+    case "forget": delete c.vendorRules[el.dataset.v]; log(`ลบกฎผู้ขาย ${el.dataset.v}`); render(); break;
+    case "fmt": expFmt = el.dataset.f; render(); break;
+    case "download": { const rows = exportRows(); if (await saveFile(`${expFmt === "peak" ? "PEAK_import" : "journal"}_${c.slug}_2569-10.csv`, csvOf(buildRows(expFmt)))) { rows.forEach(x => x.exported = true); log(`ส่งออก${expFmt === "peak" ? "ไฟล์นำเข้า PEAK" : "สมุดรายวัน"} ${rows.length} รายการ`); render(); } break; }
+    case "markExported": { const rows = exportRows(); rows.forEach(x => x.exported = true); log(`ทำเครื่องหมายส่งออกแล้ว ${rows.length} รายการ`); toast(`ทำเครื่องหมาย ${rows.length} รายการว่าส่งออกแล้ว`); render(); break; }
+    case "unexport": c.docs.forEach(x => x.exported = false); render(); break;
+  }
+});
+function addDoc(c, o) { c.docs.push({ id: c.id + "-" + (c.docs.length + 1), buyerTin: c.tin, vatReg: true, status: "new", code: null, exported: false, ...o }); }
+document.addEventListener("change", async e => {
+  const el = e.target, c = C();
+  if (el.id === "clientSel") { S.clientId = el.value; S.view = "client"; S.tab = "dash"; S.sel = null; S.filter = "all"; render(); }
+  else if (el.dataset && el.dataset.act === "code") { const d = c.docs.find(x => x.id === el.dataset.id); if (d) setCode(c, d, el.value); }
+  else if (el.dataset && el.dataset.act === "bankPick" && el.value) { const b = c.bank.find(x => x.id === el.dataset.b); b.manual = el.value; log(`จับคู่ ${b.desc} กับเอกสาร ${c.docs.find(x => x.id === el.value).vendor} ด้วยมือ`); render(); }
+  else if (el.dataset && el.dataset.act === "salesIn") { c.sales[el.dataset.k] = numv(el.value); log(`แก้ยอดขาย ภ.พ.30 (${el.dataset.k}) เป็น ${fmt(c.sales[el.dataset.k])}`); render(); }
+  else if (el.id === "csvFile" && el.files && el.files[0]) { const fr = new FileReader(); fr.onload = () => { $("#csvText").value = String(fr.result); parsed = parseTable(fr.result); $("#mapOut").innerHTML = parsed ? mapHTML(parsed) : ""; }; fr.readAsText(el.files[0], "utf-8"); }
+  else if (el.id === "imgFile" && el.files && el.files[0]) readImage(c, el.files[0]);
+});
 document.addEventListener("keydown", e => {
-  if (S.tab !== "review" || /INPUT|SELECT|TEXTAREA/.test(e.target.tagName)) return;
+  if (e.key === "Escape" && !$("#modal").hidden) { $("#modal").hidden = true; return; }
+  if (S.view !== "client" || S.tab !== "review" || /INPUT|SELECT|TEXTAREA/.test(e.target.tagName)) return;
   const list = visibleDocs(), i = list.findIndex(d => d.id === S.sel);
   if (e.key === "ArrowDown" || e.key === "j") { e.preventDefault(); S.sel = (list[i + 1] || list[i] || {}).id; render(); $("#revT tr.sel")?.scrollIntoView({ block: "nearest" }); }
   else if (e.key === "ArrowUp" || e.key === "k") { e.preventDefault(); S.sel = (list[i - 1] || list[i] || {}).id; render(); $("#revT tr.sel")?.scrollIntoView({ block: "nearest" }); }
-  else if (e.key === "Enter") { const c = C(), d = c.docs.find(x => x.id === S.sel); if (d && d.status === "ready" && !AN[d.id].dupOf && !AN[d.id].blocks) { e.preventDefault(); confirmDoc(c, d); toast(`ยืนยันแล้ว · ${d.vendor} → ${d.code}`); nextSel(); render(); } }
+  else if (e.key === "Enter") { const c = C(), d = c.docs.find(x => x.id === S.sel); if (d && !c.closed && d.status === "ready" && !AN[d.id].dupOf && !AN[d.id].blocks) { e.preventDefault(); confirmDoc(c, d); toast(`ยืนยันแล้ว · ${d.vendor} → ${d.code}`); nextSel(); render(); } }
 });
 async function askAI(c, d) {
-  const out = $("#aiOut"); if (!out || !sampleFn) return;
-  out.textContent = "กำลังคิด…";
-  const prompt = `You classify Thai business expenses into the client's own chart of accounts.
-Client business: ${c.biz}. Asset capitalisation threshold: ${c.capThreshold} THB.
-Chart of accounts (code: name):
-${c.coa.map(a => `${a[0]}: ${a[1]}`).join("\n")}
-
-Document:
-vendor: ${d.vendor}
-description: ${d.desc}
-amount before VAT: ${d.base} THB, VAT: ${d.vat} THB, document type: ${d.type}
-
-Reply ONLY with JSON: {"code": "<one code from the list>", "confidence": <0-100>, "reason_th": "<one short sentence in Thai explaining why>"}`;
-  try {
-    const r = await sampleFn.json(prompt, { modelTier: "quick" });
-    if (!r || !c.coa.find(a => a[0] === String(r.code))) { out.textContent = "AI ตอบรหัสที่ไม่อยู่ในผังบัญชี จึงไม่นำมาใช้"; return; }
+  const out = $("#aiOut"); if (!out || !sampleFn) return; out.textContent = "กำลังคิด…";
+  const prompt = `You classify Thai business expenses into the client's own chart of accounts.\nClient business: ${c.biz}. Asset capitalisation threshold: ${c.capThreshold} THB.\nChart of accounts (code: name):\n${c.coa.map(a => `${a[0]}: ${a[1]}`).join("\n")}\n\nDocument:\nvendor: ${d.vendor}\ndescription: ${d.desc}\namount before VAT: ${d.base} THB, VAT: ${d.vat} THB, document type: ${d.type}\n\nReply ONLY with JSON: {"code": "<one code from the list>", "confidence": <0-100>, "reason_th": "<one short sentence in Thai>"}`;
+  try { const r = await sampleFn.json(prompt, { modelTier: "quick" }); if (!r || !c.coa.find(a => a[0] === String(r.code))) { out.textContent = "AI ตอบรหัสที่ไม่อยู่ในผังบัญชี จึงไม่นำมาใช้"; return; }
     out.innerHTML = `AI เสนอ <b>${esc(r.code)} ${esc(coaName(c, String(r.code)))}</b> (${esc(r.confidence)}%)<br>${esc(r.reason_th || "")}<br><button class="btn sm" type="button" data-act="pick" data-id="${d.id}" data-code="${esc(r.code)}" style="margin-top:6px">ใช้รหัสนี้</button>`;
-  } catch (err) {
-    out.textContent = err && err.code === "not_granted" ? "ไม่ได้อนุญาตให้ใช้ AI" : err && err.code === "rate_limited" ? "เรียกใช้ถี่เกินไป ลองใหม่อีกครู่" : "เรียก AI ไม่สำเร็จ ใช้รหัสที่ระบบเสนอได้ตามปกติ";
-  }
+  } catch (err) { out.textContent = err && err.code === "not_granted" ? "ไม่ได้อนุญาตให้ใช้ AI" : err && err.code === "rate_limited" ? "เรียกใช้ถี่เกินไป ลองใหม่อีกครู่" : "เรียก AI ไม่สำเร็จ ใช้รหัสที่ระบบเสนอได้ตามปกติ"; }
+}
+async function readImage(c, file) {
+  const out = $("#imgOut"); out.textContent = "AI กำลังอ่านรูป อาจใช้เวลาครู่หนึ่ง…";
+  const prompt = `This image is a Thai receipt or tax invoice. Extract fields. Reply ONLY with JSON: {"type": "full"|"abb"|"cash"|"etax"|"foreign", "date": "YYYY-MM-DD (Gregorian; convert Buddhist Era by subtracting 543)", "no": "", "vendor": "", "tin": "13 digits or empty", "desc": "short Thai summary of items", "base": number (amount before VAT), "vat": number, "wht": 0}. "full" = full tax invoice (ใบกำกับภาษีเต็มรูป), "abb" = abbreviated tax invoice (ใบกำกับภาษีอย่างย่อ), "cash" = receipt without VAT.`;
+  try { const r = await sampleFn.json(prompt, { images: [file], modelTier: "default" });
+    if (!r || !r.vendor) { out.textContent = "อ่านรูปไม่ออก ลองรูปที่ชัดขึ้น"; return; }
+    addDoc(c, { date: /^\d{4}-\d{2}-\d{2}$/.test(r.date) ? r.date : "2026-10-31", no: String(r.no || "-"), vendor: String(r.vendor), tin: String(r.tin || "").replace(/\D/g, ""), desc: String(r.desc || "-"), base: +r.base || 0, vat: +r.vat || 0, wht: +r.wht || 0, type: ["full", "abb", "cash", "etax", "foreign"].includes(r.type) ? r.type : "cash", src: "รูป · AI" });
+    log(`AI อ่านรูปใบเสร็จ ${r.vendor}`); toast("AI อ่านรูปแล้ว เข้าคิวตรวจ"); S.tab = "review"; render();
+  } catch (err) { out.textContent = err && err.code === "not_granted" ? "ไม่ได้อนุญาตให้ใช้ AI" : "อ่านรูปไม่สำเร็จ ลองอีกครั้ง"; }
 }
 render();
 })();
