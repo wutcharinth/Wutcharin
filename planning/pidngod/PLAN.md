@@ -24,6 +24,7 @@
 | 8 | TypeScript modular monolith, Postgres, PDFs rendered from HTML in Chromium | [0008](docs/adr/0008-stack.md) |
 | 9 | Two-sided and led by the accountant: an Owner app for SMEs and a later marketplace for SMEs without an accountant | [0009](docs/adr/0009-two-sided-accountant-led.md) |
 | 10 | Encrypt and mask national ID and bank numbers; keep AI calls in-region; no personal data in LINE pushes. See [security-privacy.md](docs/security-privacy.md) | [0010](docs/adr/0010-pii-handling.md) |
+| 11 | Suggest account codes from each Client's own chart of accounts; the PEAK import file is the first export target (from discovery log #1) | [0011](docs/adr/0011-account-code-suggestions-peak-first.md) |
 
 ---
 
@@ -155,7 +156,7 @@ Full bank reconciliation comes in phase 3.
 ### F. Integrations
 
 **F1. Which accounting software first?**
-**Recommended:** A generic Excel journal export on day 1, then the one most used by the first design partners. Expect Express (desktop, file import; verify its format) to be common among solo bookkeepers. PEAK and FlowAccount have public APIs (verify their partner terms).
+**Recommended:** **The PEAK import file first.** The first accountant feedback ([discovery log #1](docs/discovery-log.md)) describes a batch-import-into-PEAK workflow and asks for AI to check, dedupe, classify and suggest account codes before export (ADR-0011). Match the template column for column against a real file from her. Then Express (file import; verify its format), then FlowAccount, plus a generic Excel journal from day 1.
 
 **F2. How do we get bank data?**
 **Recommended:** Statement upload (PDF/CSV/Excel) parsers for KBank, SCB, Bangkok Bank, Krungthai, Krungsri and ttb in phases 2–3. No bank APIs in v1.

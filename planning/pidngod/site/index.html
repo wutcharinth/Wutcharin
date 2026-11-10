@@ -640,6 +640,22 @@ body.pitching .day,body.pitching .band{transition:opacity .5s}
 .cn{color:var(--muted)}
 @keyframes pop{from{transform:scale(.3);opacity:0}}
 
+
+/* ---- v6: classify + PEAK export ---- */
+.cls-steps{display:flex;flex-wrap:wrap;gap:6px 14px;padding:10px 14px;border-bottom:1px solid var(--rule);font-size:.8rem;color:var(--muted)}
+.cls-steps span{display:inline-flex;align-items:center;gap:6px}
+.cls-steps b{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--rule);font-size:.68rem}
+.cls-steps .on{color:var(--ink);font-weight:600}.cls-steps .on b{border-color:var(--ink)}
+.cls-steps .done{color:var(--ledger)}.cls-steps .done b{background:var(--ledger);border-color:var(--ledger);color:var(--ledger-ink)}
+.clst{min-width:860px}
+.clst td{vertical-align:top}
+.clst td small{display:block;color:var(--muted);font-size:.68rem;line-height:1.35;margin-top:2px}
+.coa{border:1px solid var(--rule);background:var(--sheet);border-radius:6px;padding:2px 4px;font-size:.74rem;max-width:230px}
+.conf{display:inline-block;width:46px;height:6px;border-radius:3px;background:var(--sheet-2);border:1px solid var(--rule);overflow:hidden;vertical-align:middle;margin-right:4px}
+.conf i{display:block;height:100%;background:var(--ledger)}
+.conf.lo i{background:var(--amber)}
+.file small{display:block;color:var(--muted);font-size:.7rem}
+
 @media (prefers-reduced-motion: reduce){.rv{animation:none!important}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}html{scroll-behavior:auto}}
 </style>
 
@@ -978,6 +994,31 @@ body.pitching .day,body.pitching .band{transition:opacity .5s}
   </section>
 
   <!-- Day 7 -->
+  <section class="day" id="day6" data-day="6" data-label="จัดประเภท เสนอรหัสบัญชี ส่งเข้า PEAK">
+    <div class="wrap">
+      <div class="day-grid">
+        <div class="day-mark"><small>วันที่</small><b>6</b><span>ส่งเข้าโปรแกรมบัญชี</span></div>
+        <div class="copy rv span2">
+          <div class="eyebrow">สิ่งที่สำนักงานที่ใช้ PEAK ขอ</div>
+          <h2>AI ตรวจเอกสาร เช็กซ้ำ จัดประเภทค่าใช้จ่าย และเสนอรหัสบัญชี ก่อนส่งไฟล์นำเข้า PEAK</h2>
+          <p class="sub">ไม่ต้องคีย์ทีละรายการ และไม่ต้องแก้ไฟล์นำเข้าด้วยมือ ระบบใช้ผังบัญชีของลูกค้าเอง เรียนรู้จากการบันทึกครั้งก่อน และบอกเหตุผลของทุกรหัสที่เสนอ รายการที่ไม่แน่ใจจะถูกยกให้คุณตรวจก่อน ลองเปลี่ยนรหัสบัญชีในตารางได้</p>
+          <ul class="ticks">
+            <li>ใช้ผังบัญชีที่ส่งออกจาก PEAK ของลูกค้าแต่ละราย</li>
+            <li>ภาษีซื้อต้องห้ามรวมเข้าค่าใช้จ่ายให้ ราคาเกินเกณฑ์เสนอเป็นสินทรัพย์</li>
+            <li>แก้รหัสครั้งเดียว ระบบจำไว้สำหรับผู้ขายรายนั้น</li>
+            <li>ไฟล์รูปแบบเดียวกันส่งเข้า Express และ FlowAccount ได้ในแผนงาน</li>
+          </ul>
+        </div>
+      </div>
+      <div class="demo rv" id="demoCls" style="margin-top:26px">
+        <div class="demo-bar"><span>บจ. สยามคลีนนิ่ง · ค่าใช้จ่าย ต.ค. 2569 · ผังบัญชีจาก PEAK ของลูกค้า</span><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
+        <div class="cls-steps" id="clsSteps"></div>
+        <div class="scroll-x"><table class="sheet clst" id="clsT"></table></div>
+        <div class="pad" id="clsOut"></div>
+      </div>
+    </div>
+  </section>
+
   <section class="day" id="day7" data-day="7" data-label="กำหนดยื่นคำนวณให้อัตโนมัติ">
     <div class="wrap day-grid flip">
       <div class="day-mark dl"><small>วันที่</small><b>7</b><span>กำหนดยื่น</span></div>
@@ -1784,6 +1825,53 @@ demo($("#demoWht"), () => { batchDraw(BATCH.length, false); whtSet(WHT_STEPS[0])
   for (const s of WHT_STEPS.slice(1)) { whtSet(s); certNo++; whtRender(true); await w(1600); }
 });
 
+/* ---------- Day 6: classify + PEAK export ---------- */
+const COA = [["1250", "เครื่องมือและอุปกรณ์"], ["5120", "วัสดุทำความสะอาด (ต้นทุนบริการ)"], ["5130", "วัสดุสิ้นเปลือง"], ["5210", "ค่าขนส่ง"], ["5250", "ค่าซ่อมแซมยานพาหนะ"], ["5310", "ค่าเช่า"], ["5320", "ค่าอินเทอร์เน็ตและโทรศัพท์"], ["5330", "ค่าซอฟต์แวร์และบริการคลาวด์"], ["5340", "ค่ารับรอง"]];
+const CLS0 = [
+  ["28/10/2569", "IV6910-0457", "บจ. ออฟฟิศเมท ซัพพลาย", "กระดาษ A4 และหมึกพิมพ์", 2650, 185.50, 0, "5130", 96, "ผู้ขายนี้เคยบันทึกเป็น 5130 มาแล้ว 6 ครั้ง", ""],
+  ["25/10/2569", "INV-25691025", "บจ. น้ำยาสะอาดไทย", "น้ำยาทำความสะอาดพื้น 4 แกลลอน", 1000, 70, 0, "5120", 93, "ธุรกิจทำความสะอาด น้ำยาเป็นต้นทุนบริการ", ""],
+  ["21/10/2569", "TL-10-2569-88", "บจ. ทองดีโลจิสติกส์", "ค่าขนส่งอุปกรณ์ไปหน้างาน", 18500, 1295, 185, "5210", 97, "รายการค่าขนส่ง และหัก ณ ที่จ่าย 1%", ""],
+  ["22/10/2569", "RC-10-0921", "บจ. ห้องอาหารบ้านไทย", "เลี้ยงรับรองลูกค้า 6 ท่าน", 4800, 336, 0, "5340", 91, "ร้านอาหาร และมีคำว่ารับรองลูกค้า", "vatx"],
+  ["09/10/2569", "SV69-10233", "บจ. เอเชียมอเตอร์ เซอร์วิส", "ซ่อมบำรุงรถยนต์นั่ง 1กข 1234", 6200, 434, 0, "5250", 88, "ทะเบียนนี้อยู่ในทะเบียนทรัพย์สินเป็นรถยนต์นั่ง", "vatx"],
+  ["28/10/2569", "IV6910-0457", "บจ. ออฟฟิศเมท ซัพพลาย", "กระดาษ A4 และหมึกพิมพ์", 2650, 185.50, 0, "5130", 96, "", "dup"],
+  ["01/10/2569", "ET2569100088", "บจ. อินเทอร์เน็ตไทย", "อินเทอร์เน็ตองค์กร ต.ค.", 1890, 132.30, 0, "5320", 98, "e-Tax Invoice รายเดือนเดิม", ""],
+  ["16/10/2569", "MT-2569-0874", "บจ. เครื่องมือช่างไทย", "เครื่องขัดพื้นอุตสาหกรรม 1 เครื่อง", 25000, 1750, 0, "1250", 79, "ราคาเกิน 10,000 บาทตามนโยบายสินทรัพย์ของลูกค้า ควรตรวจ", "asset"],
+  ["31/10/2569", "RENT-10", "นางสมศรี มีที่ดิน", "ค่าเช่าสำนักงาน ต.ค.", 30000, 0, 1500, "5310", 99, "สัญญาเช่ารายเดือน · หัก ณ ที่จ่าย 5%", ""],
+  ["31/10/2569", "INV-SG-5521", "Cloud Software Asia Pte. Ltd.", "ค่าใช้ซอฟต์แวร์ ต.ค.", 20000, 0, 3000, "5330", 82, "ผู้ให้บริการต่างประเทศ · ภ.พ.36 แยกต่างหาก ควรตรวจ", "pp36"],
+];
+let CLS = CLS0.map(r => r.slice()), clsEdited = new Set(), clsExported = false;
+const coaName = c => (COA.find(x => x[0] === c) || ["", ""])[1];
+const STEPS6 = ["ตรวจเอกสาร", "เช็กซ้ำ", "จัดประเภท + เสนอรหัส", "ส่งออกไฟล์นำเข้า PEAK"];
+function clsSteps(k) { $("#clsSteps").innerHTML = STEPS6.map((s, i) => `<span class="${i < k ? "done" : i === k ? "on" : ""}"><b>${i + 1}</b>${s}</span>`).join(""); }
+function clsRow(r, i, phase) {
+  const dup = r[10] === "dup", low = r[8] < 85 && !clsEdited.has(i);
+  const chk = phase >= 1 ? `<span class="pill g">ผ่าน</span>` : `<span class="pill">…</span>`;
+  const dupc = phase >= 2 ? (dup ? `<span class="pill">ซ้ำกับแถว 1 · ไม่ส่งออก</span>` : `<span class="pill g">ไม่ซ้ำ</span>`) : "";
+  const code = phase >= 3 && !dup ? `<select class="coa" data-i="${i}" aria-label="รหัสบัญชีแถว ${i + 1}">${COA.map(c => `<option value="${c[0]}" ${c[0] === r[7] ? "selected" : ""}>${c[0]} ${c[1]}</option>`).join("")}</select>` : "";
+  const conf = phase >= 3 && !dup ? (clsEdited.has(i) ? `<span class="pill b">แก้โดยผู้ทำบัญชี</span>` : `<span class="conf ${low ? "lo" : ""}"><i style="width:${r[8]}%"></i></span><small class="num">${r[8]}%</small>`) : "";
+  const why = phase >= 3 && !dup ? `<small>${clsEdited.has(i) ? "จำไว้สำหรับผู้ขายรายนี้ครั้งต่อไป" : r[9]}${r[10] === "vatx" ? " · ภาษีซื้อต้องห้าม รวมเข้าค่าใช้จ่าย" : ""}</small>` : "";
+  return `<tr class="${dup && phase >= 2 ? "s-dup" : low && phase >= 3 ? "s-warn" : phase >= 3 ? "s-ok" : ""}"><td>${i + 1}</td><td><b>${r[2]}</b><small>${r[3]} · ${r[1]}</small></td><td class="r">${fmt(r[4] + r[5])}</td><td>${chk} ${dupc}</td><td>${code}${why}</td><td style="white-space:nowrap">${conf}</td></tr>`;
+}
+function clsDraw(phase, upto = CLS.length) {
+  $("#clsT").innerHTML = `<thead><tr class="hdr"><td>#</td><td>เอกสาร</td><td class="r">ยอดรวม</td><td>ตรวจ · ซ้ำ</td><td>รหัสบัญชีที่เสนอ และเหตุผล</td><td>มั่นใจ</td></tr></thead><tbody>${CLS.map((r, i) => clsRow(r, i, i < upto ? phase : phase - 1)).join("")}</tbody>`;
+  $$("#clsT .coa").forEach(s => s.onchange = () => { const i = +s.dataset.i; CLS[i][7] = s.value; clsEdited.add(i); clsDraw(3); clsOut(clsExported); });
+}
+function clsOut(show) {
+  const rows = CLS.filter(r => r[10] !== "dup"), review = CLS.filter((r, i) => r[10] !== "dup" && r[8] < 85 && !clsEdited.has(i)).length;
+  const sum = `<div class="wht-sum"><span class="pill">${CLS.length} ใบ</span><span class="pill g">ส่งออก ${rows.length}</span><span class="pill">ซ้ำ 1</span><span class="pill ${review ? "a" : "g"}">ให้คนตรวจ ${review}</span><span class="pill">ภาษีซื้อต้องห้ามรวมเข้าค่าใช้จ่าย 2</span></div>`;
+  if (!show) { $("#clsOut").innerHTML = sum + `<button class="btn go sm" type="button" id="clsExp" style="margin-top:12px">ส่งออกไฟล์นำเข้า PEAK</button>`; $("#clsExp").onclick = () => { clsExported = true; clsSteps(4); clsOut(true); }; return; }
+  const line = r => { const vx = r[10] === "vatx"; return [r[0], r[1], r[2], r[7], vx ? r[4] + r[5] : r[4], vx ? 0 : r[5], r[6], r[4] + r[5] - r[6]]; };
+  const L = rows.map(line), tot = k => L.reduce((a, x) => a + x[k], 0);
+  $("#clsOut").innerHTML = sum + `<div class="file" style="margin-top:12px"><b>PEAK_นำเข้าค่าใช้จ่าย_สยามคลีนนิ่ง_2569-10.xlsx</b><small>${rows.length} รายการ · เดบิตเท่ากับเครดิต ✓</small><i style="width:100%"></i></div>
+  <div class="scroll-x" style="margin-top:10px"><table class="sheet"><thead><tr class="hdr"><td>วันที่</td><td>เลขที่</td><td>ผู้ขาย</td><td>รหัสบัญชี</td><td class="r">มูลค่า</td><td class="r">ภาษีซื้อ</td><td class="r">หัก ณ ที่จ่าย</td><td class="r">ยอดจ่าย</td></tr></thead><tbody>${L.map(x => `<tr class="fade-in"><td>${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td><td>${x[3]} ${coaName(x[3])}</td><td class="r">${fmt(x[4])}</td><td class="r">${fmt(x[5])}</td><td class="r">${fmt(x[6])}</td><td class="r">${fmt(x[7])}</td></tr>`).join("")}<tr class="hdr"><td colspan="4">รวม</td><td class="r">${fmt(tot(4))}</td><td class="r">${fmt(tot(5))}</td><td class="r">${fmt(tot(6))}</td><td class="r">${fmt(tot(7))}</td></tr></tbody></table></div>
+  <p class="note">ตัวอย่างโครงสร้างไฟล์ คอลัมน์จริงจะตั้งให้ตรงกับแม่แบบนำเข้าของ PEAK ที่สำนักงานใช้ ไฟล์จริงใส่เลขผู้เสียภาษีเต็ม ส่วนบนหน้าจอแสดงแบบปิดบัง</p>`;
+}
+demo($("#demoCls"), () => { CLS = CLS0.map(r => r.slice()); clsEdited = new Set(); clsExported = true; clsSteps(4); clsDraw(3); clsOut(true); }, async w => {
+  CLS = CLS0.map(r => r.slice()); clsEdited = new Set(); clsExported = false; $("#clsOut").innerHTML = "";
+  for (let ph = 1; ph <= 3; ph++) { clsSteps(ph - 1); for (let i = 0; i <= CLS.length; i += (ph === 3 ? 1 : 5)) { clsDraw(ph, Math.min(i, CLS.length)); await w(ph === 3 ? 360 : 300); } clsDraw(ph); }
+  clsSteps(3); clsOut(false); await w(1200); clsExported = true; clsSteps(4); clsOut(true);
+});
+
 /* ---------- Day 7: due dates ---------- */
 const HOL = { "2026-12-05": "วันพ่อแห่งชาติ", "2026-12-10": "วันรัฐธรรมนูญ", "2026-12-31": "วันสิ้นปี", "2027-01-01": "วันขึ้นปีใหม่", "2027-04-06": "วันจักรี", "2027-04-13": "วันสงกรานต์", "2027-04-14": "วันสงกรานต์", "2027-04-15": "วันสงกรานต์" };
 const key = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
@@ -2142,6 +2230,7 @@ const STEPS = [
   ["day3", "วันที่ 3 · ซิงค์จาก Google Sheets Excel อีเมล ธนาคาร POS", 13000],
   ["day4", "วันที่ 4 · เงินเดือนเป็น ภ.ง.ด.1 และประกันสังคม", 8000],
   ["day5", "วันที่ 5 · จัดประเภทการจ่ายทั้งเดือน และ 50 ทวิ", 11000],
+  ["day6", "วันที่ 6 · AI จัดประเภท เสนอรหัสบัญชี ส่งไฟล์นำเข้า PEAK", 13000],
   ["day7", "วันที่ 7 · กำหนดยื่นคำนวณให้อัตโนมัติ", 8000],
   ["day10", "วันที่ 10 · ภ.พ.30 ต้องชำระ ขอคืน หรือมีเครดิตยกมา", 9000],
   ["day12", "วันที่ 12 · เจ้าของกิจการอนุมัติและส่งสลิป", 9500],
