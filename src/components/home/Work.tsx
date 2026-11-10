@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { AnimatePresence, motion, useMotionValue, useSpring } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { gsap, ScrollTrigger, ScrambleText, usePrefersReducedMotion, RevealOnScroll } from '../../lib/motion';
 import { projects, type Project } from '../../data/projects';
@@ -71,11 +71,16 @@ function Plate({ project, index, total }: { project: Project; index: number; tot
             aria-label={`${project.title}: ${project.tagline ?? project.role}. Case study ${index + 1} of ${total}.`}
         >
             <div className="order-2 md:order-1 md:col-span-5">
-                <div className="flex items-baseline gap-3 font-mono text-[10px] uppercase tracking-[0.28em]">
+                <div className="flex items-baseline gap-3 font-mono text-[11px] uppercase tracking-[0.28em]">
                     <span className="tabular-nums text-text-mute">{String(index + 1).padStart(2, '0')}</span>
                     <span style={{ color: project.accent }}>{project.badge ?? project.role}</span>
                 </div>
-                <h3 className="mt-4 text-4xl leading-[0.92] tracking-[-0.02em] text-text-strong transition-transform duration-500 [transition-timing-function:var(--ease-out-expo)] group-hover:translate-x-2 md:text-6xl lg:text-7xl">
+                {/* Long titles step down a size so the plate never outgrows its stage. */}
+                <h3
+                    className={`mt-4 text-4xl leading-[0.92] tracking-[-0.02em] text-text-strong transition-transform duration-500 [transition-timing-function:var(--ease-out-expo)] group-hover:translate-x-2 ${
+                        project.title.length > 20 ? 'md:text-5xl lg:text-[3.5rem]' : 'md:text-6xl lg:text-7xl'
+                    }`}
+                >
                     {project.title}
                 </h3>
                 {project.tagline && <p className="mt-4 font-serif text-xl italic text-text md:text-2xl">{project.tagline}</p>}
@@ -85,7 +90,7 @@ function Plate({ project, index, total }: { project: Project; index: number; tot
                         {isExternal(project) ? 'Visit live' : 'Open case study'}
                         <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
                     </span>
-                    <span className="hidden font-mono text-[10px] uppercase tracking-[0.2em] text-text-mute lg:inline">{project.role}</span>
+                    <span className="hidden font-mono text-[11px] uppercase tracking-[0.2em] text-text-mute lg:inline">{project.role}</span>
                 </div>
             </div>
             <div className="order-1 md:order-2 md:col-span-7">
@@ -117,10 +122,25 @@ function Theatre() {
             const p = featured[i];
             if (!sceneOff) sceneBus.apply({ formation: p.formation ?? 'network', accent: p.accent, chaos: 0.12, mode: 'full', repel: 1 });
         };
+        // The track is scroll-driven but dwells on each plate: scroll moves
+        // it only through the middle of each step, so wherever the visitor
+        // stops, a whole case study is in frame rather than two halves.
+        const dwell = (p: number) => {
+            const s = p * (n - 1);
+            const i = Math.min(n - 2, Math.floor(s));
+            const f = Math.min(1, Math.max(0, (s - i - 0.28) / 0.44));
+            return (i + f * f * (3 - 2 * f)) / (n - 1);
+        };
         const ctx = gsap.context(() => {
             gsap.to(track, {
-                x: () => -(track.scrollWidth - window.innerWidth),
-                ease: 'none',
+                // First plate to last plate, exactly: every plate rests on the
+                // same left edge at any viewport width.
+                x: () => {
+                    const first = track.firstElementChild as HTMLElement | null;
+                    const last = track.lastElementChild as HTMLElement | null;
+                    return first && last ? -(last.offsetLeft - first.offsetLeft) : 0;
+                },
+                ease: dwell,
                 scrollTrigger: {
                     trigger: section,
                     start: 'top top',
@@ -185,9 +205,10 @@ function Theatre() {
                 />
                 <div className="relative mx-auto flex w-full max-w-6xl items-end justify-between gap-6 px-10 pt-24">
                     <Heading />
-                    <p className="hidden max-w-xs pb-2 text-right font-mono text-[10px] uppercase leading-relaxed tracking-[0.24em] text-text-mute lg:block">
-                        Five case studies · scroll or press ← → <br />
-                        the background changes with each one
+                    <p className="hidden max-w-xs pb-2 text-right text-sm font-light leading-relaxed text-text-mute lg:block">
+                        Five case studies. Scroll, or use the arrows.
+                        <br />
+                        The background changes with each one.
                     </p>
                 </div>
 
@@ -209,7 +230,7 @@ function Theatre() {
                 </div>
 
                 {/* Counter + progress: always know where you are. */}
-                <div className="relative mx-auto flex w-full max-w-6xl items-center gap-6 px-10 pb-10 font-mono text-[10px] uppercase tracking-[0.28em] text-text-mute">
+                <div className="relative mx-auto flex w-full max-w-6xl items-center gap-6 px-10 pb-10 font-mono text-[11px] uppercase tracking-[0.28em] text-text-mute">
                     <span className="tabular-nums text-text-strong">
                         {String(active + 1).padStart(2, '0')} <span className="text-text-mute">/ {String(n).padStart(2, '0')}</span>
                     </span>
@@ -231,7 +252,26 @@ function Theatre() {
                             </button>
                         ))}
                     </div>
-                    <span className="hidden truncate md:inline">{featured[active].title}</span>
+                    <span className="hidden max-w-[16rem] truncate md:inline">{featured[active].title}</span>
+                    <div className="flex items-center gap-2">
+                        {(
+                            [
+                                ['Previous case study', active - 1, ArrowLeft],
+                                ['Next case study', active + 1, ArrowRight],
+                            ] as const
+                        ).map(([label, to, Icon]) => (
+                            <button
+                                key={label}
+                                type="button"
+                                aria-label={label}
+                                disabled={to < 0 || to > n - 1}
+                                onClick={() => goTo(to)}
+                                className="flex h-10 w-10 items-center justify-center rounded-full border border-hairline-strong text-text-strong transition-colors hover:border-signal hover:bg-signal/10 disabled:cursor-default disabled:border-hairline disabled:text-text-mute/40 disabled:hover:bg-transparent"
+                            >
+                                <Icon className="h-4 w-4" aria-hidden="true" />
+                            </button>
+                        ))}
+                    </div>
                 </div>
             </div>
         </section>
@@ -292,11 +332,13 @@ function IndexRow({ project, onHover }: { project: Project; onHover: (p: Project
                     onHover
                     className={`truncate text-base font-medium tracking-tight text-text-strong md:text-lg ${agent ? 'font-mono !text-sm md:!text-base' : ''}`}
                 />
+                {/* Phones have no room for the tagline column: it sits under the name. */}
+                <span className="mt-0.5 block truncate text-xs font-light text-text-mute sm:hidden">{project.tagline ?? project.role}</span>
             </span>
-            <span className="hidden truncate font-mono text-[10px] uppercase tracking-[0.18em] text-text-mute sm:col-span-4 sm:block">
+            <span className="hidden truncate font-mono text-[11px] uppercase tracking-[0.18em] text-text-mute sm:col-span-4 sm:block">
                 {project.tagline ?? project.role}
             </span>
-            <span className="col-span-3 truncate text-right font-mono text-[10px] uppercase tracking-[0.18em] text-text-mute sm:col-span-1">
+            <span className="col-span-3 truncate text-right font-mono text-[11px] uppercase tracking-[0.18em] text-text-mute sm:col-span-1">
                 {agent ? 'Live' : project.tier === 'insight' ? 'Story' : 'Build'}
             </span>
             <span className="col-span-1 flex justify-end">
@@ -349,7 +391,7 @@ function Index() {
             >
                 <div className="flex flex-wrap items-end justify-between gap-6 border-b border-hairline pb-6">
                     <div>
-                        <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-signal">Index</p>
+                        <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-signal">Index</p>
                         <p className="mt-2 max-w-md text-sm font-light text-text-mute">
                             Agents in production. Data stories. Lab builds, often shipped in days.
                         </p>
@@ -362,7 +404,7 @@ function Index() {
                                 role="radio"
                                 aria-checked={filter === f.id}
                                 onClick={() => setFilter(f.id)}
-                                className={`relative rounded-full border px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.24em] transition-colors ${
+                                className={`relative rounded-full border px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.24em] transition-colors ${
                                     filter === f.id ? 'border-violet-400/40 text-text-strong' : 'border-hairline text-text-mute hover:text-text-strong'
                                 }`}
                             >

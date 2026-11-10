@@ -41,7 +41,7 @@ function Details({ job }: { job: Job }) {
                 aria-expanded={open}
                 aria-controls={id}
                 onClick={() => setOpen((o) => !o)}
-                className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.28em] text-text-mute transition-colors hover:text-text-strong"
+                className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.28em] text-text-mute transition-colors hover:text-text-strong"
             >
                 {open ? 'Hide detail' : 'Full detail'}
                 <ChevronDown className={`h-3 w-3 transition-transform ${open ? 'rotate-180' : ''}`} aria-hidden="true" />
@@ -75,14 +75,14 @@ function Pass({ job, index, current }: { job: Job; index: number; current?: bool
     const from = index > 0 ? career[index - 1].code : 'ORIGIN';
     return (
         <article className="relative overflow-hidden rounded-xl border border-hairline bg-bg">
-            <header className="flex items-center justify-between gap-4 border-b border-dashed border-hairline-strong px-5 py-3 font-mono text-[10px] uppercase tracking-[0.24em] text-text-mute">
-                <span className="tabular-nums">
+            <header className="flex items-center justify-between gap-4 border-b border-dashed border-hairline-strong px-5 py-3 font-mono text-[11px] uppercase tracking-[0.24em] text-text-mute">
+                <span className="shrink-0 whitespace-nowrap tabular-nums">
                     Leg {String(index + 1).padStart(2, '0')} / {String(career.length).padStart(2, '0')}
                 </span>
                 <span className="truncate">
                     {from} <span className="text-signal">→</span> {job.code}
                 </span>
-                <span className="tabular-nums text-text-strong">{job.year}</span>
+                <span className="shrink-0 tabular-nums text-text-strong">{job.year}</span>
             </header>
             <div className="px-5 pb-5 pt-4">
                 <div className="flex items-start justify-between gap-4">
@@ -91,14 +91,14 @@ function Pass({ job, index, current }: { job: Job; index: number; current?: bool
                         <p className="mt-1 text-sm text-text">{job.role}</p>
                     </div>
                     {current && (
-                        <span className="mt-1 inline-flex shrink-0 items-center gap-1.5 rounded-full border border-violet-400/30 px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.24em] text-signal">
+                        <span className="mt-1 inline-flex shrink-0 items-center gap-1.5 rounded-full border border-violet-400/30 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.24em] text-signal">
                             <span className="h-1 w-1 animate-pulse rounded-full bg-violet-400" aria-hidden="true" />
                             Now
                         </span>
                     )}
                 </div>
                 <p className="mt-4 font-serif text-lg italic leading-snug text-text-strong md:text-xl">{job.headline}</p>
-                <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.2em] text-text-mute">{job.period}</p>
+                <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.2em] text-text-mute">{job.period}</p>
                 <Details job={job} />
             </div>
         </article>
@@ -241,7 +241,7 @@ function RouteStage() {
                             className={`block h-2 w-2 rounded-full transition-all duration-500 ${i <= active ? 'bg-violet-400' : 'bg-text-mute/50'} ${i === active ? 'scale-150 shadow-[0_0_18px_rgba(139,92,246,0.6)]' : ''}`}
                         />
                         <span
-                            className={`absolute left-1/2 top-full -translate-x-1/2 whitespace-nowrap text-center font-mono text-[9px] uppercase tracking-[0.24em] transition-colors ${i === active ? 'text-text-strong' : 'text-text-mute group-hover:text-text'}`}
+                            className={`absolute left-1/2 top-full -translate-x-1/2 whitespace-nowrap text-center font-mono text-[10px] uppercase tracking-[0.24em] transition-colors ${i === active ? 'text-text-strong' : 'text-text-mute group-hover:text-text'}`}
                         >
                             {c.code}
                             <span className="block tabular-nums opacity-70">{c.year}</span>
