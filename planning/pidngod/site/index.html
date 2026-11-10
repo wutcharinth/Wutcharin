@@ -507,6 +507,123 @@ body.pitching .day,body.pitching .band{transition:opacity .5s}
 .pp-tabs{padding:10px 14px;border-bottom:1px solid var(--rule)}
 .pp tr.refund td{background:var(--blue-soft);color:var(--blue)}
 
+
+/* ---- v4: sync hub, payroll, firm ---- */
+.span2{grid-column:2 / -1}
+@media (max-width:960px){.span2{grid-column:auto}}
+.flowbar{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--rule);overflow:hidden}
+.fb-in{display:flex;gap:4px;flex-wrap:wrap;max-width:40%}
+.fb-in i,.sb{font-style:normal;display:inline-grid;place-items:center;min-width:30px;height:24px;padding:0 6px;border-radius:6px;background:var(--c);color:#fff;font-weight:700;font-size:.66rem}
+.fb-line{flex:1;min-width:20px;height:2px;background:repeating-linear-gradient(90deg,var(--ledger) 0 6px,transparent 6px 14px);background-size:14px 2px;animation:flow 0.6s linear infinite;opacity:.7}
+@keyframes flow{to{background-position:14px 0}}
+.fb-core{background:var(--ink);color:var(--paper);border-radius:12px;padding:8px 14px;font-family:var(--f-display);font-weight:800;text-align:center;line-height:1.2}
+.fb-core small{display:block;font-family:var(--f-body);font-weight:500;font-size:.62rem;opacity:.75}
+.fb-out{display:flex;flex-direction:column;gap:3px;font-size:.7rem}
+.fb-out span{border:1px solid var(--rule);border-radius:6px;padding:1px 8px;background:var(--sheet-2);white-space:nowrap}
+@media (max-width:640px){.fb-out{display:none}.fb-in{max-width:60%}}
+.sync{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,9fr)}
+@media (max-width:860px){.sync{grid-template-columns:minmax(0,1fr)}.src-list{flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--rule)}.src{flex:0 0 auto;max-width:240px}}
+.src-list{display:flex;flex-direction:column;border-right:1px solid var(--rule);padding:8px}
+.src{display:flex;gap:10px;align-items:center;text-align:left;border:1px solid transparent;background:transparent;border-radius:10px;padding:8px 10px;cursor:pointer}
+.src[aria-pressed="true"]{background:var(--sheet-2);border-color:var(--rule)}
+.src b{display:block;font-size:.85rem}
+.src small{display:block;font-size:.7rem;color:var(--muted);line-height:1.3}
+.src-detail{padding:16px 18px;min-width:0;min-height:380px}
+.sd-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.sd-head > div{flex:1;min-width:0}
+.sd-head small{display:block;color:var(--muted);font-size:.74rem}
+.map{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.map span{font-size:.72rem;border:1px dashed var(--rule);border-radius:6px;padding:2px 8px;color:var(--muted);transition:all .3s}
+.map span.on,.map span:not([class]){border-style:solid;color:var(--ink);background:var(--sheet-2)}
+.map em{font-style:normal;color:var(--ledger);font-family:var(--f-mono);font-size:.66rem}
+.sheet{width:100%;border-collapse:collapse;font-size:.74rem;min-width:520px}
+.sheet th{background:var(--sheet-2);color:var(--muted);font-weight:500;font-size:.66rem;border:1px solid var(--rule);padding:2px 6px}
+.sheet td{border:1px solid var(--rule);padding:4px 6px;transition:background .3s}
+.sheet .hdr td{background:var(--sheet-2);font-weight:600}
+.sheet td.r{text-align:right;font-family:var(--f-mono)}
+.sheet small{color:var(--muted);font-size:.66rem}
+.sheet tr.s-ok td{background:color-mix(in srgb,var(--ledger-soft) 55%,transparent)}
+.sheet tr.s-warn td{background:color-mix(in srgb,var(--amber-soft) 70%,transparent)}
+.sheet tr.s-no td{background:color-mix(in srgb,var(--stamp-soft) 70%,transparent)}
+.sheet tr.s-dup td{color:var(--muted);text-decoration:line-through}
+.pill.r{background:var(--stamp-soft);color:var(--stamp);border-color:transparent}
+.pill.b{background:var(--blue-soft);color:var(--blue);border-color:transparent}
+.slog{margin-top:10px;border-top:1px dashed var(--rule);padding-top:8px;display:grid;gap:3px;font-size:.76rem}
+.slog div{display:grid;grid-template-columns:4.6em minmax(0,1fr);gap:8px}
+.slog .num{color:var(--muted);font-size:.7rem}
+.file{display:inline-grid;gap:3px;font-size:.74rem;border:1px solid var(--rule);border-radius:8px;padding:4px 10px;background:var(--sheet-2)}
+.file i{display:block;height:3px;background:var(--ledger);border-radius:2px;transition:width .5s}
+.addr{border:1px solid var(--rule);background:var(--sheet-2);border-radius:10px;padding:10px 12px;font-size:.8rem;margin-bottom:10px}
+.addr b{display:block;font-size:.95rem;color:var(--ledger)}
+.addr small{color:var(--muted)}
+.inbox{display:grid;gap:6px}
+.mail{display:grid;grid-template-columns:10px minmax(0,1fr) minmax(0,auto);gap:10px;align-items:start;border-bottom:1px solid var(--rule);padding:8px 0;font-size:.78rem}
+.mail b{display:block}.mail small{display:block;color:var(--muted);font-size:.7rem}
+.mail .res{text-align:right;max-width:46%}
+.dot{width:8px;height:8px;border-radius:50%;margin-top:6px;background:var(--rule)}
+.dot.s-ok{background:var(--ledger)}.dot.s-warn{background:var(--amber)}.dot.s-info{background:var(--blue)}
+.tree{font-size:.8rem;display:grid;gap:4px}
+.drf span{color:var(--ledger);font-size:.74rem}
+.bank{display:grid;gap:4px}
+.bkr{display:grid;grid-template-columns:3em minmax(0,1.2fr) 7em minmax(0,1.6fr);gap:8px;align-items:center;font-size:.76rem;padding:6px 8px;border-radius:8px;border:1px solid var(--rule);transition:background .3s}
+.bkr b.in{color:var(--ledger)}
+.bkr b{text-align:right}
+.bkr .link{color:var(--muted);font-size:.72rem}
+.bkr.s-ok{background:color-mix(in srgb,var(--ledger-soft) 55%,transparent)}.bkr.s-ok .link{color:var(--ledger)}
+.bkr.s-warn{background:var(--amber-soft)}.bkr.s-warn .link{color:var(--amber)}
+.bkr.s-info .link{color:var(--blue)}
+@media (max-width:560px){.bkr{grid-template-columns:3em minmax(0,1fr) auto}.bkr .link{grid-column:1/-1}}
+.days{display:grid;grid-template-columns:repeat(31,minmax(0,1fr));gap:2px;height:70px;align-items:end;margin:6px 0 10px}
+.days i{background:var(--amber);border-radius:2px 2px 0 0;transition:height .4s}
+.plat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.plat div{border:1px solid var(--rule);border-radius:10px;padding:8px 10px;font-size:.74rem;opacity:.35;transition:opacity .4s}
+.plat div.on{opacity:1}
+.plat b{display:block}.plat .num{font-size:.95rem}.plat small{display:block;color:var(--muted);font-size:.66rem}
+@media (max-width:560px){.plat{grid-template-columns:minmax(0,1fr)}}
+.targets{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.jr{border:1px solid var(--rule);border-radius:10px;padding:8px 12px;margin-bottom:8px;font-size:.76rem;transition:opacity .4s}
+.jr.dim{opacity:.3}
+.jr table{width:100%;border-collapse:collapse;margin-top:4px}
+.jr td{padding:2px 0}.jr td.r{width:7.5em;text-align:right}
+.payt{width:100%;border-collapse:collapse;font-size:.8rem;min-width:520px}
+.payt th,.payt td{padding:6px 10px;border-bottom:1px solid var(--rule);text-align:left}
+.payt th{font-size:.72rem;color:var(--muted);font-weight:600}
+.payt .r{text-align:right}
+.payt small{display:block;color:var(--muted);font-size:.68rem}
+.payt input{width:7.5em;text-align:right;border:1px solid var(--rule);background:var(--sheet-2);border-radius:6px;padding:3px 6px;font-size:.8rem}
+.staff{display:grid;gap:10px}
+.sc{border:1px solid var(--rule);border-radius:12px;padding:10px 12px;display:grid;gap:6px}
+.sh{display:flex;align-items:center;gap:10px}
+.sh div{flex:1}.sh small{display:block;color:var(--muted);font-size:.72rem}
+.av2{width:32px;height:32px;border-radius:50%;background:var(--ledger-soft);color:var(--ledger);display:grid;place-items:center;font-weight:700}
+.lb small{font-size:.7rem;color:var(--muted)}
+.lb .tr{height:7px;background:var(--sheet-2);border:1px solid var(--rule);border-radius:4px;overflow:hidden}
+.lb .tr i{display:block;height:100%;background:var(--amber);transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.lb .tr i.g{background:var(--ledger)}
+.revq{display:grid;gap:6px}
+.rv-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;align-items:center;border:1px solid var(--rule);border-radius:10px;padding:8px 12px;font-size:.8rem;transition:background .3s}
+.rv-row small{display:block;color:var(--muted);font-size:.72rem}
+.rv-row.s-ok{background:color-mix(in srgb,var(--ledger-soft) 45%,transparent)}
+.rv-row.s-back{background:var(--amber-soft)}
+.cm{margin-top:4px;color:var(--amber);font-size:.74rem}
+.fees{min-width:0}
+.ask{display:grid;gap:10px}
+.qchips{display:flex;flex-wrap:wrap;gap:6px}
+.qchips .tag{cursor:pointer}
+.qchips .tag.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.qbox{border:1px solid var(--rule);border-radius:10px;padding:10px 12px;background:var(--sheet-2);font-size:.88rem;min-height:44px}
+.abox{border-left:3px solid var(--ledger);padding:4px 0 4px 12px;font-size:.84rem;min-height:120px;display:grid;gap:6px;align-content:start}
+.abox small{color:var(--muted);font-size:.76rem}
+.ans{margin:0;padding-left:1.1em;display:grid;gap:3px}
+.ans small{color:var(--muted)}
+.spark{width:160px;height:40px}
+.tl{display:grid;gap:0;margin-top:8px;border-left:2px solid var(--rule);padding-left:14px}
+.tl div{display:grid;grid-template-columns:7.2em 9em minmax(0,1fr);gap:8px;padding:6px 0;font-size:.78rem;position:relative}
+.tl div::before{content:"";position:absolute;left:-20px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--sheet);border:2px solid var(--ledger)}
+.tl .num{color:var(--muted);font-size:.72rem}
+@media (max-width:560px){.tl div{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:860px){.sync .src-list{flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--rule)}.sync .src{flex:0 0 auto;max-width:230px}.src-detail{min-height:0}}
+
 @media (prefers-reduced-motion: reduce){.rv{animation:none!important}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}html{scroll-behavior:auto}}
 </style>
 
@@ -744,6 +861,63 @@ body.pitching .day,body.pitching .band{transition:opacity .5s}
   </section>
 
   <!-- Day 5 -->
+  <section class="day" id="day3" data-day="3" data-label="ซิงค์ข้อมูลจากทุกแหล่ง">
+    <div class="wrap">
+      <div class="day-grid">
+        <div class="day-mark"><small>วันที่</small><b>3</b><span>ซิงค์ข้อมูล</span></div>
+        <div class="copy rv span2">
+          <div class="eyebrow">Google Sheets · Excel · อีเมล · Drive · ธนาคาร · POS · โปรแกรมบัญชี</div>
+          <h2>ข้อมูลอยู่ที่ไหนก็ได้ ปิดงวดดึงเข้ามาที่แฟ้มเดียว แล้วส่งผลกลับให้</h2>
+          <p class="sub">ลูกค้าบางรายจดยอดขายใน Google Sheets บางรายส่ง Excel บางรายส่งอีเมล ปิดงวดเชื่อมได้ทุกทาง จับคู่คอลัมน์ให้อัตโนมัติ ตรวจด้วยกฎชุดเดียวกับเอกสารจาก LINE และซิงค์ซ้ำได้โดยไม่สร้างรายการซ้ำ เลือกแหล่งข้อมูลทางซ้ายเพื่อดูการทำงาน</p>
+        </div>
+      </div>
+      <div class="demo rv" id="demoSync" style="margin-top:28px">
+        <div class="demo-bar"><span>แหล่งข้อมูลของ บจ. สยามคลีนนิ่ง และลูกค้าอื่น</span><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
+        <div class="flowbar" aria-hidden="true">
+          <div class="fb-in"><i style="--c:#06C755">LINE</i><i style="--c:#C5221F">@</i><i style="--c:#1E8E3E">GS</i><i style="--c:#1D6F42">XL</i><i style="--c:#1A73E8">DR</i><i style="--c:#0B6A4E">฿</i><i style="--c:#9A5F00">POS</i></div>
+          <div class="fb-line"></div>
+          <div class="fb-core">ปิดงวด<small>ตรวจ · จัดเข้าแฟ้ม · ไม่ซ้ำ</small></div>
+          <div class="fb-line"></div>
+          <div class="fb-out"><span>แบบภาษี</span><span>รายงาน</span><span>สมุดรายวัน</span><span>Google Sheets</span></div>
+        </div>
+        <div class="sync">
+          <div class="src-list" id="srcList" role="group" aria-label="แหล่งข้อมูล"></div>
+          <div class="src-detail" id="srcDetail"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="day" id="day4" data-day="4" data-label="เงินเดือน ภ.ง.ด.1 และประกันสังคม">
+    <div class="wrap day-grid flip">
+      <div class="day-mark"><small>วันที่</small><b>4</b><span>เงินเดือน</span></div>
+      <div class="demo-col rv">
+        <div class="demo" id="demoPay">
+          <div class="demo-bar">
+            <span>สรุปเงินเดือน ต.ค. 2569 · นำเข้าจาก Google Sheets</span>
+            <div class="seg" role="group" aria-label="เพดานค่าจ้างประกันสังคม">
+              <button type="button" data-ceil="15000" aria-pressed="false">เพดาน 15,000</button>
+              <button type="button" data-ceil="17500" aria-pressed="true">เพดาน 17,500</button>
+            </div>
+          </div>
+          <div class="scroll-x"><table class="payt" id="payT"></table></div>
+          <div class="btot" id="payTot"></div>
+          <div class="pad" style="padding-top:12px"><p class="note" style="margin:0">ภาษีเงินเดือนเป็นการประมาณทั้งปี หักค่าใช้จ่าย 50% ไม่เกิน 100,000 ลดหย่อนส่วนตัว 60,000 และเงินสมทบประกันสังคม พนักงานแจ้งลดหย่อนอื่นด้วยแบบ ล.ย.01 ได้ แก้เงินเดือนในตารางเพื่อดูผลทันที ชื่อพนักงานเป็นชื่อสมมติ</p></div>
+        </div>
+      </div>
+      <div class="copy rv">
+        <div class="eyebrow">เงินเดือน → ภ.ง.ด.1 · สปส.1-10</div>
+        <h2>ตารางเงินเดือนจาก Excel หรือ Google Sheets กลายเป็น ภ.ง.ด.1 และประกันสังคมในคลิกเดียว</h2>
+        <p class="sub">ระบบคำนวณเงินสมทบประกันสังคมตามเพดานค่าจ้างที่มีผลในเดือนนั้น และประมาณภาษีหัก ณ ที่จ่ายเงินเดือนทั้งปีให้ ลองสลับเพดานด้านบนเพื่อดูว่าเมื่อกฎเปลี่ยน ตัวเลขเปลี่ยนตามโดยไม่ต้องแก้โปรแกรม</p>
+        <ul class="ticks">
+          <li>เพดานค่าจ้าง 17,500 บาท ตั้งแต่ปี 2569 เก็บในตารางกฎ</li>
+          <li>ไฟล์ สปส.1-10 และ ภ.ง.ด.1 พร้อมยื่น</li>
+          <li>สิ้นปีรวมเป็น ภ.ง.ด.1ก และหนังสือรับรองให้พนักงานทุกคน</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <section class="day" id="day5" data-day="5" data-label="ภาษีหัก ณ ที่จ่าย และ 50 ทวิ">
     <div class="wrap day-grid">
       <div class="day-mark"><small>วันที่</small><b>5</b><span>หัก ณ ที่จ่าย</span></div>
@@ -903,6 +1077,29 @@ body.pitching .day,body.pitching .band{transition:opacity .5s}
             <div class="exp" id="exp"></div>
             <p class="note">การเชื่อมต่อกับ Express, PEAK และ FlowAccount อยู่ในแผนงาน ชื่อโปรแกรมเป็นของเจ้าของแต่ละราย</p>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="day" id="firm" data-day="21" data-label="บริหารสำนักงาน">
+    <div class="wrap day-grid">
+      <div class="day-mark"><small>ทุกวัน</small><b>★</b><span>บริหารสำนักงาน</span></div>
+      <div class="copy rv">
+        <div class="eyebrow">สำหรับเจ้าของสำนักงาน</div>
+        <h2>บริหารทีม ตรวจงาน เก็บค่าทำบัญชี และถามอะไรก็ได้เกี่ยวกับลูกค้าทั้งหมด</h2>
+        <p class="sub">เมื่อสำนักงานมีมากกว่าหนึ่งคน ปิดงวดช่วยแบ่งงาน ให้ผู้ตรวจอนุมัติก่อนยื่น ออกใบแจ้งหนี้ค่าทำบัญชีทาง LINE และตอบคำถามจากข้อมูลในสำนักงานของคุณเท่านั้น</p>
+        <ul class="ticks">
+          <li>เห็นภาระงานของแต่ละคน และเตือนก่อนถึงเพดาน 100 รายต่อผู้ทำบัญชี</li>
+          <li>ผู้จัดทำกับผู้ตรวจเป็นคนละคน ส่งกลับพร้อมความเห็นได้</li>
+          <li>ค่าทำบัญชีที่ลูกค้าหัก 3% ระบบรอรับ 50 ทวิ ให้</li>
+          <li>ทุกการแก้ไขและการเปิดดูข้อมูลส่วนบุคคลถูกบันทึก</li>
+        </ul>
+      </div>
+      <div class="demo-col rv">
+        <div class="demo" id="demoFirm">
+          <div class="demo-bar"><div class="tabs" id="firmTabs" role="group" aria-label="มุมมอง"></div><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
+          <div class="pad" id="firmBody"></div>
         </div>
       </div>
     </div>
@@ -1233,7 +1430,7 @@ const CHATS = [
   ] },
   { t: "ถามยอดภาษี", m: [
     { k: "me", h: "เดือนนี้ต้องจ่าย VAT ประมาณเท่าไรครับ จะได้เตรียมเงิน" },
-    { k: "bot", h: `<div class="card-mini"><h4>ประมาณการ ต.ค. 2569 จากเอกสาร 259 ใบ</h4><div class="row"><span>ภ.พ.30</span><b>฿70,738.70</b></div><div class="row"><span>ภ.ง.ด.3 และ 53</span><b>฿4,215.00</b></div><div class="row"><span>ประกันสังคม</span><b>฿9,450.00</b></div></div>` },
+    { k: "bot", h: `<div class="card-mini"><h4>ประมาณการ ต.ค. 2569 จากเอกสาร 259 ใบ</h4><div class="row"><span>ภ.พ.30</span><b>฿70,738.70</b></div><div class="row"><span>ภ.ง.ด.3 และ 53</span><b>฿4,215.00</b></div><div class="row"><span>ประกันสังคม</span><b>฿11,850.00</b></div></div>` },
     { k: "bot", h: `ยอดอาจเปลี่ยนเมื่อได้ Statement ธนาคารครบ ภ.พ.30 ครบกำหนดชำระวันที่ 23 พ.ย. ค่ะ` },
     { k: "quick", h: `<span>ดูรายละเอียด</span><span>เตือนก่อนครบกำหนด</span>` },
   ] },
@@ -1405,6 +1602,92 @@ function tinCheck() {
 }
 tinIn.addEventListener("input", tinCheck); tinCheck();
 
+/* ---------- Day 3: sync hub ---------- */
+const SYNC = [
+  { k: "gs", b: "GS", c: "#1E8E3E", n: "Google Sheets", s: "ยอดขายรายวัน · ร้านครัวคุณยาย", t: "ซิงค์ทุก 15 นาที" },
+  { k: "xl", b: "XL", c: "#1D6F42", n: "Excel / CSV", s: "ทะเบียนค่าใช้จ่าย · สยามคลีนนิ่ง", t: "อัปโหลดหรือลากวาง" },
+  { k: "em", b: "@", c: "#C5221F", n: "อีเมล", s: "ส่งต่อจาก Gmail หรือ Outlook", t: "ทันทีที่ได้รับ" },
+  { k: "dr", b: "DR", c: "#1A73E8", n: "Google Drive / OneDrive", s: "โฟลเดอร์ลูกค้า · 2569-10", t: "เฝ้าดูโฟลเดอร์" },
+  { k: "bk", b: "฿", c: "#0B6A4E", n: "Statement ธนาคาร", s: "PDF หรือ CSV · จับคู่กับเอกสาร", t: "ทุกธนาคารหลัก" },
+  { k: "pos", b: "POS", c: "#9A5F00", n: "POS และแอปเดลิเวอรี", s: "ยอดรายวัน · รายงานแพลตฟอร์ม", t: "รายวันและรายเดือน" },
+  { k: "acc", b: "⇄", c: "#5B4BC4", n: "ส่งออกโปรแกรมบัญชี", s: "Excel · Google Sheets · Express · PEAK · FlowAccount", t: "สมุดรายวัน" },
+];
+let srcIdx = 0;
+const st = s => ({ ok: ["g", "✓ เข้าแล้ว"], warn: ["a", "ตรวจเพิ่ม"], dup: ["", "ซ้ำ · ข้าม"], no: ["r", "ติด"], info: ["b", "ข้อมูล"], skip: ["", "ข้าม"] }[s]);
+const pillS = s => { const [c, l] = st(s); return `<span class="pill ${c}">${l}</span>`; };
+const logLine = (t, s) => `<div class="fade-in"><span class="num">${t}</span><span>${s}</span></div>`;
+const GS_ROWS = [["28/10/2569", "POS-2810", "ยอดขายหน้าร้าน", 19850, 1389.50, "ok"], ["29/10/2569", "POS-2910", "ยอดขายหน้าร้าน", 21120, 1478.40, "ok"], ["29/10/2569", "INV-0412", "บจ. จัดเลี้ยงสยาม", 12000, 840, "ok"], ["30/10/2569", "POS-3010", "ยอดขายหน้าร้าน", 18760, 1313.20, "ok"], ["30/10/2569", "INV-0412", "บจ. จัดเลี้ยงสยาม", 12000, 840, "dup"], ["31/10/2569", "POS-3110", "ยอดขายหน้าร้าน", 23604, 1625, "warn"]];
+const badTin = (() => { const t = withCheck("099999900099"); return t.slice(0, 12) + ((+t[12] + 1) % 10); })();
+const XL_ROWS = [["03/10/2026", "บจ. น้ำยาสะอาดไทย", withCheck("099999900013"), 1000, 70, "วัสดุสิ้นเปลือง"], ["09/10/2026", "บจ. เอเชียมอเตอร์ เซอร์วิส", withCheck("099999900012"), 6200, 434, "ซ่อมบำรุงยานพาหนะ"], ["14/10/2026", "บจ. กล่องกระดาษไทย", badTin, 3500, 245, "วัสดุสิ้นเปลือง"], ["20/10/2026", "บจ. ทองดีโลจิสติกส์", "0999999000047", 18500, 1295, "ค่าขนส่ง"], ["25/10/2026", "ร้านกาแฟดีดี", "", 450, 0, "รับรอง"]];
+const xlRes = r => r[2] && !tinValid(r[2]) ? ["no", "เลขผู้เสียภาษีผิดหลักตรวจสอบ"] : /ยานพาหนะ/.test(r[5]) ? ["warn", "ตรวจว่าเป็นรถยนต์นั่งหรือไม่ (ภาษีซื้อต้องห้าม)"] : !r[4] ? ["info", "ไม่มี VAT · ลงค่าใช้จ่าย"] : ["ok", "ผ่าน · VAT 7% ตรง"];
+const EMAILS = [["บจ. อินเทอร์เน็ตไทย", "ใบกำกับภาษีอิเล็กทรอนิกส์ ET2569100088", "XML + PDF", "ลายมือชื่อถูกต้อง · เข้าแฟ้ม ต.ค.", "ok"], ["มาลี (เจ้าของกิจการ)", "Fwd: ใบเสร็จค่าน้ำมัน 3 ใบ", "3 รูป", "เข้าคิว AI อ่าน 3 ใบ", "info"], ["บจ. ออฟฟิศเมท ซัพพลาย", "Statement of account ต.ค. 2569", "PDF", "เทียบยอดเจ้าหนี้ ตรง 4 ใบ · ขาด 1 ใบ", "warn"], ["ร้านค้าออนไลน์", "ลดสูงสุด 70% วันนี้เท่านั้น", "ไม่มี", "ไม่ใช่เอกสารบัญชี", "skip"]];
+const DR_FILES = [["ใบเสร็จ_ร้านป้าย.jpg", "คิว AI อ่าน", "info"], ["สัญญาเช่า_ค่าเช่า_ต.ค.pdf", "ค่าเช่า 30,000 → ภ.ง.ด.3 อัตรา 5%", "ok"], ["สรุปเงินเดือน_ต.ค.xlsx", "เงินเดือน 8 คน → ภ.ง.ด.1 และ สปส.1-10", "ok"], ["รูปครอบครัว.jpg", "ไม่ใช่เอกสารบัญชี · ข้าม", "skip"]];
+const BK_ROWS = [["02/10", "โอนออก ทองดีโลจิสติกส์", -18315, "ใบกำกับ TL-10-2569-88 + 50 ทวิ 2569/0041", "ok"], ["05/10", "รับโอน บจ. เมกะมอลล์", 145500, "ใบกำกับขาย SC-2569-1201 · ถูกหัก 3% (50 ทวิ 2569/1182)", "ok"], ["12/10", "ชำระ ร้านป้ายสวยงาม", -3210, "ใบกำกับภาษี 005/2569", "ok"], ["15/10", "หักบัญชี การไฟฟ้านครหลวง", -10550.20, "ใบแจ้งค่าไฟฟ้า ต.ค.", "ok"], ["18/10", "โอนออก ไม่ระบุผู้รับ", -4800, "ยังไม่มีเอกสาร · ขอทาง LINE แล้ว", "warn"], ["31/10", "ค่าธรรมเนียมธนาคาร", -25, "บันทึกค่าธรรมเนียมอัตโนมัติ", "info"]];
+const PLAT = [["แพลตฟอร์ม A", 128600], ["แพลตฟอร์ม B", 61900], ["แพลตฟอร์ม C", 32700]];
+let sseed = 3; const srnd = () => (sseed = (sseed * 16807) % 2147483647) / 2147483647;
+const POSD = Array.from({ length: 31 }, (_, i) => 9500 + srnd() * 6500 + (i % 7 >= 5 ? 3500 : 0));
+const posScale = 389200 / POSD.reduce((a, b) => a + b, 0); for (let i = 0; i < 31; i++) POSD[i] *= posScale;
+const JOURNAL = [["สมุดรายวันซื้อ · IV6910-0457 · ออฟฟิศเมท", [["5130 วัสดุสิ้นเปลือง", 2650, 0], ["1154 ภาษีซื้อ", 185.50, 0], ["2110 เจ้าหนี้การค้า", 0, 2835.50]]], ["สมุดรายวันจ่าย · ชำระทองดีโลจิสติกส์", [["2110 เจ้าหนี้การค้า", 18500, 0], ["2132 ภาษีหัก ณ ที่จ่ายค้างจ่าย", 0, 185], ["1112 เงินฝากธนาคาร KBank", 0, 18315]]]];
+function srcList() {
+  $("#srcList").innerHTML = SYNC.map((s, i) => `<button type="button" class="src" data-i="${i}" aria-pressed="${i === srcIdx}"><span class="sb" style="--c:${s.c}">${s.b}</span><span><b>${s.n}</b><small>${s.s}</small></span></button>`).join("");
+  $$("#srcList .src").forEach(b => b.onclick = () => { srcIdx = +b.dataset.i; syncDemo.play(); });
+}
+function srcHead(s, extra = "") { return `<div class="sd-head"><span class="sb" style="--c:${s.c}">${s.b}</span><div><b>${s.n}</b><small>${s.s} · ${s.t}</small></div>${extra}</div>`; }
+function srcRender(n, done) {
+  const s = SYNC[srcIdx], show = i => done || i < n;
+  let h = "";
+  if (s.k === "gs") {
+    h = srcHead(s, `<span class="pill g">เชื่อมแล้ว · อ่านอย่างเดียว</span>`) +
+      `<div class="map">${["A → วันที่", "B → เลขที่", "C → คู่ค้า", "D → มูลค่า", "E → VAT"].map(m => `<span>${m}</span>`).join("")}</div>
+      <div class="scroll-x"><table class="sheet"><thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th></th></tr><tr class="hdr"><td>1</td><td>วันที่</td><td>เลขที่</td><td>ลูกค้า</td><td>ยอดก่อนภาษี</td><td>VAT</td><td></td></tr></thead><tbody>${GS_ROWS.map((r, i) => `<tr class="${show(i) ? "s-" + r[5] : ""}"><td>${i + 2}</td><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td class="r">${fmt(r[3])}</td><td class="r">${fmt(r[4])}</td><td>${show(i) ? pillS(r[5]) : ""}</td></tr>`).join("")}</tbody></table></div>`;
+    if (done || n >= GS_ROWS.length) h += `<div class="slog">${logLine("10:15", "เพิ่ม 4 รายการเข้ารายงานภาษีขาย ต.ค.")}${logLine("10:15", "ข้ามแถว 6 ซ้ำกับแถว 4 (INV-0412)")}${logLine("10:15", "แถว 7: VAT ควรเป็น 1,652.28 ไม่ใช่ 1,625.00 ส่งให้ลูกค้าตรวจ")}${logLine("10:16", "อัปเดตแท็บ 'สรุปภาษีจากปิดงวด' ในชีตเดิมแล้ว")}</div>`;
+  } else if (s.k === "xl") {
+    h = srcHead(s, `<span class="file"><b>ทะเบียนค่าใช้จ่าย_ต.ค.xlsx</b><i style="width:${done || n > 0 ? 100 : 0}%"></i></span>`) +
+      `<div class="map">${[["Date", "วันที่", 99], ["Vendor", "ผู้ขาย", 98], ["Tax ID", "เลขผู้เสียภาษี", 99], ["Amount", "มูลค่า", 97], ["VAT", "ภาษีซื้อ", 99], ["Category", "หมวดบัญชี", 92]].map((m, i) => `<span class="${done || n > 0 ? "on" : ""}">${m[0]} → ${m[1]} <em>${m[2]}%</em></span>`).join("")}</div>
+      <div class="scroll-x"><table class="sheet"><thead><tr class="hdr"><td>Date</td><td>Vendor</td><td>Tax ID</td><td>Amount</td><td>VAT</td><td>ผลตรวจ</td></tr></thead><tbody>${XL_ROWS.map((r, i) => { const x = xlRes(r), on = done || i < n - 1; return `<tr class="${on ? "s-" + x[0] : ""}"><td>${r[0]}</td><td>${r[1]}</td><td class="num">${r[2] || "—"}</td><td class="r">${fmt(r[3])}</td><td class="r">${fmt(r[4])}</td><td>${on ? pillS(x[0]) + ` <small>${x[1]}</small>` : ""}</td></tr>`; }).join("")}</tbody></table></div>`;
+    if (done || n > XL_ROWS.length) h += `<div class="slog">${logLine("นำเข้า", "5 แถว · ผ่าน 2 · ตรวจเพิ่ม 1 · ข้อมูล 1 · ติด 1")}${logLine("จำไว้", "ครั้งหน้าไฟล์หัวตารางแบบนี้ จับคู่คอลัมน์ให้ทันที")}</div>`;
+  } else if (s.k === "em") {
+    h = srcHead(s) + `<div class="addr">อีเมลรับเอกสารของลูกค้ารายนี้ <b class="num">siamcleaning@in.pidngod</b><small>ตั้งกฎส่งต่อใน Gmail หรือ Outlook ครั้งเดียว เอกสารเข้าแฟ้มเอง</small></div>
+      <div class="inbox">${EMAILS.map((e, i) => show(i) ? `<div class="mail fade-in"><span class="dot s-${e[4]}"></span><div><b>${e[0]}</b><span>${e[1]}</span><small>แนบ: ${e[2]}</small></div><div class="res">${pillS(e[4])}<small>${e[3]}</small></div></div>` : "").join("")}</div>`;
+  } else if (s.k === "dr") {
+    h = srcHead(s) + `<div class="tree"><div>📁 ลูกค้า</div><div style="padding-left:16px">📁 สยามคลีนนิ่ง</div><div style="padding-left:32px">📁 2569-10 <span class="pill g">เฝ้าดูอยู่</span></div>${DR_FILES.map((f, i) => show(i) ? `<div class="drf fade-in" style="padding-left:48px">📄 ${f[0]} <span>→ ${f[1]}</span></div>` : "").join("")}<div style="padding-left:32px;margin-top:6px">📁 รายงานจากปิดงวด ${done || n >= DR_FILES.length ? `<span class="pill g">+ ภ.พ.30.pdf · รายงานภาษีซื้อ.xlsx · รายงานภาษีขาย.xlsx</span>` : ""}</div></div>`;
+  } else if (s.k === "bk") {
+    h = srcHead(s, `<span class="pill">KBank · กระแสรายวัน · ต.ค. 2569</span>`) + `<div class="bank">${BK_ROWS.map((r, i) => `<div class="bkr ${show(i) ? "s-" + r[4] : ""}"><span class="num">${r[0]}</span><span>${r[1]}</span><b class="num ${r[2] > 0 ? "in" : ""}">${r[2] > 0 ? "+" : ""}${fmt(r[2])}</b><span class="link">${show(i) ? `${r[4] === "ok" ? "⟷" : r[4] === "warn" ? "?" : "＋"} ${r[3]}` : "กำลังจับคู่…"}</span></div>`).join("")}</div>`;
+    if (done || n >= BK_ROWS.length) h += `<div class="slog">${logLine("สรุป", "43 รายการ · จับคู่อัตโนมัติ 39 · ขอเอกสาร 4")}${logLine("ยอด", "ยอดคงเหลือตาม Statement ตรงกับบัญชีเงินฝาก 1112 ✓")}</div>`;
+  } else if (s.k === "pos") {
+    const max = Math.max(...POSD);
+    h = srcHead(s) + `<div class="eyebrow" style="margin-top:6px">ยอดขาย POS รายวัน ต.ค. 2569 · ร้านครัวคุณยาย</div><div class="days">${POSD.map((v, i) => `<i style="height:${show(i * 0.2) ? v / max * 100 : 4}%"></i>`).join("")}</div>
+      <div class="plat">${PLAT.map((p, i) => `<div class="${done || n > 6 + i ? "on" : ""}"><b>${p[0]}</b><span class="num">${fmt(p[1])}</span><small>ค่าคอมมิชชัน 30% มีใบกำกับ → ภาษีซื้อ ${fmt(vat7(p[1] * .3))}</small></div>`).join("")}</div>`;
+    if (done || n > 9) h += `<div class="slog">${logLine("รวม", "POS 389,200.00 + เดลิเวอรี 223,200.00 = ยอดขาย 612,400.00 → ภ.พ.30 บรรทัด 1")}</div>`;
+  } else {
+    h = srcHead(s) + `<div class="targets"><span class="tag on">Excel ✓</span><span class="tag on">Google Sheets ✓</span><span class="tag">Express · แผนงาน</span><span class="tag">PEAK · แผนงาน</span><span class="tag">FlowAccount · แผนงาน</span></div>
+      ${JOURNAL.map((j, k) => `<div class="jr ${done || n > k ? "fade-in" : "dim"}"><b>${j[0]}</b><table>${j[1].map(l => `<tr><td>${l[1] ? "" : "&nbsp;&nbsp;&nbsp;&nbsp;"}${l[0]}</td><td class="r num">${l[1] ? fmt(l[1]) : ""}</td><td class="r num">${l[2] ? fmt(l[2]) : ""}</td></tr>`).join("")}</table></div>`).join("")}`;
+    if (done || n > 2) h += `<div class="slog">${logLine("ส่งออก", "สมุดรายวัน_ต.ค.2569.xlsx · 128 รายการ · เดบิตเท่ากับเครดิต ✓")}${logLine("ซิงค์", "Google Sheets 'สรุปภาษีลูกค้าทั้งหมด' อัปเดต 41 ลูกค้า")}</div>`;
+  }
+  $("#srcDetail").innerHTML = h;
+}
+const SYNC_N = { gs: 6, xl: 7, em: 4, dr: 4, bk: 6, pos: 10, acc: 3 };
+const syncDemo = demo($("#demoSync"), () => { srcList(); srcRender(0, true); }, async w => {
+  srcList(); const k = SYNC[srcIdx].k, N = SYNC_N[k];
+  for (let n = 0; n <= N; n++) { srcRender(n, false); await w(k === "pos" ? 260 : 560); }
+  srcRender(0, true);
+});
+
+/* ---------- Day 4: payroll ---------- */
+const EMP = [["นายอนันต์ ร.", "ผู้จัดการ", 85000], ["นางสาวพิมพ์ ส.", "บัญชี", 32000], ["นายกิตติ ม.", "หัวหน้างาน", 26000], ["นางสาวสุดา ก.", "พนักงาน", 18500], ["นายประเสริฐ ท.", "พนักงาน", 15000], ["นางบุญมี จ.", "พนักงาน", 12000], ["นายสมพงษ์ ว.", "พนักงาน", 11000], ["นางสาวจันทร์ ด.", "พนักงาน", 10500]];
+const BRK = [[150000, 0], [300000, .05], [500000, .10], [750000, .15], [1000000, .20], [2000000, .25], [5000000, .30], [Infinity, .35]];
+const pit = net => { let t = 0, lo = 0; for (const [hi, r] of BRK) { if (net > lo) t += (Math.min(net, hi) - lo) * r; lo = hi; } return t; };
+let ssoCeil = 17500;
+const payCalc = sal => { const sso = Math.round(Math.min(sal, ssoCeil) * 0.05); const an = sal * 12, net = Math.max(0, an - Math.min(an * .5, 100000) - 60000 - sso * 12); return { sso, wht: Math.round(pit(net) / 12 * 100) / 100 }; };
+function payDraw(n = EMP.length, anim) {
+  $("#payT").innerHTML = `<thead><tr><th>พนักงาน</th><th class="r">เงินเดือน</th><th class="r">ประกันสังคม 5%</th><th class="r">นายจ้างสมทบ</th><th class="r">ภาษีหัก ณ ที่จ่าย</th></tr></thead><tbody>${EMP.map((e, i) => { const c = payCalc(e[2]), on = i < n; return `<tr class="${anim && i === n - 1 ? "fade-in" : ""}"><td>${e[0]}<small>${e[1]}</small></td><td class="r"><input class="sal num" data-i="${i}" value="${fmt(e[2])}" inputmode="decimal" aria-label="เงินเดือน ${e[0]}"></td><td class="r num">${on ? fmt(c.sso) : "…"}</td><td class="r num">${on ? fmt(c.sso) : "…"}</td><td class="r num">${on ? (c.wht ? fmt(c.wht) : "—") : "…"}</td></tr>`; }).join("")}</tbody>`;
+  $$("#payT .sal").forEach(x => x.onchange = () => { const v = parseFloat(x.value.replace(/,/g, "")); if (!isNaN(v)) EMP[+x.dataset.i][2] = v; payDraw(); });
+  const cs = EMP.map(e => payCalc(e[2])), sso = cs.reduce((a, c) => a + c.sso, 0), wht = cs.reduce((a, c) => a + c.wht, 0), nw = cs.filter(c => c.wht).length;
+  $("#payTot").innerHTML = n < EMP.length ? "" : `<div><small>ภ.ง.ด.1 · ${nw} คนมีภาษี</small><b class="num">${fmt(wht)}</b></div><div><small>สปส. ลูกจ้าง</small><b class="num">${fmt(sso)}</b></div><div><small>สปส. นายจ้าง</small><b class="num">${fmt(sso)}</b></div><div class="g"><small>นำส่งประกันสังคม</small><b class="num">${fmt(sso * 2)}</b></div>`;
+}
+$$("#demoPay .seg button").forEach(b => b.addEventListener("click", () => { ssoCeil = +b.dataset.ceil; $$("#demoPay .seg button").forEach(x => x.setAttribute("aria-pressed", x === b)); payDraw(EMP.length, false); }));
+demo($("#demoPay"), () => payDraw(), async w => { for (let n = 0; n <= EMP.length; n++) { payDraw(n, true); await w(380); } });
+
 /* ---------- Day 5: WHT ---------- */
 const BATCH = [
   ["บริษัท ทองดีโลจิสติกส์ จำกัด", "J", "ค่าขนส่ง", 18500, 1],
@@ -1548,7 +1831,7 @@ const liff = $("#liff");
 let oStep = 0;
 function ownerDraw(step, anim) {
   oStep = step;
-  const bars = [["ภ.พ.30", 70738.70], ["ภ.ง.ด.3/53", 4215.00], ["ประกันสังคม", 9450.00]];
+  const bars = [["ภ.พ.30", 70738.70], ["ภ.ง.ด.3/53", 4215.00], ["ประกันสังคม", 11850.00]];
   const max = 70738.70;
   liff.innerHTML = `
   <div class="card"><h4>ภาษีเดือน ต.ค. 2569 (ประมาณการ)</h4><div class="bars">${bars.map(b => `<div class="bar"><span>${b[0]}</span><div class="tr"><i data-w="${Math.max(6, b[1] / max * 100)}"></i></div><span class="num">${fmt(b[1])}</span></div>`).join("")}</div></div>
@@ -1585,6 +1868,49 @@ function closeDraw(n, anim) {
   $("#exp").innerHTML = n >= 5 ? `<span>ส่งออกไปยัง</span><span class="tag on">Excel ✓</span><span class="tag">Express</span><span class="tag">PEAK</span><span class="tag">FlowAccount</span>` : "";
 }
 demo($("#demoClose"), () => closeDraw(5, false), async w => { closeDraw(0, false); await w(400); for (let i = 1; i <= 5; i++) { closeDraw(i, true); await w(700); } });
+
+/* ---------- Firm cockpit ---------- */
+const FT = ["งานของทีม", "ผู้ตรวจอนุมัติ", "ค่าทำบัญชี", "ถามปิดงวด", "ประวัติการแก้ไข"];
+let fIdx = 0;
+const STAFF0 = [["วีรยา", "เจ้าของ · ผู้ตรวจ", 18, 52, 61], ["ต้น", "ผู้ทำบัญชี", 34, 88, 118], ["แนน", "ผู้ทำบัญชี", 41, 97, 142]];
+const REV = [["ต้น", "บจ. สยามคลีนนิ่ง", "ภ.พ.30", 70738.70, "ok", ""], ["แนน", "บจ. ทองดีโลจิสติกส์", "ภ.ง.ด.53", 12480.00, "ok", ""], ["แนน", "คลินิกทันตกรรมยิ้มใส", "ภ.พ.30", 18205.40, "back", "ยอดขายยกเว้น 12,000 ขอเอกสารประกอบก่อนยื่น"], ["ต้น", "หจก. ช่างเหล็กรุ่งเรือง", "ภ.ง.ด.3", 2140.00, "ok", ""]];
+const FEES = [["บจ. สยามคลีนนิ่ง", 6500, "J", "paid"], ["ร้านกาแฟบ้านสวน", 2500, "P", "paid"], ["หจก. ช่างเหล็กรุ่งเรือง", 4500, "J", "paid"], ["ร้านดอกไม้ลลิตา", 2000, "P", "sent"], ["บจ. ทองดีโลจิสติกส์", 8000, "J", "paid"], ["คลินิกทันตกรรมยิ้มใส", 5500, "J", "sent"], ["บจ. เฮลตี้มีลบ็อกซ์", 4000, "J", "late"]];
+const QA = [
+  ["ลูกค้ารายไหนยังไม่ส่ง Statement เดือนนี้", `<b>4 ราย ยังไม่ส่ง Statement ต.ค. 2569</b><ul class="ans"><li>ร้านดอกไม้ลลิตา <small>เตือนแล้ว 2 ครั้ง · ล่าสุด 7 พ.ย.</small></li><li>คลินิกทันตกรรมยิ้มใส <small>เตือนแล้ว 1 ครั้ง</small></li><li>หจก. ช่างเหล็กรุ่งเรือง <small>ยังไม่เคยเตือน</small></li><li>บจ. เฮลตี้มีลบ็อกซ์ <small>เตือนแล้ว 1 ครั้ง</small></li></ul><span class="pill g">เตือนทาง LINE ทั้ง 4 ราย</span>`],
+  ["สัปดาห์นี้มีอะไรครบกำหนดบ้าง", `<b>16 พ.ย. (จันทร์) · 19 แบบ</b><ul class="ans"><li>ภ.ง.ด.1 · 3 · 53 ของ 7 ลูกค้า <small>ยื่นแล้ว 12 · เหลือ 7</small></li><li>สปส.1-10 ของ 5 ลูกค้า <small>เหลือ 2</small></li></ul><b>23 พ.ย. (จันทร์) · ภ.พ.30 ของ 5 ลูกค้า</b><ul class="ans"><li>รออนุมัติจากลูกค้า 2 ราย</li></ul>`],
+  ["ลูกค้ารายไหนตัวเลขผิดปกติ", `<b>ร้านดอกไม้ลลิตา: ภาษีซื้อ ต.ค. ลดลง 62% จากค่าเฉลี่ย 6 เดือน</b><svg class="spark" viewBox="0 0 160 40" aria-hidden="true"><polyline points="0,14 30,12 60,16 90,11 120,13 150,31" fill="none" stroke="var(--ledger)" stroke-width="2"/><circle cx="150" cy="31" r="3.5" fill="var(--stamp)"/></svg><small>อาจยังส่งใบกำกับภาษีซื้อไม่ครบ เดือนก่อนๆ มีใบจากตลาดดอกไม้ปากคลองตลาดราว 20 ใบต่อเดือน เดือนนี้มี 6 ใบ</small><span class="pill a">ขอเอกสารเพิ่มทาง LINE</span>`],
+];
+let qaIdx = 0;
+const AUDIT = [["31 ต.ค. 18:42", "มาลี · เจ้าของกิจการ", "ส่งเอกสาร 12 ใบทาง LINE"], ["1 พ.ย. 09:15", "ระบบ", "AI อ่านเอกสาร 12 ใบ · พบปัญหา 4 ใบ"], ["1 พ.ย. 10:02", "ต้น · ผู้ทำบัญชี", "ยืนยัน 8 ใบ · ทำเครื่องหมาย VAT ไม่ตรง 1 ใบ รอใบแก้ไข"], ["3 พ.ย. 14:20", "ต้น", "จัดทำ ภ.พ.30 ยอดชำระ ฿70,738.70"], ["4 พ.ย. 09:05", "วีรยา · ผู้ตรวจ", "อนุมัติ ภ.พ.30"], ["4 พ.ย. 11:30", "มาลี", "อนุมัติยอดผ่าน LINE"], ["20 พ.ย. 16:10", "ต้น", "บันทึกการยื่น พร้อมใบรับจากกรมสรรพากร"], ["23 พ.ย. 10:44", "ระบบ", "ตรวจสลิป KBank ยอดตรง · ชำระแล้ว"], ["24 พ.ย. 08:00", "วีรยา", "เปิดดูเลขประจำตัวผู้เสียภาษีเต็ม 1 รายการ · บันทึกตามนโยบาย"]];
+function firmTabs() { $("#firmTabs").innerHTML = FT.map((t, i) => `<button type="button" data-i="${i}" aria-pressed="${i === fIdx}">${t}</button>`).join(""); $$("#firmTabs button").forEach(b => b.onclick = () => { fIdx = +b.dataset.i; firmDemo.play(); }); }
+function firmDraw(step, done) {
+  const B = $("#firmBody");
+  if (fIdx === 0) {
+    const S = STAFF0.map(s => s.slice()); if (done || step >= 2) { S[2][2] = 35; S[1][2] = 40; S[2][4] = 120; S[1][4] = 140; }
+    B.innerHTML = `<div class="staff">${S.map(s => `<div class="sc"><div class="sh"><span class="av2">${s[0][0]}</span><div><b>${s[0]}</b><small>${s[1]}</small></div><b class="num">${s[2]} ราย</b></div><div class="lb"><small>ลูกค้า / เพดาน 100</small><div class="tr"><i style="width:${s[2]}%"></i></div></div><div class="lb"><small>ยื่นแล้วรอบนี้ ${s[3]}/${s[4]}</small><div class="tr"><i class="g" style="width:${s[3] / s[4] * 100}%"></i></div></div></div>`).join("")}</div>
+    <div class="slog">${step >= 1 || done ? logLine("แนะนำ", "แนนมีแบบค้าง 45 แบบ มากกว่าต้น 15 แบบ ย้ายลูกค้า 6 รายให้ต้นเพื่อให้ทันวันที่ 16") : ""}${step >= 2 || done ? logLine("ย้ายแล้ว", "6 ลูกค้าจากแนนไปต้น · ลูกค้าได้รับแจ้งชื่อผู้ดูแลใหม่ทาง LINE") : ""}</div>`;
+  } else if (fIdx === 1) {
+    B.innerHTML = `<div class="revq">${REV.map((r, i) => { const on = done || i < step; return `<div class="rv-row ${on ? "s-" + r[4] : ""}"><div><b>${r[1]}</b><small>${r[2]} · จัดทำโดย ${r[0]}</small>${on && r[5] ? `<div class="cm">ความเห็นผู้ตรวจ: ${r[5]}</div>` : ""}</div><b class="num">${fmt(r[3])}</b><span>${on ? (r[4] === "ok" ? `<span class="pill g">อนุมัติ · วีรยา</span>` : `<span class="pill a">ส่งกลับ</span>`) : `<span class="pill">รอตรวจ</span>`}</span></div>`; }).join("")}</div><p class="note">ผู้จัดทำอนุมัติงานของตัวเองไม่ได้ ทุกการอนุมัติและส่งกลับถูกบันทึก</p>`;
+  } else if (fIdx === 2) {
+    const sent = done || step >= 1, settled = done || step >= 2;
+    const stt = f => !sent ? `<span class="pill">ร่าง</span>` : !settled ? `<span class="pill b">ส่งทาง LINE แล้ว</span>` : f[3] === "paid" ? `<span class="pill g">ชำระแล้ว${f[2] === "J" ? ` · ถูกหัก 3% รอ 50 ทวิ` : ""}</span>` : f[3] === "late" ? `<span class="pill r">ค้าง 15 วัน · เตือนอัตโนมัติ</span>` : `<span class="pill b">ส่งแล้ว รอชำระ</span>`;
+    const recv = FEES.filter(f => f[3] === "paid").reduce((a, f) => a + f[1] * (f[2] === "J" ? .97 : 1), 0), wh = FEES.filter(f => f[3] === "paid" && f[2] === "J").reduce((a, f) => a + f[1] * .03, 0);
+    B.innerHTML = `<div class="scroll-x"><table class="sheet fees"><thead><tr class="hdr"><td>ลูกค้า</td><td class="r">ค่าทำบัญชี พ.ย.</td><td>สถานะ</td></tr></thead><tbody>${FEES.map(f => `<tr><td>${f[0]}</td><td class="r num">${fmt(f[1])}</td><td>${stt(f)}</td></tr>`).join("")}</tbody></table></div>
+    <div class="btot" style="margin-top:10px"><div><small>ค่าทำบัญชีเดือนนี้</small><b class="num">${fmt(FEES.reduce((a, f) => a + f[1], 0))}</b></div><div class="g"><small>รับแล้ว (สุทธิ)</small><b class="num">${settled ? fmt(recv) : "0.00"}</b></div><div><small>ภาษีถูกหัก รอ 50 ทวิ</small><b class="num">${settled ? fmt(wh) : "0.00"}</b></div><div><small>ค้างชำระ</small><b class="num" style="color:var(--stamp)">${settled ? fmt(4000) : "0.00"}</b></div></div>`;
+  } else if (fIdx === 3) {
+    B.innerHTML = `<div class="ask"><div class="qchips">${QA.map((q, i) => `<button type="button" class="tag ${i === qaIdx ? "on" : ""}" data-q="${i}">${q[0]}</button>`).join("")}</div>
+      <div class="qbox"><span class="num">›</span> <span id="qText">${done || step >= 1 ? QA[qaIdx][0] : ""}</span></div><div class="abox" id="aBox">${done || step >= 2 ? QA[qaIdx][1] : step === 1 ? `<span class="typing"><i></i><i></i><i></i></span>` : ""}</div>
+      <p class="note">ตอบจากข้อมูลในสำนักงานของคุณเท่านั้น และลิงก์กลับไปที่เอกสารจริง</p></div>`;
+    $$("#firmBody .qchips button").forEach(b => b.onclick = () => { qaIdx = +b.dataset.q; firmDemo.play(); });
+  } else {
+    B.innerHTML = `<div class="eyebrow">ภ.พ.30 · บจ. สยามคลีนนิ่ง · ต.ค. 2569</div><div class="tl">${AUDIT.map((a, i) => (done || i < step) ? `<div class="fade-in"><span class="num">${a[0]}</span><b>${a[1]}</b><span>${a[2]}</span></div>` : "").join("")}</div>`;
+  }
+}
+const firmDemo = demo($("#demoFirm"), () => { firmTabs(); firmDraw(0, true); }, async w => {
+  firmTabs(); const N = [2, REV.length, 2, 2, AUDIT.length][fIdx];
+  for (let s = 0; s <= N; s++) { firmDraw(s, false); await w(fIdx === 3 && s === 1 ? 1100 : fIdx === 4 ? 320 : 900); }
+  firmDraw(0, true);
+});
 
 /* ---------- Calculator ---------- */
 const cC = $("#cClients"), cM = $("#cMin"), cX = $("#cCut");
@@ -1763,11 +2089,14 @@ const STEPS = [
   ["day0", "รับลูกค้าใหม่ · ปฏิทินภาษีทั้งปีในสองนาที", 10000],
   ["day1", "วันที่ 1 · ลูกค้าส่งเอกสารทาง LINE", 9500],
   ["day2", "วันที่ 2 · 12 แบบเอกสาร AI อ่าน กฎตรวจ คนยืนยัน", 16000],
+  ["day3", "วันที่ 3 · ซิงค์จาก Google Sheets Excel อีเมล ธนาคาร POS", 13000],
+  ["day4", "วันที่ 4 · เงินเดือนเป็น ภ.ง.ด.1 และประกันสังคม", 8000],
   ["day5", "วันที่ 5 · จัดประเภทการจ่ายทั้งเดือน และ 50 ทวิ", 11000],
   ["day7", "วันที่ 7 · กำหนดยื่นคำนวณให้อัตโนมัติ", 8000],
   ["day10", "วันที่ 10 · ภ.พ.30 ต้องชำระ ขอคืน หรือมีเครดิตยกมา", 9000],
   ["day12", "วันที่ 12 · เจ้าของกิจการอนุมัติและส่งสลิป", 9500],
   ["day20", "วันที่ 20 · ปิดงวดและส่งออกรายการบัญชี", 8000],
+  ["firm", "บริหารสำนักงาน · ทีม ผู้ตรวจ ค่าทำบัญชี ถาม AI", 10000],
   ["calc", "ได้เวลาคืนเท่าไรต่อเดือน", 7000],
   ["pricing", "ราคา: จ่ายตามลูกค้าที่ใช้งาน", 6500],
   ["trust", "ความปลอดภัยและความรับผิดชอบ", 6500],
