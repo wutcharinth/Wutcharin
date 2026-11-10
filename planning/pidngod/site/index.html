@@ -624,6 +624,22 @@ body.pitching .day,body.pitching .band{transition:opacity .5s}
 @media (max-width:560px){.tl div{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:860px){.sync .src-list{flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--rule)}.sync .src{flex:0 0 auto;max-width:230px}.src-detail{min-height:0}}
 
+
+/* ---- v5: compare ---- */
+.cmp{width:100%;border-collapse:collapse;font-size:.84rem;min-width:680px}
+.cmp th,.cmp td{padding:10px 12px;border-bottom:1px solid var(--rule);text-align:center;vertical-align:middle}
+.cmp th:first-child,.cmp td:first-child{text-align:left;width:38%}
+.cmp th{font-family:var(--f-display);font-size:.92rem;line-height:1.3}
+.cmp th small{display:block;font-family:var(--f-body);font-weight:500;font-size:.7rem;color:var(--muted)}
+.cmp .us{background:color-mix(in srgb,var(--ledger-soft) 60%,transparent)}
+.cmp th.us{color:var(--ledger)}
+.cmp tfoot td{font-weight:600;border-bottom:0}
+.cmk{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;font-weight:700;animation:pop .35s cubic-bezier(.3,1.6,.5,1)}
+.cy{background:var(--ledger);color:var(--ledger-ink)}
+.cp{background:var(--amber-soft);color:var(--amber)}
+.cn{color:var(--muted)}
+@keyframes pop{from{transform:scale(.3);opacity:0}}
+
 @media (prefers-reduced-motion: reduce){.rv{animation:none!important}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}html{scroll-behavior:auto}}
 </style>
 
@@ -636,7 +652,7 @@ body.pitching .day,body.pitching .band{transition:opacity .5s}
         <span>ปิดงวด <small>PIDNGOD</small></span>
       </a>
       <nav class="nav" aria-label="เมนูหลัก">
-        <a href="#day1">ฟีเจอร์</a><a href="#calc">คำนวณเวลา</a><a href="#pricing">ราคา</a><a href="#trust">ความปลอดภัย</a>
+        <a href="#day1">ฟีเจอร์</a><a href="#compare">เปรียบเทียบ</a><a href="#calc">คำนวณเวลา</a><a href="#pricing">ราคา</a><a href="#trust">ความปลอดภัย</a>
       </nav>
       <button class="pitch-btn" type="button" id="pitchStart" title="เดินผ่านทุกส่วนอัตโนมัติ">▶ โหมดนำเสนอ</button>
       <a class="btn sm go" href="#pilot">สมัครนำร่อง</a>
@@ -1124,6 +1140,19 @@ body.pitching .day,body.pitching .band{transition:opacity .5s}
             <div><b id="rMore">0</b><span>ลูกค้าที่รับเพิ่มได้ด้วยเวลาเท่าเดิม</span></div>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="compare">
+    <div class="wrap">
+      <div class="eyebrow">เทียบกับทางเลือกอื่น</div>
+      <h2>ทางเลือกอื่นช่วยได้บางขั้น ปิดงวดเชื่อมตั้งแต่เอกสารจนถึงยื่นและชำระ</h2>
+      <p class="sub">ปิดงวดไม่ได้มาแทนโปรแกรมบัญชีที่ลูกค้าใช้อยู่ แต่เป็นที่ทำงานของสำนักงาน ที่ดูแลลูกค้าทุกรายได้ในที่เดียว</p>
+      <div class="demo rv" id="demoCmp" style="margin-top:26px">
+        <div class="demo-bar"><span>เทียบตามประเภทเครื่องมือ</span><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
+        <div class="scroll-x"><table class="cmp" id="cmpT"></table></div>
+        <div class="pad" style="padding-top:10px"><p class="note" style="margin:0">✓ ทำได้ · ◐ ทำได้บางส่วน หรือขึ้นกับแพ็กเกจ · — ไม่มี เป็นการเทียบตามประเภทเครื่องมือ ความสามารถของแต่ละผลิตภัณฑ์แตกต่างกัน และอาจเปลี่ยนแปลง</p></div>
       </div>
     </div>
   </section>
@@ -1912,6 +1941,27 @@ const firmDemo = demo($("#demoFirm"), () => { firmTabs(); firmDraw(0, true); }, 
   firmDraw(0, true);
 });
 
+/* ---------- Compare ---------- */
+const CMP_H = ["วิธีเดิม<small>Excel + LINE + โปรแกรมบนเครื่อง</small>", "โปรแกรมบัญชีออนไลน์<small>สำหรับเจ้าของ SME</small>", "แอปเก็บใบเสร็จ AI<small>รับบิลทาง LINE</small>", "ปิดงวด<small>สำหรับสำนักงานบัญชี</small>"];
+const CMP = [
+  ["ดูแลลูกค้าทุกราย ไม่ว่าลูกค้าใช้โปรแกรมไหน", "p", "p", "p", "y"],
+  ["ไม่ต้องย้ายโปรแกรมบัญชีของลูกค้า", "y", "n", "y", "y"],
+  ["รับเอกสารจากลูกค้าผ่าน LINE", "p", "p", "y", "y"],
+  ["AI อ่านใบเสร็จและใบกำกับภาษี", "n", "p", "y", "y"],
+  ["ตรวจใบกำกับภาษีตามมาตรา 86/4 ใบซ้ำ เกิน 6 เดือน และภาษีซื้อต้องห้าม ก่อนยื่น", "n", "p", "p", "y"],
+  ["กระดานกำหนดยื่นของทุกลูกค้า ทุกแบบ ในหน้าเดียว", "n", "p", "n", "y"],
+  ["เตรียม ภ.พ.30 ภ.ง.ด.3 ภ.ง.ด.53 และออก 50 ทวิ", "p", "y", "n", "y"],
+  ["เจ้าของกิจการอนุมัติยอดและส่งสลิปใน LINE ระบบตรวจสลิปให้", "n", "n", "n", "y"],
+  ["ซิงค์ Google Sheets อีเมล Drive Statement ธนาคาร และ POS", "p", "p", "p", "y"],
+  ["งานของทีม ผู้ตรวจอนุมัติ และเก็บค่าทำบัญชี", "n", "p", "p", "y"],
+  ["ทุกตัวเลขย้อนดูเอกสารต้นทางได้ ปิดบังเลขบัตรประชาชนตาม PDPA", "n", "p", "p", "y"],
+];
+const CM = { y: ["✓", "cy"], p: ["◐", "cp"], n: ["—", "cn"] };
+function cmpDraw(col) {
+  $("#cmpT").innerHTML = `<thead><tr><th></th>${CMP_H.map((h, i) => `<th class="${i === 3 ? "us" : ""}">${h}</th>`).join("")}</tr></thead><tbody>${CMP.map(r => `<tr><td>${r[0]}</td>${r.slice(1).map((v, i) => `<td class="${i === 3 ? "us" : ""}">${i < col ? `<span class="cmk ${CM[v][1]}">${CM[v][0]}</span>` : ""}</td>`).join("")}</tr>`).join("")}</tbody><tfoot><tr><td>รวม ✓</td>${[0, 1, 2, 3].map(i => `<td class="${i === 3 ? "us" : ""}">${i < col ? `<b class="num">${CMP.filter(r => r[i + 1] === "y").length}/${CMP.length}</b>` : ""}</td>`).join("")}</tr></tfoot>`;
+}
+demo($("#demoCmp"), () => cmpDraw(4), async w => { for (let c = 0; c <= 4; c++) { cmpDraw(c); await w(c === 3 ? 900 : 600); } });
+
 /* ---------- Calculator ---------- */
 const cC = $("#cClients"), cM = $("#cMin"), cX = $("#cCut");
 function calc() {
@@ -2098,6 +2148,7 @@ const STEPS = [
   ["day20", "วันที่ 20 · ปิดงวดและส่งออกรายการบัญชี", 8000],
   ["firm", "บริหารสำนักงาน · ทีม ผู้ตรวจ ค่าทำบัญชี ถาม AI", 10000],
   ["calc", "ได้เวลาคืนเท่าไรต่อเดือน", 7000],
+  ["compare", "เทียบกับทางเลือกอื่น", 8000],
   ["pricing", "ราคา: จ่ายตามลูกค้าที่ใช้งาน", 6500],
   ["trust", "ความปลอดภัยและความรับผิดชอบ", 6500],
   ["pilot", "รับสำนักงานนำร่อง 10 แห่ง", 9000],

@@ -210,8 +210,16 @@ Firms then bring their Clients (Owners) for free, and Owner Pro later brings Fir
 
 **I3. Who are the competitors, and how do we position?**
 **Recommended:**
-- **Competitors:** PEAK and FlowAccount accountant programmes (strong but single-platform), the Express desktop app (the incumbent), Excel plus LINE (the real competitor).
-- **Positioning:** *"One board for all your Clients, whatever software they use, and Owners who send documents on time."*
+- **Competitors:**
+  - PEAK and FlowAccount accountant programmes: strong, but each covers only its own platform.
+  - The Express desktop app: the incumbent.
+  - **Paypers**: LINE group per client plus AI receipt reading, with a dedicated accounting-firm offer. The closest competitor on intake.
+  - **A3 (Osmozai)**: an AI agent claiming PND53 and PP30 generation. The closest on AI + forms.
+  - Excel plus LINE: the real competitor.
+  - Full comparison: [docs/competitive-landscape.md](docs/competitive-landscape.md).
+- **Positioning:** *"The only place where every client, whatever software they use, goes from documents to filed and paid VAT and WHT, with every number checked against the Revenue Code and traceable to its source."*
+  - LINE + AI capture is now table stakes, so don't lead with it.
+  - Lead with the validation catalogue, the cross-software deadline board, the filing loop with Owner approval and payment, and trust.
 
 **I4. What name do we use?**
 **Recommended:** Brand the product **Pidngod / ปิดงวด**. Use `bancheesolution` as the company, repo and environment name. Check DBD names, trademark and domains before printing anything.
@@ -282,6 +290,7 @@ Due Dates are always computed (ADR-0003). The dates above are the current rules;
 | Risk | Mitigation |
 |---|---|
 | PEAK or FlowAccount build cross-platform accountant boards | Stay software-agnostic, move faster on LINE + Owner value, and lock in partners early |
+| Paypers or A3 move down the workflow into filings | Win on compliance depth (validators, Obligations, 50 ทวิ, Owner approval and payment, tie-outs) and trust. Test them hands-on in Phase 0; consider integrating with Paypers as an input source |
 | Extraction is poor on thermal or handwritten receipts | Golden set, validators, human confirmation (ADR-0006), one-tap re-request |
 | Rules change (VAT rate, e-Filing extensions, e-Tax mandates) | ADR-0003, with a rules owner monitoring the RD, SSO and Royal Gazette |
 | A data leak would end a Firm's business | ADR-0007, RLS, MFA, a pen test before going paid, no RD credentials (ADR-0004) |
