@@ -20,7 +20,8 @@ const ease = [0.16, 1, 0.3, 1] as const;
  * full claim: who, what level, where, and how he thinks.
  */
 export default function Arrival() {
-    const sceneOff = useMemo(() => detectTier() === null, []);
+    const tier = useMemo(() => detectTier(), []);
+    const sceneOff = tier === null;
     const time = useBangkokTime();
     const [mac] = useState(isMac);
     const [touch] = useState(() => window.matchMedia('(hover: none)').matches);
@@ -176,6 +177,35 @@ export default function Arrival() {
                     </motion.figure>
                 )}
             </motion.div>
+
+            {/* Figure caption on the right margin, mirroring the chapter rail on
+                the left: it says what the field is, and that it answers back. */}
+            {tier && (
+                <motion.div
+                    aria-hidden="true"
+                    style={{ opacity: fade }}
+                    className="pointer-events-none absolute right-5 top-1/2 z-30 hidden -translate-y-1/2 lg:block [@media(max-height:739px)]:hidden"
+                >
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 2.4, duration: 1.2 }}
+                        className="flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.24em] text-text-mute [writing-mode:vertical-rl]"
+                    >
+                        <span className="text-text">Fig. 00 · Portrait</span>
+                        <span className="h-8 w-px bg-hairline-strong" />
+                        <span>
+                            <span className="tabular-nums">{(tier.texSize * tier.texSize).toLocaleString('en-US')}</span> live particles
+                        </span>
+                        {!touch && (
+                            <>
+                                <span className="h-8 w-px bg-hairline-strong" />
+                                <span>Move your cursor</span>
+                            </>
+                        )}
+                    </motion.p>
+                </motion.div>
+            )}
 
             {/* Live rail: a real person, right now. */}
             <motion.div

@@ -5,6 +5,7 @@ import { useOverlayLoop } from './useOverlayLoop';
 import ChapterLabel from './ChapterLabel';
 import { SIGNAL } from './scenes';
 import { useChapterScene } from './useChapterScene';
+import Rise from './Rise';
 
 /**
  * Chapter 02: Principle. The field becomes a triage: one dense stream
@@ -66,10 +67,10 @@ export default function Principle() {
                     <div data-reveal-child>
                         <ChapterLabel index="02" name="Principle" className="mb-6" />
                     </div>
-                    <h2 data-reveal-child className="text-4xl leading-[0.98] tracking-[-0.02em] text-text-strong md:text-6xl">
-                        Most work repeats. The skill is to see{' '}
-                        <span className="font-serif font-normal italic text-signal">what does not</span>.
-                    </h2>
+                    <Rise
+                        className="text-4xl leading-[0.98] tracking-[-0.02em] text-text-strong md:text-6xl"
+                        parts={['Most work repeats. The skill is to see', { text: 'what does not', accent: true }, { text: '.', glue: true }]}
+                    />
                     <p data-reveal-child className="mt-8 text-base font-light leading-relaxed text-text-mute md:text-lg">
                         20 years of data work for C-level leaders. I build AI, automation and analytics teams, in fast-growth tech
                         and in aviation.

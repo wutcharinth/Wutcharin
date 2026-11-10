@@ -2,13 +2,14 @@ import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNod
 import { AnimatePresence, motion, useMotionValue, useSpring } from 'framer-motion';
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { gsap, ScrollTrigger, ScrambleText, usePrefersReducedMotion, RevealOnScroll } from '../../lib/motion';
+import { gsap, ScrollTrigger, ScrambleText, TiltCard, usePrefersReducedMotion, RevealOnScroll } from '../../lib/motion';
 import { projects, type Project } from '../../data/projects';
 import { sceneBus } from '../../scene/sceneBus';
 import { detectTier } from '../../scene/tier';
 import ChapterLabel from './ChapterLabel';
 import Poster from './work/Poster';
 import { useScrollTo } from './useScrollTo';
+import Rise from './Rise';
 
 /**
  * Chapter 03: Work.
@@ -56,9 +57,10 @@ function Heading() {
     return (
         <div>
             <ChapterLabel index="03" name="Work" className="mb-6" />
-            <h2 className="text-4xl leading-[0.95] tracking-[-0.02em] text-text-strong md:text-6xl">
-                Selected <span className="font-serif font-normal italic text-signal">work</span>
-            </h2>
+            <Rise
+                className="text-4xl leading-[0.95] tracking-[-0.02em] text-text-strong md:text-6xl"
+                parts={['Selected', { text: 'work', accent: true }]}
+            />
         </div>
     );
 }
@@ -94,9 +96,10 @@ function Plate({ project, index, total }: { project: Project; index: number; tot
                 </div>
             </div>
             <div className="order-1 md:order-2 md:col-span-7">
-                <div className="transition-transform duration-700 [transition-timing-function:var(--ease-out-expo)] group-hover:scale-[1.015]">
+                {/* The frame leans toward the cursor and catches a little light. */}
+                <TiltCard max={5} lift={6} parallax={false} className="rounded-lg">
                     <Poster project={project} index={index} />
-                </div>
+                </TiltCard>
             </div>
         </ProjectLink>
     );
@@ -220,8 +223,9 @@ function Theatre() {
                                 role="group"
                                 aria-roledescription="slide"
                                 aria-label={`${i + 1} of ${n}`}
-                                className="h-full w-[min(82vw,1120px)] shrink-0 transition-opacity duration-700"
-                                style={{ opacity: i === active ? 1 : 0.28 }}
+                                className="h-full w-[min(82vw,1120px)] shrink-0 transition-[opacity,transform] duration-700 [transition-timing-function:var(--ease-out-expo)]"
+                                // Plates off stage sit back: smaller and dimmer.
+                                style={{ opacity: i === active ? 1 : 0.22, transform: `scale(${i === active ? 1 : 0.9})` }}
                             >
                                 <Plate project={p} index={i} total={n} />
                             </div>
@@ -314,8 +318,14 @@ function IndexRow({ project, onHover }: { project: Project; onHover: (p: Project
             project={project}
             onMouseEnter={() => onHover(project)}
             onMouseLeave={() => onHover(null)}
-            className={`group grid grid-cols-12 items-center gap-x-4 border-t border-hairline px-2 py-4 -mx-2 rounded-md transition-colors hover:bg-panel ${focusRing}`}
+            className={`group relative grid grid-cols-12 items-center gap-x-4 border-t border-hairline px-2 py-4 -mx-2 rounded-md transition-[background-color,opacity] duration-300 hover:bg-panel group-hover/index:opacity-40 hover:!opacity-100 focus-visible:!opacity-100 ${focusRing}`}
         >
+            {/* The row's own accent draws across its top edge on hover. */}
+            <span
+                aria-hidden="true"
+                className="absolute inset-x-2 -top-px h-px origin-left scale-x-0 transition-transform duration-500 [transition-timing-function:var(--ease-out-expo)] group-hover:scale-x-100"
+                style={{ backgroundColor: project.accent }}
+            />
             <span className="col-span-1 flex justify-center" aria-hidden="true">
                 {agent ? (
                     <span className="relative flex h-1.5 w-1.5">
@@ -326,7 +336,7 @@ function IndexRow({ project, onHover }: { project: Project; onHover: (p: Project
                     <span className="h-1.5 w-1.5 rounded-full border" style={{ borderColor: project.accent }} />
                 )}
             </span>
-            <span className="col-span-7 min-w-0 sm:col-span-5">
+            <span className="col-span-7 min-w-0 transition-transform duration-500 [transition-timing-function:var(--ease-out-expo)] group-hover:translate-x-2 sm:col-span-5">
                 <ScrambleText
                     text={project.navTitle ?? project.title}
                     onHover
@@ -419,7 +429,7 @@ function Index() {
                     </div>
                 </div>
 
-                <motion.ul layout className="border-b border-hairline">
+                <motion.ul layout className="group/index border-b border-hairline">
                     <AnimatePresence initial={false} mode="popLayout">
                         {sorted.map((p) => (
                             <motion.li

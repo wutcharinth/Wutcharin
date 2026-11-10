@@ -8,6 +8,8 @@ import Work from '../components/home/Work';
 import FlightLog from '../components/home/FlightLog';
 import Terminus from '../components/home/Terminus';
 import BootLoader from '../components/home/BootLoader';
+import Atmosphere from '../components/home/Atmosphere';
+import Interlude from '../components/home/Interlude';
 import { portraitScene } from '../components/home/scenes';
 import { useChapterScene } from '../components/home/useChapterScene';
 import { useScrollTo } from '../components/home/useScrollTo';
@@ -50,6 +52,7 @@ const Home = () => {
                 description="Wutcharin Thatan leads FinTech Data & Automation at Agoda: a 12-person Analytics Engineering team, 15,000+ hours automated a year and 20+ AI agents in production."
             />
             <BootLoader />
+            <Atmosphere />
             <Header />
 
             <main id="main-content">
@@ -59,6 +62,7 @@ const Home = () => {
                 <Proof />
                 <Principle />
                 <Work />
+                <Interlude />
                 <FlightLog />
                 <Terminus />
             </main>

@@ -356,3 +356,20 @@ body.cursor-enhanced select {
     cursor: auto !important;
   }
 }
+/* Rise: headings whose words lift out of the baseline (home/Rise.tsx).
+   The mask is a clip-path, not overflow, so an inline-block word keeps its
+   text baseline and mixed faces stay aligned on one line. */
+.rise-word {
+  display: inline-block;
+  clip-path: inset(-0.14em -0.12em -0.2em -0.12em);
+}
+.rise-word > span {
+  display: inline-block;
+  transform: translateY(135%) rotate(4deg);
+  transform-origin: 0 100%;
+  transition: transform 1.15s var(--ease-out-expo);
+  transition-delay: calc(var(--i, 0) * 60ms + var(--rise-delay, 0ms));
+}
+[data-shown] > .rise-word > span {
+  transform: none;
+}
