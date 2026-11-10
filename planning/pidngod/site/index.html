@@ -2,7 +2,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Noto+Serif+Thai:wght@500;600;700;800&family=Sarabun:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Noto+Serif+Thai:wght@500;600;700;800&family=Sarabun:wght@400;600;700&family=Mali:wght@500&display=swap">
 <style>
 /* Layout: a ledger page that walks one accountant's month, day 1 to day 23, with a live demo at each stop. */
 :root{
@@ -436,6 +436,77 @@ body.pitching .day,body.pitching .band{transition:opacity .5s}
   @keyframes rv{from{opacity:0;transform:translateY(48px) scale(.98)}}
 }
 
+
+/* ---- v3: more examples ---- */
+.demo-bar .tabs{min-width:0}
+.tabs button{white-space:nowrap}
+.onb{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
+.onb > div:first-child{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 20px;align-items:start;padding-bottom:14px;border-bottom:1px dashed var(--rule)}
+.onb > div:first-child > label,.onb .lk-row{grid-column:1/-1}
+.onb .sw{border-top:0;padding-top:0}
+@media (max-width:520px){.onb > div:first-child{grid-template-columns:minmax(0,1fr)}}
+.lk-row{display:flex;gap:8px;align-items:center;margin-top:4px}
+.lk-row input{flex:1;min-width:0;font-family:var(--f-mono);letter-spacing:.06em;border:1px solid var(--rule);background:var(--sheet-2);border-radius:8px;padding:7px 10px}
+.lk-st{font-size:.78rem;font-weight:600;color:var(--muted);white-space:nowrap}
+.lk-st.ok{color:var(--ledger)}
+.prof{margin-top:12px;font-size:.82rem;min-height:20px}
+.prof b{font-family:var(--f-display);font-size:1rem}
+.prof dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 12px;margin:6px 0}
+.prof dt{color:var(--muted)}.prof dd{margin:0}
+.prof small{color:var(--ledger);font-size:.72rem}
+.sw{display:grid;gap:6px;margin-top:12px;font-size:.84rem;border-top:1px dashed var(--rule);padding-top:10px}
+.sw label{display:flex;align-items:center;gap:8px;cursor:pointer}
+.sw label.dim{opacity:.45}
+.sw input{accent-color:var(--ledger);width:16px;height:16px}
+.sw select{border:1px solid var(--rule);background:var(--sheet-2);border-radius:6px;padding:2px 6px;font-size:.8rem}
+.onb-big{display:flex;align-items:center;gap:12px}
+.onb-big b{font-family:var(--f-display);font-size:3.2rem;line-height:1;color:var(--ledger);font-variant-numeric:tabular-nums}
+.onb-big span{font-size:.82rem;color:var(--muted);line-height:1.4}
+.mbars{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:4px;height:104px;margin-top:12px}
+.mbars div{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;font-size:.6rem;color:var(--muted);min-width:0}
+.mbars span{font-family:var(--f-mono);color:var(--ink)}
+.mbars i{width:100%;background:var(--ledger);border-radius:3px 3px 0 0;transition:height .7s cubic-bezier(.2,.8,.2,1);min-height:2px}
+.mbars i.pk{background:var(--stamp)}
+.mbars em{font-style:normal;margin-top:3px;white-space:nowrap}
+.ob-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.obc{display:grid;font-size:.7rem;color:var(--muted);border:1px solid var(--rule);background:var(--sheet-2);border-radius:8px;padding:4px 8px;line-height:1.35}
+.obc b{color:var(--ink);font-size:.82rem}
+.obc em{font-style:normal;color:var(--ledger);font-weight:600}
+.ob-list{display:grid;gap:4px;margin-top:6px;font-size:.78rem}
+.obl{display:grid;grid-template-columns:5.2em minmax(0,1fr) auto;gap:8px;padding:5px 0;border-bottom:1px dashed var(--rule)}
+.obl em{font-style:normal;font-family:var(--f-mono);font-size:.74rem;white-space:nowrap}
+.obl span{color:var(--muted)}
+.filemsg{display:flex;gap:8px;align-items:center}
+.filemsg .fi{background:#D9473A;color:#fff;font-weight:700;font-size:.62rem;border-radius:4px;padding:6px 5px}
+.filemsg small{opacity:.7}
+.queue{display:flex;gap:6px;overflow-x:auto;padding:10px 14px;border-bottom:1px solid var(--rule);scrollbar-width:thin;scroll-behavior:smooth}
+.qi{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--rule);background:var(--sheet);border-radius:999px;padding:4px 11px;font-size:.76rem;cursor:pointer;white-space:nowrap}
+.qi[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.qd{width:8px;height:8px;border-radius:50%;background:var(--rule);flex:0 0 auto}
+.qi.st-ok .qd{background:var(--ledger)}.qi.st-warn .qd{background:var(--amber)}.qi.st-no .qd{background:var(--stamp)}.qi.st-info .qd{background:var(--blue)}
+.b-info{background:var(--blue-soft);color:var(--blue)}
+.verdict.warn{background:var(--amber-soft);color:var(--amber)}
+.verdict.info{background:var(--blue-soft);color:var(--blue)}
+.xml{font-family:var(--f-mono);font-size:.62rem;line-height:1.6;background:#F3F5FA;border:1px solid #DCE2EE;border-radius:4px;padding:8px;margin:8px 0 0;white-space:pre-wrap;overflow-wrap:anywhere;color:#283048}
+.xml .tg{color:#8590A6}
+.sig{display:inline-block;margin-top:6px;font-size:.66rem;font-weight:700;color:#0B6A4E;border:1px solid #0B6A4E;border-radius:4px;padding:0 6px}
+.inv.hand{font-family:"Mali","Sarabun",cursive;background-color:#FFFBEA;background-image:repeating-linear-gradient(to bottom,transparent 0 21px,#EAE0BF 21px 22px);color:#1F3A8A}
+.inv.en{font-family:var(--f-body)}
+.batch{width:100%;border-collapse:collapse;font-size:.78rem;min-width:540px}
+.batch th,.batch td{padding:7px 10px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:middle}
+.batch th{color:var(--muted);font-weight:600;font-size:.72rem}
+.batch .r{text-align:right;white-space:nowrap}
+.batch small{color:var(--muted);font-size:.7rem}
+.batch tr.pend td{color:var(--muted)}
+.btot{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:var(--sheet-2)}
+.btot div{padding:10px 14px;border-right:1px solid var(--rule);font-size:.72rem;color:var(--muted)}
+.btot div:last-child{border-right:0}
+.btot b{display:block;font-size:1.05rem;color:var(--ink)}
+.btot .g b{color:var(--ledger)}
+@media (max-width:520px){.btot{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.pp-tabs{padding:10px 14px;border-bottom:1px solid var(--rule)}
+.pp tr.refund td{background:var(--blue-soft);color:var(--blue)}
+
 @media (prefers-reduced-motion: reduce){.rv{animation:none!important}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}html{scroll-behavior:auto}}
 </style>
 
@@ -565,22 +636,61 @@ body.pitching .day,body.pitching .band{transition:opacity .5s}
   </section>
 
   <!-- Day 1 -->
+  <section class="day" id="day0" data-day="1" data-label="รับลูกค้าใหม่">
+    <div class="wrap day-grid">
+      <div class="day-mark"><small>เริ่มต้น</small><b>0</b><span>รับลูกค้าใหม่</span></div>
+      <div class="copy rv">
+        <div class="eyebrow">รับลูกค้าใหม่ในสองนาที</div>
+        <h2>ใส่เลขนิติบุคคล ระบบรู้เลยว่าลูกค้าต้องยื่นอะไรบ้างทั้งปี</h2>
+        <p class="sub">ดึงชื่อ ที่อยู่ ทุนจดทะเบียน และประเภทกิจการจากข้อมูลกรมพัฒนาธุรกิจการค้า ตอบคำถามสั้นๆ ไม่กี่ข้อ แล้วระบบสร้างปฏิทินภาษีทั้งปีให้ ทั้งแบบรายเดือนและรายปี</p>
+        <ul class="ticks">
+          <li>รองรับบริษัท ห้างหุ้นส่วน และร้านค้าบุคคลธรรมดา</li>
+          <li>รอบบัญชีไม่ตรงปีปฏิทิน ก็คำนวณวันยื่น ภ.ง.ด.51 และ ภ.ง.ด.50 ให้ถูก</li>
+          <li>ลูกค้าจด VAT หรือจ้างพนักงานระหว่างปี ปฏิทินปรับตามทันที</li>
+        </ul>
+      </div>
+      <div class="demo-col rv">
+        <div class="demo" id="demoOnb">
+          <div class="demo-bar"><div class="tabs" id="onbTabs" role="group" aria-label="ตัวอย่างลูกค้า"></div><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
+          <div class="pad onb">
+            <div>
+              <label class="eyebrow" for="onbTin">เลขทะเบียนนิติบุคคล / เลขผู้เสียภาษี</label>
+              <div class="lk-row"><input id="onbTin" readonly><span class="lk-st" id="onbSt"></span></div>
+              <div class="prof" id="onbProf"></div>
+              <div class="sw" id="onbSw"></div>
+            </div>
+            <div>
+              <div class="onb-big"><b id="onbTotal">0</b><span>ครั้งที่ต้องยื่นใน 12 เดือนข้างหน้า<br><small id="onbRange"></small></span></div>
+              <div class="mbars" id="onbBars"></div>
+              <div class="eyebrow" style="margin-top:14px">ทุกเดือน</div>
+              <div class="ob-chips" id="onbMonthly"></div>
+              <div class="eyebrow" style="margin-top:12px">รายปี</div>
+              <div class="ob-list" id="onbAnnual"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="day" id="day1" data-day="1" data-label="รับเอกสารผ่าน LINE">
     <div class="wrap day-grid">
       <div class="day-mark"><small>วันที่</small><b>1</b><span>รับเอกสาร</span></div>
       <div class="copy rv">
-        <div class="eyebrow">รับเอกสารผ่าน LINE</div>
-        <h2>ลูกค้าส่งรูปใบเสร็จใน LINE ระบบจัดเข้าแฟ้มให้เอง</h2>
-        <p class="sub">สำนักงานเชื่อม LINE Official Account ของตัวเอง เจ้าของกิจการถ่ายรูปส่งเหมือนเดิม เอกสารเข้าแฟ้มลูกค้าและเดือนภาษีที่ถูกต้องทันที และได้คำตอบกลับว่าใบนี้ใช้ได้หรือไม่ ตอนที่ยังขอใบใหม่จากร้านได้</p>
+        <div class="eyebrow">LINE ของสำนักงาน · 5 สถานการณ์จริง</div>
+        <h2>ลูกค้าส่งรูปใบเสร็จใน LINE ระบบจัดเข้าแฟ้มและตอบให้เอง</h2>
+        <p class="sub">สำนักงานเชื่อม LINE Official Account ของตัวเอง เจ้าของกิจการถ่ายรูปส่งเหมือนเดิม เอกสารเข้าแฟ้มลูกค้าและเดือนภาษีที่ถูกต้องทันที และได้คำตอบกลับตอนที่ยังขอใบใหม่จากร้านได้ เลือกดูสถานการณ์ด้านบนของโทรศัพท์</p>
         <ul class="ticks">
-          <li>ไม่ต้องติดตั้งแอปเพิ่ม ใช้ LINE ที่ลูกค้ามีอยู่แล้ว</li>
-          <li>เตือนเอกสารที่ยังขาดให้อัตโนมัติ ทุกสิ้นเดือน</li>
-          <li>รับ PDF อีเมล และ e-Tax Invoice ได้ในแฟ้มเดียวกัน</li>
+          <li>บอกทันทีว่าใบไหนใช้ได้ ใบไหนต้องขอใหม่</li>
+          <li>ตอบคำถามเรื่องยอดภาษีจากเอกสารที่ได้รับแล้ว</li>
+          <li>เตือนเอกสารที่ยังขาดทุกสิ้นเดือน และจับคู่ Statement ให้</li>
+          <li>เจ้าของกิจการออก 50 ทวิ ในแชตได้ตอนจ่ายเงิน</li>
+          <li>รู้ว่าบิลจากต่างประเทศต้องยื่น ภ.พ.36</li>
         </ul>
       </div>
       <div class="demo-col rv">
         <div class="demo" id="demoLine">
-          <div class="demo-bar"><span>LINE OA ของสำนักงาน</span><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
+          <div class="demo-bar"><div class="tabs" id="lineTabs" role="group" aria-label="สถานการณ์"></div><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
           <div class="pad">
             <div class="phone"><div class="phone-in">
               <div class="phone-head"><div class="av">บช</div><div><b>สำนักงานบัญชีวีรยา</b><br><span style="opacity:.7;font-size:.72rem">บัญชีทางการ · ปิดงวด</span></div></div>
@@ -598,19 +708,13 @@ body.pitching .day,body.pitching .band{transition:opacity .5s}
       <div class="day-mark"><small>วันที่</small><b>2</b><span>อ่านและตรวจ</span></div>
       <div class="demo-col rv">
         <div class="demo" id="demoX">
-          <div class="demo-bar">
-            <div class="tabs" role="group" aria-label="ตัวอย่างเอกสาร">
-              <button type="button" data-doc="0" aria-pressed="true">ใบกำกับภาษีถูกต้อง</button>
-              <button type="button" data-doc="1" aria-pressed="false">ใบที่มีปัญหา</button>
-              <button type="button" data-doc="2" aria-pressed="false">ใบกำกับอย่างย่อ</button>
-            </div>
-            <button class="replay" type="button">↻ เล่นอีกครั้ง</button>
-          </div>
+          <div class="demo-bar"><span id="qSum">คิวตรวจ · 12 เอกสาร</span><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
+          <div class="queue" id="queue" role="group" aria-label="คิวเอกสาร"></div>
           <div class="pad">
             <div class="x-grid">
               <div class="inv" id="inv"><div class="beam" id="beam"></div><div id="invBody"></div></div>
               <div>
-                <div class="eyebrow" style="margin-bottom:6px">ข้อมูลที่ AI อ่านได้ · ความมั่นใจ</div>
+                <div class="eyebrow" style="margin-bottom:6px">ข้อมูลที่อ่านได้ · ความมั่นใจ</div>
                 <div class="fields" id="fields"></div>
                 <div class="eyebrow" style="margin:12px 0 0">ผลตรวจตามกฎ</div>
                 <div class="checks" id="checks"></div>
@@ -627,14 +731,13 @@ body.pitching .day,body.pitching .band{transition:opacity .5s}
       </div>
       <div class="copy rv">
         <div class="eyebrow">AI อ่าน · กฎตรวจ · คนยืนยัน</div>
-        <h2>AI อ่านใบกำกับภาษี คุณแค่ตรวจแล้วกด Enter</h2>
-        <p class="sub">ระบบดึงชื่อ เลขผู้เสียภาษี สาขา เลขที่ ยอดเงิน และภาษี แล้วตรวจซ้ำด้วยกฎที่ตายตัว ตัวเลขจะเข้าแบบภาษีก็ต่อเมื่อผู้ทำบัญชียืนยันแล้วเท่านั้น</p>
+        <h2>12 แบบเอกสารที่เจอทุกเดือน ระบบรู้ว่าต้องทำอะไรกับแต่ละใบ</h2>
+        <p class="sub">ระบบดึงข้อมูลจากรูป PDF และ XML แล้วตรวจซ้ำด้วยกฎที่ตายตัว ตัวเลขจะเข้าแบบภาษีก็ต่อเมื่อผู้ทำบัญชียืนยันแล้วเท่านั้น คลิกเอกสารในคิวเพื่อดูทีละใบ</p>
         <ul class="ticks">
-          <li>เป็นใบกำกับภาษีเต็มรูป และมีรายการครบตามมาตรา 86/4</li>
-          <li>ชื่อ เลขผู้เสียภาษี และสาขาของผู้ซื้อตรงกับลูกค้า</li>
-          <li>เลขผู้เสียภาษีผ่านการตรวจหลักสุดท้าย และผู้ขายจดทะเบียน VAT</li>
-          <li>VAT ร้อยละ 7 คำนวณตรง และอยู่ในกำหนด 6 เดือน</li>
-          <li>ไม่ซ้ำกับใบที่ใช้ไปแล้ว และไม่ใช่ภาษีซื้อต้องห้าม</li>
+          <li>ใบกำกับเต็มรูป ใบอย่างย่อ บิลเงินสด e-Tax Invoice และใบแจ้งหนี้ต่างประเทศ</li>
+          <li>จับใบซ้ำ VAT คำนวณไม่ตรง ผู้ขายไม่จด VAT และใบที่เกิน 6 เดือน</li>
+          <li>กันภาษีซื้อต้องห้าม เช่น ค่ารับรอง และรถยนต์นั่ง</li>
+          <li>รับ 50 ทวิ ที่ลูกค้าถูกหัก เก็บเป็นเครดิตภาษีปลายปี</li>
         </ul>
       </div>
     </div>
@@ -645,19 +748,22 @@ body.pitching .day,body.pitching .band{transition:opacity .5s}
     <div class="wrap day-grid">
       <div class="day-mark"><small>วันที่</small><b>5</b><span>หัก ณ ที่จ่าย</span></div>
       <div class="copy rv">
-        <div class="eyebrow">ภ.ง.ด.3 · ภ.ง.ด.53 · 50 ทวิ</div>
-        <h2>หัก ณ ที่จ่ายถูกอัตรา ออก 50 ทวิ ได้ในคลิกเดียว</h2>
-        <p class="sub">เลือกประเภทเงินได้ ระบบเสนออัตราจากตารางภาษี แยก ภ.ง.ด.3 กับ ภ.ง.ด.53 จากเลขผู้เสียภาษีของผู้รับเงิน และสร้างหนังสือรับรองพร้อมจำนวนเงินตัวอักษร</p>
+        <div class="eyebrow">ภ.ง.ด.3 · ภ.ง.ด.53 · ภ.ง.ด.54 · 50 ทวิ</div>
+        <h2>จัดประเภทการจ่ายทั้งเดือนในครั้งเดียว ออก 50 ทวิ ครบทุกใบ</h2>
+        <p class="sub">ระบบดูประเภทเงินได้และเลขผู้เสียภาษีของผู้รับเงิน เสนออัตราจากตารางภาษี แยก ภ.ง.ด.3 53 และ 54 บอกรายการที่ไม่ต้องหัก แล้วสร้างหนังสือรับรองพร้อมจำนวนเงินตัวอักษร</p>
         <ul class="ticks">
-          <li>เตือนเมื่อยอดจ่ายต่ำกว่าเกณฑ์ 1,000 บาท</li>
+          <li>ยอดต่ำกว่า 1,000 บาท และการซื้อสินค้า ระบบบอกว่าไม่ต้องหัก</li>
+          <li>จ่ายต่างประเทศ เตือนให้ตรวจอนุสัญญาภาษีซ้อน และ ภ.พ.36</li>
           <li>เลขที่หนังสือรับรองเรียงต่อเนื่องแยกตามลูกค้า</li>
-          <li>เจ้าของกิจการออก 50 ทวิ จากมือถือได้ตอนจ่ายเงิน</li>
         </ul>
       </div>
       <div class="demo-col rv">
         <div class="demo" id="demoWht">
-          <div class="demo-bar"><span>ลองเปลี่ยนค่าได้</span><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
-          <div class="pad">
+          <div class="demo-bar"><span>รายการจ่าย ต.ค. 2569 · บจ. สยามคลีนนิ่ง</span><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
+          <div class="scroll-x"><table class="batch" id="batch"></table></div>
+          <div class="btot" id="btot"></div>
+          <div class="pad" style="border-top:1px solid var(--rule)">
+            <div class="eyebrow" style="margin-bottom:8px">ลองออก 50 ทวิ เอง</div>
             <div class="ctrls">
               <label class="full">ผู้รับเงิน
                 <select id="whtPayee">
@@ -726,22 +832,20 @@ body.pitching .day,body.pitching .band{transition:opacity .5s}
       <div class="day-mark"><small>วันที่</small><b>10</b><span>ภาษีมูลค่าเพิ่ม</span></div>
       <div class="copy rv">
         <div class="eyebrow">ภ.พ.30 · รายงานภาษีซื้อ · รายงานภาษีขาย</div>
-        <h2>ภ.พ.30 พร้อมยื่น ทุกตัวเลขคลิกย้อนดูเอกสารต้นทางได้</h2>
-        <p class="sub">ระบบสร้างรายงานภาษีซื้อ รายงานภาษีขาย และแบบ ภ.พ.30 จากเอกสารที่ยืนยันแล้ว คลิกที่ตัวเลขเพื่อดูว่ามาจากใบกำกับภาษีใบไหนบ้าง และระบบกันภาษีซื้อที่ใช้ไม่ได้ออกให้ก่อนยื่น</p>
+        <h2>ภ.พ.30 พร้อมยื่น ทั้งกรณีต้องชำระ ขอคืน และมีเครดิตยกมา</h2>
+        <p class="sub">ระบบสร้างรายงานภาษีซื้อ รายงานภาษีขาย และแบบ ภ.พ.30 จากเอกสารที่ยืนยันแล้ว คลิกที่ตัวเลขเพื่อดูว่ามาจากใบไหนบ้าง ลองสลับดูลูกค้าสามแบบด้านบนของตาราง</p>
         <ul class="ticks">
-          <li>ส่งออก PDF ให้ลูกค้าอนุมัติ และไฟล์สำหรับยื่นกับกรมสรรพากร</li>
-          <li>ไม่ต้องให้รหัสผ่าน e-Filing กับเรา คุณยื่นเองเหมือนเดิม</li>
+          <li>บริษัทบริการที่ต้องชำระ ผู้ส่งออกที่ขอคืน และร้านอาหารที่มีเครดิตยกมา</li>
+          <li>กันภาษีซื้อต้องห้ามและใบที่ไม่ผ่านกฎออกให้ก่อนยื่น</li>
+          <li>ส่งออก PDF ให้ลูกค้าอนุมัติ และไฟล์สำหรับยื่น โดยไม่ต้องให้รหัสผ่าน e-Filing กับเรา</li>
         </ul>
       </div>
       <div class="demo-col rv">
         <div class="demo" id="demoPP">
-          <div class="demo-bar"><span>ภ.พ.30 · บจ. สยามคลีนนิ่ง · สำนักงานใหญ่ · ต.ค. 2569</span><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
+          <div class="demo-bar"><span id="ppHead"></span><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
+          <div class="tabs pp-tabs" id="ppTabs" role="group" aria-label="ตัวอย่างลูกค้า"></div>
           <table class="pp" id="ppTable"></table>
-          <div class="guard">
-            <div>ภาษีซื้อต้องห้ามที่กันไว้<b class="num">฿1,260.00</b>ค่ารับรอง 2 ใบ · รถยนต์นั่ง 1 ใบ</div>
-            <div>ใบกำกับภาษีอย่างย่อ<b class="num">6 ใบ</b>บันทึกเป็นค่าใช้จ่าย ไม่นำมาหัก</div>
-            <div>เกินกำหนด 6 เดือน<b class="num">1 ใบ</b>แจ้งลูกค้าแล้วทาง LINE</div>
-          </div>
+          <div class="guard" id="ppGuard"></div>
           <div class="trace" id="trace"></div>
         </div>
       </div>
@@ -1048,114 +1152,249 @@ fillStrip(true);
 let stripPlayed = false;
 new IntersectionObserver(es => { if (es[0].isIntersecting && !stripPlayed && !REDUCE) { stripPlayed = true; fillStrip(false); requestAnimationFrame(() => requestAnimationFrame(() => fillStrip(true))); } }, { threshold: .4 }).observe(strip);
 
+/* ---------- Day 0: onboarding ---------- */
+const withCheck = s => { let t = 0; for (let i = 0; i < 12; i++) t += +s[i] * (13 - i); return s + ((11 - (t % 11)) % 10); };
+const TYPE_L = { co: "บริษัทจำกัด", lp: "ห้างหุ้นส่วนจำกัด", sole: "บุคคลธรรมดา" };
+const ONB = [
+  { short: "สยามคลีนนิ่ง", name: "บริษัท สยามคลีนนิ่ง จำกัด", type: "co", tin: "0999999000021", cap: "5,000,000 บาท", addr: "แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพฯ", biz: "บริการทำความสะอาดอาคาร", fye: 11, vat: true, emp: true, pay: true, foreign: true },
+  { short: "ร้านกาแฟบ้านสวน", name: "ร้านกาแฟบ้านสวน", type: "sole", tin: "1-2345-xxxxx-xx-x", cap: "ไม่มี (บุคคลธรรมดา)", addr: "อำเภอเมือง เชียงใหม่", biz: "ร้านกาแฟ", fye: 11, vat: false, emp: true, pay: false, foreign: false },
+  { short: "ช่างเหล็กรุ่งเรือง", name: "ห้างหุ้นส่วนจำกัด ช่างเหล็กรุ่งเรือง", type: "lp", tin: withCheck("099999900006"), cap: "1,000,000 บาท", addr: "อำเภอบางพลี สมุทรปราการ", biz: "รับเหมางานโครงสร้างเหล็ก", fye: 11, vat: true, emp: true, pay: true, foreign: false },
+  { short: "ไทยเฟรช เอ็กซ์ปอร์ต", name: "บริษัท ไทยเฟรช เอ็กซ์ปอร์ต จำกัด", type: "co", tin: withCheck("099999900007"), cap: "20,000,000 บาท", addr: "อำเภอเมือง ฉะเชิงเทรา", biz: "ส่งออกผลไม้สด", fye: 5, vat: true, emp: true, pay: true, foreign: true },
+];
+const SW = [["vat", "จดทะเบียนภาษีมูลค่าเพิ่ม"], ["emp", "มีลูกจ้าง"], ["pay", "จ่ายค่าบริการ ค่าเช่า ให้ผู้อื่น"], ["foreign", "ซื้อบริการจากต่างประเทศ"]];
+const TODAY = new Date(2026, 10, 10);
+const eom = (y, m) => new Date(y, m + 1, 0);
+const nextEom = m => { let d = eom(TODAY.getFullYear(), m); if (d < TODAY) d = eom(TODAY.getFullYear() + 1, m); return d; };
+let onbIdx = 0, cur = { ...ONB[0] };
+function onbCompute(c) {
+  const mo = [];
+  if (c.vat) mo.push(["ภ.พ.30", "ภาษีมูลค่าเพิ่ม", "15 · ออนไลน์ 23"]);
+  if (c.emp) { mo.push(["ภ.ง.ด.1", "หัก ณ ที่จ่าย เงินเดือน", "7 · ออนไลน์ 15"]); mo.push(["สปส.1-10", "ประกันสังคม", "15"]); }
+  if (c.pay) { mo.push(["ภ.ง.ด.3", "หัก ณ ที่จ่าย บุคคล", "7 · ออนไลน์ 15"]); mo.push(["ภ.ง.ด.53", "หัก ณ ที่จ่าย นิติบุคคล", "7 · ออนไลน์ 15"]); }
+  if (c.foreign) { mo.push(["ภ.พ.36", "VAT บริการต่างประเทศ", "7 · ออนไลน์ 15"]); mo.push(["ภ.ง.ด.54", "หัก ณ ที่จ่าย ต่างประเทศ", "7 · ออนไลน์ 15"]); }
+  const an = [];
+  if (c.type === "sole") {
+    an.push(["ภ.ง.ด.90", "ภาษีเงินได้บุคคลธรรมดา ปีภาษี 2569", new Date(2027, 2, 31)]);
+    an.push(["ภ.ง.ด.94", "ภาษีครึ่งปี 2570", new Date(2027, 8, 30)]);
+  } else {
+    const fy = nextEom(c.fye), half = nextEom((c.fye + 6) % 12);
+    an.push(["ภ.ง.ด.51", `ภาษีครึ่งรอบบัญชี ถึง ${thDate(half)}`, eom(half.getFullYear(), half.getMonth() + 2)]);
+    an.push(["ภ.ง.ด.50", `ภาษีนิติบุคคล รอบสิ้นสุด ${thDate(fy)}`, new Date(fy.getFullYear(), fy.getMonth(), fy.getDate() + 150)]);
+    an.push(["งบการเงิน", `ส่งกรมพัฒนาธุรกิจการค้า ${c.type === "co" ? "ผู้สอบบัญชีรับอนุญาตรับรอง" : "รับรองโดย CPA หรือ TA ได้"} (โดยประมาณ)`, eom(fy.getFullYear(), fy.getMonth() + 5)]);
+    if (c.type === "co") an.push(["บอจ.5", "บัญชีรายชื่อผู้ถือหุ้น หลังประชุมสามัญ (โดยประมาณ)", new Date(fy.getFullYear(), fy.getMonth() + 5, 14)]);
+  }
+  if (c.emp) { an.push(["ภ.ง.ด.1ก", "สรุปเงินเดือนทั้งปี 2569", new Date(2027, 1, 28)]); an.push(["กท.20ก", "กองทุนเงินทดแทน ค่าจ้างทั้งปี", new Date(2027, 1, 28)]); }
+  an.sort((a, b) => a[2] - b[2]);
+  const months = []; for (let i = 0; i < 12; i++) { const d = new Date(2026, 11 + i, 1); months.push({ y: d.getFullYear(), m: d.getMonth(), n: mo.length }); }
+  an.forEach(a => { const x = months.find(z => z.y === a[2].getFullYear() && z.m === a[2].getMonth()); if (x) x.n++; });
+  return { mo, an, months, total: months.reduce((s, x) => s + x.n, 0) };
+}
+function onbTabs() { $("#onbTabs").innerHTML = ONB.map((c, i) => `<button type="button" data-i="${i}" aria-pressed="${i === onbIdx}">${c.short}</button>`).join(""); $$("#onbTabs button").forEach(b => b.onclick = () => { onbIdx = +b.dataset.i; cur = { ...ONB[onbIdx] }; onbTabs(); onbDemo.play(); }); }
+function onbProfile(show) {
+  $("#onbProf").innerHTML = show ? `<b>${esc(cur.name)}</b><dl><dt>ประเภท</dt><dd>${TYPE_L[cur.type]}</dd><dt>ธุรกิจ</dt><dd>${esc(cur.biz)}</dd><dt>ทุนจดทะเบียน</dt><dd>${cur.cap}</dd><dt>ที่ตั้ง</dt><dd>${esc(cur.addr)}</dd></dl><small>${cur.type === "sole" ? "บุคคลธรรมดา กรอกเอง · เลขประจำตัวแสดงแบบปิดบัง" : "ดึงจากข้อมูลกรมพัฒนาธุรกิจการค้า (สาธิต)"}</small>` : "";
+}
+function onbSwitches(n = 99) {
+  $("#onbSw").innerHTML = SW.map(([k, l], i) => `<label class="${i < n ? "" : "dim"}"><input type="checkbox" data-k="${k}" ${i < n && cur[k] ? "checked" : ""}> ${l}</label>`).join("") +
+    `<label>รอบบัญชีสิ้นสุด <select id="onbFye" ${cur.type === "sole" ? "disabled" : ""}>${TH_MF.map((m, i) => `<option value="${i}" ${i === cur.fye ? "selected" : ""}>${eom(2026, i).getDate()} ${m}</option>`).join("")}</select></label>`;
+  $$("#onbSw input").forEach(x => x.onchange = () => { cur[x.dataset.k] = x.checked; onbOut(true); });
+  $("#onbFye").onchange = e => { cur.fye = +e.target.value; onbOut(true); };
+}
+function onbOut(anim) {
+  const r = onbCompute(cur), max = Math.max(...r.months.map(m => m.n), 1);
+  if (anim) countUp($("#onbTotal"), r.total, 700, v => Math.round(v)); else $("#onbTotal").textContent = r.total;
+  $("#onbRange").textContent = "ธ.ค. 2569 ถึง พ.ย. 2570";
+  $("#onbBars").innerHTML = r.months.map(m => `<div><span>${m.n}</span><i class="${m.n > r.mo.length ? "pk" : ""}" style="height:${anim && !REDUCE ? 0 : m.n / max * 100}%" data-h="${m.n / max * 100}"></i><em>${TH_M[m.m]}</em></div>`).join("");
+  if (anim && !REDUCE) requestAnimationFrame(() => requestAnimationFrame(() => $$("#onbBars i").forEach(i => i.style.height = i.dataset.h + "%")));
+  $("#onbMonthly").innerHTML = r.mo.length ? r.mo.map(m => `<span class="obc${anim ? " fade-in" : ""}"><b>${m[0]}</b>${m[1]}<em>วันที่ ${m[2]}</em></span>`).join("") : `<span class="note" style="margin:0">ไม่มีแบบรายเดือน</span>`;
+  $("#onbAnnual").innerHTML = r.an.map(a => `<div class="obl${anim ? " fade-in" : ""}"><b>${a[0]}</b><span>${a[1]}</span><em>${thDate(a[2])}</em></div>`).join("");
+}
+function onbFinal() { onbTabs(); $("#onbTin").value = cur.tin; $("#onbSt").textContent = "พบข้อมูล ✓"; $("#onbSt").className = "lk-st ok"; onbProfile(true); onbSwitches(); onbOut(false); }
+const onbDemo = demo($("#demoOnb"), onbFinal, async w => {
+  cur = { ...ONB[onbIdx] }; onbTabs();
+  $("#onbTin").value = ""; $("#onbSt").textContent = ""; onbProfile(false); onbSwitches(0); $("#onbTotal").textContent = "0"; $("#onbBars").innerHTML = ""; $("#onbMonthly").innerHTML = ""; $("#onbAnnual").innerHTML = "";
+  for (let i = 1; i <= cur.tin.length; i++) { $("#onbTin").value = cur.tin.slice(0, i); await w(45); }
+  $("#onbSt").textContent = "กำลังค้นหา…"; $("#onbSt").className = "lk-st"; await w(700);
+  $("#onbSt").textContent = "พบข้อมูล ✓"; $("#onbSt").className = "lk-st ok"; onbProfile(true); await w(500);
+  for (let n = 1; n <= SW.length; n++) { onbSwitches(n); await w(330); }
+  onbSwitches(); onbOut(true);
+});
+
 /* ---------- Day 1: LINE ---------- */
 const chat = $("#chat");
-const RC = (title, lines) => `<div class="rcpt"><b>${title}</b>${"<i></i>".repeat(lines)}<b style="text-align:right">2,835.50</b></div>`;
-const MSGS = [
-  { k: "me photo", h: RC("ใบกำกับภาษี", 5) },
-  { k: "bot", h: `<span class="ok">✓ ใบกำกับภาษีเต็มรูป</span><br>บจ. ออฟฟิศเมท ซัพพลาย<br>ภาษีซื้อ <b>฿185.50</b> · เข้างวด ต.ค. 2569` },
-  { k: "me photo", h: RC("ใบกำกับภาษีอย่างย่อ", 3) },
-  { k: "bot", h: `<span class="bad">✗ ใบกำกับภาษีอย่างย่อ</span><br>ใช้หักภาษีซื้อไม่ได้ ขอใบกำกับภาษีเต็มรูปจากร้าน โดยระบุชื่อ เลขผู้เสียภาษี และสาขาของบริษัทได้ไหมคะ` },
-  { k: "quick", h: `<span>ขอใบใหม่แล้ว</span><span>ใช้เป็นค่าใช้จ่ายไป</span>` },
-  { k: "bot", h: `<div class="card-mini"><h4>เอกสาร ต.ค. 2569 ที่ยังขาด</h4><div class="row"><span>Statement KBank</span><b>ยังไม่ได้รับ</b></div><div class="row"><span>สรุปเงินเดือน</span><b>ยังไม่ได้รับ</b></div></div>` },
+const RC = (title, lines, amt = "2,835.50") => `<div class="rcpt"><b>${title}</b>${"<i></i>".repeat(lines)}<b style="text-align:right">${amt}</b></div>`;
+const FILE = (name, meta) => `<div class="filemsg"><span class="fi">PDF</span><span><b>${name}</b><br><small>${meta}</small></span></div>`;
+const CHATS = [
+  { t: "ส่งใบเสร็จ", m: [
+    { k: "me photo", h: RC("ใบกำกับภาษี", 5) },
+    { k: "bot", h: `<span class="ok">✓ ใบกำกับภาษีเต็มรูป</span><br>บจ. ออฟฟิศเมท ซัพพลาย<br>ภาษีซื้อ <b>฿185.50</b> · เข้างวด ต.ค. 2569` },
+    { k: "me photo", h: RC("ใบกำกับภาษีอย่างย่อ", 3, "200.00") },
+    { k: "bot", h: `<span class="bad">✗ ใบกำกับภาษีอย่างย่อ</span><br>ใช้หักภาษีซื้อไม่ได้ ครั้งหน้าขอใบกำกับภาษีเต็มรูปจากร้าน โดยแจ้งชื่อ เลขผู้เสียภาษี และสาขาของบริษัทได้ไหมคะ` },
+    { k: "quick", h: `<span>ขอใบใหม่แล้ว</span><span>ใช้เป็นค่าใช้จ่ายไป</span>` },
+  ] },
+  { t: "ถามยอดภาษี", m: [
+    { k: "me", h: "เดือนนี้ต้องจ่าย VAT ประมาณเท่าไรครับ จะได้เตรียมเงิน" },
+    { k: "bot", h: `<div class="card-mini"><h4>ประมาณการ ต.ค. 2569 จากเอกสาร 259 ใบ</h4><div class="row"><span>ภ.พ.30</span><b>฿70,738.70</b></div><div class="row"><span>ภ.ง.ด.3 และ 53</span><b>฿4,215.00</b></div><div class="row"><span>ประกันสังคม</span><b>฿9,450.00</b></div></div>` },
+    { k: "bot", h: `ยอดอาจเปลี่ยนเมื่อได้ Statement ธนาคารครบ ภ.พ.30 ครบกำหนดชำระวันที่ 23 พ.ย. ค่ะ` },
+    { k: "quick", h: `<span>ดูรายละเอียด</span><span>เตือนก่อนครบกำหนด</span>` },
+  ] },
+  { t: "เตือนสิ้นเดือน", m: [
+    { k: "bot", h: `<b>สรุปเอกสาร ต.ค. 2569</b><br>ได้รับแล้ว 259 ใบ · ยังขาด 3 รายการ` },
+    { k: "bot", h: `<div class="card-mini"><h4>ยังขาด</h4><div class="row"><span>Statement KBank ต.ค.</span><b>✗</b></div><div class="row"><span>สรุปเงินเดือน ต.ค.</span><b>✗</b></div><div class="row"><span>ใบกำกับภาษีขาย 1285–1288</span><b>✗</b></div></div>` },
+    { k: "me", h: FILE("Statement_KBank_Oct2569.pdf", "2 หน้า · 184 KB") },
+    { k: "bot", h: `<span class="ok">✓ Statement KBank ต.ค. 2569</span><br>43 รายการ · จับคู่กับเอกสารแล้ว 39 รายการ<br>อีก 4 รายการยังไม่มีเอกสาร` },
+    { k: "quick", h: `<span>ดู 4 รายการ</span><span>ส่งเอกสารเพิ่ม</span>` },
+  ] },
+  { t: "ออก 50 ทวิ", m: [
+    { k: "me", h: "จ่ายค่าขนส่งให้ทองดีโลจิสติกส์ 18,500 บาท ต้องหักไหมครับ" },
+    { k: "bot", h: `ค่าขนส่งจ่ายนิติบุคคล หัก <b>1%</b><br>หัก <b>฿185.00</b> · โอนสุทธิ <b>฿18,315.00</b><br>เข้า ภ.ง.ด.53 เดือน พ.ย. 2569` },
+    { k: "quick", h: `<span>ออก 50 ทวิ เลย</span><span>แก้ประเภท</span>` },
+    { k: "me", h: "ออก 50 ทวิ เลย" },
+    { k: "bot", h: FILE("50ทวิ_2569-0043_ทองดีโลจิสติกส์.pdf", "ส่งต่อให้ผู้รับเงินได้ทันที") },
+  ] },
+  { t: "บิลต่างประเทศ", m: [
+    { k: "me photo", h: RC("INVOICE", 4, "THB 5,000.00") },
+    { k: "bot", h: `<span class="ok">✓ ค่าโฆษณาออนไลน์ จากผู้ให้บริการในไอร์แลนด์</span><br>ไม่มี VAT ไทยในใบแจ้งหนี้ ต้องยื่น <b>ภ.พ.36</b> นำส่ง VAT 7% = <b>฿350.00</b> ภายใน 15 พ.ย. (ออนไลน์)` },
+    { k: "bot", h: `ชำระแล้วนำ ฿350.00 ไปใช้เป็นภาษีซื้อเดือนถัดไปได้ สำนักงานเตรียมแบบให้แล้วค่ะ` },
+  ] },
 ];
-const lineFinal = () => { chat.innerHTML = MSGS.map(m => `<div class="${m.k === "quick" ? "quick" : "msg " + m.k}">${m.h}</div>`).join(""); };
-demo($("#demoLine"), lineFinal, async w => {
-  chat.innerHTML = ""; await w(400);
-  for (const m of MSGS) {
-    if (m.k === "bot") { const t = document.createElement("div"); t.className = "msg bot typing"; t.innerHTML = "<i></i><i></i><i></i>"; chat.appendChild(t); await w(900); t.remove(); }
+let chatIdx = 0;
+const msgEl = m => `<div class="${m.k === "quick" ? "quick" : "msg " + m.k}">${m.h}</div>`;
+function lineTabs() { $("#lineTabs").innerHTML = CHATS.map((c, i) => `<button type="button" data-i="${i}" aria-pressed="${i === chatIdx}">${c.t}</button>`).join(""); $$("#lineTabs button").forEach(b => b.onclick = () => { chatIdx = +b.dataset.i; lineTabs(); lineDemo.play(); }); }
+const lineDemo = demo($("#demoLine"), () => { lineTabs(); chat.innerHTML = CHATS[chatIdx].m.map(msgEl).join(""); }, async w => {
+  lineTabs(); chat.innerHTML = ""; await w(350);
+  for (const m of CHATS[chatIdx].m) {
+    if (m.k === "bot") { const t = document.createElement("div"); t.className = "msg bot typing"; t.innerHTML = "<i></i><i></i><i></i>"; chat.appendChild(t); await w(800); t.remove(); }
     const d = document.createElement("div"); d.className = (m.k === "quick" ? "quick" : "msg " + m.k) + " fade-in"; d.innerHTML = m.h; chat.appendChild(d);
-    await w(m.k === "me photo" ? 700 : 1000);
+    await w(m.k.startsWith("me") ? 700 : 950);
   }
 });
 
-/* ---------- Day 2: extraction ---------- */
+/* ---------- Day 2: review queue ---------- */
 const CLIENT = { name: "บริษัท สยามคลีนนิ่ง จำกัด", tin: "0999999000021", br: "00000" };
-const TAXMONTH = { y: 2026, m: 9 }; // October 2026
+const TAXMONTH = { y: 2026, m: 9 };
+const HQ = "สำนักงานใหญ่";
+const D1 = { q: "ออฟฟิศเมท", kind: "full", title: "ใบกำกับภาษี / ใบเสร็จรับเงิน", seller: "บริษัท ออฟฟิศเมท ซัพพลาย จำกัด", sTin: "0999999000012", sBr: HQ, buyer: CLIENT.name, bTin: CLIENT.tin, bBr: HQ, no: "IV6910-0457", date: [2026, 9, 28], items: [["กระดาษถ่ายเอกสาร A4 80 แกรม", 10, 120], ["ตลับหมึกพิมพ์เลเซอร์", 1, 1450]], vat: 185.50, vatReg: true };
 const DOCS = [
-  { kind: "full", title: "ใบกำกับภาษี / ใบเสร็จรับเงิน", seller: "บริษัท ออฟฟิศเมท ซัพพลาย จำกัด", sTin: "0999999000012", sBr: "สำนักงานใหญ่", buyer: "บริษัท สยามคลีนนิ่ง จำกัด", bTin: "0999999000021", bBr: "สำนักงานใหญ่", no: "IV6910-0457", date: [2026, 9, 28],
-    items: [["กระดาษถ่ายเอกสาร A4 80 แกรม", 10, 120], ["ตลับหมึกพิมพ์เลเซอร์", 1, 1450]], vat: 185.50, vatReg: true, dup: false },
-  { kind: "full", title: "ใบกำกับภาษี", seller: "บริษัท รุ่งเรืองเครื่องมือช่าง จำกัด", sTin: "0999999000039", sBr: "สาขา 00002", buyer: "สยามคลีนนิ่ง", bTin: "", bBr: "", no: "TX-2569/0311", date: [2026, 2, 14],
-    items: [["เครื่องขัดพื้น รุ่น FX-17", 1, 6500]], vat: 455.00, vatReg: true, dup: false },
-  { kind: "abb", title: "ใบกำกับภาษีอย่างย่อ", seller: "ร้านสะดวกซื้อ สาขาสุขุมวิท 21", sTin: "0999999000055", sBr: "สาขา 01842", buyer: "", bTin: "", bBr: "", no: "POS 004812", date: [2026, 9, 17],
-    items: [["น้ำดื่ม เครื่องดื่ม ขนม", 1, 186.92]], vat: 13.08, vatReg: true, dup: false },
+  D1,
+  { q: "รุ่งเรืองเครื่องมือ", kind: "full", title: "ใบกำกับภาษี", seller: "บริษัท รุ่งเรืองเครื่องมือช่าง จำกัด", sTin: "0999999000039", sBr: "สาขา 00002", buyer: "สยามคลีนนิ่ง", bTin: "", bBr: "", no: "TX-2569/0311", date: [2026, 2, 14], items: [["เครื่องขัดพื้น รุ่น FX-17", 1, 6500]], vat: 455.00, vatReg: true },
+  { q: "ร้านสะดวกซื้อ", kind: "abb", title: "ใบกำกับภาษีอย่างย่อ", seller: "ร้านสะดวกซื้อ สาขาสุขุมวิท 21", sTin: withCheck("099999900005"), sBr: "สาขา 01842", no: "POS 004812", date: [2026, 9, 17], items: [["น้ำดื่ม เครื่องดื่ม ขนม", 1, 186.92]], vat: 13.08, vatReg: true },
+  { q: "ห้องอาหารบ้านไทย", kind: "full", cat: "ent", title: "ใบกำกับภาษี / ใบเสร็จรับเงิน", seller: "บริษัท ห้องอาหารบ้านไทย จำกัด", sTin: withCheck("099999900011"), sBr: HQ, buyer: CLIENT.name, bTin: CLIENT.tin, bBr: HQ, no: "RC-10-0921", date: [2026, 9, 22], items: [["อาหารและเครื่องดื่ม รับรองลูกค้า 6 ท่าน", 1, 4800]], vat: 336.00, vatReg: true },
+  { q: "เอเชียมอเตอร์", kind: "full", cat: "car", title: "ใบกำกับภาษี", seller: "บริษัท เอเชียมอเตอร์ เซอร์วิส จำกัด", sTin: withCheck("099999900012"), sBr: "สาขา 00005", buyer: CLIENT.name, bTin: CLIENT.tin, bBr: HQ, no: "SV69-10233", date: [2026, 9, 9], items: [["ซ่อมบำรุงรถยนต์นั่ง ทะเบียน 1กข 1234", 1, 6200]], vat: 434.00, vatReg: true },
+  { ...D1, q: "ออฟฟิศเมท (ส่งซ้ำ)", dup: "28 ต.ค. 2569" },
+  { q: "น้ำยาสะอาดไทย", kind: "full", title: "ใบกำกับภาษี", seller: "บริษัท น้ำยาสะอาดไทย จำกัด", sTin: withCheck("099999900013"), sBr: HQ, buyer: CLIENT.name, bTin: CLIENT.tin, bBr: HQ, no: "INV-25691025", date: [2026, 9, 25], items: [["น้ำยาทำความสะอาดพื้น 20 ลิตร", 4, 250]], vat: 72.00, vatReg: true },
+  { q: "ร้านป้ายสวยงาม", kind: "full", title: "ใบกำกับภาษี", seller: "ร้านป้ายสวยงาม", sTin: withCheck("123456789013"), sBr: "", buyer: CLIENT.name, bTin: CLIENT.tin, bBr: HQ, no: "005/2569", date: [2026, 9, 12], items: [["ป้ายไวนิลหน้าอาคาร", 2, 1500]], vat: 210.00, vatReg: false },
+  { q: "อินเทอร์เน็ตไทย e-Tax", kind: "etax", title: "ใบกำกับภาษีอิเล็กทรอนิกส์", seller: "บริษัท อินเทอร์เน็ตไทย จำกัด", sTin: withCheck("099999900014"), sBr: HQ, buyer: CLIENT.name, bTin: CLIENT.tin, bBr: HQ, no: "ET2569100088", date: [2026, 9, 1], items: [["อินเทอร์เน็ตองค์กร 1 Gbps ต.ค. 2569", 1, 1890]], vat: 132.30, vatReg: true },
+  { q: "บิลเงินสด ช.การช่าง", kind: "cash", title: "บิลเงินสด", seller: "ร้าน ช.การช่าง วัสดุก่อสร้าง", no: "เล่ม 12 เลขที่ 37", date: [2026, 9, 19], items: [["ปูนกาว", 2, 180], ["แปรงทาสี", 4, 70]], vat: 0 },
+  { q: "โฆษณาต่างประเทศ", kind: "foreign", title: "INVOICE", seller: "Online Ads Global Ltd.", sAddr: "Dublin, Ireland", no: "INV-TH-883120", date: [2026, 9, 31], items: [["Online advertising, October 2026", 1, 5000]], vat: 0 },
+  { q: "50 ทวิ จากเมกะมอลล์", kind: "whtin", title: "หนังสือรับรองการหักภาษี ณ ที่จ่าย", seller: "บริษัท เมกะมอลล์ จำกัด", sTin: withCheck("099999900015"), no: "2569/1182", date: [2026, 9, 30], items: [["ค่าบริการทำความสะอาด ต.ค. 2569", 1, 150000]], vat: 0, wht: 4500 },
 ];
-let docIdx = 0;
+let docIdx = 0, qSt = DOCS.map(() => null);
 const sub = d => d.items.reduce((a, [, q, p]) => a + q * p, 0);
+const vat7 = b => Math.round(b * 7) / 100;
+const monthsBack = d => (TAXMONTH.y - d.date[0]) * 12 + (TAXMONTH.m - d.date[1]);
+const dOf = d => new Date(d.date[0], d.date[1], d.date[2]);
+const itemsTbl = (d, cur = "") => `<table><thead><tr><th>${d.kind === "foreign" ? "Description" : "รายการ"}</th><th class="r">${d.kind === "foreign" ? "Qty" : "จำนวน"}</th><th class="r">${d.kind === "foreign" ? "Amount" : "รวม"}</th></tr></thead><tbody>${d.items.map(([n, q, p]) => `<tr><td>${n}</td><td class="r">${q}</td><td class="r">${cur}${fmt(q * p)}</td></tr>`).join("")}</tbody></table>`;
 function invHTML(d) {
-  const base = sub(d), dt = new Date(d.date[0], d.date[1], d.date[2]);
+  const base = sub(d), dt = thDate(dOf(d));
+  if (d.kind === "etax") return `<div class="t" data-f="type">${d.title}<small>e-Tax Invoice · XML มาตรฐาน สพธอ.</small></div>
+<pre class="xml"><span class="tg">&lt;ram:SellerTradeParty&gt;</span>
+  <span class="tg">&lt;ram:Name&gt;</span><span data-f="seller">${d.seller}</span>
+  <span class="tg">&lt;ram:ID&gt;</span><span data-f="sTin">${d.sTin}</span> · ${d.sBr}
+<span class="tg">&lt;ram:BuyerTradeParty&gt;</span>
+  <span class="tg">&lt;ram:Name&gt;</span><span data-f="buyer">${d.buyer}</span>
+  <span class="tg">&lt;ram:ID&gt;</span><span data-f="bTin">${d.bTin}</span> · ${d.bBr}
+<span class="tg">&lt;ram:ID&gt;</span><span data-f="no">${d.no}</span> · ${dt}
+<span class="tg">&lt;ram:LineTotalAmount&gt;</span><span data-f="base">${fmt(base)}</span>
+<span class="tg">&lt;ram:TaxTotalAmount&gt;</span>${fmt(d.vat)}</pre><span class="sig">✓ ลายมือชื่อดิจิทัลถูกต้อง</span>`;
+  if (d.kind === "cash") return `<div class="t" data-f="type">บิลเงินสด</div><div style="margin-top:6px"><span data-f="seller">${d.seller}</span></div><div style="text-align:right"><span data-f="no">${d.no}</span><br>วันที่ ${dt}</div>${itemsTbl(d)}<div class="tot"><b>รวม <span data-f="base">${fmt(base)}</span> บาท</b><span>ผู้รับเงิน ............ ช.</span></div>`;
+  if (d.kind === "foreign") return `<div class="t" data-f="type" style="text-align:left">INVOICE</div><div class="two"><div><b data-f="seller">${d.seller}</b><br>${d.sAddr}<br>VAT ID: IE-XXXXXXX</div><div style="text-align:right">No. <span data-f="no">${d.no}</span><br>Date 31 Oct 2026</div></div><div style="margin-top:6px"><b>Bill to</b> Siam Cleaning Co., Ltd. (Thailand)</div>${itemsTbl(d, "THB ")}<div class="tot"><b>Amount due THB <span data-f="base">${fmt(base)}</span></b><span>VAT: not charged, customer to account (reverse charge)</span></div>`;
+  if (d.kind === "whtin") return `<div class="t" data-f="type">หนังสือรับรองการหักภาษี ณ ที่จ่าย<small>ตามมาตรา 50 ทวิ · เลขที่ ${d.no}</small></div><div class="two"><div><b>ผู้หักภาษี</b><br><span data-f="seller">${d.seller}</span><br><span data-f="sTin">${d.sTin}</span></div><div><b>ผู้ถูกหักภาษี</b><br>${CLIENT.name}<br>${CLIENT.tin}</div></div>${itemsTbl(d)}<div class="tot"><span>ภาษีที่หักไว้ 3% <b data-f="base">${fmt(d.wht)}</b></span><span>(สี่พันห้าร้อยบาทถ้วน)</span></div>`;
   return `<div class="t" data-f="type">${d.title}${d.kind === "full" ? "<small>เอกสารออกเป็นชุด</small>" : ""}</div>
-  <div class="two">
-    <div><b>ผู้ขาย</b><br><span data-f="seller">${d.seller}</span><br>เลขผู้เสียภาษี <span data-f="sTin">${d.sTin}</span> <span data-f="sBr">${d.sBr}</span></div>
-    <div style="text-align:right">เลขที่ <span data-f="no">${d.no}</span><br>วันที่ <span data-f="date">${thDate(dt)}</span></div>
-  </div>
-  ${d.kind === "full" ? `<div style="margin-top:6px"><b>ผู้ซื้อ</b> <span data-f="buyer">${d.buyer}</span>${d.bTin ? ` · เลขผู้เสียภาษี <span data-f="bTin">${d.bTin}</span> <span data-f="bBr">${d.bBr}</span>` : ` <span data-f="bTin" style="color:#999">(ไม่ระบุเลขผู้เสียภาษีและสาขา)</span>`}</div>` : ""}
-  <table><thead><tr><th>รายการ</th><th class="r">จำนวน</th><th class="r">ราคา</th><th class="r">รวม</th></tr></thead><tbody>
-  ${d.items.map(([n, q, p]) => `<tr><td>${n}</td><td class="r">${q}</td><td class="r">${fmt(p)}</td><td class="r">${fmt(q * p)}</td></tr>`).join("")}</tbody></table>
-  <div class="tot"><span>มูลค่าสินค้า <span data-f="base">${fmt(base)}</span></span><span>ภาษีมูลค่าเพิ่ม 7% <span data-f="vat">${fmt(d.vat)}</span></span><b>รวมทั้งสิ้น ${fmt(base + d.vat)}</b></div>`;
+  <div class="two"><div><b>ผู้ขาย</b><br><span data-f="seller">${d.seller}</span><br>เลขผู้เสียภาษี <span data-f="sTin">${d.sTin}</span> ${d.sBr}</div><div style="text-align:right">เลขที่ <span data-f="no">${d.no}</span><br>วันที่ ${dt}</div></div>
+  ${d.kind === "full" ? `<div style="margin-top:6px"><b>ผู้ซื้อ</b> <span data-f="buyer">${d.buyer}</span>${d.bTin ? ` · เลขผู้เสียภาษี <span data-f="bTin">${d.bTin}</span> ${d.bBr}` : ` <span data-f="bTin" style="color:#999">(ไม่ระบุเลขผู้เสียภาษีและสาขา)</span>`}</div>` : ""}
+  ${itemsTbl(d)}<div class="tot"><span>มูลค่าสินค้า <span data-f="base">${fmt(base)}</span></span><span>ภาษีมูลค่าเพิ่ม 7% ${fmt(d.vat)}</span><b>รวมทั้งสิ้น ${fmt(base + d.vat)}</b></div>`;
 }
-function monthsBack(d) { return (TAXMONTH.y - d.date[0]) * 12 + (TAXMONTH.m - d.date[1]); }
 function analyze(d) {
-  const base = sub(d), dt = new Date(d.date[0], d.date[1], d.date[2]);
-  const F = [
-    ["type", "ประเภทเอกสาร", d.kind === "full" ? "ใบกำกับภาษีเต็มรูป" : "ใบกำกับภาษีอย่างย่อ", 99],
-    ["seller", "ผู้ขาย", d.seller, 97],
-    ["sTin", "เลขผู้เสียภาษีผู้ขาย · สาขา", `${d.sTin} · ${d.sBr}`, 98],
-    ["buyer", "ผู้ซื้อ", d.buyer || "ไม่มี", d.buyer ? 96 : 0],
-    ["bTin", "เลขผู้เสียภาษีผู้ซื้อ · สาขา", d.bTin ? `${d.bTin} · ${d.bBr}` : "ไม่มี", d.bTin ? 98 : 0],
-    ["no", "เลขที่ · วันที่", `${d.no} · ${thDate(dt)}`, 95],
-    ["base", "มูลค่า · VAT", `${fmt(base)} · ${fmt(d.vat)}`, 99],
-  ];
-  const calc = Math.round(base * 7) / 100, mb = monthsBack(d);
-  const C = [];
-  C.push(d.kind === "full" ? ["ok", "เป็นใบกำกับภาษีเต็มรูป"] : ["block", "ใบกำกับภาษีอย่างย่อ นำภาษีซื้อมาหักไม่ได้ บันทึกเป็นค่าใช้จ่ายรวม VAT"]);
-  if (d.kind === "full") {
-    C.push(d.bTin === CLIENT.tin ? ["ok", "ผู้ซื้อ เลขผู้เสียภาษี และสาขาตรงกับลูกค้า"] : ["block", "ไม่มีเลขผู้เสียภาษีและสาขาของผู้ซื้อ รายการไม่ครบตามมาตรา 86/4"]);
-  }
-  C.push(tinValid(d.sTin) ? ["ok", `เลขผู้เสียภาษีผู้ขายถูกต้อง (หลักตรวจสอบ ${d.sTin[12]})`] : ["block", "เลขผู้เสียภาษีผู้ขายผิด"]);
-  if (d.kind === "full") {
-    C.push(d.vatReg ? ["ok", "ผู้ขายจดทะเบียนภาษีมูลค่าเพิ่ม"] : ["block", "ผู้ขายไม่ได้จดทะเบียน VAT"]);
-    C.push(Math.abs(calc - d.vat) <= 0.01 ? ["ok", `VAT 7% × ${fmt(base)} = ${fmt(calc)} ตรงกับเอกสาร`] : ["warn", `VAT คำนวณได้ ${fmt(calc)} แต่เอกสารระบุ ${fmt(d.vat)}`]);
-    C.push(mb <= 6 ? ["ok", `อยู่ในกำหนด 6 เดือน (ห่างจากเดือนภาษี ${mb} เดือน)`] : ["block", `เกินกำหนด 6 เดือน (ใบลงวันที่ ${TH_M[d.date[1]]} ${d.date[0] + 543} ห่าง ${mb} เดือน)`]);
-    C.push(["ok", "ไม่ซ้ำกับใบที่เคยใช้"]);
+  const base = sub(d), calc = vat7(base), F = [], C = [], dt = thDate(dOf(d));
+  const ok = s => C.push(["ok", s]), warn = s => C.push(["warn", s]), block = s => C.push(["block", s]), info = s => C.push(["info", s]);
+  const cf = n => d.kind === "etax" ? 100 : n;
+  if (["full", "abb", "etax"].includes(d.kind)) {
+    F.push(["type", "ประเภทเอกสาร", d.kind === "abb" ? "ใบกำกับภาษีอย่างย่อ" : d.kind === "etax" ? "e-Tax Invoice (XML)" : "ใบกำกับภาษีเต็มรูป", cf(99)]);
+    F.push(["seller", "ผู้ขาย", d.seller, cf(97)]);
+    F.push(["sTin", "เลขผู้เสียภาษีผู้ขาย · สาขา", d.sTin + (d.sBr ? " · " + d.sBr : ""), cf(98)]);
+    if (d.kind !== "abb") { F.push(["buyer", "ผู้ซื้อ", d.buyer || "ไม่มี", d.buyer ? cf(96) : 0]); F.push(["bTin", "เลขผู้เสียภาษีผู้ซื้อ · สาขา", d.bTin ? `${d.bTin} · ${d.bBr}` : "ไม่มี", d.bTin ? cf(98) : 0]); }
+    F.push(["no", "เลขที่ · วันที่", `${d.no} · ${dt}`, cf(95)]);
+    F.push(["base", "มูลค่า · VAT", `${fmt(base)} · ${fmt(d.vat)}`, cf(99)]);
+    if (d.kind === "etax") ok("ลายมือชื่ออิเล็กทรอนิกส์ถูกต้อง อ่านจาก XML ไม่ต้องใช้ OCR");
+    if (d.kind === "abb") { block("ใบกำกับภาษีอย่างย่อ นำภาษีซื้อมาหักไม่ได้"); info(`บันทึกเป็นค่าใช้จ่ายรวม VAT ฿${fmt(base + d.vat)}`); }
+    else { ok("เป็นใบกำกับภาษีเต็มรูป"); d.bTin === CLIENT.tin ? ok("ผู้ซื้อ เลขผู้เสียภาษี และสาขาตรงกับลูกค้า") : block("ไม่มีเลขผู้เสียภาษีและสาขาของผู้ซื้อ รายการไม่ครบตามมาตรา 86/4"); }
+    tinValid(d.sTin) ? ok(`เลขผู้เสียภาษีผู้ขายถูกต้อง (หลักตรวจสอบ ${d.sTin[12]})`) : block("เลขผู้เสียภาษีผู้ขายผิด");
+    if (d.kind !== "abb") {
+      d.vatReg ? ok("ผู้ขายจดทะเบียนภาษีมูลค่าเพิ่ม") : block("ผู้ขายไม่ได้จดทะเบียน VAT จึงออกใบกำกับภาษีไม่ได้");
+      Math.abs(calc - d.vat) <= 0.01 ? ok(`VAT 7% × ${fmt(base)} = ${fmt(calc)} ตรงกับเอกสาร`) : warn(`VAT ควรเป็น ${fmt(calc)} แต่เอกสารระบุ ${fmt(d.vat)}`);
+      monthsBack(d) <= 6 ? ok(`อยู่ในกำหนด 6 เดือน (ห่างจากเดือนภาษี ${monthsBack(d)} เดือน)`) : block(`เกินกำหนด 6 เดือน (ใบลงวันที่ ${TH_M[d.date[1]]} ${d.date[0] + 543} ห่าง ${monthsBack(d)} เดือน)`);
+      d.dup ? block(`ซ้ำกับใบที่ยืนยันแล้วเมื่อ ${d.dup} ผู้ขายและเลขที่เดียวกัน`) : ok("ไม่ซ้ำกับใบที่เคยใช้");
+      if (d.cat === "ent") warn("ค่ารับรอง เป็นภาษีซื้อต้องห้ามตามมาตรา 82/5");
+      if (d.cat === "car") warn("ค่าใช้จ่ายรถยนต์นั่ง เป็นภาษีซื้อต้องห้ามตามมาตรา 82/5");
+    }
+  } else if (d.kind === "cash") {
+    F.push(["type", "ประเภทเอกสาร", "บิลเงินสด (ลายมือ)", 88]); F.push(["seller", "ผู้ขาย", d.seller, 84]); F.push(["no", "เลขที่ · วันที่", `${d.no} · ${dt}`, 79]); F.push(["base", "จำนวนเงิน", fmt(base), 91]);
+    info("ไม่มี VAT จึงไม่มีภาษีซื้อ"); ok("วันที่อยู่ในเดือนภาษี"); warn("ไม่มีเลขผู้เสียภาษีผู้ขาย ให้เจ้าของกิจการรับรองการจ่ายในแอป");
+  } else if (d.kind === "foreign") {
+    F.push(["type", "ประเภทเอกสาร", "ใบแจ้งหนี้จากต่างประเทศ", 97]); F.push(["seller", "ผู้ให้บริการ", `${d.seller} · ${d.sAddr}`, 96]); F.push(["no", "เลขที่ · วันที่", `${d.no} · ${dt}`, 95]); F.push(["base", "จำนวนเงิน", `THB ${fmt(base)}`, 98]);
+    info("ผู้ให้บริการอยู่ต่างประเทศ ไม่มี VAT ไทยในใบแจ้งหนี้"); warn(`ต้องยื่น ภ.พ.36 นำส่ง VAT 7% = ฿${fmt(calc)} ภายใน 15 พ.ย. (ออนไลน์)`); info("ชำระ ภ.พ.36 แล้ว ใช้เป็นภาษีซื้อเดือนถัดไปได้");
+  } else {
+    F.push(["type", "ประเภทเอกสาร", "50 ทวิ ที่ลูกค้าได้รับ", 98]); F.push(["seller", "ผู้หักภาษี", d.seller, 97]); F.push(["sTin", "เลขผู้เสียภาษีผู้หัก", d.sTin, 98]); F.push(["base", "เงินได้ · ภาษีที่ถูกหัก", `${fmt(base)} · ${fmt(d.wht)}`, 99]);
+    tinValid(d.sTin) ? ok("เลขผู้เสียภาษีผู้หักถูกต้อง") : block("เลขผู้เสียภาษีผู้หักผิด");
+    ok(`อัตรา 3% × ${fmt(base)} = ${fmt(d.wht)} ถูกต้อง`); info("บันทึกเป็นภาษีถูกหัก ณ ที่จ่าย ใช้เครดิตตอนยื่น ภ.ง.ด.50");
   }
   const blocks = C.filter(c => c[0] === "block").length;
-  return { F, C, blocks, vat: d.vat, kind: d.kind };
+  let v;
+  if (d.dup) v = ["no", "ส่งซ้ำ · ไม่บันทึกซ้ำ", "แจ้งเจ้าของกิจการ"];
+  else if (d.kind === "abb") v = ["no", `หักภาษีซื้อไม่ได้ · ลงค่าใช้จ่าย ฿${fmt(base + d.vat)}`, "ขอใบเต็มรูปครั้งหน้า"];
+  else if (d.kind === "full" && !d.vatReg) v = ["no", "ผู้ขายไม่ได้จด VAT · ใบนี้ใช้ไม่ได้", "แจ้งลูกค้า"];
+  else if (blocks) v = ["no", `ติดปัญหา ${blocks} ข้อ · ยังไม่เข้าแบบภาษี`, "ขอเอกสารใหม่ทาง LINE"];
+  else if (d.cat) v = ["warn", `ลงค่าใช้จ่าย · ไม่หักภาษีซื้อ ฿${fmt(d.vat)}`, "Enter ยืนยัน"];
+  else if (d.kind === "full" && Math.abs(calc - d.vat) > .01) v = ["warn", "VAT ไม่ตรง · ขอใบแก้ไขจากผู้ขาย", "ส่งข้อความถึงผู้ขาย"];
+  else if (d.kind === "cash") v = ["info", `ค่าใช้จ่าย ฿${fmt(base)} · ไม่มีภาษีซื้อ`, "ขอการรับรองจากเจ้าของ"];
+  else if (d.kind === "foreign") v = ["info", `ส่งเข้า ภ.พ.36 · VAT ฿${fmt(calc)}`, "Enter ยืนยัน"];
+  else if (d.kind === "whtin") v = ["info", `บันทึกเครดิตภาษี ฿${fmt(d.wht)}`, "Enter ยืนยัน"];
+  else v = ["ok", `พร้อมยืนยัน · ภาษีซื้อ ฿${fmt(d.vat)}`, "Enter ยืนยัน"];
+  return { F, C, v };
 }
-const BADGE = { ok: ["b-ok", "ผ่าน"], block: ["b-block", "ติด"], warn: ["b-warn", "เตือน"] };
+const BADGE = { ok: ["b-ok", "ผ่าน"], block: ["b-block", "ติด"], warn: ["b-warn", "เตือน"], info: ["b-info", "ข้อมูล"] };
 const fieldHTML = f => `<div class="field${f[3] ? "" : " empty"} fade-in"><small>${f[1]}</small><span class="v">${esc(f[2])}</span><span class="c">${f[3] ? f[3] + "%" : "—"}</span></div>`;
 const chkHTML = c => `<div class="chk fade-in"><span class="badge ${BADGE[c[0]][0]}">${BADGE[c[0]][1]}</span><span>${c[1]}</span></div>`;
-const verdictHTML = a => a.blocks
-  ? `<div class="verdict no fade-in"><span>ติดปัญหา ${a.blocks} ข้อ · ยังไม่เข้าแบบภาษี</span><span>ส่งขอเอกสารใหม่ทาง LINE</span></div>`
-  : `<div class="verdict ok fade-in"><span>พร้อมยืนยัน · ภาษีซื้อ ฿${fmt(a.vat)}</span><span><span class="kbd">Enter</span> ยืนยัน</span></div>`;
-function markInv(a) {
-  $$("#invBody [data-f]").forEach(el => el.classList.remove("hl", "miss"));
-  a.F.forEach(f => { const el = $(`#invBody [data-f="${f[0]}"]`); if (el) el.classList.add(f[3] ? "hl" : "miss"); });
+const verdictHTML = v => `<div class="verdict ${v[0]} fade-in"><span>${v[1]}</span><span><span class="kbd">${v[2].startsWith("Enter") ? "Enter" : "→"}</span> ${v[2].replace("Enter ", "")}</span></div>`;
+function drawQueue() {
+  $("#queue").innerHTML = DOCS.map((d, i) => `<button type="button" class="qi ${qSt[i] ? "st-" + qSt[i] : ""}" data-i="${i}" aria-pressed="${i === docIdx}"><span class="qd"></span>${i + 1}. ${d.q}</button>`).join("");
+  $$("#queue .qi").forEach(b => b.onclick = () => { xDemo.run++; showDoc(+b.dataset.i, true); });
+  const n = k => qSt.filter(x => x === k).length, done = qSt.filter(Boolean).length;
+  $("#qSum").textContent = done ? `${done}/${DOCS.length} ใบ · ผ่าน ${n("ok")} · เตือน ${n("warn")} · ติด ${n("no")} · ข้อมูล ${n("info")}` : `คิวตรวจ · ${DOCS.length} เอกสาร`;
+  const on = $("#queue .qi[aria-pressed=true]"); if (on) { const q = $("#queue"); q.scrollLeft = on.offsetLeft - q.clientWidth / 2 + on.offsetWidth / 2; }
 }
-function xFinal() {
-  const d = DOCS[docIdx], a = analyze(d);
-  $("#invBody").innerHTML = invHTML(d);
-  $("#fields").innerHTML = a.F.map(fieldHTML).join("");
-  $("#checks").innerHTML = a.C.map(chkHTML).join("");
-  $("#verdict").innerHTML = verdictHTML(a);
-  markInv(a);
+function markInv(a) { a.F.forEach(f => { const el = $(`#invBody [data-f="${f[0]}"]`); if (el) el.classList.add(f[3] ? "hl" : "miss"); }); }
+function setInv(d) { const inv = $("#inv"); inv.classList.toggle("hand", d.kind === "cash"); inv.classList.toggle("en", d.kind === "foreign"); $("#invBody").innerHTML = invHTML(d); }
+function beamRun(ms) { const b = $("#beam"); b.classList.remove("run"); void b.offsetWidth; b.style.animationDuration = ms + "ms"; b.classList.add("run"); }
+function showDoc(i, anim) {
+  docIdx = i; const d = DOCS[i], a = analyze(d); qSt[i] = a.v[0];
+  setInv(d); $("#fields").innerHTML = a.F.map(fieldHTML).join(""); $("#checks").innerHTML = a.C.map(chkHTML).join(""); $("#verdict").innerHTML = verdictHTML(a.v); markInv(a);
+  if (anim && !REDUCE) beamRun(700);
+  drawQueue();
 }
-const xDemo = demo($("#demoX"), xFinal, async w => {
-  const d = DOCS[docIdx], a = analyze(d);
-  $("#invBody").innerHTML = invHTML(d); $("#fields").innerHTML = ""; $("#checks").innerHTML = ""; $("#verdict").innerHTML = "";
-  const beam = $("#beam"); beam.classList.remove("run"); void beam.offsetWidth; beam.classList.add("run");
-  await w(1300);
-  for (const f of a.F) {
-    const el = $(`#invBody [data-f="${f[0]}"]`); if (el) el.classList.add(f[3] ? "hl" : "miss");
-    $("#fields").insertAdjacentHTML("beforeend", fieldHTML(f)); await w(260);
-  }
-  await w(250);
-  for (const c of a.C) { $("#checks").insertAdjacentHTML("beforeend", chkHTML(c)); await w(330); }
-  await w(200); $("#verdict").innerHTML = verdictHTML(a);
+async function animDoc(i, w, sp) {
+  docIdx = i; const d = DOCS[i], a = analyze(d); drawQueue();
+  setInv(d); $("#fields").innerHTML = ""; $("#checks").innerHTML = ""; $("#verdict").innerHTML = "";
+  beamRun(1400 * sp); await w(1300 * sp);
+  for (const f of a.F) { const el = $(`#invBody [data-f="${f[0]}"]`); if (el) el.classList.add(f[3] ? "hl" : "miss"); $("#fields").insertAdjacentHTML("beforeend", fieldHTML(f)); await w(240 * sp); }
+  for (const c of a.C) { $("#checks").insertAdjacentHTML("beforeend", chkHTML(c)); await w(300 * sp); }
+  $("#verdict").innerHTML = verdictHTML(a.v); qSt[i] = a.v[0]; drawQueue(); await w(900 * sp);
+}
+const xDemo = demo($("#demoX"), () => { DOCS.forEach((d, i) => qSt[i] = analyze(d).v[0]); showDoc(0, false); }, async w => {
+  qSt = DOCS.map(() => null); await animDoc(0, w, 1);
+  for (let i = 1; i < DOCS.length; i++) await animDoc(i, w, .32);
+  showDoc(1, false);
 });
-$$("#demoX .tabs button").forEach(b => b.addEventListener("click", () => {
-  docIdx = +b.dataset.doc; $$("#demoX .tabs button").forEach(x => x.setAttribute("aria-pressed", x === b)); xDemo.play();
-}));
 const tinIn = $("#tinInput"), tinOut = $("#tinOut");
 function tinCheck() {
   const v = tinIn.value.replace(/\D/g, "").slice(0, 13); tinIn.value = v;
@@ -1167,6 +1406,34 @@ function tinCheck() {
 tinIn.addEventListener("input", tinCheck); tinCheck();
 
 /* ---------- Day 5: WHT ---------- */
+const BATCH = [
+  ["บริษัท ทองดีโลจิสติกส์ จำกัด", "J", "ค่าขนส่ง", 18500, 1],
+  ["นางสมศรี มีที่ดิน (เจ้าของอาคาร)", "P", "ค่าเช่าสำนักงาน", 30000, 5],
+  ["บริษัท ครีเอทีฟมีเดีย จำกัด", "J", "ค่าโฆษณา", 48500, 2],
+  ["หจก. สำนักงานกฎหมายนิติธรรม", "J", "ค่าวิชาชีพ ทนายความ", 40000, 3],
+  ["นายสมชาย ใจดี (ฟรีแลนซ์)", "P", "ค่าจ้างออกแบบ", 12000, 3],
+  ["ร้านซ่อมแอร์เย็นฉ่ำ", "P", "ค่าซ่อมแอร์", 800, 3, "under"],
+  ["การไฟฟ้านครหลวง", "G", "ค่าไฟฟ้า", 9860, 0, "goods"],
+  ["Cloud Software Asia Pte. Ltd. (สิงคโปร์)", "F", "ค่าใช้ซอฟต์แวร์", 20000, 15, "foreign"],
+];
+function batchRes(r) {
+  const [, t, , amt, rate, flag] = r, tax = Math.round(amt * rate) / 100;
+  if (flag === "under") return { f: "ไม่หัก", cls: "a", note: "ต่ำกว่า 1,000 บาท", tax: 0 };
+  if (flag === "goods") return { f: "ไม่หัก", cls: "", note: "ซื้อสินค้า (ไฟฟ้า)", tax: 0 };
+  if (flag === "foreign") return { f: "ภ.ง.ด.54", cls: "a", note: `${rate}% · ตรวจอนุสัญญาภาษีซ้อน · ภ.พ.36 ฿${fmt(vat7(amt))}`, tax };
+  return { f: t === "J" ? "ภ.ง.ด.53" : "ภ.ง.ด.3", cls: "g", note: `${rate}%`, tax };
+}
+function batchDraw(n, anim) {
+  $("#batch").innerHTML = `<thead><tr><th>ผู้รับเงิน</th><th>ประเภท</th><th class="r">จ่าย</th><th>ผล</th><th class="r">ภาษีที่หัก</th></tr></thead><tbody>${BATCH.map((r, i) => {
+    if (i >= n) return `<tr class="pend"><td>${r[0]}</td><td>${r[2]}</td><td class="r num">${fmt(r[3])}</td><td colspan="2"><span class="pill">${i === n ? "กำลังจัดประเภท…" : "รอ"}</span></td></tr>`;
+    const x = batchRes(r);
+    return `<tr class="${anim && i === n - 1 ? "fade-in" : ""}"><td>${r[0]}</td><td>${r[2]}</td><td class="r num">${fmt(r[3])}</td><td><span class="pill ${x.cls}">${x.f}</span> <small>${x.note}</small></td><td class="r num">${x.tax ? fmt(x.tax) : "—"}</td></tr>`;
+  }).join("")}</tbody>`;
+  if (n < BATCH.length) { $("#btot").innerHTML = ""; return; }
+  const sum = f => BATCH.map(batchRes).filter(x => x.f === f), tot = f => sum(f).reduce((a, x) => a + x.tax, 0);
+  const certs = BATCH.map(batchRes).filter(x => x.tax).length;
+  $("#btot").innerHTML = `<div><small>ภ.ง.ด.3 · ${sum("ภ.ง.ด.3").length} ราย</small><b class="num">${fmt(tot("ภ.ง.ด.3"))}</b></div><div><small>ภ.ง.ด.53 · ${sum("ภ.ง.ด.53").length} ราย</small><b class="num">${fmt(tot("ภ.ง.ด.53"))}</b></div><div><small>ภ.ง.ด.54 · ${sum("ภ.ง.ด.54").length} ราย</small><b class="num">${fmt(tot("ภ.ง.ด.54"))}</b></div><div class="g"><small>ออก 50 ทวิ</small><b class="num">${certs} ฉบับ</b></div>`;
+}
 const PAYEES = [
   { n: "บริษัท ทองดีโลจิสติกส์ จำกัด", tin: "0999999000047", a: "88/9 ถนนพระราม 3 แขวงบางโพงพาง เขตยานนาวา กรุงเทพฯ 10120" },
   { n: "นายสมชาย ใจดี", tin: "1234567890121", a: "15 ซอยลาดพร้าว 64 แขวงวังทองหลาง เขตวังทองหลาง กรุงเทพฯ 10310" },
@@ -1179,10 +1446,8 @@ let certNo = 42;
 function whtRender(anim) {
   const p = PAYEES[+wP.value], t = TYPES[+wT.value];
   const amt = Math.max(0, parseFloat(wA.value.replace(/,/g, "")) || 0);
-  const tax = Math.round(amt * t[1]) / 100;
-  const jur = p.tin[0] === "0", form = jur ? "ภ.ง.ด.53" : "ภ.ง.ด.3";
-  const under = amt < 1000;
-  $("#whtSum").innerHTML = `<span class="pill g">${form} · ${jur ? "นิติบุคคล" : "บุคคลธรรมดา"} (จากเลขผู้เสียภาษี)</span><span class="pill">หัก ${t[1]}% = ฿${fmt(tax)}</span><span class="pill">จ่ายสุทธิ ฿${fmt(amt - tax)}</span>${under ? `<span class="pill a">ต่ำกว่า 1,000 บาท โดยทั่วไปไม่ต้องหัก</span>` : ""}`;
+  const tax = Math.round(amt * t[1]) / 100, jur = p.tin[0] === "0", form = jur ? "ภ.ง.ด.53" : "ภ.ง.ด.3";
+  $("#whtSum").innerHTML = `<span class="pill g">${form} · ${jur ? "นิติบุคคล" : "บุคคลธรรมดา"} (จากเลขผู้เสียภาษี)</span><span class="pill">หัก ${t[1]}% = ฿${fmt(tax)}</span><span class="pill">จ่ายสุทธิ ฿${fmt(amt - tax)}</span>${amt < 1000 ? `<span class="pill a">ต่ำกว่า 1,000 บาท โดยทั่วไปไม่ต้องหัก</span>` : ""}`;
   const c = $("#cert");
   c.innerHTML = `<div class="no">เล่มที่ 1 · เลขที่ 2569/${String(certNo).padStart(4, "0")}</div>
   <div class="t">หนังสือรับรองการหักภาษี ณ ที่จ่าย<small>ตามมาตรา 50 ทวิ แห่งประมวลรัษฎากร</small></div>
@@ -1198,10 +1463,13 @@ function whtRender(anim) {
 [wP, wT].forEach(x => x.addEventListener("change", () => { certNo++; whtRender(true); }));
 wA.addEventListener("input", () => whtRender(false));
 wA.addEventListener("blur", () => { const v = parseFloat(wA.value.replace(/,/g, "")); if (!isNaN(v)) wA.value = fmt(v); whtRender(false); });
-wT.value = "0";
 const WHT_STEPS = [[0, 0, 18500], [1, 2, 25000], [0, 3, 42000], [2, 1, 12840]];
-demo($("#demoWht"), () => { const s = WHT_STEPS[0]; wP.value = s[0]; wT.value = s[1]; wA.value = fmt(s[2]); whtRender(false); }, async w => {
-  for (const s of WHT_STEPS) { wP.value = s[0]; wT.value = s[1]; wA.value = fmt(s[2]); certNo++; whtRender(true); await w(1800); }
+const whtSet = s => { wP.value = s[0]; wT.value = s[1]; wA.value = fmt(s[2]); };
+demo($("#demoWht"), () => { batchDraw(BATCH.length, false); whtSet(WHT_STEPS[0]); whtRender(false); }, async w => {
+  whtSet(WHT_STEPS[0]); whtRender(false);
+  for (let n = 0; n <= BATCH.length; n++) { batchDraw(n, true); await w(n === 0 ? 400 : 520); }
+  await w(800);
+  for (const s of WHT_STEPS.slice(1)) { whtSet(s); certNo++; whtRender(true); await w(1600); }
 });
 
 /* ---------- Day 7: due dates ---------- */
@@ -1239,34 +1507,40 @@ $$("#demoDue .seg button").forEach(b => b.addEventListener("click", () => { ch =
 demo($("#demoDue"), () => dueRender(false), async w => { dm.value = "0"; dueRender(true); await w(2200); dm.value = "1"; dueRender(true); await w(2200); dm.value = "0"; dueRender(true); });
 
 /* ---------- Day 10: PP30 ---------- */
-const PP = [
-  ["1", "ยอดขายในเดือนนี้", 1284560.00],
-  ["2", "หัก ยอดขายที่เสียภาษีในอัตราร้อยละ 0", 0],
-  ["3", "หัก ยอดขายที่ได้รับยกเว้น", 12000.00],
-  ["4", "ยอดขายที่ต้องเสียภาษี", 1272560.00],
-  ["5", "ภาษีขายเดือนนี้", 89079.20, "out"],
-  ["6", "ยอดซื้อที่มีสิทธินำภาษีซื้อมาหัก", 262007.14],
-  ["7", "ภาษีซื้อเดือนนี้", 18340.50, "in"],
-  ["8", "ภาษีที่ต้องชำระเดือนนี้", 70738.70, "total"],
+const PPS = [
+  { tab: "สยามคลีนนิ่ง · ต้องชำระ", head: "บจ. สยามคลีนนิ่ง · สำนักงานใหญ่ · ต.ค. 2569",
+    rows: [["1", "ยอดขายในเดือนนี้", 1284560], ["2", "หัก ยอดขายที่เสียภาษีในอัตราร้อยละ 0", 0], ["3", "หัก ยอดขายที่ได้รับยกเว้น", 12000], ["4", "ยอดขายที่ต้องเสียภาษี", 1272560], ["5", "ภาษีขายเดือนนี้", 89079.20, "out"], ["6", "ยอดซื้อที่มีสิทธินำภาษีซื้อมาหัก", 262007.14], ["7", "ภาษีซื้อเดือนนี้", 18340.50, "in"], ["8", "ภาษีที่ต้องชำระเดือนนี้", 70738.70, "total"]],
+    guard: [["ภาษีซื้อต้องห้ามที่กันไว้", "฿770.00", "ค่ารับรอง 1 ใบ · รถยนต์นั่ง 1 ใบ"], ["ใบกำกับภาษีอย่างย่อ", "6 ใบ", "ลงค่าใช้จ่าย ไม่นำมาหัก"], ["ไม่ผ่านกฎตรวจ", "3 ใบ", "ขาดเลขผู้ซื้อ · ส่งซ้ำ · ผู้ขายไม่จด VAT"]],
+    tr: { in: ["ภาษีซื้อเดือนนี้ ฿18,340.50 มาจากใบกำกับภาษี 47 ใบ", [["28 ต.ค.", "บจ. ออฟฟิศเมท ซัพพลาย · IV6910-0457", 185.50], ["25 ต.ค.", "บจ. น้ำยาสะอาดไทย · INV-25691025", 4320.00], ["21 ต.ค.", "บจ. ทองดีโลจิสติกส์ · TL-10-2569-88", 1295.00], ["15 ต.ค.", "บมจ. ไฟฟ้าและพลังงาน · 69101500213", 2016.70], ["…", "อีก 43 ใบ", 10523.30]], "รวม 47 ใบ = ฿18,340.50 ตรงกับรายงานภาษีซื้อ ✓"],
+          out: ["ภาษีขายเดือนนี้ ฿89,079.20 มาจากใบกำกับภาษีขาย 212 ใบ", [["31 ต.ค.", "คอนโด เดอะพาร์ค · SC-2569-1288", 8400.00], ["30 ต.ค.", "บจ. เมกะมอลล์ · SC-2569-1287", 15750.00], ["28 ต.ค.", "โรงพยาบาลสุขใจ · SC-2569-1281", 6930.00], ["…", "อีก 209 ใบ", 57999.20]], "รวม 212 ใบ = ฿89,079.20 ตรงกับรายงานภาษีขาย ✓"] } },
+  { tab: "ไทยเฟรช เอ็กซ์ปอร์ต · ขอคืน", head: "บจ. ไทยเฟรช เอ็กซ์ปอร์ต · สำนักงานใหญ่ · ต.ค. 2569",
+    rows: [["1", "ยอดขายในเดือนนี้", 4850000], ["2", "หัก ยอดขายที่เสียภาษีในอัตราร้อยละ 0 (ส่งออก)", 4620000], ["3", "หัก ยอดขายที่ได้รับยกเว้น", 0], ["4", "ยอดขายที่ต้องเสียภาษี", 230000], ["5", "ภาษีขายเดือนนี้", 16100.00, "out"], ["6", "ยอดซื้อที่มีสิทธินำภาษีซื้อมาหัก", 2915000], ["7", "ภาษีซื้อเดือนนี้", 204050.00, "in"], ["9", "ภาษีที่ชำระเกินเดือนนี้", 187950.00, "refund"]],
+    guard: [["ยอดขายส่งออก อัตรา 0", "38 ใบขน", "จับคู่ใบขนสินค้ากับใบกำกับแล้ว"], ["ขอคืนเป็นเงินสด", "฿187,950.00", "เตรียมแฟ้มหลักฐานให้เจ้าหน้าที่ตรวจ"], ["หรือยกไปเครดิต", "พ.ย. 2569", "ลูกค้าเลือกได้ก่อนยื่น"]],
+    tr: { in: ["ภาษีซื้อเดือนนี้ ฿204,050.00 มาจากใบกำกับภาษี 67 ใบ", [["29 ต.ค.", "บจ. กล่องกระดาษไทย · PK-6910-221", 48720.00], ["24 ต.ค.", "บจ. ห้องเย็นแหลมฉบัง · CS-2569-10", 35910.00], ["18 ต.ค.", "บจ. ทองดีโลจิสติกส์ · TL-10-2569-91", 21490.00], ["…", "อีก 64 ใบ", 97930.00]], "รวม 67 ใบ = ฿204,050.00 ตรงกับรายงานภาษีซื้อ ✓"],
+          out: ["ภาษีขายเดือนนี้ ฿16,100.00 มาจากการขายในประเทศ 13 ใบ", [["28 ต.ค.", "บจ. ห้างค้าปลีกสด · TF-2569-0412", 5250.00], ["…", "อีก 12 ใบ", 10850.00]], "รวม 13 ใบ = ฿16,100.00 · ยอดส่งออก 4,620,000.00 ไม่มีภาษีขาย ✓"] } },
+  { tab: "ครัวคุณยาย · มีเครดิตยกมา", head: "ร้านครัวคุณยาย (บุคคลธรรมดา) · ต.ค. 2569",
+    rows: [["1", "ยอดขายในเดือนนี้", 612400], ["2", "หัก ยอดขายที่เสียภาษีในอัตราร้อยละ 0", 0], ["3", "หัก ยอดขายที่ได้รับยกเว้น", 0], ["4", "ยอดขายที่ต้องเสียภาษี", 612400], ["5", "ภาษีขายเดือนนี้", 42868.00, "out"], ["6", "ยอดซื้อที่มีสิทธินำภาษีซื้อมาหัก", 318500], ["7", "ภาษีซื้อเดือนนี้", 22295.00, "in"], ["10", "หัก ภาษีที่ชำระเกินยกมา", 5120.00], ["11", "ภาษีที่ต้องชำระเดือนนี้", 15453.00, "total"]],
+    guard: [["ใบอย่างย่อจากตลาดสด", "41 ใบ", "ลงต้นทุน ไม่นำมาหัก"], ["ขายผ่านแอปเดลิเวอรี", "3 ราย", "จับคู่จากรายงานรายเดือน"], ["ใบอย่างย่อที่ร้านออก", "2,184 ใบ", "รวมยอดจาก POS รายวัน"]],
+    tr: { in: ["ภาษีซื้อเดือนนี้ ฿22,295.00 มาจากใบกำกับภาษี 54 ใบ", [["30 ต.ค.", "ห้างค้าส่งสยาม สาขาบางนา · ใบเต็มรูป", 3120.50], ["26 ต.ค.", "บจ. ก๊าซหุงต้มไทย · GS-2569-77", 1890.00], ["…", "อีก 52 ใบ", 17284.50]], "รวม 54 ใบ = ฿22,295.00 ตรงกับรายงานภาษีซื้อ ✓"],
+          out: ["ภาษีขายเดือนนี้ ฿42,868.00 มาจากยอดขายหน้าร้านและเดลิเวอรี", [["31 ต.ค.", "สรุปยอด POS รายวัน 31 ต.ค.", 1652.30], ["31 ต.ค.", "รายงานแอปเดลิเวอรี A · ต.ค.", 8960.40], ["…", "อีก 32 รายการ", 32255.30]], "รวม 35 รายการ = ฿42,868.00 ตรงกับรายงานภาษีขาย ✓"] } },
 ];
-const TRACE = {
-  in: { h: "ภาษีซื้อเดือนนี้ ฿18,340.50 มาจากใบกำกับภาษี 47 ใบ", rows: [["28 ต.ค.", "บจ. ออฟฟิศเมท ซัพพลาย · IV6910-0457", 185.50], ["25 ต.ค.", "บจ. น้ำยาสะอาดไทย · INV-25691025", 4320.00], ["21 ต.ค.", "บจ. ทองดีโลจิสติกส์ · TL-10-2569-88", 1295.00], ["15 ต.ค.", "บมจ. ไฟฟ้าและพลังงาน · 69101500213", 2016.70], ["…", "อีก 43 ใบ", 10523.30]], f: "รวม 47 ใบ = ฿18,340.50 ตรงกับรายงานภาษีซื้อ ✓" },
-  out: { h: "ภาษีขายเดือนนี้ ฿89,079.20 มาจากใบกำกับภาษีขาย 212 ใบ", rows: [["31 ต.ค.", "คอนโด เดอะพาร์ค · SC-2569-1288", 8400.00], ["30 ต.ค.", "บจ. เมกะมอลล์ · SC-2569-1287", 15750.00], ["28 ต.ค.", "โรงพยาบาลสุขใจ · SC-2569-1281", 6930.00], ["…", "อีก 209 ใบ", 57999.20]], f: "รวม 212 ใบ = ฿89,079.20 ตรงกับรายงานภาษีขาย ✓" },
-};
-let traceKey = "in";
+let ppIdx = 0, traceKey = "in";
 const ppT = $("#ppTable");
+function ppTabs() { $("#ppTabs").innerHTML = PPS.map((p, i) => `<button type="button" data-i="${i}" aria-pressed="${i === ppIdx}">${p.tab}</button>`).join(""); $$("#ppTabs button").forEach(b => b.onclick = () => { ppIdx = +b.dataset.i; ppDemo.play(); }); }
 function ppDraw(zero) {
-  ppT.innerHTML = PP.map(r => `<tr class="${r[3] === "total" ? "total" : r[3] ? "click" + (r[3] === traceKey ? " on" : "") : ""}" ${r[3] && r[3] !== "total" ? `data-k="${r[3]}" tabindex="0"` : ""}><td>${r[0]}</td><td>${r[1]}</td><td class="r" data-v="${r[2]}">${zero ? "0.00" : fmt(r[2])}</td></tr>`).join("");
+  const P = PPS[ppIdx]; $("#ppHead").textContent = "ภ.พ.30 · " + P.head;
+  ppT.innerHTML = P.rows.map(r => { const k = r[3]; const cls = k === "total" ? "total" : k === "refund" ? "total refund" : k ? "click" + (k === traceKey ? " on" : "") : ""; return `<tr class="${cls}" ${k === "in" || k === "out" ? `data-k="${k}" tabindex="0"` : ""}><td>${r[0]}</td><td>${r[1]}</td><td class="r" data-v="${r[2]}">${zero ? "0.00" : fmt(r[2])}</td></tr>`; }).join("");
   $$("tr[data-k]", ppT).forEach(tr => { const go = () => { traceKey = tr.dataset.k; ppDraw(false); traceDraw(true); }; tr.addEventListener("click", go); tr.addEventListener("keydown", e => { if (e.key === "Enter") go(); }); });
+  $("#ppGuard").innerHTML = P.guard.map(g => `<div>${g[0]}<b class="num">${g[1]}</b>${g[2]}</div>`).join("");
 }
 function traceDraw(anim) {
-  const t = TRACE[traceKey];
-  $("#trace").innerHTML = `<h4>${t.h}</h4>${t.rows.map((r, i) => `<div class="trace-row${anim && !REDUCE ? " fade-in" : ""}" style="animation-delay:${i * 80}ms"><span class="num">${r[0]}</span><span>${r[1]}</span><span class="num">${fmt(r[2])}</span></div>`).join("")}<div class="trace-foot">${t.f}</div>`;
+  const t = PPS[ppIdx].tr[traceKey];
+  $("#trace").innerHTML = `<h4>${t[0]}</h4>${t[1].map((r, i) => `<div class="trace-row${anim && !REDUCE ? " fade-in" : ""}" style="animation-delay:${i * 80}ms"><span class="num">${r[0]}</span><span>${r[1]}</span><span class="num">${fmt(r[2])}</span></div>`).join("")}<div class="trace-foot">${t[2]}</div>`;
 }
-demo($("#demoPP"), () => { traceKey = "in"; ppDraw(false); traceDraw(false); }, async w => {
-  traceKey = "in"; ppDraw(true); $("#trace").innerHTML = ""; await w(300);
-  for (const td of $$("td[data-v]", ppT)) { countUp(td, +td.dataset.v, 700); await w(160); }
-  await w(800); traceDraw(true);
+const ppDemo = demo($("#demoPP"), () => { ppTabs(); traceKey = "in"; ppDraw(false); traceDraw(false); }, async w => {
+  ppTabs(); traceKey = "in"; ppDraw(true); $("#trace").innerHTML = ""; await w(300);
+  for (const td of $$("td[data-v]", ppT)) { countUp(td, +td.dataset.v, 650); await w(140); }
+  await w(700); traceDraw(true);
 });
 
 /* ---------- Day 12: Owner app ---------- */
@@ -1303,11 +1577,11 @@ const CL = [
   ["warn", "กระทบยอดกับงบทดลอง", "พบผลต่าง 1 บัญชี ดูตารางด้านล่าง"],
   ["done", "ส่งออกสมุดรายวัน", "128 รายการ"],
 ];
-const TIE = [["2140 ภาษีขาย", 89079.20, 89079.20], ["1154 ภาษีซื้อ", 18340.50, 18340.50], ["2132 ภาษีหัก ณ ที่จ่ายค้างจ่าย", 4065.00, 4215.00]];
+const TIE = [["2140 ภาษีขาย", 89079.20, 89079.20], ["1154 ภาษีซื้อ", 18340.50, 18340.50], ["2132 ภาษีหัก ณ ที่จ่ายค้างจ่าย", 4030.00, 4215.00]];
 function closeDraw(n, anim) {
   $("#clist").innerHTML = CL.map((c, i) => `<li class="${i < n ? c[0] : ""}${anim && i === n - 1 && !REDUCE ? " fade-in" : ""}"><span class="bx">${i < n ? (c[0] === "warn" ? "!" : "✓") : ""}</span><span>${c[1]}<small>${c[2]}</small></span></li>`).join("");
   const showTie = n >= 4;
-  $("#tie").innerHTML = showTie ? `<thead><tr><th>บัญชี</th><th>งบทดลอง</th><th>ปิดงวด</th><th>ผลต่าง</th></tr></thead><tbody>${TIE.map(r => { const df = r[2] - r[1]; return `<tr><td>${r[0]}</td><td>${fmt(r[1])}</td><td>${fmt(r[2])}</td><td style="color:${df ? "var(--amber)" : "var(--ledger)"};font-weight:600">${df ? fmt(df) + " !" : "0.00 ✓"}</td></tr>`; }).join("")}<tr><td colspan="4" style="text-align:left;color:var(--amber);font-family:var(--f-body)">ผลต่าง 150.00 มาจาก 50 ทวิ เลขที่ 2569/0041 (ค่าขนส่ง ทองดีโลจิสติกส์) ที่ยังไม่ได้บันทึกในโปรแกรมบัญชี</td></tr></tbody>` : "";
+  $("#tie").innerHTML = showTie ? `<thead><tr><th>บัญชี</th><th>งบทดลอง</th><th>ปิดงวด</th><th>ผลต่าง</th></tr></thead><tbody>${TIE.map(r => { const df = r[2] - r[1]; return `<tr><td>${r[0]}</td><td>${fmt(r[1])}</td><td>${fmt(r[2])}</td><td style="color:${df ? "var(--amber)" : "var(--ledger)"};font-weight:600">${df ? fmt(df) + " !" : "0.00 ✓"}</td></tr>`; }).join("")}<tr><td colspan="4" style="text-align:left;color:var(--amber);font-family:var(--f-body)">ผลต่าง 185.00 มาจาก 50 ทวิ เลขที่ 2569/0041 (ค่าขนส่ง ทองดีโลจิสติกส์) ที่ยังไม่ได้บันทึกในโปรแกรมบัญชี</td></tr></tbody>` : "";
   $("#exp").innerHTML = n >= 5 ? `<span>ส่งออกไปยัง</span><span class="tag on">Excel ✓</span><span class="tag">Express</span><span class="tag">PEAK</span><span class="tag">FlowAccount</span>` : "";
 }
 demo($("#demoClose"), () => closeDraw(5, false), async w => { closeDraw(0, false); await w(400); for (let i = 1; i <= 5; i++) { closeDraw(i, true); await w(700); } });
@@ -1486,11 +1760,12 @@ const STEPS = [
   ["crunch", "ปัญหา: งานยื่นภาษีอัดแน่นในวันที่ 1 ถึง 23", 7000],
   ["race", "วิธีเดิม กับ ปิดงวด ในเดือนเดียวกัน", 11000],
   ["overview", "กระดานเดียว เห็นทุกลูกค้า ทุกสถานะ", 7000],
+  ["day0", "รับลูกค้าใหม่ · ปฏิทินภาษีทั้งปีในสองนาที", 10000],
   ["day1", "วันที่ 1 · ลูกค้าส่งเอกสารทาง LINE", 9500],
-  ["day2", "วันที่ 2 · AI อ่าน กฎตรวจ คนยืนยัน", 11000],
-  ["day5", "วันที่ 5 · หัก ณ ที่จ่าย และ 50 ทวิ", 9000],
+  ["day2", "วันที่ 2 · 12 แบบเอกสาร AI อ่าน กฎตรวจ คนยืนยัน", 16000],
+  ["day5", "วันที่ 5 · จัดประเภทการจ่ายทั้งเดือน และ 50 ทวิ", 11000],
   ["day7", "วันที่ 7 · กำหนดยื่นคำนวณให้อัตโนมัติ", 8000],
-  ["day10", "วันที่ 10 · ภ.พ.30 คลิกย้อนดูเอกสารได้", 9000],
+  ["day10", "วันที่ 10 · ภ.พ.30 ต้องชำระ ขอคืน หรือมีเครดิตยกมา", 9000],
   ["day12", "วันที่ 12 · เจ้าของกิจการอนุมัติและส่งสลิป", 9500],
   ["day20", "วันที่ 20 · ปิดงวดและส่งออกรายการบัญชี", 8000],
   ["calc", "ได้เวลาคืนเท่าไรต่อเดือน", 7000],
