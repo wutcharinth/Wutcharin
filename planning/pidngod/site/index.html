@@ -72,14 +72,15 @@ p{margin:0}
 .rail-label{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:46%}
 .rail-label b{color:var(--ink)}
 .proto{background:var(--amber-soft);color:var(--amber);font-size:.8rem;text-align:center;padding-block:5px}
-@media (max-width:860px){.nav{display:none}.top .btn{margin-left:auto}}
+@media (max-width:860px){.nav{display:none}.pitch-btn{margin-left:auto}}
+@media (max-width:560px){.brand small{display:none}.top .btn.go{display:none}.pitch-btn{white-space:nowrap}.top-in{gap:10px}}
 
 /* Hero */
 .hero{padding-block:56px 40px}
 .hero-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:48px;align-items:center}
 .hero h1{font-size:clamp(2.1rem,4.4vw,3.6rem);font-weight:800;letter-spacing:-.01em;margin-top:14px}
 .hero h1 em{font-style:normal;color:var(--ledger);position:relative;white-space:nowrap}
-.hero h1 em::after{content:"";position:absolute;left:0;right:0;bottom:.08em;height:.12em;background:var(--stamp);opacity:.75;transform-origin:left;animation:underline 1.1s .5s cubic-bezier(.2,.8,.2,1) both}
+.hero h1 em::after{content:"";position:absolute;left:0;right:0;bottom:.08em;height:.12em;background:var(--stamp);opacity:.75;transform-origin:left;animation:underline 1.1s 1.1s cubic-bezier(.2,.8,.2,1) both}
 @keyframes underline{from{transform:scaleX(0)}}
 .lead{font-size:1.1rem;color:var(--muted);margin-top:18px;max-width:34em}
 .lead b{color:var(--ink);font-weight:600}
@@ -369,7 +370,73 @@ input[type=range]{width:100%;accent-color:var(--ledger)}
 @media (max-width:860px){.pilot{grid-template-columns:minmax(0,1fr)}}
 footer{padding-block:40px 60px;color:var(--muted);font-size:.85rem;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
 
-@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}html{scroll-behavior:auto}}
+
+/* ---- v2: hero pipeline, race, pitch mode, reveals ---- */
+.kw{display:inline-block;animation:kw .9s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i)*130ms + 150ms)}
+@keyframes kw{from{transform:translateY(.55em) rotate(2deg);opacity:0;filter:blur(8px)}}
+.pipe{background:var(--sheet);border:1px solid var(--rule);border-radius:18px;box-shadow:var(--shadow);overflow:hidden;position:relative}
+.pipe-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 18px;border-bottom:1px solid var(--rule);background:var(--sheet-2);font-size:.82rem}
+.live{display:inline-flex;align-items:center;gap:7px;font-weight:600}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--stamp);box-shadow:0 0 0 0 var(--stamp);animation:live 1.6s infinite}
+@keyframes live{70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}
+#pipeCanvas{display:block;width:100%;height:400px}
+@media (max-width:560px){#pipeCanvas{height:470px}}
+.pipe-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--rule)}
+.pipe-stats div{padding:10px 14px;border-right:1px solid var(--rule);font-size:.72rem;color:var(--muted);min-width:0}
+.pipe-stats div:last-child{border-right:0}
+.pipe-stats b{display:block;font-family:var(--f-mono);font-size:1.15rem;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pipe-stats .bad b{color:var(--stamp)}
+.pipe-stats .good b{color:var(--ledger)}
+@media (max-width:560px){.pipe-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.pipe-stats div:nth-child(2){border-right:0}.pipe-stats div:nth-child(-n+2){border-bottom:1px solid var(--rule)}}
+
+.race{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;margin-top:30px}
+@media (max-width:760px){.race{grid-template-columns:minmax(0,1fr)}}
+.race-side{background:var(--sheet);border:1px solid var(--rule);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+.race-side.us{border:2px solid var(--ledger)}
+.race-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.race-top h3{font-size:1.15rem}
+.race-day{font-family:var(--f-display);font-size:2.4rem;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.race-day small{font-family:var(--f-body);font-size:.8rem;font-weight:500;color:var(--muted)}
+.dots{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:6px;margin-top:16px}
+.dots i{aspect-ratio:1;border-radius:6px;background:var(--sheet-2);border:1px solid var(--rule);transition:background .25s,border-color .25s,transform .25s}
+.dots i.w{background:var(--amber-soft);border-color:var(--amber);animation:pulse 1s infinite}
+.dots i.d{background:var(--ledger);border-color:var(--ledger);transform:scale(.92)}
+.dots i.l{background:var(--stamp);border-color:var(--stamp)}
+@keyframes pulse{50%{opacity:.55}}
+.race-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:16px;font-size:.75rem;color:var(--muted)}
+.race-stats b{display:block;font-family:var(--f-mono);font-size:1.25rem;color:var(--ink)}
+.race-stats .late b{color:var(--stamp)}
+.race-bar{position:relative;height:8px;background:var(--sheet-2);border:1px solid var(--rule);border-radius:4px;margin-top:26px}
+.race-bar i{position:absolute;inset:0 auto 0 0;background:var(--ink);border-radius:4px;width:0}
+.race-bar span{position:absolute;top:-22px;transform:translateX(-50%);font-family:var(--f-mono);font-size:.72rem;color:var(--stamp);font-weight:600}
+.race-bar span::after{content:"";position:absolute;left:50%;top:18px;width:2px;height:12px;background:var(--stamp)}
+.race-ctl{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:22px}
+
+.ov-grid{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:40px;align-items:center}
+@media (max-width:960px){.ov-grid{grid-template-columns:minmax(0,1fr)}}
+
+.pitch-btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--rule);background:var(--sheet);border-radius:999px;padding:6px 12px;font-size:.85rem;font-weight:600;cursor:pointer}
+.pitch-btn:hover{border-color:var(--ink)}
+.pitchbar{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:80;background:var(--ink);color:var(--paper);border-radius:16px;padding:10px 12px 12px;width:min(640px,calc(100% - 32px));box-shadow:0 20px 60px -10px rgba(0,0,0,.5)}
+.pitchbar[hidden]{display:none!important}
+.pb-row{display:flex;align-items:center;gap:8px}
+.pb-row button{border:0;background:color-mix(in srgb,var(--paper) 14%,transparent);color:var(--paper);border-radius:10px;min-width:38px;height:36px;cursor:pointer;font-size:.95rem}
+.pb-row button:hover{background:color-mix(in srgb,var(--paper) 26%,transparent)}
+.pb-cap{flex:1;min-width:0;font-size:.88rem;line-height:1.35}
+.pb-cap small{display:block;opacity:.65;font-family:var(--f-mono);font-size:.72rem}
+.pb-cap b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pb-prog{height:3px;background:color-mix(in srgb,var(--paper) 18%,transparent);border-radius:2px;margin-top:9px;overflow:hidden}
+.pb-prog i{display:block;height:100%;width:0;background:var(--ledger)}
+.pb-keys{font-size:.68rem;opacity:.55;margin-top:6px;text-align:center}
+body.pitching .day,body.pitching .band{transition:opacity .5s}
+.spot{outline:3px solid color-mix(in srgb,var(--ledger) 60%,transparent);outline-offset:8px;border-radius:18px;transition:outline-color .4s}
+
+@supports (animation-timeline: view()){
+  .rv{animation:rv linear both;animation-timeline:view();animation-range:entry 0% cover 28%}
+  @keyframes rv{from{opacity:0;transform:translateY(48px) scale(.98)}}
+}
+
+@media (prefers-reduced-motion: reduce){.rv{animation:none!important}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}html{scroll-behavior:auto}}
 </style>
 
 <header class="top">
@@ -383,6 +450,7 @@ footer{padding-block:40px 60px;color:var(--muted);font-size:.85rem;display:flex;
       <nav class="nav" aria-label="เมนูหลัก">
         <a href="#day1">ฟีเจอร์</a><a href="#calc">คำนวณเวลา</a><a href="#pricing">ราคา</a><a href="#trust">ความปลอดภัย</a>
       </nav>
+      <button class="pitch-btn" type="button" id="pitchStart" title="เดินผ่านทุกส่วนอัตโนมัติ">▶ โหมดนำเสนอ</button>
       <a class="btn sm go" href="#pilot">สมัครนำร่อง</a>
     </div>
     <div class="rail" aria-hidden="true">
@@ -397,7 +465,7 @@ footer{padding-block:40px 60px;color:var(--muted);font-size:.85rem;display:flex;
     <div class="wrap hero-grid">
       <div>
         <div class="eyebrow">สำหรับผู้ทำบัญชีอิสระ และสำนักงานบัญชีขนาดเล็ก</div>
-        <h1><span style="white-space:nowrap">ทุกลูกค้า</span> <span style="white-space:nowrap">ทุกแบบภาษี</span> <em>ปิดงวด</em>ได้บนกระดานเดียว</h1>
+        <h1><span class="kw" style="--i:0;white-space:nowrap">ทุกลูกค้า</span> <span class="kw" style="--i:1;white-space:nowrap">ทุกแบบภาษี</span> <span class="kw" style="--i:2"><em>ปิดงวด</em>ได้</span> <span class="kw" style="--i:3">บนกระดานเดียว</span></h1>
         <p class="lead">รับเอกสารจากลูกค้าผ่าน <b>LINE</b> ให้ <b>AI อ่านใบกำกับภาษี</b> ตรวจตามประมวลรัษฎากร แล้วเตรียม <b>ภ.พ.30 ภ.ง.ด.3 ภ.ง.ด.53</b> และ <b>หนังสือรับรอง 50 ทวิ</b> ให้พร้อมยื่น คุณตรวจและยืนยันทุกตัวเลขเอง</p>
         <p class="lead" style="margin-top:10px">ใช้คู่กับ Express, PEAK, FlowAccount หรือ Excel ที่ลูกค้าใช้อยู่แล้ว ไม่ต้องย้ายระบบบัญชี</p>
         <div class="cta-row">
@@ -408,17 +476,14 @@ footer{padding-block:40px 60px;color:var(--muted);font-size:.85rem;display:flex;
           <span class="tag">ภ.พ.30</span><span class="tag">ภ.ง.ด.1</span><span class="tag">ภ.ง.ด.3</span><span class="tag">ภ.ง.ด.53</span><span class="tag">สปส.1-10</span><span class="tag">50 ทวิ</span><span class="tag">รายงานภาษีซื้อ / ขาย</span>
         </div>
       </div>
-      <div class="board" id="heroBoard">
-        <div class="board-head">
-          <div>
-            <h3>กระดานกำหนดยื่น · เดือนภาษี ต.ค. 2569</h3>
-            <div class="meta">ยื่นออนไลน์ · ภ.ง.ด. และ สปส. ภายใน 16 พ.ย. · ภ.พ.30 ภายใน 23 พ.ย.</div>
-          </div>
-          <span class="count-chip" id="boardCount">ยื่นแล้ว 0/0</span>
-        </div>
-        <div class="scroll-x"><table class="grid" id="boardTable"></table></div>
-        <div class="legend">
-          <span><i class="cell s0">รอเอกสาร</i></span><span><i class="cell s1">กำลังตรวจ</i></span><span><i class="cell s2">รออนุมัติ</i></span><span><i class="cell s3" style="transform:none">ยื่นแล้ว</i></span><span><i class="cell s4">ชำระแล้ว</i></span>
+      <div class="pipe rv" id="pipe">
+        <div class="pipe-head"><span class="live"><i></i> สายพานเอกสารของสำนักงาน · ตัวอย่างสด</span><span class="eyebrow">เดือนภาษี ต.ค. 2569</span></div>
+        <canvas id="pipeCanvas" aria-label="ภาพเคลื่อนไหว เอกสารจาก LINE อีเมล และ e-Tax ผ่านการอ่านด้วย AI และกฎตรวจ แล้วแยกเข้าแบบ ภ.พ.30 ภ.ง.ด.3 ภ.ง.ด.53 และ 50 ทวิ ใบที่มีปัญหาถูกส่งกลับลูกค้า" role="img"></canvas>
+        <div class="pipe-stats">
+          <div>เอกสารเข้า<b id="psDocs">0</b></div>
+          <div class="good">ผ่านกฎตรวจ<b id="psOk">0</b></div>
+          <div>ภาษีซื้อที่ตรวจแล้ว<b id="psVat">฿0</b></div>
+          <div class="bad">ปัญหาที่จับได้ก่อนยื่น<b id="psBad">0</b></div>
         </div>
       </div>
     </div>
@@ -444,6 +509,53 @@ footer{padding-block:40px 60px;color:var(--muted);font-size:.85rem;display:flex;
     </div>
   </section>
 
+
+  <section class="band" id="race">
+    <div class="wrap">
+      <div class="eyebrow">จำลอง: ลูกค้า 40 ราย เดือนภาษีเดียวกัน</div>
+      <h2>วิธีเดิม กับ ปิดงวด ในเดือนเดียวกัน</h2>
+      <p class="sub">แต่ละช่องคือลูกค้าหนึ่งราย สีเขียวคือยื่นครบทุกแบบแล้ว สีแดงคือเลยกำหนด</p>
+      <div class="race-bar rv" id="raceBar"><i id="raceFill"></i><span style="left:calc(7/23*100%)">7</span><span style="left:calc(15/23*100%)">15</span><span style="left:100%">23</span></div>
+      <div class="race">
+        <div class="race-side rv" id="raceOld">
+          <div class="race-top"><h3>วิธีเดิม<br><small class="eyebrow">LINE + Excel + คีย์มือ</small></h3><div class="race-day"><small>วันที่ </small><span>23</span></div></div>
+          <div class="dots"></div>
+          <div class="race-stats"><div>ยื่นครบ<b class="r-done">0/40</b></div><div>ชั่วโมงที่ใช้<b class="r-hrs">0</b></div><div class="late">เลยกำหนด<b class="r-late">0</b></div></div>
+        </div>
+        <div class="race-side us rv" id="raceNew">
+          <div class="race-top"><h3>ปิดงวด<br><small class="eyebrow">LINE → AI → ตรวจ → ยื่น</small></h3><div class="race-day"><small>วันที่ </small><span>23</span></div></div>
+          <div class="dots"></div>
+          <div class="race-stats"><div>ยื่นครบ<b class="r-done">0/40</b></div><div>ชั่วโมงที่ใช้<b class="r-hrs">0</b></div><div class="late">เลยกำหนด<b class="r-late">0</b></div></div>
+        </div>
+      </div>
+      <div class="race-ctl"><button class="btn" type="button" id="raceGo">▶ เริ่มจำลองทั้งเดือน</button><span class="note" style="margin:0">จำลองจาก 120 นาทีต่อลูกค้า และเป้าหมายลดเวลาร้อยละ 50 ของช่วงนำร่อง ไม่ใช่ผลที่วัดได้จริง</span></div>
+    </div>
+  </section>
+
+  <section class="band" id="overview" data-day="1" data-label="กระดานกำหนดยื่น">
+    <div class="wrap ov-grid">
+      <div class="copy rv">
+        <div class="eyebrow">กระดานกำหนดยื่น</div>
+        <h2>เห็นทุกลูกค้า ทุกแบบ ทุกสถานะ ในหน้าเดียว</h2>
+        <p class="sub">ไม่ต้องเปิดแฟ้มทีละราย ไม่ต้องจดในสมุด รู้ทันทีว่าใครยังไม่ส่งเอกสาร ใบไหนรอตรวจ ลูกค้ารายไหนยังไม่อนุมัติ และแบบไหนยื่นแล้วแต่ยังไม่ชำระ</p>
+        <ul class="ticks"><li>เรียงตามวันครบกำหนด และเตือนก่อนถึงวันจริง</li><li>มอบหมายลูกค้าให้ผู้ทำบัญชีแต่ละคนในสำนักงาน</li><li>ผู้ตรวจอนุมัติก่อนยื่นได้ สำหรับสำนักงานที่มีหลายคน</li></ul>
+      </div>
+      <div class="board rv" id="heroBoard">
+        <div class="board-head">
+          <div>
+            <h3>กระดานกำหนดยื่น · เดือนภาษี ต.ค. 2569</h3>
+            <div class="meta">ยื่นออนไลน์ · ภ.ง.ด. และ สปส. ภายใน 16 พ.ย. · ภ.พ.30 ภายใน 23 พ.ย.</div>
+          </div>
+          <span class="count-chip" id="boardCount">ยื่นแล้ว 0/0</span>
+        </div>
+        <div class="scroll-x"><table class="grid" id="boardTable"></table></div>
+        <div class="legend">
+          <span><i class="cell s0">รอเอกสาร</i></span><span><i class="cell s1">กำลังตรวจ</i></span><span><i class="cell s2">รออนุมัติ</i></span><span><i class="cell s3" style="transform:none">ยื่นแล้ว</i></span><span><i class="cell s4">ชำระแล้ว</i></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="month-intro">
     <div class="wrap">
       <div class="eyebrow">เดินตามหนึ่งเดือนจริงของสำนักงานบัญชี</div>
@@ -456,7 +568,7 @@ footer{padding-block:40px 60px;color:var(--muted);font-size:.85rem;display:flex;
   <section class="day" id="day1" data-day="1" data-label="รับเอกสารผ่าน LINE">
     <div class="wrap day-grid">
       <div class="day-mark"><small>วันที่</small><b>1</b><span>รับเอกสาร</span></div>
-      <div class="copy">
+      <div class="copy rv">
         <div class="eyebrow">รับเอกสารผ่าน LINE</div>
         <h2>ลูกค้าส่งรูปใบเสร็จใน LINE ระบบจัดเข้าแฟ้มให้เอง</h2>
         <p class="sub">สำนักงานเชื่อม LINE Official Account ของตัวเอง เจ้าของกิจการถ่ายรูปส่งเหมือนเดิม เอกสารเข้าแฟ้มลูกค้าและเดือนภาษีที่ถูกต้องทันที และได้คำตอบกลับว่าใบนี้ใช้ได้หรือไม่ ตอนที่ยังขอใบใหม่จากร้านได้</p>
@@ -466,7 +578,7 @@ footer{padding-block:40px 60px;color:var(--muted);font-size:.85rem;display:flex;
           <li>รับ PDF อีเมล และ e-Tax Invoice ได้ในแฟ้มเดียวกัน</li>
         </ul>
       </div>
-      <div class="demo-col">
+      <div class="demo-col rv">
         <div class="demo" id="demoLine">
           <div class="demo-bar"><span>LINE OA ของสำนักงาน</span><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
           <div class="pad">
@@ -484,7 +596,7 @@ footer{padding-block:40px 60px;color:var(--muted);font-size:.85rem;display:flex;
   <section class="day" id="day2" data-day="2" data-label="AI อ่านเอกสาร และตรวจตามกฎ">
     <div class="wrap day-grid flip">
       <div class="day-mark"><small>วันที่</small><b>2</b><span>อ่านและตรวจ</span></div>
-      <div class="demo-col">
+      <div class="demo-col rv">
         <div class="demo" id="demoX">
           <div class="demo-bar">
             <div class="tabs" role="group" aria-label="ตัวอย่างเอกสาร">
@@ -513,7 +625,7 @@ footer{padding-block:40px 60px;color:var(--muted);font-size:.85rem;display:flex;
           </div>
         </div>
       </div>
-      <div class="copy">
+      <div class="copy rv">
         <div class="eyebrow">AI อ่าน · กฎตรวจ · คนยืนยัน</div>
         <h2>AI อ่านใบกำกับภาษี คุณแค่ตรวจแล้วกด Enter</h2>
         <p class="sub">ระบบดึงชื่อ เลขผู้เสียภาษี สาขา เลขที่ ยอดเงิน และภาษี แล้วตรวจซ้ำด้วยกฎที่ตายตัว ตัวเลขจะเข้าแบบภาษีก็ต่อเมื่อผู้ทำบัญชียืนยันแล้วเท่านั้น</p>
@@ -532,7 +644,7 @@ footer{padding-block:40px 60px;color:var(--muted);font-size:.85rem;display:flex;
   <section class="day" id="day5" data-day="5" data-label="ภาษีหัก ณ ที่จ่าย และ 50 ทวิ">
     <div class="wrap day-grid">
       <div class="day-mark"><small>วันที่</small><b>5</b><span>หัก ณ ที่จ่าย</span></div>
-      <div class="copy">
+      <div class="copy rv">
         <div class="eyebrow">ภ.ง.ด.3 · ภ.ง.ด.53 · 50 ทวิ</div>
         <h2>หัก ณ ที่จ่ายถูกอัตรา ออก 50 ทวิ ได้ในคลิกเดียว</h2>
         <p class="sub">เลือกประเภทเงินได้ ระบบเสนออัตราจากตารางภาษี แยก ภ.ง.ด.3 กับ ภ.ง.ด.53 จากเลขผู้เสียภาษีของผู้รับเงิน และสร้างหนังสือรับรองพร้อมจำนวนเงินตัวอักษร</p>
@@ -542,7 +654,7 @@ footer{padding-block:40px 60px;color:var(--muted);font-size:.85rem;display:flex;
           <li>เจ้าของกิจการออก 50 ทวิ จากมือถือได้ตอนจ่ายเงิน</li>
         </ul>
       </div>
-      <div class="demo-col">
+      <div class="demo-col rv">
         <div class="demo" id="demoWht">
           <div class="demo-bar"><span>ลองเปลี่ยนค่าได้</span><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
           <div class="pad">
@@ -573,7 +685,7 @@ footer{padding-block:40px 60px;color:var(--muted);font-size:.85rem;display:flex;
   <section class="day" id="day7" data-day="7" data-label="กำหนดยื่นคำนวณให้อัตโนมัติ">
     <div class="wrap day-grid flip">
       <div class="day-mark dl"><small>วันที่</small><b>7</b><span>กำหนดยื่น</span></div>
-      <div class="demo-col">
+      <div class="demo-col rv">
         <div class="demo" id="demoDue">
           <div class="demo-bar">
             <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
@@ -595,7 +707,7 @@ footer{padding-block:40px 60px;color:var(--muted);font-size:.85rem;display:flex;
           </div>
         </div>
       </div>
-      <div class="copy">
+      <div class="copy rv">
         <div class="eyebrow">ไม่ต้องจำวันยื่นอีกต่อไป</div>
         <h2>วันครบกำหนดคำนวณให้ เลื่อนตามวันหยุดให้เอง</h2>
         <p class="sub">ระบบคำนวณวันยื่นจากเดือนภาษี ช่องทางยื่น และวันหยุด ถ้าตรงวันเสาร์ อาทิตย์ หรือวันหยุดราชการ ก็เลื่อนเป็นวันทำการถัดไปให้อัตโนมัติ</p>
@@ -612,7 +724,7 @@ footer{padding-block:40px 60px;color:var(--muted);font-size:.85rem;display:flex;
   <section class="day" id="day10" data-day="10" data-label="ภ.พ.30 พร้อมรายงานภาษี">
     <div class="wrap day-grid">
       <div class="day-mark"><small>วันที่</small><b>10</b><span>ภาษีมูลค่าเพิ่ม</span></div>
-      <div class="copy">
+      <div class="copy rv">
         <div class="eyebrow">ภ.พ.30 · รายงานภาษีซื้อ · รายงานภาษีขาย</div>
         <h2>ภ.พ.30 พร้อมยื่น ทุกตัวเลขคลิกย้อนดูเอกสารต้นทางได้</h2>
         <p class="sub">ระบบสร้างรายงานภาษีซื้อ รายงานภาษีขาย และแบบ ภ.พ.30 จากเอกสารที่ยืนยันแล้ว คลิกที่ตัวเลขเพื่อดูว่ามาจากใบกำกับภาษีใบไหนบ้าง และระบบกันภาษีซื้อที่ใช้ไม่ได้ออกให้ก่อนยื่น</p>
@@ -621,7 +733,7 @@ footer{padding-block:40px 60px;color:var(--muted);font-size:.85rem;display:flex;
           <li>ไม่ต้องให้รหัสผ่าน e-Filing กับเรา คุณยื่นเองเหมือนเดิม</li>
         </ul>
       </div>
-      <div class="demo-col">
+      <div class="demo-col rv">
         <div class="demo" id="demoPP">
           <div class="demo-bar"><span>ภ.พ.30 · บจ. สยามคลีนนิ่ง · สำนักงานใหญ่ · ต.ค. 2569</span><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
           <table class="pp" id="ppTable"></table>
@@ -640,7 +752,7 @@ footer{padding-block:40px 60px;color:var(--muted);font-size:.85rem;display:flex;
   <section class="day" id="day12" data-day="12" data-label="แอปเจ้าของกิจการ">
     <div class="wrap day-grid flip">
       <div class="day-mark"><small>วันที่</small><b>12</b><span>ลูกค้าอนุมัติ</span></div>
-      <div class="demo-col">
+      <div class="demo-col rv">
         <div class="demo" id="demoOwner">
           <div class="demo-bar"><span>มุมมองเจ้าของกิจการใน LINE · กดปุ่มได้</span><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
           <div class="pad">
@@ -651,7 +763,7 @@ footer{padding-block:40px 60px;color:var(--muted);font-size:.85rem;display:flex;
           </div>
         </div>
       </div>
-      <div class="copy">
+      <div class="copy rv">
         <div class="eyebrow">ฟรีสำหรับลูกค้าของคุณ</div>
         <h2>เจ้าของกิจการเห็นภาษีล่วงหน้า อนุมัติยอดและส่งสลิปได้จาก LINE</h2>
         <p class="sub">ลูกค้าไม่ต้องเจอบิลภาษีแบบไม่ทันตั้งตัว และคุณไม่ต้องตามสลิปอีก ระบบตรวจสลิปโอนเงินกับยอดและเลขอ้างอิงให้ แล้วขึ้นสถานะชำระแล้วบนกระดานของคุณ</p>
@@ -668,7 +780,7 @@ footer{padding-block:40px 60px;color:var(--muted);font-size:.85rem;display:flex;
   <section class="day" id="day20" data-day="20" data-label="ปิดงวดและส่งออกรายการบัญชี">
     <div class="wrap day-grid">
       <div class="day-mark"><small>วันที่</small><b>20</b><span>ปิดงวด</span></div>
-      <div class="copy">
+      <div class="copy rv">
         <div class="eyebrow">กระทบยอด · ส่งออก</div>
         <h2>ปิดงวดครบทุกขั้น แล้วส่งรายการบัญชีเข้าโปรแกรมเดิม</h2>
         <p class="sub">นำเข้างบทดลองจากโปรแกรมบัญชีของลูกค้า ระบบกระทบยอดภาษีขาย ภาษีซื้อ และภาษีหัก ณ ที่จ่ายค้างจ่ายให้ ถ้ามีผลต่างจะบอกว่ามาจากเอกสารใบไหน</p>
@@ -678,7 +790,7 @@ footer{padding-block:40px 60px;color:var(--muted);font-size:.85rem;display:flex;
           <li>ทุกการแก้ไขมีบันทึกย้อนหลัง ตรวจสอบได้ว่าใครแก้อะไรเมื่อไร</li>
         </ul>
       </div>
-      <div class="demo-col">
+      <div class="demo-col rv">
         <div class="demo" id="demoClose">
           <div class="demo-bar"><span>เช็กลิสต์ปิดงวด · ต.ค. 2569</span><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
           <div class="pad">
@@ -696,7 +808,7 @@ footer{padding-block:40px 60px;color:var(--muted);font-size:.85rem;display:flex;
     <div class="wrap">
       <div class="eyebrow">ใส่ตัวเลขของสำนักงานคุณ</div>
       <h2>ได้เวลาคืนเท่าไรต่อเดือน</h2>
-      <div class="calc">
+      <div class="calc rv">
         <div>
           <div class="sl"><label for="cClients">จำนวนลูกค้าที่ยื่นภาษีรายเดือน <b id="vClients"></b></label><input type="range" id="cClients" min="5" max="100" step="1" value="40"></div>
           <div class="sl"><label for="cMin">นาทีต่อลูกค้าต่อเดือน สำหรับ VAT และหัก ณ ที่จ่าย <b id="vMin"></b></label><input type="range" id="cMin" min="30" max="300" step="5" value="120"></div>
@@ -720,12 +832,12 @@ footer{padding-block:40px 60px;color:var(--muted);font-size:.85rem;display:flex;
       <div class="eyebrow">ราคาสำหรับช่วงนำร่อง (ร่าง)</div>
       <h2>จ่ายตามจำนวนลูกค้าที่ใช้งาน เหมือนที่คุณเก็บค่าทำบัญชี</h2>
       <div class="price">
-        <div class="plan">
+        <div class="plan rv">
           <h3>เริ่มต้น</h3>
           <div class="p">ฟรี <small>ลูกค้าไม่เกิน 5 ราย</small></div>
           <ul><li>ทุกฟีเจอร์ในหน้านี้</li><li>เหมาะกับผู้ทำบัญชีอิสระที่อยากลองกับลูกค้าบางราย</li></ul>
         </div>
-        <div class="plan main">
+        <div class="plan main rv">
           <h3>สำนักงาน</h3>
           <div class="p">฿249 <small>ต่อลูกค้าที่ใช้งาน ต่อเดือน</small></div>
           <ul>
@@ -770,7 +882,7 @@ footer{padding-block:40px 60px;color:var(--muted);font-size:.85rem;display:flex;
 
   <section class="band" id="pilot">
     <div class="wrap">
-      <div class="pilot">
+      <div class="pilot rv">
         <div>
           <h2>รับสำนักงานนำร่อง 10 แห่ง</h2>
           <p>สำหรับผู้ทำบัญชีอิสระและสำนักงานที่ดูแลลูกค้า 15 ถึง 100 ราย ที่อยากใช้เวลาช่วงต้นเดือนกับงานที่มีค่ากว่าการคีย์เอกสาร</p>
@@ -790,6 +902,18 @@ footer{padding-block:40px 60px;color:var(--muted);font-size:.85rem;display:flex;
   <span>ปิดงวด (Pidngod) · ต้นแบบโดย bancheesolution</span>
   <span>ข้อมูลอัตราภาษีและกำหนดยื่นในต้นแบบนี้ใช้เพื่อสาธิต ต้องตรวจสอบกับกรมสรรพากรก่อนใช้งานจริง</span>
 </footer>
+
+<div class="pitchbar" id="pitchbar" hidden role="region" aria-label="โหมดนำเสนอ">
+  <div class="pb-row">
+    <button type="button" id="pbPrev" aria-label="ก่อนหน้า">◀</button>
+    <button type="button" id="pbPlay" aria-label="หยุดชั่วคราว">❚❚</button>
+    <button type="button" id="pbNext" aria-label="ถัดไป">▶</button>
+    <div class="pb-cap"><small id="pbNum"></small><b id="pbCap"></b></div>
+    <button type="button" id="pbExit" aria-label="ออกจากโหมดนำเสนอ">✕</button>
+  </div>
+  <div class="pb-prog"><i id="pbProg"></i></div>
+  <div class="pb-keys">← → เลื่อน · เว้นวรรค หยุด/เล่น · Esc ออก</div>
+</div>
 
 <script>
 /* Set this to your LINE ID / phone / email to show it in the pilot section. */
@@ -1197,6 +1321,216 @@ function calc() {
   $("#rMore").textContent = "+" + more;
 }
 [cC, cM, cX].forEach(x => x.addEventListener("input", calc)); calc();
+
+
+/* ---------- v2: hero pipeline ---------- */
+const cv = $("#pipeCanvas"), cx = cv.getContext("2d");
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+let C = {};
+const readColors = () => { C = { ink: css("--ink"), muted: css("--muted"), rule: css("--rule"), sheet: css("--sheet"), sheet2: css("--sheet-2"), ledger: css("--ledger"), ledgerSoft: css("--ledger-soft"), stamp: css("--stamp"), stampSoft: css("--stamp-soft"), blue: css("--blue"), blueSoft: css("--blue-soft"), line: css("--line"), amber: css("--amber") }; };
+readColors();
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { readColors(); pDraw(); });
+new MutationObserver(() => { readColors(); pDraw(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+const SRC = [{ l: "LINE", c: "line" }, { l: "อีเมล", c: "blue" }, { l: "e-Tax XML", c: "blue" }, { l: "สแกน / อัปโหลด", c: "muted" }];
+const TRAY = [{ l: "ภ.พ.30", w: 46 }, { l: "ภ.ง.ด.53", w: 16 }, { l: "ภ.ง.ด.3", w: 12 }, { l: "50 ทวิ", w: 12 }, { l: "ส่งกลับลูกค้า", s: "ส่งกลับ", w: 14, bad: true }];
+let PW = 0, PH = 0, vert = false, G = {}, docs = [], spawnT = 0, stats = { docs: 0, ok: 0, vat: 0, bad: 0 }, gateFlash = 0, beamY = 0;
+TRAY.forEach(t => { t.n = 0; t.p = 0; });
+function pLayout() {
+  const r = cv.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1);
+  PW = r.width; PH = r.height; cv.width = PW * dpr; cv.height = PH * dpr; cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  vert = PW < 560;
+  if (!vert) {
+    SRC.forEach((s, i) => { s.x = 70; s.y = PH * (0.17 + i * 0.22); });
+    G = { x: PW * 0.47, y: PH / 2, w: 92, h: PH * 0.62 };
+    TRAY.forEach((t, i) => { t.x = PW - 66; t.y = PH * (0.12 + i * 0.19); });
+  } else {
+    SRC.forEach((s, i) => { s.x = PW * (0.14 + i * 0.24); s.y = 34; });
+    G = { x: PW / 2, y: PH * 0.47, w: PW * 0.74, h: 74 };
+    TRAY.forEach((t, i) => { t.x = PW * (0.1 + i * 0.2); t.y = PH - 46; });
+  }
+}
+const qb = (a, c, b, t) => { const u = 1 - t; return { x: u * u * a.x + 2 * u * t * c.x + t * t * b.x, y: u * u * a.y + 2 * u * t * c.y + t * t * b.y }; };
+const gateIn = () => vert ? { x: G.x, y: G.y - G.h / 2 + 8 } : { x: G.x - G.w / 2 + 6, y: G.y };
+const gateOut = () => vert ? { x: G.x, y: G.y + G.h / 2 - 8 } : { x: G.x + G.w / 2 - 6, y: G.y };
+const ctrl1 = s => vert ? { x: s.x, y: (s.y + gateIn().y) / 2 + 20 } : { x: (s.x + gateIn().x) / 2 + 10, y: s.y };
+const ctrl2 = t => vert ? { x: t.x, y: (gateOut().y + t.y) / 2 - 10 } : { x: (gateOut().x + t.x) / 2 - 10, y: t.y };
+const pickTray = () => { let r = Math.random() * 100; for (const t of TRAY) { if ((r -= t.w) < 0) return t; } return TRAY[0]; };
+function pStep(dt) {
+  spawnT -= dt;
+  if (spawnT <= 0) { spawnT = 260 + Math.random() * 260; const s = SRC[Math.random() < .55 ? 0 : 1 + Math.floor(Math.random() * 3)], t = pickTray(); docs.push({ s, t, leg: 0, k: 0, rot: (Math.random() - .5) * .5, ok: !t.bad, jit: (Math.random() - .5) * (vert ? 40 : 30) }); }
+  gateFlash = Math.max(0, gateFlash - dt / 400); beamY = (beamY + dt / 900) % 2;
+  TRAY.forEach(t => t.p = Math.max(0, t.p - dt / 600));
+  for (const d of docs) {
+    if (d.leg === 0) { d.k += dt / 1300; if (d.k >= 1) { d.leg = 1; d.k = 0; gateFlash = 1; } }
+    else if (d.leg === 1) { d.k += dt / 420; if (d.k >= 1) { d.leg = 2; d.k = 0; } }
+    else { d.k += dt / 1250; if (d.k >= 1) { d.done = true; d.t.n++; d.t.p = 1; stats.docs++; if (d.ok) { stats.ok++; if (d.t === TRAY[0]) stats.vat += Math.round(Math.random() * 380000) / 100 + 20; } else stats.bad++; } }
+  }
+  docs = docs.filter(d => !d.done);
+}
+function rr(x, y, w, h, r) { cx.beginPath(); cx.moveTo(x + r, y); cx.arcTo(x + w, y, x + w, y + h, r); cx.arcTo(x + w, y + h, x, y + h, r); cx.arcTo(x, y + h, x, y, r); cx.arcTo(x, y, x + w, y, r); cx.closePath(); }
+function pDraw() {
+  if (!PW) return;
+  cx.clearRect(0, 0, PW, PH);
+  cx.fillStyle = C.rule; for (let x = 12; x < PW; x += 22) for (let y = 12; y < PH; y += 22) { cx.globalAlpha = .45; cx.fillRect(x, y, 1.5, 1.5); }
+  cx.globalAlpha = 1;
+  cx.setLineDash([3, 5]); cx.lineWidth = 1.2; cx.strokeStyle = C.rule;
+  SRC.forEach(s => { const a = gateIn(), c = ctrl1(s); cx.beginPath(); cx.moveTo(s.x, s.y); cx.quadraticCurveTo(c.x, c.y, a.x, a.y); cx.stroke(); });
+  TRAY.forEach(t => { const a = gateOut(), c = ctrl2(t); cx.beginPath(); cx.moveTo(a.x, a.y); cx.quadraticCurveTo(c.x, c.y, t.x, t.y); cx.stroke(); });
+  cx.setLineDash([]);
+  // gate
+  const gx = G.x - G.w / 2, gy = G.y - G.h / 2;
+  cx.save(); cx.shadowColor = C.ledger; cx.shadowBlur = 24 * gateFlash;
+  rr(gx, gy, G.w, G.h, 14); cx.fillStyle = C.ink; cx.fill(); cx.restore();
+  cx.save(); rr(gx, gy, G.w, G.h, 14); cx.clip();
+  const bp = beamY < 1 ? beamY : 2 - beamY;
+  const grad = vert ? cx.createLinearGradient(gx + bp * G.w - 30, 0, gx + bp * G.w + 30, 0) : cx.createLinearGradient(0, gy + bp * G.h - 30, 0, gy + bp * G.h + 30);
+  grad.addColorStop(0, "transparent"); grad.addColorStop(.5, C.ledger); grad.addColorStop(1, "transparent");
+  cx.globalAlpha = .55; cx.fillStyle = grad; cx.fillRect(gx, gy, G.w, G.h); cx.globalAlpha = 1; cx.restore();
+  cx.fillStyle = C.sheet; cx.textAlign = "center"; cx.textBaseline = "middle";
+  cx.font = '700 15px "IBM Plex Sans Thai", sans-serif';
+  if (vert) { cx.fillText("AI อ่านเอกสาร + กฎตรวจ 14 ข้อ", G.x, G.y - 9); cx.font = '500 11px "IBM Plex Sans Thai", sans-serif'; cx.globalAlpha = .7; cx.fillText("คนยืนยันก่อนเข้าแบบ", G.x, G.y + 14); }
+  else { cx.fillText("AI", G.x, G.y - 34); cx.font = '600 12px "IBM Plex Sans Thai", sans-serif'; cx.fillText("อ่าน +", G.x, G.y - 10); cx.fillText("กฎตรวจ", G.x, G.y + 8); cx.fillText("14 ข้อ", G.x, G.y + 26); }
+  cx.globalAlpha = 1;
+  // sources
+  SRC.forEach(s => {
+    cx.font = '600 12px "IBM Plex Sans Thai", sans-serif';
+    const label = vert && s.l.length > 8 ? s.l.split(" ")[0] : s.l, w = Math.max(56, cx.measureText(label).width + 30);
+    rr(s.x - w / 2, s.y - 15, w, 30, 15); cx.fillStyle = C.sheet; cx.fill(); cx.strokeStyle = s.c === "line" ? C.line : C.rule; cx.lineWidth = 1.5; cx.stroke();
+    cx.fillStyle = s.c === "line" ? C.line : C[s.c]; cx.beginPath(); cx.arc(s.x - w / 2 + 13, s.y, 4, 0, 7); cx.fill();
+    cx.fillStyle = C.ink; cx.textAlign = "left"; cx.fillText(label, s.x - w / 2 + 22, s.y + 1);
+  });
+  // trays
+  TRAY.forEach(t => {
+    const w = vert ? Math.min(66, PW * .18) : 108, h = vert ? 54 : 46;
+    cx.save(); if (t.p) { cx.shadowColor = t.bad ? C.stamp : C.ledger; cx.shadowBlur = 18 * t.p; }
+    rr(t.x - w / 2, t.y - h / 2, w, h, 10); cx.fillStyle = t.bad ? C.stampSoft : C.sheet; cx.fill(); cx.restore();
+    rr(t.x - w / 2, t.y - h / 2, w, h, 10); cx.strokeStyle = t.bad ? C.stamp : C.rule; cx.lineWidth = 1.5; cx.stroke();
+    cx.textAlign = "center"; cx.fillStyle = t.bad ? C.stamp : C.muted; cx.font = '600 11px "IBM Plex Sans Thai", sans-serif';
+    cx.fillText(vert && t.s ? t.s : t.l, t.x, t.y - (vert ? 11 : 9));
+    cx.fillStyle = t.bad ? C.stamp : C.ink; cx.font = `600 ${15 + 4 * t.p}px "IBM Plex Mono", monospace`;
+    cx.fillText(t.n.toLocaleString("en-US"), t.x, t.y + (vert ? 10 : 10));
+  });
+  // docs (docs inside the gate are hidden: they are being read)
+  for (const d of docs) {
+    if (d.leg === 1) continue;
+    let p, scanned = d.leg >= 1;
+    if (d.leg === 0) { const a = { x: d.s.x, y: d.s.y }, b = gateIn(); p = qb(a, ctrl1(d.s), b, d.k); }
+    else if (d.leg === 1) { const a = gateIn(), b = gateOut(); p = { x: a.x + (b.x - a.x) * d.k, y: a.y + (b.y - a.y) * d.k }; if (vert) p.x += d.jit; else p.y += d.jit; }
+    else { const a = gateOut(); p = qb(a, ctrl2(d.t), { x: d.t.x, y: d.t.y }, d.k); }
+    const sc = d.leg === 2 ? 1 - d.k * .35 : 1;
+    cx.save(); cx.translate(p.x, p.y); cx.rotate(d.rot * (d.leg === 1 ? 0 : 1)); cx.scale(sc, sc);
+    cx.shadowColor = "rgba(0,0,0,.18)"; cx.shadowBlur = 6; cx.shadowOffsetY = 2;
+    cx.fillStyle = "#FFFEF9"; cx.fillRect(-11, -14, 22, 28); cx.shadowColor = "transparent";
+    cx.fillStyle = "#C9C6BA"; for (let i = 0; i < 4; i++) cx.fillRect(-7, -9 + i * 5, i === 3 ? 8 : 14, 2);
+    if (scanned && (d.leg === 2 || d.k > .5)) {
+      cx.fillStyle = d.ok ? C.ledger : C.stamp; cx.beginPath(); cx.arc(9, -12, 7, 0, 7); cx.fill();
+      cx.strokeStyle = "#fff"; cx.lineWidth = 2; cx.beginPath();
+      if (d.ok) { cx.moveTo(5.5, -12); cx.lineTo(8, -9.5); cx.lineTo(12.5, -14.5); } else { cx.moveTo(6.5, -14.5); cx.lineTo(11.5, -9.5); cx.moveTo(11.5, -14.5); cx.lineTo(6.5, -9.5); }
+      cx.stroke();
+    }
+    cx.restore();
+  }
+  $("#psDocs").textContent = stats.docs.toLocaleString("en-US");
+  $("#psOk").textContent = stats.ok.toLocaleString("en-US");
+  $("#psVat").textContent = "฿" + Math.round(stats.vat).toLocaleString("en-US");
+  $("#psBad").textContent = stats.bad.toLocaleString("en-US");
+}
+let pipeOn = true, pLast = 0;
+new IntersectionObserver(es => { pipeOn = es[0].isIntersecting; }).observe(cv);
+function pLoop(t) { const dt = Math.min(50, t - (pLast || t)); pLast = t; if (pipeOn && !document.hidden) { pStep(dt); pDraw(); } requestAnimationFrame(pLoop); }
+function pBoot() { pLayout(); for (let i = 0; i < 260; i++) pStep(16); pDraw(); if (!REDUCE) requestAnimationFrame(pLoop); }
+addEventListener("resize", () => { pLayout(); pDraw(); });
+(document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(pBoot);
+pLayout(); pDraw();
+
+/* ---------- v2: race ---------- */
+let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const N = 40, OLD = [], NEW = [];
+for (let i = 0; i < N; i++) {
+  const o = 4 + rnd() * 21.5; OLD.push({ s: Math.max(1, o - 2.2 - rnd() * 2), f: o });
+  const n = 2.2 + rnd() * 7.5; NEW.push({ s: Math.max(1, n - 1.1), f: n });
+}
+OLD.sort((a, b) => a.f - b.f); NEW.sort((a, b) => a.f - b.f);
+const HRS_OLD = 120 / 60, HRS_NEW = 60 / 60;
+$$("#race .dots").forEach(d => d.innerHTML = "<i></i>".repeat(N));
+function raceDraw(day) {
+  [["#raceOld", OLD, HRS_OLD], ["#raceNew", NEW, HRS_NEW]].forEach(([id, arr, hp]) => {
+    const el = $(id), cells = $$(".dots i", el); let done = 0, late = 0, hrs = 0;
+    arr.forEach((c, i) => {
+      const cl = day >= c.f && c.f <= 23 ? "d" : (day >= 23 && c.f > 23) ? "l" : day >= c.s ? "w" : "";
+      cells[i].className = cl; if (cl === "d") done++; if (cl === "l") late++;
+      hrs += hp * Math.max(0, Math.min(1, (Math.min(day, 23) - c.s) / (c.f - c.s)));
+    });
+    $(".race-day span", el).textContent = Math.max(1, Math.floor(day));
+    $(".r-done", el).textContent = `${done}/${N}`; $(".r-hrs", el).textContent = Math.round(hrs); $(".r-late", el).textContent = late;
+  });
+  $("#raceFill").style.width = Math.min(100, day / 23 * 100) + "%";
+}
+let raceRun = 0;
+async function raceStart() {
+  const id = ++raceRun; if (REDUCE) { raceDraw(23); return; }
+  const T = 9000, t0 = performance.now();
+  await new Promise(res => { const f = t => { if (id !== raceRun) return res(); const k = Math.min(1, (t - t0) / T); raceDraw(1 + k * 22.01); k < 1 ? requestAnimationFrame(f) : res(); }; requestAnimationFrame(f); });
+}
+raceDraw(23.01);
+$("#raceGo").addEventListener("click", raceStart);
+let racePlayed = false;
+new IntersectionObserver(es => { if (es[0].isIntersecting && !racePlayed) { racePlayed = true; raceStart(); } }, { threshold: .45 }).observe($("#race .race"));
+
+/* ---------- v2: pitch mode ---------- */
+const STEPS = [
+  ["top", "ปิดงวด: ทุกลูกค้า ทุกแบบภาษี บนกระดานเดียว", 8000],
+  ["crunch", "ปัญหา: งานยื่นภาษีอัดแน่นในวันที่ 1 ถึง 23", 7000],
+  ["race", "วิธีเดิม กับ ปิดงวด ในเดือนเดียวกัน", 11000],
+  ["overview", "กระดานเดียว เห็นทุกลูกค้า ทุกสถานะ", 7000],
+  ["day1", "วันที่ 1 · ลูกค้าส่งเอกสารทาง LINE", 9500],
+  ["day2", "วันที่ 2 · AI อ่าน กฎตรวจ คนยืนยัน", 11000],
+  ["day5", "วันที่ 5 · หัก ณ ที่จ่าย และ 50 ทวิ", 9000],
+  ["day7", "วันที่ 7 · กำหนดยื่นคำนวณให้อัตโนมัติ", 8000],
+  ["day10", "วันที่ 10 · ภ.พ.30 คลิกย้อนดูเอกสารได้", 9000],
+  ["day12", "วันที่ 12 · เจ้าของกิจการอนุมัติและส่งสลิป", 9500],
+  ["day20", "วันที่ 20 · ปิดงวดและส่งออกรายการบัญชี", 8000],
+  ["calc", "ได้เวลาคืนเท่าไรต่อเดือน", 7000],
+  ["pricing", "ราคา: จ่ายตามลูกค้าที่ใช้งาน", 6500],
+  ["trust", "ความปลอดภัยและความรับผิดชอบ", 6500],
+  ["pilot", "รับสำนักงานนำร่อง 10 แห่ง", 9000],
+];
+let pi = -1, pPlaying = true, pTimer = 0, pActive = false;
+const pb = $("#pitchbar");
+function pitchGo(i) {
+  pi = Math.max(0, Math.min(STEPS.length - 1, i)); clearTimeout(pTimer);
+  const [id, cap, ms] = STEPS[pi], el = id === "top" ? document.body : document.getElementById(id);
+  const y = id === "top" ? 0 : el.getBoundingClientRect().top + scrollY - $(".top").offsetHeight + 1;
+  scrollTo({ top: y, behavior: REDUCE ? "auto" : "smooth" });
+  $("#pbNum").textContent = `${pi + 1} / ${STEPS.length}`; $("#pbCap").textContent = cap;
+  $$(".spot").forEach(x => x.classList.remove("spot"));
+  setTimeout(() => {
+    if (!pActive) return;
+    const dm = id === "top" ? null : demos.find(d => el.contains(d.el));
+    if (dm) { dm.played = true; dm.play(); dm.el.classList.add("spot"); }
+    if (id === "race") { racePlayed = true; raceStart(); }
+  }, REDUCE ? 0 : 750);
+  const bar = $("#pbProg"); bar.style.transition = "none"; bar.style.width = "0";
+  if (pPlaying) { void bar.offsetWidth; bar.style.transition = `width ${ms}ms linear`; bar.style.width = "100%"; pTimer = setTimeout(() => pi < STEPS.length - 1 ? pitchGo(pi + 1) : pitchPause(true), ms); }
+}
+function pitchPause(force) {
+  pPlaying = force === true ? false : !pPlaying; $("#pbPlay").textContent = pPlaying ? "❚❚" : "▶"; $("#pbPlay").setAttribute("aria-label", pPlaying ? "หยุดชั่วคราว" : "เล่นต่อ");
+  if (pPlaying) pitchGo(pi); else { clearTimeout(pTimer); const bar = $("#pbProg"); const w = getComputedStyle(bar).width; bar.style.transition = "none"; bar.style.width = w; }
+}
+function pitchStart() { pActive = true; pPlaying = true; pb.hidden = false; document.body.classList.add("pitching"); $("#pbPlay").textContent = "❚❚"; try { document.documentElement.requestFullscreen && document.documentElement.requestFullscreen().catch(() => {}); } catch (e) {} pitchGo(0); }
+function pitchStop() { pActive = false; clearTimeout(pTimer); pb.hidden = true; document.body.classList.remove("pitching"); $$(".spot").forEach(x => x.classList.remove("spot")); try { document.fullscreenElement && document.exitFullscreen(); } catch (e) {} }
+$("#pitchStart").addEventListener("click", pitchStart);
+$("#pbNext").addEventListener("click", () => pitchGo(pi + 1));
+$("#pbPrev").addEventListener("click", () => pitchGo(pi - 1));
+$("#pbPlay").addEventListener("click", () => pitchPause());
+$("#pbExit").addEventListener("click", pitchStop);
+addEventListener("keydown", e => {
+  if (!pActive || /INPUT|SELECT|TEXTAREA/.test(e.target.tagName)) return;
+  if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); pitchGo(pi + 1); }
+  else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); pitchGo(pi - 1); }
+  else if (e.key === " ") { e.preventDefault(); pitchPause(); }
+  else if (e.key === "Escape") pitchStop();
+});
 
 /* start observers */
 demos.forEach(d => io.observe(d.el));
