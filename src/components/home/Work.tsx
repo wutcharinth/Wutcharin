@@ -25,6 +25,8 @@ const featured = projects
     .sort((a, b) => (a.featured ?? 0) - (b.featured ?? 0));
 const rest = projects.filter((p) => p.featured === undefined);
 
+const COUNT_WORD: Record<number, string> = { 2: 'Two', 3: 'Three', 4: 'Four', 5: 'Five', 6: 'Six' };
+
 type Filter = 'all' | 'agent' | 'insight' | 'lab';
 const FILTERS: Array<{ id: Filter; label: string }> = [
     { id: 'all', label: 'All' },
@@ -209,7 +211,7 @@ function Theatre() {
                 <div className="relative mx-auto flex w-full max-w-6xl items-end justify-between gap-6 px-10 pt-24">
                     <Heading />
                     <p className="hidden max-w-xs pb-2 text-right text-sm font-light leading-relaxed text-text-mute lg:block">
-                        Five case studies. Scroll, or use the arrows.
+                        {COUNT_WORD[n] ?? n} case studies. Scroll, or use the arrows.
                         <br />
                         The background changes with each one.
                     </p>

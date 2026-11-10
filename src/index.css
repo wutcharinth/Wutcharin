@@ -373,3 +373,18 @@ body.cursor-enhanced select {
 [data-shown] > .rise-word > span {
   transform: none;
 }
+
+/* Pidngod demo (components/pidngod): check-result hues, taken from the
+   product's own dark and light palettes so they stay legible in both themes. */
+:root {
+  --pg-ok: #43c190;
+  --pg-warn: #f0b44c;
+  --pg-block: #f26b5e;
+  --pg-info: #8eaeff;
+}
+html.light {
+  --pg-ok: #0b6a4e;
+  --pg-warn: #93590a;
+  --pg-block: #bf3329;
+  --pg-info: #1e48a6;
+}
