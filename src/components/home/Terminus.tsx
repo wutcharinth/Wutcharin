@@ -55,7 +55,7 @@ export default function Terminus() {
                 {/* The stage where the particles spell the address. */}
                 <div className={sceneOff ? 'py-10' : 'min-h-[24vh] flex-1'} aria-hidden={!sceneOff}>
                     {sceneOff && (
-                        <p className="break-all font-display text-3xl font-semibold tracking-[-0.02em] text-text-strong md:text-6xl">{EMAIL}</p>
+                        <p className="whitespace-nowrap font-display text-[clamp(1.25rem,6.6vw,1.875rem)] font-semibold tracking-[-0.02em] text-text-strong md:text-6xl">{EMAIL}</p>
                     )}
                 </div>
 
@@ -90,7 +90,7 @@ export default function Terminus() {
                         </span>
                     </div>
 
-                    <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 font-mono text-[10px] uppercase tracking-[0.28em]">
+                    <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 font-mono text-[11px] uppercase tracking-[0.28em]">
                         <li>
                             <a href={LINKEDIN} target="_blank" rel="noopener noreferrer" className="text-text-mute transition-colors hover:text-text-strong">
                                 LinkedIn ↗
@@ -108,7 +108,7 @@ export default function Terminus() {
                         </li>
                     </ul>
 
-                    <footer className="flex w-full flex-col items-center justify-between gap-3 border-t border-hairline pt-6 font-mono text-[10px] uppercase tracking-[0.24em] text-text-mute sm:flex-row">
+                    <footer className="flex w-full flex-col items-center justify-between gap-3 border-t border-hairline pt-6 font-mono text-[11px] uppercase tracking-[0.24em] text-text-mute sm:flex-row">
                         <span>© {new Date().getFullYear()} Wutcharin Thatan</span>
                         <span className="tabular-nums">
                             Bangkok <span className="text-text-strong">{time}</span> · ICT (UTC+7)

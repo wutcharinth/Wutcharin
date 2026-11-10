@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
-import { Menu } from 'lucide-react';
+import { Menu, Search } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 import { CHAPTERS } from './home/chapters';
 import { useActiveChapter } from './home/useActiveChapter';
@@ -8,10 +8,13 @@ import { useScrollTo } from './home/useScrollTo';
 import { openConsole, isMac } from './console/consoleBus';
 
 /**
- * Home chrome. The top bar stays deliberately small (mark, console,
- * theme): navigation lives in the chapter rail on wide screens and in the
- * ⌘K console everywhere, including the mobile menu button.
+ * Home chrome. The top bar carries the mark, the four destinations a
+ * skimming visitor needs (always visible from tablet up, with the current
+ * one marked), the console and the theme. The chapter rail adds fine-grained
+ * orientation on wide screens; phones navigate through the ⌘K console.
  */
+const NAV = CHAPTERS.filter((c) => c.id !== 'top' && c.id !== 'principle');
+
 export default function Header() {
     const [scrolled, setScrolled] = useState(false);
     const [mac] = useState(isMac);
@@ -49,15 +52,45 @@ export default function Header() {
                         WT<span className="text-signal">.</span>
                     </a>
 
+                    <nav aria-label="Sections" className="hidden md:block">
+                        <ul className="flex items-center gap-1">
+                            {NAV.map((c) => {
+                                // Principle sits between Proof and Work and has no
+                                // link of its own: it reads as part of Proof here.
+                                const on = c.id === active || (c.id === 'proof' && active === 'principle');
+                                return (
+                                    <li key={c.id}>
+                                        <a
+                                            href={`#${c.id}`}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                scrollTo(`#${c.id}`);
+                                            }}
+                                            aria-current={on ? 'location' : undefined}
+                                            className={`rounded-full border px-3.5 py-1.5 text-[13px] font-medium tracking-tight transition-colors ${
+                                                on
+                                                    ? 'border-signal/40 bg-signal/10 text-text-strong'
+                                                    : 'border-transparent text-text-mute hover:text-text-strong'
+                                            }`}
+                                        >
+                                            {c.id === 'contact' ? 'Contact' : c.name}
+                                        </a>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </nav>
+
                     <div className="flex items-center gap-2">
                         <button
                             type="button"
                             onClick={openConsole}
-                            className="hidden items-center gap-3 rounded-full border border-hairline py-1.5 pl-4 pr-1.5 font-mono text-[10px] uppercase tracking-[0.24em] text-text-mute transition-colors hover:border-hairline-strong hover:text-text-strong md:flex"
+                            className="hidden items-center gap-3 rounded-full border border-hairline py-1.5 pl-3 pr-1.5 font-mono text-[11px] uppercase tracking-[0.2em] text-text-mute transition-colors hover:border-hairline-strong hover:text-text-strong md:flex lg:pl-4"
                             aria-label="Open console: search projects and sections"
                         >
-                            Search or jump
-                            <kbd className="rounded-full border border-hairline px-2 py-0.5 font-mono text-[10px] tracking-normal text-text">{mac ? '⌘K' : 'Ctrl K'}</kbd>
+                            <Search className="h-3.5 w-3.5 lg:hidden" aria-hidden="true" />
+                            <span className="hidden lg:inline">Search</span>
+                            <kbd className="rounded-full border border-hairline px-2 py-0.5 font-mono text-[11px] tracking-normal text-text">{mac ? '⌘K' : 'Ctrl K'}</kbd>
                         </button>
                         <ThemeToggle />
                         <button
@@ -87,15 +120,16 @@ export default function Header() {
                                         scrollTo(c.id === 'top' ? 0 : `#${c.id}`);
                                     }}
                                     aria-current={on ? 'location' : undefined}
-                                    className="group flex items-center gap-3 py-0.5 font-mono text-[10px] uppercase tracking-[0.28em]"
+                                    className="group flex items-center gap-3 py-0.5 font-mono text-[11px] uppercase tracking-[0.28em]"
                                 >
                                     <span
                                         aria-hidden="true"
                                         className={`h-px transition-all duration-500 ${on ? 'w-6 bg-signal' : 'w-3 bg-hairline-strong group-hover:w-5 group-hover:bg-text-mute'}`}
                                     />
                                     <span className={`tabular-nums transition-colors ${on ? 'text-text-strong' : 'text-text-mute'}`}>{c.index}</span>
+                                    {/* Named on hover; the current one stays named where the margin has room. */}
                                     <span
-                                        className={`-translate-x-1 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 ${on ? 'text-text-strong' : 'text-text-mute'}`}
+                                        className={`transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 ${on ? 'text-text-strong min-[1600px]:translate-x-0 min-[1600px]:opacity-100' : 'text-text-mute'} -translate-x-1 opacity-0`}
                                     >
                                         {c.name}
                                     </span>

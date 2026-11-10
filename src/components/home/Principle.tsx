@@ -33,10 +33,10 @@ function Lane({ x, y, title, note, accent }: { x: number; y: number; title: stri
     });
     return (
         <div ref={ref} className="absolute hidden -translate-x-1/2 md:block" aria-hidden="true">
-            <div className={`font-mono text-[10px] uppercase tracking-[0.28em] ${accent ? 'text-signal' : 'text-text-strong'}`}>
+            <div className={`font-mono text-[11px] uppercase tracking-[0.28em] ${accent ? 'text-signal' : 'text-text-strong'}`}>
                 {title}
             </div>
-            <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-text-mute">{note}</div>
+            <div className="mt-1 font-mono text-[11px] uppercase tracking-[0.2em] text-text-mute">{note}</div>
         </div>
     );
 }
@@ -84,11 +84,11 @@ export default function Principle() {
                 {/* Mobile and no-WebGL legend: the same idea, in type. */}
                 <dl className={`mt-14 grid max-w-xl grid-cols-2 gap-6 border-t border-hairline pt-6 ${sceneOff ? '' : 'md:hidden'}`}>
                     <div>
-                        <dt className="font-mono text-[10px] uppercase tracking-[0.28em] text-text-strong">Patterns → code</dt>
+                        <dt className="font-mono text-[11px] uppercase tracking-[0.28em] text-text-strong">Patterns → code</dt>
                         <dd className="mt-2 text-sm text-text-mute">The volume, automated end to end.</dd>
                     </div>
                     <div>
-                        <dt className="font-mono text-[10px] uppercase tracking-[0.28em] text-signal">Exceptions → people</dt>
+                        <dt className="font-mono text-[11px] uppercase tracking-[0.28em] text-signal">Exceptions → people</dt>
                         <dd className="mt-2 text-sm text-text-mute">The edge cases go to a person.</dd>
                     </div>
                 </dl>

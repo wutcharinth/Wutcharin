@@ -4,6 +4,7 @@ import { sceneBus } from '../../scene/sceneBus';
 import { detectTier } from '../../scene/tier';
 import ChapterLabel from './ChapterLabel';
 import { numeralScene } from './scenes';
+import { useScrollTo } from './useScrollTo';
 
 /**
  * Chapter 01: Proof. A pinned stage where the particles themselves become
@@ -66,7 +67,7 @@ function Mix({ mix }: { mix: NonNullable<Beat['mix']> }) {
                     />
                 ))}
             </div>
-            <p className="mt-3 font-mono text-[10px] uppercase leading-relaxed tracking-[0.2em] text-text-mute">
+            <p className="mt-3 font-mono text-[11px] uppercase leading-relaxed tracking-[0.2em] text-text-mute">
                 {mix.map(([name, pct], i) => (
                     <span key={name}>
                         {i > 0 && <span aria-hidden="true"> · </span>}
@@ -81,8 +82,8 @@ function Mix({ mix }: { mix: NonNullable<Beat['mix']> }) {
 function BeatCopy({ beat, index, showNumeral }: { beat: Beat; index: number; showNumeral: boolean }) {
     return (
         <>
-            <div className="mb-4 flex items-baseline gap-3 font-mono text-[10px] uppercase tracking-[0.28em]">
-                <span className="tabular-nums text-text-mute">0{index + 1} / 0{BEATS.length}</span>
+            <div className="mb-4 flex items-baseline gap-3 font-mono text-[11px] uppercase tracking-[0.28em]">
+                <span className="shrink-0 whitespace-nowrap tabular-nums text-text-mute">0{index + 1} / 0{BEATS.length}</span>
                 <span className="text-signal">{beat.unit}</span>
             </div>
             <div
@@ -109,6 +110,15 @@ export default function Proof() {
     const sceneOff = useMemo(() => detectTier() === null, []);
     const sectionRef = useRef<HTMLElement>(null);
     const [active, setActive] = useState(0);
+    const scrollTo = useScrollTo();
+
+    // Jump to the middle of a beat's share of the pin.
+    const goTo = (i: number) => {
+        const section = sectionRef.current;
+        if (!section) return;
+        const top = section.getBoundingClientRect().top + window.scrollY;
+        scrollTo(top + (section.offsetHeight - window.innerHeight) * ((i + 0.5) / BEATS.length));
+    };
 
     useEffect(() => {
         if (reduced) return;
@@ -175,7 +185,7 @@ export default function Proof() {
     }
 
     return (
-        <section ref={sectionRef} id="proof" aria-label="Proof" className="relative h-[380vh]">
+        <section ref={sectionRef} id="proof" aria-label="Proof" className="relative h-[320vh]">
             <div className="sticky top-0 flex h-[100svh] flex-col justify-end overflow-hidden px-6 pb-16 md:justify-center md:px-10 md:pb-0">
                 <div className="mx-auto grid w-full max-w-6xl md:grid-cols-12">
                     <div className="md:col-span-6">
@@ -199,14 +209,22 @@ export default function Proof() {
                     </div>
                 </div>
 
-                {/* Scrub rail */}
-                <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 items-center gap-2 md:bottom-12" aria-hidden="true">
+                {/* Scrub rail: shows where you are, and jumps on click. */}
+                <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 md:bottom-8" role="group" aria-label="Proof points">
                     {BEATS.map((b, i) => (
-                        <span
+                        <button
                             key={b.unit}
-                            className="h-[2px] w-8 transition-colors duration-500 md:w-10"
-                            style={{ backgroundColor: i <= active ? 'var(--color-signal)' : 'var(--color-hairline-strong)' }}
-                        />
+                            type="button"
+                            onClick={() => goTo(i)}
+                            aria-label={`${b.value} ${b.unit}`}
+                            aria-current={i === active ? 'step' : undefined}
+                            className="group flex h-8 w-9 items-center md:w-11"
+                        >
+                            <span
+                                className="block h-[2px] w-full transition-all duration-500 group-hover:h-1"
+                                style={{ backgroundColor: i <= active ? 'var(--color-signal)' : 'var(--color-hairline-strong)' }}
+                            />
+                        </button>
                     ))}
                 </div>
             </div>
