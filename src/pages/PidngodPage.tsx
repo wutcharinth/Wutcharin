@@ -57,14 +57,14 @@ const build = [
 
 const PidngodPage = () => {
     return (
-        <SubPageShell statusLabel="Live demo" accentColor={ACCENT}>
+        <SubPageShell statusLabel="POC · Live demo" accentColor={ACCENT}>
             <SEO
-                title="Pidngod: month-end close for Thai bookkeepers"
-                description="Pidngod checks each document against the Thai Revenue Code, catches duplicates and suggests the account code. Try the real check engine on 18 sample documents."
+                title="Pidngod (POC): month-end close for Thai bookkeepers"
+                description="A proof of concept. Pidngod checks each document against the Thai Revenue Code, catches duplicates and suggests the account code. Try the real check engine on 18 sample documents."
                 url="https://wutcharin.com/pidngod"
             />
             <SubPageHero
-                badgeLabel="Product demo"
+                badgeLabel="Proof of concept"
                 BadgeIcon={BookCheck}
                 titleLead="Pidngod"
                 titleAccent="Close the month."
@@ -193,8 +193,8 @@ const PidngodPage = () => {
                             Small, cheap to run, and <span className="font-serif font-normal italic" style={{ color: ACCENT }}>strict about money</span>.
                         </h2>
                         <p className="mt-6 max-w-md text-sm font-light leading-relaxed text-text-mute">
-                            Status: version 0.1. The core loop works end to end and the engine is unit-tested. Payroll forms, bank reconciliation and
-                            password reset are not built yet. It needs a privacy review and a security test before it holds real client data.
+                            Status: proof of concept (POC). The core loop works end to end and the check engine is unit-tested. It is not a released
+                            product: payroll forms and bank reconciliation are not built yet.
                         </p>
                     </RevealOnScroll>
                     <RevealOnScroll staggerChildren={0.06} className="lg:col-span-7">
