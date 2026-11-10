@@ -1,0 +1,649 @@
+<title>ปิดงวด Prototype</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Noto+Serif+Thai:wght@700;800&display=swap">
+<style>
+/* Layout: a working desk. Header with client switcher, a left rail of four work areas, and a review table with a detail drawer. */
+:root{
+  --bg:#EEF3EF; --panel:#FFFFFF; --panel-2:#F6F9F7; --ink:#12211B; --muted:#56665E; --rule:#D3DDD6;
+  --ledger:#0B6A4E; --ledger-ink:#FFFFFF; --ledger-soft:#DCEEE5;
+  --stamp:#BF3329; --stamp-soft:#F9E2DF; --amber:#93590A; --amber-soft:#FAEED4; --blue:#1E48A6; --blue-soft:#E2E9F9;
+  --shadow:0 1px 2px rgba(18,33,27,.06),0 10px 28px -14px rgba(18,33,27,.22);
+  --f-display:"Noto Serif Thai",Georgia,serif; --f-body:"IBM Plex Sans Thai","Noto Sans Thai",system-ui,sans-serif; --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0C1411; --panel:#141F1A; --panel-2:#18251F; --ink:#E4EDE7; --muted:#9BABA3; --rule:#283730;
+  --ledger:#43C190; --ledger-ink:#06140E; --ledger-soft:#173A2C; --stamp:#F26B5E; --stamp-soft:#3A1916; --amber:#F0B44C; --amber-soft:#35270C; --blue:#8EAEFF; --blue-soft:#1A2440;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 14px 36px -16px rgba(0,0,0,.7); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0C1411; --panel:#141F1A; --panel-2:#18251F; --ink:#E4EDE7; --muted:#9BABA3; --rule:#283730;
+  --ledger:#43C190; --ledger-ink:#06140E; --ledger-soft:#173A2C; --stamp:#F26B5E; --stamp-soft:#3A1916; --amber:#F0B44C; --amber-soft:#35270C; --blue:#8EAEFF; --blue-soft:#1A2440;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 14px 36px -16px rgba(0,0,0,.7); color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14px;line-height:1.55}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--panel)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ledger);outline-offset:2px;border-radius:4px}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:var(--panel);border-bottom:1px solid var(--rule)}
+.hd{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-block:10px}
+.brand{display:flex;align-items:center;gap:8px;font-family:var(--f-display);font-weight:800;font-size:1.15rem}
+.badge-demo{font-size:.72rem;font-weight:600;background:var(--amber-soft);color:var(--amber);border-radius:999px;padding:2px 10px}
+.hd .sp{flex:1}
+.hd select{border:1px solid var(--rule);background:var(--panel-2);border-radius:8px;padding:6px 10px;max-width:100%}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--rule);background:var(--panel);border-radius:8px;padding:6px 12px;cursor:pointer;font-weight:600;font-size:.85rem;white-space:nowrap}
+.btn:hover{border-color:var(--ink)}
+.btn.pri{background:var(--ledger);border-color:var(--ledger);color:var(--ledger-ink)}
+.btn.dark{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.sm{padding:3px 9px;font-size:.78rem}
+.app{display:grid;grid-template-columns:200px minmax(0,1fr);gap:18px;padding-block:18px;max-width:1440px;margin:0 auto}
+nav.rail{display:flex;flex-direction:column;gap:4px;position:sticky;top:76px;align-self:start}
+nav.rail button{display:flex;justify-content:space-between;align-items:center;text-align:left;border:1px solid transparent;background:transparent;border-radius:10px;padding:9px 12px;cursor:pointer;font-weight:500}
+nav.rail button[aria-current="page"]{background:var(--panel);border-color:var(--rule);box-shadow:var(--shadow);font-weight:700}
+nav.rail .ct{font-family:var(--f-mono);font-size:.72rem;background:var(--panel-2);border-radius:999px;padding:0 7px;color:var(--muted)}
+nav.rail .ct.hot{background:var(--amber-soft);color:var(--amber)}
+.rail-note{font-size:.74rem;color:var(--muted);margin-top:14px;padding:10px 12px;border:1px dashed var(--rule);border-radius:10px}
+@media (max-width:900px){.app{grid-template-columns:minmax(0,1fr)}nav.rail{flex-direction:row;overflow-x:auto;position:static}nav.rail button{flex:0 0 auto}.rail-note{display:none}}
+main{min-width:0}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:14px;box-shadow:var(--shadow)}
+.card-h{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--rule)}
+.card-h h2{font-family:var(--f-display);font-size:1.1rem;margin:0}
+.card-b{padding:14px 16px}
+.muted{color:var(--muted)}
+small.muted{font-size:.76rem}
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:.72rem;font-weight:600;padding:1px 8px;border-radius:999px;background:var(--panel-2);border:1px solid var(--rule);white-space:nowrap}
+.pill.g{background:var(--ledger-soft);color:var(--ledger);border-color:transparent}
+.pill.a{background:var(--amber-soft);color:var(--amber);border-color:transparent}
+.pill.r{background:var(--stamp-soft);color:var(--stamp);border-color:transparent}
+.pill.b{background:var(--blue-soft);color:var(--blue);border-color:transparent}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{border:1px solid var(--rule);background:var(--panel);border-radius:999px;padding:3px 11px;font-size:.78rem;cursor:pointer}
+.chips button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.scroll-x{overflow-x:auto}
+table.t{width:100%;border-collapse:collapse;font-size:.82rem}
+table.t th{position:sticky;top:0;background:var(--panel-2);text-align:left;font-size:.72rem;color:var(--muted);font-weight:600;padding:7px 10px;border-bottom:1px solid var(--rule);white-space:nowrap}
+table.t td{padding:8px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+table.t td.r,table.t th.r{text-align:right}
+table.t tr.row{cursor:pointer}
+table.t tr.row:hover td{background:var(--panel-2)}
+table.t tr.sel td{background:var(--blue-soft)!important}
+table.t tr.dup td{opacity:.55}
+table.t tr.flash td{animation:flash .7s ease}
+@keyframes flash{from{background:var(--ledger-soft)}}
+.vend{min-width:210px}
+.vend b{display:block;font-weight:600}
+.cf{display:flex;align-items:center;gap:4px;margin-top:4px;font-size:.72rem}
+.find{max-width:165px!important}
+.vend small{display:block;color:var(--muted);font-size:.72rem;line-height:1.35}
+.src{font-size:.66rem;color:var(--muted);border:1px solid var(--rule);border-radius:4px;padding:0 4px;margin-left:4px}
+.codecell select{border:1px solid var(--rule);background:var(--panel);border-radius:6px;padding:3px 4px;font-size:.78rem;max-width:190px}
+.codecell small{display:block;color:var(--muted);font-size:.7rem;margin-top:3px;line-height:1.35;max-width:260px}
+.conf{display:inline-block;width:44px;height:6px;border-radius:3px;background:var(--panel-2);border:1px solid var(--rule);overflow:hidden;vertical-align:middle;margin-right:4px}
+.conf i{display:block;height:100%;background:var(--ledger)}
+.conf.lo i{background:var(--amber)}
+.find{display:flex;flex-wrap:wrap;gap:3px;max-width:220px}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:start}
+@media (max-width:1180px){.layout{grid-template-columns:minmax(0,1fr)}}
+.drawer{position:sticky;top:76px}
+.kv{display:grid;grid-template-columns:7.5em minmax(0,1fr);gap:4px 10px;font-size:.82rem}
+.kv dt{color:var(--muted)}.kv dd{margin:0;overflow-wrap:anywhere}
+.fl{display:grid;gap:5px;margin-top:10px}
+.fl div{display:grid;grid-template-columns:48px minmax(0,1fr);gap:8px;font-size:.8rem;align-items:start}
+.sev{font-family:var(--f-mono);font-size:.66rem;font-weight:600;text-align:center;border-radius:4px;padding:1px 0}
+.sev.ok{background:var(--ledger-soft);color:var(--ledger)}.sev.warn{background:var(--amber-soft);color:var(--amber)}.sev.block{background:var(--stamp-soft);color:var(--stamp)}.sev.info{background:var(--blue-soft);color:var(--blue)}
+.alts{display:grid;gap:4px;margin-top:6px}
+.alts button{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;text-align:left;border:1px solid var(--rule);background:var(--panel);border-radius:8px;padding:6px 9px;cursor:pointer;font-size:.8rem}
+.alts button:hover{border-color:var(--ink)}
+.alts small{color:var(--muted);font-size:.7rem;grid-column:1/-1}
+.ai-out{margin-top:8px;font-size:.8rem;border-left:3px solid var(--blue);padding:4px 0 4px 10px;min-height:20px}
+.sec{border-top:1px dashed var(--rule);margin-top:12px;padding-top:10px}
+.sec h3{font-size:.8rem;margin:0 0 6px;color:var(--muted);font-weight:600}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:900px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kpi{background:var(--panel);border:1px solid var(--rule);border-radius:14px;padding:14px 16px}
+.kpi small{display:block;color:var(--muted);font-size:.76rem}
+.kpi b{display:block;font-family:var(--f-mono);font-size:1.4rem;margin-top:4px}
+.kpi b.g{color:var(--ledger)}.kpi b.r{color:var(--stamp)}.kpi b.a{color:var(--amber)}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin-top:16px}
+@media (max-width:900px){.grid2{grid-template-columns:minmax(0,1fr)}}
+.pipe{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-top:4px}
+.pipe div{border-radius:10px;padding:10px;background:var(--panel-2);border:1px solid var(--rule);font-size:.76rem;color:var(--muted)}
+.pipe b{display:block;font-family:var(--f-mono);font-size:1.2rem;color:var(--ink)}
+@media (max-width:620px){.pipe{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.bar{display:grid;grid-template-columns:8em minmax(0,1fr) 3em;gap:8px;align-items:center;font-size:.78rem;margin:4px 0}
+.bar .tr{height:8px;background:var(--panel-2);border:1px solid var(--rule);border-radius:4px;overflow:hidden}
+.bar .tr i{display:block;height:100%;background:var(--ledger)}
+.form{display:grid;gap:10px}
+.form textarea{width:100%;min-height:150px;border:1px solid var(--rule);background:var(--panel-2);border-radius:10px;padding:10px;font-family:var(--f-mono);font-size:.78rem}
+.form input[type=number],.form input[type=text]{border:1px solid var(--rule);background:var(--panel-2);border-radius:8px;padding:6px 10px}
+.maprow{display:flex;flex-wrap:wrap;gap:5px}
+.maprow span{font-size:.74rem;border:1px solid var(--rule);border-radius:6px;padding:2px 8px;background:var(--panel-2)}
+.maprow span.miss{border-style:dashed;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:12px;font-size:.85rem;z-index:90;box-shadow:var(--shadow);max-width:calc(100% - 32px)}
+.kbd{font-family:var(--f-mono);font-size:.7rem;border:1px solid var(--rule);border-radius:4px;padding:0 5px;background:var(--panel-2)}
+.empty{padding:28px;text-align:center;color:var(--muted)}
+.prog{height:4px;background:var(--panel-2);border-radius:2px;overflow:hidden;margin-top:8px}
+.prog i{display:block;height:100%;background:var(--ledger);transition:width .2s}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<header>
+  <div class="gut hd">
+    <div class="brand"><svg width="26" height="26" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="15" fill="none" stroke="var(--stamp)" stroke-width="2.5"/><path d="M11 17.5l4 4 8-9" fill="none" stroke="var(--ledger)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>ปิดงวด</div>
+    <span class="badge-demo">ต้นแบบ · ข้อมูลตัวอย่างทั้งหมด</span>
+    <span class="sp"></span>
+    <label for="clientSel" class="muted" style="font-size:.8rem">ลูกค้า</label>
+    <select id="clientSel"></select>
+    <span class="pill" id="monthPill">เดือนภาษี ต.ค. 2569</span>
+    <button class="btn sm" type="button" data-act="reset">รีเซ็ตข้อมูลตัวอย่าง</button>
+  </div>
+</header>
+
+<div class="gut app">
+  <nav class="rail" id="rail" aria-label="ส่วนงาน"></nav>
+  <main id="main"></main>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(() => {
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const fmt = n => (+n || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const TH_M = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+const thDate = iso => { const [y, m, d] = iso.split("-").map(Number); return `${d} ${TH_M[m - 1]} ${y + 543}`; };
+const beSlash = iso => { const [y, m, d] = iso.split("-"); return `${d}/${m}/${+y + 543}`; };
+const r2 = n => Math.round(n * 100) / 100;
+const withCheck = s => { let t = 0; for (let i = 0; i < 12; i++) t += +s[i] * (13 - i); return s + ((11 - (t % 11)) % 10); };
+const tinValid = t => { if (!/^\d{13}$/.test(t)) return false; let s = 0; for (let i = 0; i < 12; i++) s += +t[i] * (13 - i); return (11 - (s % 11)) % 10 === +t[12]; };
+const maskTin = t => /^\d{13}$/.test(t) && t[0] !== "0" ? `${t[0]}-${t.slice(1, 5)}-xxxxx-xx-${t[12]}` : t;
+const TAXMONTH = "2026-10";
+const monthsBack = iso => { const [y, m] = iso.split("-").map(Number); const [ty, tm] = TAXMONTH.split("-").map(Number); return (ty - y) * 12 + (tm - m); };
+const T = s => withCheck(s);
+
+/* ---------- Demo data ---------- */
+function seed() {
+  const CL = {};
+  CL.siam = {
+    id: "siam", slug: "siamcleaning", name: "บจ. สยามคลีนนิ่ง", full: "บริษัท สยามคลีนนิ่ง จำกัด", tin: "0999999000021", sw: "PEAK", biz: "บริการทำความสะอาดอาคาร",
+    capThreshold: 10000, assetCode: "1250", miscCode: "5990", vatxCodes: ["5340"], ctrl: { vat: "1154", ap: "2110", wht: "2132" },
+    coa: [
+      ["1250", "เครื่องมือและอุปกรณ์", "เครื่อง|อุปกรณ์"], ["5110", "ค่าจ้างเหมาช่วง", "จ้างเหมา|รับเหมา|แม่บ้าน|ค่าแรง"], ["5120", "วัสดุทำความสะอาด (ต้นทุนบริการ)", "น้ำยา|ทำความสะอาด|ถุงขยะ|ไม้ถู|ผ้าไมโคร"],
+      ["5130", "วัสดุสิ้นเปลือง", "กระดาษ|หมึก|ปากกา|เครื่องเขียน|แฟ้ม"], ["5210", "ค่าขนส่ง", "ขนส่ง|ส่งของ|รถรับจ้าง|ไปรษณีย์"], ["5220", "ค่าน้ำมันเชื้อเพลิง", "น้ำมัน|ดีเซล|แก๊สโซฮอล์|เบนซิน"],
+      ["5250", "ค่าซ่อมแซมยานพาหนะ", "ซ่อมบำรุงรถ|ซ่อมรถ|ยางรถ|ศูนย์บริการ"], ["5310", "ค่าเช่า", "เช่า"], ["5320", "ค่าอินเทอร์เน็ตและโทรศัพท์", "อินเทอร์เน็ต|โทรศัพท์|มือถือ|ไฟเบอร์"],
+      ["5325", "ค่าไฟฟ้าและน้ำประปา", "ไฟฟ้า|ประปา"], ["5330", "ค่าซอฟต์แวร์และบริการคลาวด์", "ซอฟต์แวร์|software|cloud|subscription|license"], ["5340", "ค่ารับรอง", "รับรอง|เลี้ยง|ห้องอาหาร|ภัตตาคาร"],
+      ["5350", "ค่าโฆษณา", "โฆษณา|advertising|ป้าย"], ["5360", "ค่าธรรมเนียมวิชาชีพ", "ทนาย|กฎหมาย|ที่ปรึกษา|สอบบัญชี"], ["5380", "สวัสดิการพนักงาน", "น้ำดื่ม|ขนม|สวัสดิการ|เครื่องดื่ม"],
+      ["5990", "ค่าใช้จ่ายเบ็ดเตล็ด", ""],
+    ],
+    vendorRules: { "บจ. ออฟฟิศเมท ซัพพลาย": { code: "5130", n: 6, src: "hist" }, "บจ. น้ำยาสะอาดไทย": { code: "5120", n: 4, src: "hist" }, "บจ. ทองดีโลจิสติกส์": { code: "5210", n: 9, src: "hist" }, "บจ. อินเทอร์เน็ตไทย": { code: "5320", n: 12, src: "hist" }, "นางสมศรี มีที่ดิน": { code: "5310", n: 10, src: "hist" } },
+    docs: [
+      ["2026-10-28", "IV6910-0457", "บจ. ออฟฟิศเมท ซัพพลาย", "0999999000012", "กระดาษ A4 80 แกรม 10 รีม และตลับหมึก", 2650, 185.50, 0, "full", "LINE"],
+      ["2026-10-25", "INV-25691025", "บจ. น้ำยาสะอาดไทย", T("099999900013"), "น้ำยาทำความสะอาดพื้น 4 แกลลอน", 1000, 72.00, 0, "full", "Excel"],
+      ["2026-10-21", "TL-10-2569-88", "บจ. ทองดีโลจิสติกส์", "0999999000047", "ค่าขนส่งอุปกรณ์ไปหน้างาน", 18500, 1295, 185, "full", "LINE"],
+      ["2026-10-22", "RC-10-0921", "บจ. ห้องอาหารบ้านไทย", T("099999900011"), "เลี้ยงรับรองลูกค้า 6 ท่าน", 4800, 336, 0, "full", "LINE"],
+      ["2026-10-09", "SV69-10233", "บจ. เอเชียมอเตอร์ เซอร์วิส", T("099999900012"), "ซ่อมบำรุงรถยนต์นั่ง ทะเบียน 1กข 1234", 6200, 434, 0, "full", "อีเมล"],
+      ["2026-10-28", "IV6910-0457", "บจ. ออฟฟิศเมท ซัพพลาย", "0999999000012", "กระดาษ A4 80 แกรม 10 รีม และตลับหมึก", 2650, 185.50, 0, "full", "LINE"],
+      ["2026-10-01", "ET2569100088", "บจ. อินเทอร์เน็ตไทย", T("099999900014"), "อินเทอร์เน็ตองค์กร 1 Gbps ต.ค.", 1890, 132.30, 0, "etax", "อีเมล"],
+      ["2026-10-16", "MT-2569-0874", "บจ. เครื่องมือช่างไทย", T("099999900016"), "เครื่องขัดพื้นอุตสาหกรรม 1 เครื่อง", 25000, 1750, 0, "full", "Drive"],
+      ["2026-10-31", "RENT-10", "นางสมศรี มีที่ดิน", "1234567890121", "ค่าเช่าสำนักงาน ต.ค.", 30000, 0, 1500, "cash", "Drive"],
+      ["2026-10-31", "INV-SG-5521", "Cloud Software Asia Pte. Ltd.", "", "ค่าใช้ซอฟต์แวร์ (software subscription) ต.ค.", 20000, 0, 3000, "foreign", "อีเมล"],
+      ["2026-10-17", "POS 004812", "ร้านสะดวกซื้อ สาขาสุขุมวิท 21", T("099999900005"), "น้ำดื่ม ขนม สำหรับประชุมทีม", 186.92, 13.08, 0, "abb", "LINE"],
+      ["2026-03-14", "TX-2569/0311", "บจ. รุ่งเรืองเครื่องมือช่าง", "0999999000039", "อะไหล่เครื่องขัดพื้น", 6500, 455, 0, "full", "LINE", { buyerTin: "" }],
+      ["2026-10-12", "005/2569", "ร้านป้ายสวยงาม", T("123456789013"), "ป้ายไวนิลหน้าอาคาร 2 ผืน", 3000, 210, 0, "full", "LINE", { vatReg: false }],
+      ["2026-10-05", "CM-6910-031", "บจ. ครีเอทีฟมีเดีย", T("099999900017"), "ค่าโฆษณาออนไลน์ แคมเปญ ต.ค.", 48500, 3395, 970, "full", "Excel"],
+      ["2026-10-30", "MB-2569-112", "บจ. สยามแม่บ้านเซอร์วิส", T("099999900018"), "ค่าจ้างเหมาแม่บ้านประจำหน้างาน", 64000, 4480, 0, "full", "LINE"],
+      ["2026-10-19", "OS-55120", "บจ. ปั๊มน้ำมันไทยรุ่งเรือง", T("099999900019"), "น้ำมันดีเซล รถกระบะ 2ฒค 5678", 1500, 105, 0, "full", "LINE"],
+      ["2026-10-19", "เล่ม 12/37", "ร้าน ช.การช่าง", "", "ปูนกาว 2 ถุง แปรงทาสี 4 อัน", 640, 0, 0, "cash", "LINE"],
+      ["2026-10-24", "MEA-69102488", "การไฟฟ้านครหลวง", T("099999900020"), "ค่าไฟฟ้า ต.ค. สำนักงาน", 9860, 690.20, 0, "full", "อีเมล"],
+    ],
+    processed: true,
+  };
+  CL.yai = {
+    id: "yai", slug: "khruakhunyai", name: "ร้านครัวคุณยาย", full: "ร้านครัวคุณยาย (บุคคลธรรมดา)", tin: "1234567890121", sw: "PEAK", biz: "ร้านอาหาร",
+    capThreshold: 5000, assetCode: "120101", miscCode: "539999", vatxCodes: [], ctrl: { vat: "115401", ap: "211001", wht: "213201" },
+    coa: [
+      ["120101", "เครื่องครัวและอุปกรณ์", "ตู้แช่|เตา|เครื่อง"], ["510101", "ต้นทุนวัตถุดิบอาหาร", "ผัก|หมู|ไก่|ข้าวสาร|น้ำมันพืช|วัตถุดิบ|ตลาด|เครื่องปรุง"], ["510102", "ก๊าซหุงต้ม", "ก๊าซ|แก๊ส"],
+      ["530101", "ค่าคอมมิชชันแพลตฟอร์ม", "คอมมิชชัน|commission|เดลิเวอรี|แพลตฟอร์ม"], ["530201", "ค่าเช่าร้าน", "เช่า"], ["530301", "ค่าไฟฟ้า", "ไฟฟ้า"], ["530302", "ค่าน้ำประปา", "ประปา"],
+      ["530401", "บรรจุภัณฑ์และวัสดุสิ้นเปลือง", "กล่อง|ถุง|ภาชนะ|ทิชชู่|ช้อน"], ["530501", "ค่าซ่อมแซม", "ซ่อม"], ["539999", "ค่าใช้จ่ายเบ็ดเตล็ด", ""],
+    ],
+    vendorRules: { "ห้างค้าส่งสยาม สาขาบางนา": { code: "510101", n: 8, src: "hist" }, "นายวิชัย เจ้าของตึก": { code: "530201", n: 14, src: "hist" } },
+    docs: [
+      ["2026-10-30", "WS-88120", "ห้างค้าส่งสยาม สาขาบางนา", T("099999900021"), "ข้าวสาร น้ำมันพืช เครื่องปรุง", 8420, 589.40, 0, "full", "LINE"],
+      ["2026-10-29", "ตลาด-2910", "แผงผักป้าแดง ตลาดสด", "", "ผักสด สมุนไพร", 1240, 0, 0, "cash", "LINE"],
+      ["2026-10-26", "GS-2569-77", "บจ. ก๊าซหุงต้มไทย", T("099999900022"), "ก๊าซหุงต้ม 48 กก. 3 ถัง", 2700, 189, 0, "full", "LINE"],
+      ["2026-10-26", "GS-2569-77", "บจ. ก๊าซหุงต้มไทย", T("099999900022"), "ก๊าซหุงต้ม 48 กก. 3 ถัง", 2700, 189, 0, "full", "อีเมล"],
+      ["2026-10-31", "PF-A-6910", "แพลตฟอร์มเดลิเวอรี A", T("099999900023"), "ค่าคอมมิชชันเดลิเวอรี ต.ค.", 38580, 2700.60, 0, "full", "อีเมล"],
+      ["2026-10-01", "R-10/69", "นายวิชัย เจ้าของตึก", "", "ค่าเช่าร้าน ต.ค.", 25000, 0, 1250, "cash", "Drive"],
+      ["2026-10-20", "PEA-6910-551", "การไฟฟ้าส่วนภูมิภาค", T("099999900024"), "ค่าไฟฟ้า ต.ค.", 6540, 457.80, 0, "full", "อีเมล"],
+      ["2026-10-14", "PK-10-332", "บจ. แพ็คเกจจิ้งไทย", T("099999900025"), "กล่องอาหารกระดาษ 2,000 ใบ และถุงหิ้ว", 4200, 294, 0, "full", "Excel"],
+      ["2026-10-08", "CF-6910-08", "บจ. ไทยคูลลิ่ง", T("099999900026"), "ตู้แช่ 2 ประตู 1 ตู้", 18900, 1323, 0, "full", "LINE"],
+      ["2026-10-22", "-", "ร้านซ่อมแอร์เย็นฉ่ำ", "", "ซ่อมแอร์หน้าร้าน", 800, 0, 0, "cash", "LINE"],
+    ],
+    processed: false,
+  };
+  CL.lek = {
+    id: "lek", slug: "changlek", name: "หจก. ช่างเหล็กรุ่งเรือง", full: "ห้างหุ้นส่วนจำกัด ช่างเหล็กรุ่งเรือง", tin: T("099999900006"), sw: "Express", biz: "รับเหมางานโครงสร้างเหล็ก",
+    capThreshold: 10000, assetCode: "1250", miscCode: "5990", vatxCodes: [], ctrl: { vat: "1154", ap: "2110", wht: "2132" },
+    coa: [
+      ["1250", "เครื่องจักรและอุปกรณ์", "เครื่องเชื่อม|เครื่องตัด|เครื่อง"], ["5010", "วัตถุดิบเหล็ก", "เหล็ก|ท่อ|เหล็กกล่อง|เหล็กฉาก"], ["5020", "วัสดุสิ้นเปลืองโรงงาน", "ลวดเชื่อม|ใบตัด|สี|ออกซิเจน|แก๊สเชื่อม"],
+      ["5030", "ค่าแรงรับเหมาช่วง", "รับเหมา|ค่าแรง|ติดตั้ง"], ["5210", "ค่าขนส่ง", "ขนส่ง"], ["5220", "ค่าน้ำมันเชื้อเพลิง", "น้ำมัน|ดีเซล"], ["5310", "ค่าเช่าโรงงาน", "เช่า"], ["5325", "ค่าไฟฟ้า", "ไฟฟ้า"], ["5990", "ค่าใช้จ่ายเบ็ดเตล็ด", ""],
+    ],
+    vendorRules: { "บจ. สยามสตีล เทรดดิ้ง": { code: "5010", n: 7, src: "hist" } },
+    docs: [
+      ["2026-10-03", "SS-6910-044", "บจ. สยามสตีล เทรดดิ้ง", T("099999900027"), "เหล็กกล่อง 2x4 นิ้ว 120 เส้น", 86400, 6048, 0, "full", "LINE"],
+      ["2026-10-07", "WD-2210", "บจ. อุปกรณ์เชื่อมไทย", T("099999900028"), "ลวดเชื่อม ใบตัด 4 นิ้ว", 4350, 304.50, 0, "full", "Excel"],
+      ["2026-10-15", "L-1015", "นายมานพ ช่างดี", "1234567890121", "ค่าแรงรับเหมาช่วงติดตั้งโครงหลังคา", 35000, 0, 1050, "cash", "Drive"],
+      ["2026-10-18", "TL-10-2569-95", "บจ. ทองดีโลจิสติกส์", "0999999000047", "ค่าขนส่งเหล็กไปหน้างาน", 7500, 525, 75, "full", "LINE"],
+      ["2026-10-20", "MC-0091", "บจ. เครื่องจักรเชื่อมโลหะ", T("099999900029"), "เครื่องเชื่อมไฟฟ้า 1 เครื่อง", 32000, 2240, 0, "full", "อีเมล"],
+      ["2026-10-01", "NK-RENT-10", "บจ. นิคมพัฒนา", T("099999900030"), "ค่าเช่าโรงงาน ต.ค.", 45000, 3150, 2250, "full", "อีเมล"],
+      ["2026-10-22", "OX-5512", "บจ. ไทยออกซิเจน", T("099999900031"), "ก๊าซออกซิเจนสำหรับงานตัด", 2180, 152.60, 0, "full", "LINE"],
+      ["2026-10-25", "-", "ร้านข้าวแกงป้าศรี", "", "อาหารกลางวันทีมช่าง 15 คน", 1350, 0, 0, "cash", "LINE"],
+    ],
+    processed: false,
+  };
+  for (const c of Object.values(CL)) {
+    c.docs = c.docs.map((a, i) => ({ id: c.id + "-" + (i + 1), date: a[0], no: a[1], vendor: a[2], tin: a[3], desc: a[4], base: a[5], vat: a[6], wht: a[7], type: a[8], src: a[9], buyerTin: (a[10] && "buyerTin" in a[10]) ? a[10].buyerTin : c.tin, vatReg: a[10] && a[10].vatReg === false ? false : true, status: c.processed ? "ready" : "new", code: null, exported: false }));
+  }
+  return { clientId: "siam", tab: "review", filter: "all", sel: "siam-1", clients: CL };
+}
+
+/* ---------- Storage (per viewer) ---------- */
+const KEY = "pidngod-proto-v1";
+let S;
+try { S = JSON.parse(localStorage.getItem(KEY)) || seed(); } catch (e) { S = seed(); }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+const C = () => S.clients[S.clientId];
+
+/* ---------- Engine ---------- */
+const vkey = d => d.vendor.trim().replace(/\s+/g, " ");
+const coaName = (c, code) => (c.coa.find(a => a[0] === code) || [code, "?"])[1];
+const RATE_HINT = [[/ขนส่ง/, 1], [/เช่า/, 5], [/โฆษณา|advertising/i, 2]];
+function suggest(c, d) {
+  const cand = {};
+  const add = (code, score, why) => { if (!c.coa.find(a => a[0] === code)) return; if (!cand[code] || cand[code].score < score) cand[code] = { code, score, why }; };
+  const vr = c.vendorRules[vkey(d)];
+  if (vr) add(vr.code, Math.min(99, 86 + vr.n * 2), vr.src === "edit" ? "ผู้ทำบัญชีกำหนดไว้สำหรับผู้ขายรายนี้" : `ผู้ขายรายนี้เคยบันทึกเป็น ${vr.code} มาแล้ว ${vr.n} ครั้ง`);
+  const text = (d.desc + " " + d.vendor).toLowerCase();
+  const assetAcct = c.coa.find(a => a[0] === c.assetCode);
+  if (assetAcct && d.base >= c.capThreshold && new RegExp(assetAcct[2]).test(text)) add(c.assetCode, 80, `ราคาเกิน ${c.capThreshold.toLocaleString("en-US")} บาทตามนโยบายบันทึกสินทรัพย์ของลูกค้า`);
+  for (const [code, name, kw] of c.coa) {
+    if (!kw || code === c.assetCode) continue;
+    const hits = kw.split("|").filter(k => k && text.includes(k.toLowerCase()));
+    if (hits.length) add(code, Math.min(93, 70 + hits.length * 10 + (hits[0].length > 4 ? 6 : 0)), `พบคำว่า "${hits.join('", "')}" ในรายการ`);
+  }
+  add(c.miscCode, 38, "ไม่พบรูปแบบที่ชัดเจน ควรให้คนตรวจ");
+  const list = Object.values(cand).sort((a, b) => b.score - a.score);
+  if (list.length > 1 && list[0].score - list[1].score < 6 && list[0].score < 95) { list[0] = { ...list[0], score: list[0].score - 8, why: list[0].why + " · มีรหัสอื่นใกล้เคียง" }; }
+  return list;
+}
+function analyze(c, d, docs) {
+  const F = [], add = (sev, text) => F.push({ sev, text });
+  const calc = r2(d.base * 0.07);
+  let dupOf = null;
+  for (const o of docs) { if (o.id === d.id) break; if (vkey(o) === vkey(d) && o.no === d.no && o.no !== "-" && o.status !== "removed") { dupOf = o; break; } }
+  if (dupOf) add("block", `ซ้ำกับเอกสารที่ ${dupOf.id.split("-")[1]} (ผู้ขายและเลขที่เดียวกัน) ไม่บันทึกซ้ำ`);
+  const sugg = suggest(c, d);
+  const code = d.code || (sugg[0] && sugg[0].code);
+  const conf = d.code ? 100 : (sugg[0] ? sugg[0].score : 0);
+  if (d.type === "full" || d.type === "etax") {
+    if (d.type === "etax") add("ok", "e-Tax Invoice ลายมือชื่อดิจิทัลถูกต้อง");
+    if (!d.tin) add("block", "ไม่มีเลขผู้เสียภาษีผู้ขาย");
+    else if (!tinValid(d.tin)) add("block", "เลขผู้เสียภาษีผู้ขายผิดหลักตรวจสอบ");
+    else add("ok", "เลขผู้เสียภาษีผู้ขายถูกต้อง");
+    if (d.buyerTin !== c.tin) add("block", "ไม่มีหรือไม่ตรงเลขผู้เสียภาษีของผู้ซื้อ รายการไม่ครบตามมาตรา 86/4");
+    if (d.vatReg === false) add("block", "ผู้ขายไม่ได้จดทะเบียน VAT ใบกำกับภาษีใช้ไม่ได้");
+    if (Math.abs(calc - d.vat) > 0.01) add("warn", `VAT ควรเป็น ${fmt(calc)} แต่เอกสารระบุ ${fmt(d.vat)}`);
+    const mb = monthsBack(d.date);
+    if (mb > 6) add("block", `เกินกำหนดใช้ภาษีซื้อ 6 เดือน (ห่าง ${mb} เดือน)`);
+  } else if (d.type === "abb") add("info", "ใบกำกับภาษีอย่างย่อ ภาษีซื้อรวมเข้าค่าใช้จ่าย");
+  else if (d.type === "cash") add("info", "ไม่มี VAT · เป็นหลักฐานค่าใช้จ่าย");
+  else if (d.type === "foreign") add("info", `บริการจากต่างประเทศ ต้องยื่น ภ.พ.36 นำส่ง VAT ${fmt(calc)} แยกต่างหาก`);
+  const vatx = c.vatxCodes.includes(code) || /รถยนต์นั่ง/.test(d.desc);
+  if (vatx && d.vat > 0 && (d.type === "full" || d.type === "etax")) add("info", "ภาษีซื้อต้องห้าม (มาตรา 82/5) รวมเข้าค่าใช้จ่ายให้แล้ว");
+  let whtForm = "";
+  if (d.wht > 0) {
+    whtForm = d.type === "foreign" ? "ภ.ง.ด.54" : (d.tin && d.tin[0] === "0") ? "ภ.ง.ด.53" : "ภ.ง.ด.3";
+    const exp = d.type === "foreign" ? 15 : (RATE_HINT.find(([re]) => re.test(d.desc)) || [0, 3])[1];
+    if (Math.abs(d.wht - d.base * exp / 100) > 1) add("warn", `หัก ณ ที่จ่ายควรเป็น ${exp}% = ${fmt(d.base * exp / 100)}`);
+    else add("ok", `หัก ณ ที่จ่าย ${exp}% ถูกต้อง · ${whtForm}`);
+  } else if (d.base >= 1000 && /จ้าง|บริการ|ขนส่ง|เช่า|โฆษณา|ค่าแรง/.test(d.desc) && d.type !== "foreign" && !/ไฟฟ้า|ประปา|อินเทอร์เน็ต/.test(d.desc)) {
+    add("warn", "รายการนี้อาจต้องหัก ณ ที่จ่าย ตรวจสอบกับลูกค้า");
+  }
+  const blocks = F.filter(f => f.sev === "block").length;
+  const claimVat = !blocks && !vatx && d.vat > 0 && (d.type === "full" || d.type === "etax");
+  const expense = r2(d.base + (claimVat || d.type === "foreign" ? 0 : d.vat));
+  const warns = F.filter(f => f.sev === "warn").length;
+  const review = !dupOf && (blocks > 0 || warns > 0 || (!d.code && conf < 85));
+  return { F, dupOf, sugg, code, conf, blocks, claimVat, expense, whtForm, pp36: d.type === "foreign" ? calc : 0, review, vatx };
+}
+const AN = {};
+function analyzeAll() { const c = C(); for (const d of c.docs) AN[d.id] = analyze(c, d, c.docs); }
+function stateOf(d, a) {
+  if (d.status === "new") return ["ยังไม่ประมวลผล", ""];
+  if (d.status === "confirmed") return [d.exported ? "ส่งออกแล้ว" : "ยืนยันแล้ว", d.exported ? "b" : "g"];
+  if (d.status === "requested") return ["ขอเอกสารใหม่แล้ว", "a"];
+  if (a.dupOf) return ["ซ้ำ · ข้าม", ""];
+  if (a.blocks) return ["ติดปัญหา", "r"];
+  if (a.review) return ["ให้คนตรวจ", "a"];
+  return ["รอยืนยัน", ""];
+}
+
+/* ---------- AI (Claude, when opened in Claude) ---------- */
+let sampleFn = null;
+(async () => { try { if (window.claude && claude.use) { sampleFn = await claude.use("sample"); render(); } } catch (e) {} })();
+let downloadsNS = null;
+(async () => { try { if (window.claude && claude.use) { downloadsNS = await claude.use("downloads"); render(); } } catch (e) {} })();
+
+/* ---------- UI ---------- */
+const TABS = [["dash", "ภาพรวม"], ["review", "ตรวจและจัดประเภท"], ["import", "นำเข้าข้อมูล"], ["coa", "ผังบัญชีและกฎ"], ["export", "ส่งออก"]];
+function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => t.hidden = true, 2600); }
+function counts() {
+  const c = C(); let k = { all: c.docs.length, review: 0, block: 0, dup: 0, ready: 0, confirmed: 0, new: 0, toExport: 0 };
+  for (const d of c.docs) { const a = AN[d.id]; if (d.status === "new") k.new++; else if (d.status === "confirmed") { k.confirmed++; if (!d.exported) k.toExport++; } else if (d.status === "requested") k.block++; else if (a.dupOf) k.dup++; else if (a.blocks) k.block++; else if (a.review) k.review++; else k.ready++; }
+  return k;
+}
+function rail() {
+  const k = counts();
+  $("#rail").innerHTML = TABS.map(([id, l]) => `<button type="button" data-act="tab" data-tab="${id}" aria-current="${S.tab === id ? "page" : "false"}">${l}${id === "review" ? `<span class="ct ${k.review + k.block ? "hot" : ""}">${k.review + k.block + k.ready}</span>` : id === "export" ? `<span class="ct">${k.toExport}</span>` : ""}</button>`).join("") +
+    `<div class="rail-note"><b>ต้นแบบนี้ทำงานในเบราว์เซอร์</b><br>ข้อมูลทั้งหมดเป็นตัวอย่าง การแก้ไขของคุณเก็บไว้ในเบราว์เซอร์นี้เท่านั้น<br><br>คีย์ลัดในหน้าตรวจ: <span class="kbd">↑</span> <span class="kbd">↓</span> เลือก · <span class="kbd">Enter</span> ยืนยัน</div>`;
+}
+function header() {
+  $("#clientSel").innerHTML = Object.values(S.clients).map(c => `<option value="${c.id}" ${c.id === S.clientId ? "selected" : ""}>${c.name} · ${c.sw}</option>`).join("");
+}
+function render() {
+  analyzeAll(); header(); rail();
+  const m = $("#main");
+  if (S.tab === "dash") m.innerHTML = vDash();
+  else if (S.tab === "review") m.innerHTML = vReview();
+  else if (S.tab === "import") m.innerHTML = vImport();
+  else if (S.tab === "coa") m.innerHTML = vCoa();
+  else m.innerHTML = vExport();
+  save();
+}
+
+/* Dashboard */
+function vDash() {
+  const c = C(), k = counts(), docs = c.docs.filter(d => d.status !== "new");
+  let claim = 0, vatx = 0, pp36 = 0, exp = 0; const wht = { "ภ.ง.ด.3": 0, "ภ.ง.ด.53": 0, "ภ.ง.ด.54": 0 };
+  const byCode = {};
+  for (const d of docs) { const a = AN[d.id]; if (a.dupOf) continue; if (a.claimVat) claim += d.vat; else if (a.vatx && d.vat) vatx += d.vat; pp36 += a.pp36; if (a.whtForm) wht[a.whtForm] += d.wht; exp += a.expense; byCode[a.code] = (byCode[a.code] || 0) + a.expense; }
+  const top = Object.entries(byCode).sort((a, b) => b[1] - a[1]).slice(0, 6), max = top[0] ? top[0][1] : 1;
+  const confs = docs.filter(d => !AN[d.id].dupOf).map(d => AN[d.id].conf), hi = confs.filter(x => x >= 90).length, mid = confs.filter(x => x >= 85 && x < 90).length, lo = confs.filter(x => x < 85).length;
+  return `<div class="kpis">
+    <div class="kpi"><small>เอกสารเดือนนี้</small><b>${c.docs.length}</b><small>ซ้ำ ${k.dup} · ยังไม่ประมวลผล ${k.new}</small></div>
+    <div class="kpi"><small>ภาษีซื้อที่ใช้ได้</small><b class="g">${fmt(claim)}</b><small>ภาษีซื้อต้องห้าม ${fmt(vatx)}</small></div>
+    <div class="kpi"><small>ติดปัญหา และให้คนตรวจ</small><b class="${k.block ? "r" : "a"}">${k.block} · ${k.review}</b><small>เปิดหน้าตรวจเพื่อจัดการ</small></div>
+    <div class="kpi"><small>ยืนยันแล้ว · รอส่งออก</small><b>${k.confirmed} · ${k.toExport}</b><small>ไปยัง ${c.sw}</small></div>
+  </div>
+  <div class="card" style="margin-top:16px"><div class="card-h"><h2>${esc(c.full)}</h2><span class="muted">${esc(c.biz)} · ${c.sw} · เลขผู้เสียภาษี ${maskTin(c.tin)}</span></div>
+  <div class="card-b"><div class="pipe"><div>ยังไม่ประมวลผล<b>${k.new}</b></div><div>ติดปัญหา<b>${k.block}</b></div><div>ให้คนตรวจ<b>${k.review}</b></div><div>รอยืนยัน<b>${k.ready}</b></div><div>ยืนยันแล้ว<b>${k.confirmed}</b></div></div>
+  ${k.new ? `<div style="margin-top:12px"><button class="btn pri" type="button" data-act="run">ตรวจและจัดประเภท ${k.new} เอกสาร</button></div>` : ""}</div></div>
+  <div class="grid2">
+    <div class="card"><div class="card-h"><h2>ค่าใช้จ่ายตามรหัสบัญชี</h2></div><div class="card-b">${top.length ? top.map(([code, v]) => `<div class="bar"><span>${code} ${esc(coaName(c, code))}</span><div class="tr"><i style="width:${v / max * 100}%"></i></div><span class="num" style="font-size:.7rem">${Math.round(v).toLocaleString("en-US")}</span></div>`).join("") : `<div class="empty">ยังไม่มีข้อมูล กดตรวจและจัดประเภทก่อน</div>`}</div></div>
+    <div class="card"><div class="card-h"><h2>ภาษีที่เกี่ยวข้อง</h2></div><div class="card-b">
+      <dl class="kv"><dt>ภ.ง.ด.3</dt><dd class="num">${fmt(wht["ภ.ง.ด.3"])}</dd><dt>ภ.ง.ด.53</dt><dd class="num">${fmt(wht["ภ.ง.ด.53"])}</dd><dt>ภ.ง.ด.54</dt><dd class="num">${fmt(wht["ภ.ง.ด.54"])}</dd><dt>ภ.พ.36</dt><dd class="num">${fmt(pp36)}</dd><dt>ค่าใช้จ่ายรวม</dt><dd class="num">${fmt(exp)}</dd></dl>
+      <div class="sec"><h3>ความมั่นใจของรหัสที่เสนอ</h3><div class="chips"><span class="pill g">90% ขึ้นไป ${hi}</span><span class="pill">85–89% ${mid}</span><span class="pill a">ต่ำกว่า 85% ${lo}</span></div></div>
+    </div></div>
+  </div>`;
+}
+
+/* Review */
+const FILTERS = [["all", "ทั้งหมด"], ["attention", "ต้องดู"], ["ready", "รอยืนยัน"], ["confirmed", "ยืนยันแล้ว"], ["dup", "ซ้ำ"]];
+function visibleDocs() {
+  const c = C();
+  return c.docs.filter(d => { const a = AN[d.id];
+    if (S.filter === "all") return true;
+    if (S.filter === "attention") return d.status !== "new" && d.status !== "confirmed" && !a.dupOf && (a.blocks || a.review || d.status === "requested");
+    if (S.filter === "ready") return d.status === "ready" && !a.dupOf && !a.blocks && !a.review;
+    if (S.filter === "confirmed") return d.status === "confirmed";
+    if (S.filter === "dup") return !!a.dupOf; return true; });
+}
+function vReview() {
+  const c = C(), k = counts(), list = visibleDocs();
+  if (!list.find(d => d.id === S.sel)) S.sel = list[0] ? list[0].id : null;
+  const hiReady = c.docs.filter(d => d.status === "ready" && !AN[d.id].review && !AN[d.id].dupOf && AN[d.id].conf >= 90).length;
+  return `<div class="layout"><div class="card">
+    <div class="card-h"><h2>ตรวจและจัดประเภท · ${esc(c.name)}</h2>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">${k.new ? `<button class="btn pri" type="button" data-act="run">ตรวจและจัดประเภท ${k.new} เอกสาร</button>` : ""}<button class="btn" type="button" data-act="confirmHigh" ${hiReady ? "" : "disabled"}>ยืนยันทั้งหมดที่มั่นใจ 90% ขึ้นไป (${hiReady})</button></div></div>
+    <div class="card-b" style="padding-bottom:6px"><div class="chips">${FILTERS.map(([id, l]) => `<button type="button" data-act="filter" data-f="${id}" aria-pressed="${S.filter === id}">${l}${id === "attention" ? ` ${k.block + k.review}` : id === "ready" ? ` ${k.ready}` : id === "confirmed" ? ` ${k.confirmed}` : id === "dup" ? ` ${k.dup}` : ` ${k.all}`}</button>`).join("")}</div><div class="prog" id="runProg" hidden><i></i></div></div>
+    <div class="scroll-x"><table class="t" id="revT"><thead><tr><th>#</th><th>เอกสาร</th><th class="r">ยอดรวม</th><th>ผลตรวจ</th><th>รหัสบัญชีที่เสนอ · มั่นใจ</th><th>สถานะ</th></tr></thead><tbody>
+    ${list.length ? list.map(d => rowHTML(c, d)).join("") : `<tr><td colspan="6"><div class="empty">ไม่มีเอกสารในมุมมองนี้</div></td></tr>`}</tbody></table></div>
+  </div><aside class="drawer" id="drawer">${drawerHTML()}</aside></div>`;
+}
+function rowHTML(c, d) {
+  const a = AN[d.id], [st, cls] = stateOf(d, a), n = d.id.split("-")[1];
+  if (d.status === "new") return `<tr class="row ${S.sel === d.id ? "sel" : ""}" data-act="sel" data-id="${d.id}"><td class="num">${n}</td><td class="vend"><b>${esc(d.vendor)}</b><small>${esc(d.desc)} · ${esc(d.no)}<span class="src">${esc(d.src)}</span></small></td><td class="r num">${fmt(d.base + d.vat)}</td><td colspan="2"><span class="muted">รอประมวลผล</span></td><td><span class="pill">${st}</span></td></tr>`;
+  const fs = a.F.filter(f => f.sev !== "ok"), lo = a.conf < 85 && !d.code;
+  return `<tr class="row ${S.sel === d.id ? "sel" : ""} ${a.dupOf ? "dup" : ""}" data-act="sel" data-id="${d.id}"><td class="num">${n}</td>
+    <td class="vend"><b>${esc(d.vendor)}</b><small>${esc(d.desc)} · ${esc(d.no)} · ${thDate(d.date)}<span class="src">${esc(d.src)}</span></small></td>
+    <td class="r num">${fmt(d.base + d.vat)}</td>
+    <td><div class="find">${fs.length ? fs.slice(0, 3).map(f => `<span class="pill ${f.sev === "block" ? "r" : f.sev === "warn" ? "a" : "b"}" title="${esc(f.text)}">${f.sev === "block" ? "ติด" : f.sev === "warn" ? "เตือน" : "ข้อมูล"}: ${esc(f.text.slice(0, 26))}${f.text.length > 26 ? "…" : ""}</span>`).join("") : `<span class="pill g">ผ่านทุกข้อ</span>`}</div></td>
+    <td class="codecell">${a.dupOf ? `<span class="muted">—</span>` : `<select data-act="code" data-id="${d.id}" aria-label="รหัสบัญชี ${esc(d.vendor)}" ${d.status === "confirmed" && d.exported ? "disabled" : ""}>${c.coa.map(x => `<option value="${x[0]}" ${x[0] === a.code ? "selected" : ""}>${x[0]} ${esc(x[1])}</option>`).join("")}</select><div class="cf">${d.code ? `<span class="pill b">แก้โดยผู้ทำบัญชี</span>` : `<span class="conf ${lo ? "lo" : ""}"><i style="width:${a.conf}%"></i></span><span class="num">${a.conf}%</span>`}</div><small>${d.code ? "จำไว้สำหรับผู้ขายรายนี้" : esc(a.sugg[0] ? a.sugg[0].why : "")}</small>`}</td>
+    <td><span class="pill ${cls}">${st}</span></td></tr>`;
+}
+function drawerHTML() {
+  const c = C(), d = c.docs.find(x => x.id === S.sel);
+  if (!d) return `<div class="card"><div class="empty">เลือกเอกสารเพื่อดูรายละเอียด</div></div>`;
+  const a = AN[d.id];
+  const acts = d.status === "new" ? `<button class="btn pri" type="button" data-act="run">ประมวลผลเอกสาร</button>`
+    : a.dupOf ? `<span class="muted">เอกสารซ้ำ จะไม่ถูกส่งออก</span> <button class="btn sm" type="button" data-act="notdup" data-id="${d.id}">ไม่ใช่เอกสารซ้ำ</button>`
+    : d.status === "confirmed" ? `<button class="btn" type="button" data-act="unconfirm" data-id="${d.id}" ${d.exported ? "disabled" : ""}>ยกเลิกการยืนยัน</button>`
+    : a.blocks ? `<button class="btn" type="button" data-act="request" data-id="${d.id}">ขอเอกสารใหม่ทาง LINE</button><button class="btn" type="button" data-act="confirm" data-id="${d.id}">ยืนยันเป็นค่าใช้จ่าย ไม่หักภาษีซื้อ</button>`
+    : `<button class="btn pri" type="button" data-act="confirm" data-id="${d.id}">ยืนยัน <span class="kbd" style="background:transparent;border-color:currentColor">Enter</span></button>`;
+  return `<div class="card"><div class="card-h"><h2 style="font-size:1rem">${esc(d.vendor)}</h2><span class="pill">${{ full: "ใบกำกับเต็มรูป", etax: "e-Tax Invoice", abb: "ใบกำกับอย่างย่อ", cash: "บิล / ใบเสร็จ", foreign: "ต่างประเทศ" }[d.type]}</span></div>
+  <div class="card-b">
+    <dl class="kv"><dt>เลขที่</dt><dd>${esc(d.no)}</dd><dt>วันที่</dt><dd>${thDate(d.date)}</dd><dt>เลขผู้เสียภาษี</dt><dd class="num">${d.tin ? maskTin(d.tin) : "—"}</dd><dt>รายการ</dt><dd>${esc(d.desc)}</dd><dt>มูลค่า</dt><dd class="num">${fmt(d.base)}</dd><dt>VAT</dt><dd class="num">${fmt(d.vat)}</dd>${d.wht ? `<dt>หัก ณ ที่จ่าย</dt><dd class="num">${fmt(d.wht)} · ${a.whtForm}</dd>` : ""}<dt>ที่มา</dt><dd>${esc(d.src)}</dd></dl>
+    ${d.status === "new" ? "" : `<div class="sec"><h3>ผลตรวจ</h3><div class="fl">${a.F.map(f => `<div><span class="sev ${f.sev}">${{ ok: "ผ่าน", warn: "เตือน", block: "ติด", info: "ข้อมูล" }[f.sev]}</span><span>${esc(f.text)}</span></div>`).join("")}</div></div>
+    ${a.dupOf ? "" : `<div class="sec"><h3>รหัสบัญชีที่เสนอ · ผลต่อการบันทึก</h3>
+      <div class="alts">${a.sugg.slice(0, 3).map(s => `<button type="button" data-act="pick" data-id="${d.id}" data-code="${s.code}" ${s.code === a.code ? 'style="border-color:var(--ledger)"' : ""}><span><b>${s.code}</b> ${esc(coaName(c, s.code))}</span><span class="num">${s.score}%</span><small>${esc(s.why)}</small></button>`).join("")}</div>
+      <dl class="kv" style="margin-top:10px"><dt>เดบิต ${esc(a.code)}</dt><dd class="num">${fmt(a.expense)}</dd>${a.claimVat ? `<dt>เดบิต ${c.ctrl.vat} ภาษีซื้อ</dt><dd class="num">${fmt(d.vat)}</dd>` : ""}${d.wht ? `<dt>เครดิต ${c.ctrl.wht} WHT</dt><dd class="num">${fmt(d.wht)}</dd>` : ""}<dt>เครดิต ${c.ctrl.ap} เจ้าหนี้</dt><dd class="num">${fmt(a.expense + (a.claimVat ? d.vat : 0) - d.wht)}</dd></dl>
+      ${sampleFn ? `<button class="btn" type="button" data-act="ai" data-id="${d.id}" style="margin-top:10px">ถาม AI ให้เสนอรหัส</button><div class="ai-out" id="aiOut"></div>` : `<p class="muted" style="font-size:.74rem;margin:10px 0 0">ปุ่ม "ถาม AI" ใช้ได้เมื่อเปิดต้นแบบนี้ใน Claude ส่วนรหัสที่เสนอด้านบนมาจากกฎของระบบ</p>`}
+    </div>`}`}
+    <div class="sec" style="display:flex;gap:8px;flex-wrap:wrap">${acts}</div>
+  </div></div>`;
+}
+
+/* Import */
+function vImport() {
+  const c = C();
+  return `<div class="card"><div class="card-h"><h2>นำเข้าข้อมูล · ${esc(c.name)}</h2><span class="muted">วางจาก Excel หรือ Google Sheets ได้เลย หรือเลือกไฟล์ CSV</span></div>
+  <div class="card-b form">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><input type="file" id="csvFile" accept=".csv,.tsv,.txt"><button class="btn sm" type="button" data-act="sampleCsv">ใส่ข้อมูลตัวอย่าง</button></div>
+    <textarea id="csvText" placeholder="วางตารางที่นี่ บรรทัดแรกเป็นหัวตาราง เช่น วันที่, เลขที่, ผู้ขาย, เลขผู้เสียภาษี, รายการ, มูลค่า, VAT, หัก ณ ที่จ่าย"></textarea>
+    <div><button class="btn" type="button" data-act="parse">ตรวจหัวตาราง</button></div>
+    <div id="mapOut"></div>
+    <p class="muted" style="font-size:.76rem;margin:0">ระบบจับคู่หัวตารางภาษาไทยหรืออังกฤษให้อัตโนมัติ วันที่รับได้ทั้ง พ.ศ. และ ค.ศ. รายการที่นำเข้าจะเข้าคิวตรวจด้วยกฎชุดเดียวกับเอกสารจาก LINE</p>
+  </div></div>`;
+}
+const HMAP = { date: ["วันที่", "date", "วันที่เอกสาร", "doc date"], no: ["เลขที่", "invoice no", "เลขที่เอกสาร", "no", "inv", "เลขที่ใบกำกับ"], vendor: ["ผู้ขาย", "vendor", "supplier", "ชื่อผู้ขาย", "คู่ค้า"], tin: ["เลขผู้เสียภาษี", "tax id", "tin", "เลขประจำตัวผู้เสียภาษี"], desc: ["รายการ", "รายละเอียด", "description", "detail"], base: ["มูลค่า", "amount", "ยอดก่อนภาษี", "มูลค่าก่อนภาษี", "ยอดเงิน"], vat: ["vat", "ภาษี", "ภาษีซื้อ", "ภาษีมูลค่าเพิ่ม"], wht: ["หัก ณ ที่จ่าย", "wht", "withholding", "ภาษีหัก ณ ที่จ่าย"] };
+const FLAB = { date: "วันที่", no: "เลขที่", vendor: "ผู้ขาย", tin: "เลขผู้เสียภาษี", desc: "รายการ", base: "มูลค่า", vat: "VAT", wht: "หัก ณ ที่จ่าย" };
+function parseTable(txt) {
+  const lines = txt.replace(/\r/g, "").split("\n").filter(l => l.trim());
+  if (!lines.length) return null;
+  const sep = lines[0].includes("\t") ? "\t" : ",";
+  const split = l => { if (sep === "\t") return l.split("\t"); const out = []; let cur = "", q = false; for (const ch of l) { if (ch === '"') q = !q; else if (ch === "," && !q) { out.push(cur); cur = ""; } else cur += ch; } out.push(cur); return out; };
+  const head = split(lines[0]).map(h => h.trim().toLowerCase());
+  const map = {}, used = new Set(), order = ["date", "no", "vendor", "tin", "desc", "base", "wht", "vat"];
+  for (const pass of [0, 1]) for (const f of order) { if (f in map) continue; const i = head.findIndex((h, j) => !used.has(j) && HMAP[f].some(s => pass === 0 ? h === s.toLowerCase() : h.includes(s.toLowerCase()))); if (i >= 0) { map[f] = i; used.add(i); } }
+  return { head, map, rows: lines.slice(1).map(split) };
+}
+function toIso(s) {
+  s = (s || "").trim(); let m;
+  if ((m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/))) { let y = +m[1]; if (y > 2400) y -= 543; return `${y}-${m[2].padStart(2, "0")}-${m[3].padStart(2, "0")}`; }
+  if ((m = s.match(/^(\d{1,2})[\/.](\d{1,2})[\/.](\d{2,4})/))) { let y = +m[3]; if (y < 100) y += 2500; if (y > 2400) y -= 543; return `${y}-${m[2].padStart(2, "0")}-${m[1].padStart(2, "0")}`; }
+  return "2026-10-31";
+}
+const numv = s => parseFloat(String(s || "0").replace(/[,฿\s]/g, "")) || 0;
+let parsed = null;
+const SAMPLE_CSV = `วันที่\tเลขที่\tผู้ขาย\tเลขผู้เสียภาษี\tรายการ\tมูลค่า\tVAT\tหัก ณ ที่จ่าย
+02/10/2569\tPK-6910-221\tบจ. กล่องกระดาษไทย\t${T("099999900032")}\tถุงขยะดำ 30x40 นิ้ว 20 แพ็ค\t3500\t245\t0
+11/10/2569\tTX-7781\tบจ. ปั๊มน้ำมันไทยรุ่งเรือง\t${T("099999900019")}\tน้ำมันดีเซล รถกระบะ\t1200\t84\t0
+15/10/2569\tLW-2569-15\tบจ. สำนักงานกฎหมายนิติธรรม\t${T("099999900033")}\tค่าที่ปรึกษากฎหมาย ต.ค.\t20000\t1400\t600
+20/10/2569\tIV6910-0611\tบจ. ออฟฟิศเมท ซัพพลาย\t0999999000012\tปากกา แฟ้ม เครื่องเขียน\t860\t60.20\t0`;
+function mapHTML(p) {
+  const ok = Object.keys(FLAB).filter(f => f in p.map);
+  return `<div class="maprow">${Object.keys(FLAB).map(f => f in p.map ? `<span>${esc(p.head[p.map[f]])} → ${FLAB[f]}</span>` : `<span class="miss">${FLAB[f]}: ไม่พบ</span>`).join("")}</div>
+  <p style="margin:8px 0">${p.rows.length} แถว · จับคู่ได้ ${ok.length}/${Object.keys(FLAB).length} คอลัมน์</p>
+  <button class="btn pri" type="button" data-act="doImport" ${"vendor" in p.map && "base" in p.map ? "" : "disabled"}>นำเข้า ${p.rows.length} รายการเข้าคิวตรวจ</button>`;
+}
+
+/* COA */
+function vCoa() {
+  const c = C(), vr = Object.entries(c.vendorRules);
+  return `<div class="grid2" style="margin-top:0">
+  <div class="card"><div class="card-h"><h2>ผังบัญชีของลูกค้า</h2><span class="muted">${c.coa.length} รหัส · จาก ${c.sw}</span></div>
+    <div class="scroll-x"><table class="t"><thead><tr><th>รหัส</th><th>ชื่อบัญชี</th><th>คำที่ใช้จับคู่</th></tr></thead><tbody>${c.coa.map(a => `<tr><td class="num">${a[0]}</td><td>${esc(a[1])}</td><td><small class="muted">${esc(a[2].split("|").filter(Boolean).join(", ")) || "—"}</small></td></tr>`).join("")}</tbody></table></div>
+    <div class="card-b form"><b style="font-size:.85rem">นำเข้าผังบัญชีที่ส่งออกจาก ${c.sw}</b><textarea id="coaText" style="min-height:90px" placeholder="รหัส,ชื่อบัญชี (บรรทัดละหนึ่งบัญชี)"></textarea><div><button class="btn" type="button" data-act="importCoa">แทนที่ผังบัญชี</button></div></div>
+  </div>
+  <div><div class="card"><div class="card-h"><h2>กฎของลูกค้า</h2></div><div class="card-b form">
+    <label>บันทึกเป็นสินทรัพย์เมื่อราคาตั้งแต่ (บาท) <input type="number" id="capIn" value="${c.capThreshold}" min="0" step="500" style="width:9em"></label>
+    <label>รหัสบัญชีสินทรัพย์ <select id="assetIn">${c.coa.map(a => `<option value="${a[0]}" ${a[0] === c.assetCode ? "selected" : ""}>${a[0]} ${esc(a[1])}</option>`).join("")}</select></label>
+    <div><button class="btn" type="button" data-act="saveRules">บันทึกกฎ</button></div></div></div>
+  <div class="card" style="margin-top:16px"><div class="card-h"><h2>ผู้ขายที่ระบบจำไว้</h2><span class="muted">${vr.length} ราย</span></div>
+    <div class="scroll-x"><table class="t"><thead><tr><th>ผู้ขาย</th><th>รหัส</th><th>ที่มา</th><th></th></tr></thead><tbody>${vr.length ? vr.map(([v, r]) => `<tr><td>${esc(v)}</td><td class="num">${r.code} <small class="muted">${esc(coaName(c, r.code))}</small></td><td>${r.src === "edit" ? `<span class="pill b">ผู้ทำบัญชีกำหนด</span>` : `<span class="pill">ประวัติ ${r.n} ครั้ง</span>`}</td><td><button class="btn sm" type="button" data-act="forget" data-v="${esc(v)}">ลืม</button></td></tr>`).join("") : `<tr><td colspan="4"><div class="empty">ยังไม่มี</div></td></tr>`}</tbody></table></div></div></div>
+  </div>`;
+}
+
+/* Export */
+let expFmt = "peak";
+function exportRows() { const c = C(); return c.docs.filter(d => d.status === "confirmed" && !d.exported && !AN[d.id].dupOf); }
+function buildCsv(fmtName) {
+  const c = C(), rows = exportRows();
+  const q = v => { const s = String(v); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
+  let out = [];
+  if (fmtName === "peak") {
+    out.push(["วันที่เอกสาร", "เลขที่เอกสาร", "ชื่อผู้ขาย", "เลขประจำตัวผู้เสียภาษี", "รหัสบัญชี", "ชื่อบัญชี", "รายละเอียด", "มูลค่า", "ภาษีซื้อ", "ภาษีหัก ณ ที่จ่าย", "ยอดชำระ"]);
+    for (const d of rows) { const a = AN[d.id]; const v = a.claimVat ? d.vat : 0; out.push([beSlash(d.date), d.no, d.vendor, d.tin, a.code, coaName(c, a.code), d.desc, a.expense.toFixed(2), v.toFixed(2), d.wht.toFixed(2), (a.expense + v - d.wht).toFixed(2)]); }
+  } else {
+    out.push(["วันที่", "เลขที่", "รหัสบัญชี", "ชื่อบัญชี", "เดบิต", "เครดิต", "คำอธิบาย"]);
+    for (const d of rows) { const a = AN[d.id], v = a.claimVat ? d.vat : 0, dt = beSlash(d.date);
+      out.push([dt, d.no, a.code, coaName(c, a.code), a.expense.toFixed(2), "", `${d.vendor} ${d.desc}`]);
+      if (v) out.push([dt, d.no, c.ctrl.vat, "ภาษีซื้อ", v.toFixed(2), "", ""]);
+      if (d.wht) out.push([dt, d.no, c.ctrl.wht, "ภาษีหัก ณ ที่จ่ายค้างจ่าย", "", d.wht.toFixed(2), a.whtForm]);
+      out.push([dt, d.no, c.ctrl.ap, "เจ้าหนี้", "", (a.expense + v - d.wht).toFixed(2), d.vendor]); }
+  }
+  return "﻿" + out.map(r => r.map(q).join(",")).join("\n");
+}
+function vExport() {
+  const c = C(), rows = exportRows(), done = c.docs.filter(d => d.exported);
+  let tE = 0, tV = 0, tW = 0; rows.forEach(d => { const a = AN[d.id]; tE += a.expense; tV += a.claimVat ? d.vat : 0; tW += d.wht; });
+  return `<div class="card"><div class="card-h"><h2>ส่งออก · ${esc(c.name)}</h2>
+    <div class="chips"><button type="button" data-act="fmt" data-f="peak" aria-pressed="${expFmt === "peak"}">ไฟล์นำเข้า PEAK (ตัวอย่างโครงสร้าง)</button><button type="button" data-act="fmt" data-f="jv" aria-pressed="${expFmt === "jv"}">สมุดรายวัน เดบิต เครดิต</button><button type="button" disabled title="แผนงาน">Express · แผนงาน</button></div></div>
+  <div class="card-b">
+    ${rows.length ? `<p style="margin:0 0 10px">${rows.length} รายการที่ยืนยันแล้วและยังไม่เคยส่งออก · ค่าใช้จ่าย <b class="num">${fmt(tE)}</b> · ภาษีซื้อ <b class="num">${fmt(tV)}</b> · หัก ณ ที่จ่าย <b class="num">${fmt(tW)}</b></p>
+    <div class="scroll-x"><table class="t"><thead><tr>${(expFmt === "peak" ? ["วันที่", "เลขที่", "ผู้ขาย", "รหัสบัญชี", "มูลค่า", "ภาษีซื้อ", "หัก ณ ที่จ่าย", "ยอดชำระ"] : ["วันที่", "เลขที่", "รหัสบัญชี", "เดบิต", "เครดิต"]).map((h, i) => `<th class="${i > 3 || (expFmt === "jv" && i > 2) ? "r" : ""}">${h}</th>`).join("")}</tr></thead><tbody>
+    ${expFmt === "peak" ? rows.map(d => { const a = AN[d.id], v = a.claimVat ? d.vat : 0; return `<tr><td>${beSlash(d.date)}</td><td>${esc(d.no)}</td><td>${esc(d.vendor)}</td><td>${a.code} ${esc(coaName(c, a.code))}</td><td class="r num">${fmt(a.expense)}</td><td class="r num">${fmt(v)}</td><td class="r num">${fmt(d.wht)}</td><td class="r num">${fmt(a.expense + v - d.wht)}</td></tr>`; }).join("")
+      : rows.map(d => { const a = AN[d.id], v = a.claimVat ? d.vat : 0, L = [[a.code, a.expense, 0], v ? [c.ctrl.vat, v, 0] : null, d.wht ? [c.ctrl.wht, 0, d.wht] : null, [c.ctrl.ap, 0, a.expense + v - d.wht]].filter(Boolean); return L.map((l, i) => `<tr><td>${i ? "" : beSlash(d.date)}</td><td>${i ? "" : esc(d.no)}</td><td>${l[0]} ${esc(coaName(c, l[0]) === "?" ? "" : coaName(c, l[0]))}</td><td class="r num">${l[1] ? fmt(l[1]) : ""}</td><td class="r num">${l[2] ? fmt(l[2]) : ""}</td></tr>`).join(""); }).join("")}
+    </tbody></table></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">${downloadsNS ? `<button class="btn pri" type="button" data-act="download">ดาวน์โหลด CSV</button>` : ""}<button class="btn" type="button" data-act="copyCsv">คัดลอก CSV</button><button class="btn" type="button" data-act="markExported">ทำเครื่องหมายว่าส่งออกแล้ว</button></div>
+    <p class="muted" style="font-size:.76rem;margin:10px 0 0">คอลัมน์ของไฟล์ PEAK เป็นตัวอย่างโครงสร้าง จะตั้งให้ตรงกับแม่แบบนำเข้าที่สำนักงานใช้จริง รายการที่ส่งออกแล้วจะไม่ถูกส่งซ้ำ ภาษีซื้อต้องห้ามรวมอยู่ในมูลค่าค่าใช้จ่ายแล้ว</p>`
+    : `<div class="empty">ยังไม่มีรายการที่ยืนยันแล้วและรอส่งออก<br>ไปที่หน้าตรวจและจัดประเภท แล้วกดยืนยันเอกสาร</div>`}
+    ${done.length ? `<div class="sec"><h3>ส่งออกแล้ว ${done.length} รายการ</h3><button class="btn sm" type="button" data-act="unexport">ยกเลิกสถานะส่งออกทั้งหมด (สาธิต)</button></div>` : ""}
+  </div></div>`;
+}
+
+/* ---------- Actions ---------- */
+function learn(c, d, code, src) { const k = vkey(d), r = c.vendorRules[k]; c.vendorRules[k] = { code, n: r && r.code === code ? r.n + 1 : 1, src: src || (r && r.code === code ? r.src : "hist") }; }
+function confirmDoc(c, d) { const a = AN[d.id]; if (a.dupOf) return; d.status = "confirmed"; d.code = d.code || a.code; learn(c, d, d.code, d.codeEdited ? "edit" : null); }
+async function runProcess() {
+  const c = C(), news = c.docs.filter(d => d.status === "new");
+  if (!news.length) return;
+  S.tab = "review"; S.filter = "all"; render();
+  const bar = $("#runProg"); if (bar) bar.hidden = false;
+  for (let i = 0; i < news.length; i++) {
+    news[i].status = "ready"; S.sel = news[i].id;
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!reduce) await new Promise(r => setTimeout(r, 160));
+    render(); const row = $(`#revT tr[data-id="${news[i].id}"]`); if (row) row.classList.add("flash");
+    const b = $("#runProg"); if (b) { b.hidden = false; $("i", b).style.width = ((i + 1) / news.length * 100) + "%"; }
+  }
+  const k = counts(); toast(`ประมวลผล ${news.length} เอกสาร · ติดปัญหา ${k.block} · ให้คนตรวจ ${k.review} · ซ้ำ ${k.dup}`);
+}
+document.addEventListener("click", async e => {
+  const el = e.target.closest("[data-act]"); if (!el || el.tagName === "SELECT") return;
+  const act = el.dataset.act, c = C(), d = el.dataset.id ? c.docs.find(x => x.id === el.dataset.id) : null;
+  if (act === "tab") { S.tab = el.dataset.tab; render(); }
+  else if (act === "filter") { S.filter = el.dataset.f; render(); }
+  else if (act === "sel") { S.sel = el.dataset.id; render(); }
+  else if (act === "run") runProcess();
+  else if (act === "confirm" && d) { confirmDoc(c, d); toast(`ยืนยันแล้ว · ${d.vendor} → ${d.code}`); nextSel(); render(); }
+  else if (act === "unconfirm" && d) { d.status = "ready"; render(); }
+  else if (act === "request" && d) { d.status = "requested"; toast(`ส่งข้อความขอเอกสารใหม่ถึงเจ้าของกิจการทาง LINE แล้ว (สาธิต)`); render(); }
+  else if (act === "notdup" && d) { d.no = d.no + " (2)"; render(); }
+  else if (act === "pick" && d) { setCode(c, d, el.dataset.code); }
+  else if (act === "confirmHigh") { let n = 0; for (const x of c.docs) { const a = AN[x.id]; if (x.status === "ready" && !a.review && a.conf >= 90) { confirmDoc(c, x); n++; } } toast(`ยืนยัน ${n} รายการที่มั่นใจ 90% ขึ้นไป`); render(); }
+  else if (act === "reset") { S = seed(); render(); toast("รีเซ็ตข้อมูลตัวอย่างแล้ว"); }
+  else if (act === "ai" && d) askAI(c, d);
+  else if (act === "sampleCsv") { $("#csvText").value = SAMPLE_CSV; }
+  else if (act === "parse") { parsed = parseTable($("#csvText").value); $("#mapOut").innerHTML = parsed ? mapHTML(parsed) : `<p class="muted">ไม่พบข้อมูล</p>`; }
+  else if (act === "doImport" && parsed) {
+    const m = parsed.map, g = (r, f) => f in m ? (r[m[f]] || "").trim() : "";
+    let n = 0; for (const r of parsed.rows) { const vendor = g(r, "vendor"); if (!vendor) continue; const vat = numv(g(r, "vat")), tin = g(r, "tin").replace(/\D/g, "");
+      c.docs.push({ id: c.id + "-" + (c.docs.length + 1), date: toIso(g(r, "date")), no: g(r, "no") || "-", vendor, tin, desc: g(r, "desc") || "-", base: numv(g(r, "base")), vat, wht: numv(g(r, "wht")), type: vat > 0 ? "full" : "cash", src: "Excel", buyerTin: c.tin, vatReg: true, status: "new", code: null, exported: false }); n++; }
+    parsed = null; toast(`นำเข้า ${n} รายการ · กดตรวจและจัดประเภทเพื่อประมวลผล`); S.tab = "review"; render();
+  }
+  else if (act === "importCoa") {
+    const lines = $("#coaText").value.split("\n").map(l => l.split(/[,\t]/).map(s => s.trim())).filter(a => a[0] && a[1]);
+    if (!lines.length) { toast("ไม่พบรายการ ใส่ รหัส,ชื่อบัญชี บรรทัดละหนึ่งบัญชี"); return; }
+    c.coa = lines.map(([code, name]) => { const old = c.coa.find(a => a[0] === code); return [code, name, old ? old[2] : name.replace(/^ค่า/, "").replace(/[()]/g, "").split(/\s+/)[0]]; });
+    if (!c.coa.find(a => a[0] === c.miscCode)) c.miscCode = c.coa[c.coa.length - 1][0];
+    if (!c.coa.find(a => a[0] === c.assetCode)) c.assetCode = c.coa[0][0];
+    toast(`นำเข้าผังบัญชี ${c.coa.length} รหัส`); render();
+  }
+  else if (act === "saveRules") { c.capThreshold = +$("#capIn").value || 0; c.assetCode = $("#assetIn").value; toast("บันทึกกฎแล้ว รหัสที่เสนอคำนวณใหม่"); render(); }
+  else if (act === "forget") { delete c.vendorRules[el.dataset.v]; render(); }
+  else if (act === "fmt") { expFmt = el.dataset.f; render(); }
+  else if (act === "copyCsv") { const csv = buildCsv(expFmt); try { await navigator.clipboard.writeText(csv); toast("คัดลอก CSV แล้ว วางใน Excel ได้เลย"); } catch (err) { toast("คัดลอกไม่ได้ในหน้าจอนี้"); } }
+  else if (act === "download") {
+    const csv = buildCsv(expFmt), name = `${expFmt === "peak" ? "PEAK_import" : "journal"}_${c.slug}_2569-10.csv`;
+    try { await downloadsNS.save({ filename: name, data: csv }); exportRows().forEach(x => x.exported = true); toast("บันทึกไฟล์แล้ว · ทำเครื่องหมายว่าส่งออกแล้ว"); render(); }
+    catch (err) { toast(err && err.code === "declined" ? "ยกเลิกการบันทึกไฟล์" : "บันทึกไฟล์ไม่ได้ในหน้าจอนี้ ใช้คัดลอก CSV แทน"); }
+  }
+  else if (act === "markExported") { const n = exportRows().length; exportRows().forEach(x => x.exported = true); toast(`ทำเครื่องหมาย ${n} รายการว่าส่งออกแล้ว`); render(); }
+  else if (act === "unexport") { c.docs.forEach(x => x.exported = false); render(); }
+});
+function setCode(c, d, code) { d.code = code; d.codeEdited = true; c.vendorRules[vkey(d)] = { code, n: 1, src: "edit" }; toast(`จำไว้แล้ว: ${d.vendor} → ${code} ${coaName(c, code)}`); render(); }
+document.addEventListener("change", e => {
+  const el = e.target;
+  if (el.id === "clientSel") { S.clientId = el.value; S.sel = null; S.filter = "all"; render(); }
+  else if (el.dataset && el.dataset.act === "code") { const c = C(), d = c.docs.find(x => x.id === el.dataset.id); if (d) setCode(c, d, el.value); }
+  else if (el.id === "csvFile" && el.files && el.files[0]) { const fr = new FileReader(); fr.onload = () => { $("#csvText").value = String(fr.result); parsed = parseTable(fr.result); $("#mapOut").innerHTML = parsed ? mapHTML(parsed) : ""; }; fr.readAsText(el.files[0], "utf-8"); }
+});
+function nextSel() { const list = visibleDocs().filter(d => d.status !== "confirmed" && !AN[d.id].dupOf); const i = list.findIndex(d => d.id === S.sel); S.sel = (list[i + 1] || list[0] || {}).id || S.sel; }
+document.addEventListener("keydown", e => {
+  if (S.tab !== "review" || /INPUT|SELECT|TEXTAREA/.test(e.target.tagName)) return;
+  const list = visibleDocs(), i = list.findIndex(d => d.id === S.sel);
+  if (e.key === "ArrowDown" || e.key === "j") { e.preventDefault(); S.sel = (list[i + 1] || list[i] || {}).id; render(); $("#revT tr.sel")?.scrollIntoView({ block: "nearest" }); }
+  else if (e.key === "ArrowUp" || e.key === "k") { e.preventDefault(); S.sel = (list[i - 1] || list[i] || {}).id; render(); $("#revT tr.sel")?.scrollIntoView({ block: "nearest" }); }
+  else if (e.key === "Enter") { const c = C(), d = c.docs.find(x => x.id === S.sel); if (d && d.status === "ready" && !AN[d.id].dupOf && !AN[d.id].blocks) { e.preventDefault(); confirmDoc(c, d); toast(`ยืนยันแล้ว · ${d.vendor} → ${d.code}`); nextSel(); render(); } }
+});
+async function askAI(c, d) {
+  const out = $("#aiOut"); if (!out || !sampleFn) return;
+  out.textContent = "กำลังคิด…";
+  const prompt = `You classify Thai business expenses into the client's own chart of accounts.
+Client business: ${c.biz}. Asset capitalisation threshold: ${c.capThreshold} THB.
+Chart of accounts (code: name):
+${c.coa.map(a => `${a[0]}: ${a[1]}`).join("\n")}
+
+Document:
+vendor: ${d.vendor}
+description: ${d.desc}
+amount before VAT: ${d.base} THB, VAT: ${d.vat} THB, document type: ${d.type}
+
+Reply ONLY with JSON: {"code": "<one code from the list>", "confidence": <0-100>, "reason_th": "<one short sentence in Thai explaining why>"}`;
+  try {
+    const r = await sampleFn.json(prompt, { modelTier: "quick" });
+    if (!r || !c.coa.find(a => a[0] === String(r.code))) { out.textContent = "AI ตอบรหัสที่ไม่อยู่ในผังบัญชี จึงไม่นำมาใช้"; return; }
+    out.innerHTML = `AI เสนอ <b>${esc(r.code)} ${esc(coaName(c, String(r.code)))}</b> (${esc(r.confidence)}%)<br>${esc(r.reason_th || "")}<br><button class="btn sm" type="button" data-act="pick" data-id="${d.id}" data-code="${esc(r.code)}" style="margin-top:6px">ใช้รหัสนี้</button>`;
+  } catch (err) {
+    out.textContent = err && err.code === "not_granted" ? "ไม่ได้อนุญาตให้ใช้ AI" : err && err.code === "rate_limited" ? "เรียกใช้ถี่เกินไป ลองใหม่อีกครู่" : "เรียก AI ไม่สำเร็จ ใช้รหัสที่ระบบเสนอได้ตามปกติ";
+  }
+}
+render();
+})();
+</script>
