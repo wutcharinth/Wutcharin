@@ -47,11 +47,11 @@ const newestFirst: Job[] = [
         company: 'Thairath Group',
         code: 'THAIRATH',
         year: '2022',
-        headline: 'One set of KPIs for the whole group. A new media business unit.',
+        headline: 'One set of KPIs for the whole group, and the plan for a new media business.',
         role: 'Head of Strategic Foresight and Planning',
         period: 'Apr 2022 – Mar 2023',
         points: [
-            'Led a group-wide data change. Set standard KPIs and one view of performance for all business units.',
+            'Moved the whole group onto shared data: standard KPIs and one view of performance for every business unit.',
             'Wrote the plan for a new media business unit to reduce content-rights risk and add international revenue.',
             'Advised senior leadership on budgets, workflows and technology, with data.',
         ],

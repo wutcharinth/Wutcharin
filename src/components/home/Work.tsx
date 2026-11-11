@@ -405,7 +405,7 @@ function Index() {
                     <div>
                         <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-signal">Index</p>
                         <p className="mt-2 max-w-md text-sm font-light text-text-mute">
-                            Agents in production. Data stories. Lab builds, often shipped in days.
+                            Agent demos you can run. Data stories. Lab builds, often shipped in days.
                         </p>
                     </div>
                     <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Filter projects">

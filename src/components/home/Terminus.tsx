@@ -44,7 +44,7 @@ export default function Terminus() {
                         parts={['Let\u2019s build', { text: 'the signal.', accent: true, line: true }]}
                     />
                     <p data-reveal-child className="mx-auto mt-8 max-w-xl text-base font-light leading-relaxed text-text-mute md:text-lg">
-                        Tell me what you want to build. A large AI program, a data team, or a prototype by Friday.
+                        Tell me what you need built: an AI program, a data team, or a working prototype by Friday.
                     </p>
                 </RevealOnScroll>
 

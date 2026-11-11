@@ -30,8 +30,8 @@ const BEATS: Beat[] = [
         value: '15,000+',
         unit: 'Hours automated per year',
         short: 'Hours a year',
-        claim: 'Time given back to finance teams, every year.',
-        detail: 'Machine learning, RPA and AI agents. All in daily use. No pilots.',
+        claim: 'Manual finance work that no person does any more.',
+        detail: 'Done by machine learning, RPA and AI agents. All of it runs every day. None of it is a pilot.',
         mix: [['Collections ML', 40], ['RPA', 28], ['AI agents', 22], ['Dashboards', 10]],
     },
     {
@@ -39,8 +39,8 @@ const BEATS: Beat[] = [
         value: '20+',
         unit: 'AI agents in production',
         short: 'Agents live',
-        claim: 'Built, live and owned. In four functions.',
-        detail: 'Agents for audit, finance, sales and operations. Each one has guardrails and tests.',
+        claim: 'Agents my team built, runs and answers for.',
+        detail: 'They work in audit, finance, sales and operations. Each one ships with guardrails and tests.',
         mix: [['Audit & risk', 30], ['Finance', 30], ['Operations', 25], ['Sales', 15]],
     },
     {
@@ -48,8 +48,8 @@ const BEATS: Beat[] = [
         value: '12',
         unit: 'Analytics engineers on the team',
         short: 'Engineers',
-        claim: 'FinTech Data & Automation at Agoda, today.',
-        detail: '50+ data professionals led over 20 years. From the first hire to teams of teams.',
+        claim: 'The team I lead at Agoda today.',
+        detail: 'Over 20 years I have led 50+ data professionals, from a first hire to teams of teams.',
     },
     {
         glyph: '20 yrs',
@@ -57,7 +57,7 @@ const BEATS: Beat[] = [
         unit: 'Years across three industries',
         short: 'Years',
         claim: 'Aviation, travel tech and media.',
-        detail: 'Airline planning. Travel analytics at scale. Media strategy. Now, FinTech automation.',
+        detail: 'Airline planning, travel analytics at scale, then media strategy. Now, finance automation.',
         mix: [['Travel tech', 50], ['Aviation', 30], ['Media', 10], ['Other', 10]],
     },
 ];
