@@ -72,13 +72,13 @@ export default function Principle() {
                         parts={['Most work repeats. The skill is to see', { text: 'what does not', accent: true }, { text: '.', glue: true }]}
                     />
                     <p data-reveal-child className="mt-8 text-base font-light leading-relaxed text-text-mute md:text-lg">
-                        20 years of data work for C-level leaders. I build AI, automation and analytics teams, in fast-growth tech
-                        and in aviation.
+                        For 20 years I have turned data into decisions for C-level leaders, in aviation, media and travel tech. Today
+                        I build the teams and the AI that do it at scale.
                     </p>
                     <p data-reveal-child className="mt-4 text-base font-light leading-relaxed text-text-mute md:text-lg">
-                        An agent is only one part. The <span className="text-text-strong">system around it</span> matters more: orchestration,
-                        memory, tools, guardrails and tests. That system keeps the agent reliable in production, not only in a demo. 20
-                        reusable Claude Skills now share this practice with the team.
+                        An agent is the small part. The <span className="text-text-strong">system around it</span> is the work: orchestration,
+                        memory, tools, guardrails and tests. That is what keeps an agent reliable in production, not only in a demo. My
+                        team now shares the practice as 20 reusable Claude Skills.
                     </p>
                 </RevealOnScroll>
 
