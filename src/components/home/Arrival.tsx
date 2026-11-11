@@ -75,8 +75,8 @@ export default function Arrival() {
                         className="mb-8 hidden items-center gap-2 rounded-full border border-hairline px-3.5 py-1.5 sm:inline-flex"
                     >
                         <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
-                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal opacity-60 [animation-duration:2.4s]" />
-                            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-signal" />
+                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-violet-400 opacity-60 [animation-duration:2.4s]" />
+                            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-violet-400" />
                         </span>
                         <span className="font-mono text-[11px] uppercase tracking-[0.28em] text-text">
                             Now · Agoda, Bangkok
@@ -171,7 +171,7 @@ export default function Arrival() {
                                 fetchPriority="high"
                                 className="block h-full w-full object-cover [filter:grayscale(1)_contrast(1.08)_brightness(0.92)]"
                             />
-                            <div aria-hidden="true" className="absolute inset-0 bg-signal/30 mix-blend-color" />
+                            <div aria-hidden="true" className="absolute inset-0 bg-violet-400/30 mix-blend-color" />
                             <div aria-hidden="true" className="absolute inset-0 bg-bg/25 mix-blend-multiply" />
                         </div>
                     </motion.figure>
@@ -216,7 +216,7 @@ export default function Arrival() {
             >
                 <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-6 font-mono text-[11px] uppercase tracking-[0.24em] text-text-mute">
                     <span className="flex items-center gap-2 tabular-nums">
-                        <span className="h-1 w-1 rounded-full bg-signal" aria-hidden="true" />
+                        <span className="h-1 w-1 rounded-full bg-violet-400" aria-hidden="true" />
                         Bangkok <span className="text-text-strong">{time}</span> ICT
                     </span>
                     <span className="hidden items-center gap-6 lg:flex">

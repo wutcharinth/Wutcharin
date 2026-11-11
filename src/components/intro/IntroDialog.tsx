@@ -96,11 +96,11 @@ export default function IntroDialog() {
                         animate={{ y: 0, scale: 1 }}
                         exit={{ y: 8, scale: 0.99 }}
                         transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                        className="relative w-full max-w-md overflow-hidden rounded-xl border border-hairline-strong bg-bg text-text shadow-[0_0_18px_color-mix(in_srgb,var(--color-signal)_18%,transparent)]"
+                        className="relative w-full max-w-md overflow-hidden rounded-xl border border-hairline-strong bg-bg text-text shadow-[0_0_18px_rgba(139,92,246,0.18)]"
                     >
                         <div className="flex items-center justify-between border-b border-hairline px-5 py-3">
                             <span className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.28em] text-text">
-                                <span className="h-1 w-1 rounded-full bg-signal" aria-hidden="true" />
+                                <span className="h-1 w-1 rounded-full bg-violet-400" aria-hidden="true" />
                                 Request an intro
                             </span>
                             <button

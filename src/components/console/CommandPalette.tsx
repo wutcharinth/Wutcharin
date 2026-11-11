@@ -249,7 +249,7 @@ export default function CommandPalette() {
                         animate={{ y: 0, scale: 1 }}
                         exit={{ y: -8, scale: 0.99 }}
                         transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                        className="relative w-full max-w-xl overflow-hidden rounded-xl border border-hairline-strong bg-bg text-text shadow-[0_0_18px_color-mix(in_srgb,var(--color-signal)_18%,transparent)]"
+                        className="relative w-full max-w-xl overflow-hidden rounded-xl border border-hairline-strong bg-bg text-text shadow-[0_0_18px_rgba(139,92,246,0.18)]"
                         onKeyDown={onKeyDown}
                     >
                         <div className="flex items-center gap-3 border-b border-hairline px-4">
@@ -293,7 +293,7 @@ export default function CommandPalette() {
                                             data-index={i}
                                             onMouseMove={() => setCursor(i)}
                                             onClick={() => void it.run()}
-                                            className={`flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 transition-colors ${on ? 'bg-signal/10 text-text-strong' : 'text-text'}`}
+                                            className={`flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 transition-colors ${on ? 'bg-violet-500/10 text-text-strong' : 'text-text'}`}
                                         >
                                             <span className={on ? 'text-signal' : 'text-text-mute'} aria-hidden="true">
                                                 {it.icon}

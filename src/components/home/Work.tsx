@@ -417,11 +417,11 @@ function Index() {
                                 aria-checked={filter === f.id}
                                 onClick={() => setFilter(f.id)}
                                 className={`relative rounded-full border px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.24em] transition-colors ${
-                                    filter === f.id ? 'border-signal/40 text-text-strong' : 'border-hairline text-text-mute hover:text-text-strong'
+                                    filter === f.id ? 'border-violet-400/40 text-text-strong' : 'border-hairline text-text-mute hover:text-text-strong'
                                 }`}
                             >
                                 {filter === f.id && (
-                                    <motion.span layoutId="index-filter" className="absolute inset-0 rounded-full bg-signal/10" transition={{ type: 'spring', stiffness: 380, damping: 32 }} />
+                                    <motion.span layoutId="index-filter" className="absolute inset-0 rounded-full bg-violet-500/10" transition={{ type: 'spring', stiffness: 380, damping: 32 }} />
                                 )}
                                 <span className="relative">
                                     {f.label} <span className="tabular-nums opacity-60">{String(counts[f.id]).padStart(2, '0')}</span>
@@ -464,7 +464,7 @@ function Index() {
                                 animate={{ opacity: 1, scale: 1, rotate: 0 }}
                                 exit={{ opacity: 0, scale: 0.96 }}
                                 transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                                className="absolute inset-x-0 top-0 shadow-[0_0_18px_color-mix(in_srgb,var(--color-signal)_25%,transparent)]"
+                                className="absolute inset-x-0 top-0 shadow-[0_0_18px_rgba(139,92,246,0.25)]"
                             >
                                 <Poster project={hovered} index={rest.indexOf(hovered)} compact />
                             </motion.div>

@@ -155,7 +155,6 @@ uniform vec3 uAccent;
 uniform float uOpacity;
 uniform float uGlow;
 uniform float uLight;
-uniform vec3 uLightAccent;
 
 varying float vRand;
 varying float vFade;
@@ -169,7 +168,7 @@ void main() {
         // Light mode: dark / violet specks on the light surface, drawn with
         // normal blending (set on the material). Prominence scales with the
         // ?glow= knob — uGlow * 0.4 == 1.0 at the default (2.5).
-        vec3 lc = mix(vec3(0.11, 0.13, 0.23), uLightAccent, smoothstep(0.55, 0.95, vRand));
+        vec3 lc = mix(vec3(0.11, 0.13, 0.23), vec3(0.37, 0.15, 0.78), smoothstep(0.55, 0.95, vRand));
         float a = disc * uOpacity * (0.28 + 0.44 * vRand) * (0.45 + 0.55 * vFade) * (uGlow * 0.4);
         gl_FragColor = vec4(lc, clamp(a, 0.0, 0.95));
         return;

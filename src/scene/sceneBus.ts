@@ -51,19 +51,9 @@ class SceneBus {
         return () => this.listeners.delete(fn);
     };
 
-    /** Style previews: the default brand accent can be re-pointed to another hue. */
-    private brand: { from: string; to: string } | null = null;
-    /** Accent for the dark-on-light particle ink; null keeps the original. */
-    lightAccent: string | null = null;
-    setBrand(from: string, to: string) {
-        this.brand = { from: from.toLowerCase(), to };
-        if (this.targets.accent.toLowerCase() === this.brand.from) this.targets = { ...this.targets, accent: to };
-    }
-
     /** Apply new targets (route mounts, scroll chapters, hover reactions). */
     apply(partial: Partial<SceneTargets>) {
         const prev = this.targets;
-        if (this.brand && partial.accent && partial.accent.toLowerCase() === this.brand.from) partial = { ...partial, accent: this.brand.to };
         const next = { ...prev, ...partial };
         if (partial.formation && partial.formation !== prev.formation) {
             this.revision++;
