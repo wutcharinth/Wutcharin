@@ -27,7 +27,10 @@ const newestFirst: Job[] = [
             'Set the AI vision and roadmap for the department. Built AI agents (RAG, Auto-SQL) and ran workshops.',
             'Saved 15,000+ hours a year with automation and machine learning for collection risk and cashback liability.',
             'Compared financial statements with operational data to explain revenue and cost changes to leadership.',
+            'Guest speaker at Agoda\'s People Team Offsite 2026. Presented the Finance AI Showcase to the People team.',
         ],
+        link: 'https://lnkd.in/p/gVtACwcm',
+        linkText: 'See the offsite post on LinkedIn',
     },
     {
         company: 'Really Cool Airlines',

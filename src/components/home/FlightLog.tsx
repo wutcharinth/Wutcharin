@@ -258,7 +258,8 @@ function RouteStage() {
 
                 <div className="pointer-events-none relative mx-auto flex h-full max-w-6xl flex-col justify-between py-28">
                     <Heading />
-                    <div className="pointer-events-auto w-full max-w-md" aria-live="polite">
+                    {/* The stage is pinned, so an opened pass scrolls inside itself. */}
+                    <div data-lenis-prevent className="pointer-events-auto max-h-[calc(100svh-29rem)] min-h-[14rem] w-full max-w-md overflow-y-auto rounded-xl" aria-live="polite">
                         <Pass key={active} job={job} index={active} current={active === career.length - 1} />
                     </div>
                 </div>
