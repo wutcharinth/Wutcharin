@@ -46,7 +46,7 @@ const Home = () => {
     return (
         // Transparent root: the body paints midnight and the scene canvas
         // (z-0) lives between body and this content layer.
-        <div className="relative min-h-screen font-sans text-text selection:bg-violet-500/30">
+        <div className="relative min-h-screen font-sans text-text selection:bg-signal/30">
             <SEO
                 title="Associate Director, FinTech Data & Automation"
                 description="Wutcharin Thatan leads FinTech Data & Automation at Agoda: a 12-person Analytics Engineering team, 15,000+ hours automated a year and 20+ AI agents in production."

@@ -77,7 +77,7 @@ export default function Terminus() {
                                 openIntro();
                             }}
                             aria-haspopup="dialog"
-                            className="inline-flex items-center gap-2 rounded-full border border-violet-400/30 px-7 py-4 text-sm font-medium text-signal transition-colors hover:bg-violet-500/10 hover:text-text-strong"
+                            className="inline-flex items-center gap-2 rounded-full border border-signal/30 px-7 py-4 text-sm font-medium text-signal transition-colors hover:bg-signal/10 hover:text-text-strong"
                         >
                             Write an intro <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
                         </a>

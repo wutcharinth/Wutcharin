@@ -93,8 +93,8 @@ function Pass({ job, index, current }: { job: Job; index: number; current?: bool
                         <p className="mt-1 text-sm text-text">{job.role}</p>
                     </div>
                     {current && (
-                        <span className="mt-1 inline-flex shrink-0 items-center gap-1.5 rounded-full border border-violet-400/30 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.24em] text-signal">
-                            <span className="h-1 w-1 animate-pulse rounded-full bg-violet-400" aria-hidden="true" />
+                        <span className="mt-1 inline-flex shrink-0 items-center gap-1.5 rounded-full border border-signal/30 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.24em] text-signal">
+                            <span className="h-1 w-1 animate-pulse rounded-full bg-signal" aria-hidden="true" />
                             Now
                         </span>
                     )}
@@ -117,7 +117,7 @@ function Itinerary() {
                     <li key={job.role + job.year} className="relative">
                         <span
                             aria-hidden="true"
-                            className={`absolute -left-[29px] top-6 h-2 w-2 rounded-full ${i === career.length - 1 ? 'bg-violet-400 shadow-[0_0_18px_rgba(139,92,246,0.6)]' : 'bg-hairline-strong'}`}
+                            className={`absolute -left-[29px] top-6 h-2 w-2 rounded-full ${i === career.length - 1 ? 'bg-signal shadow-[0_0_18px_color-mix(in_srgb,var(--color-signal)_60%,transparent)]' : 'bg-hairline-strong'}`}
                         />
                         <RevealOnScroll>
                             <div data-reveal-child>
@@ -240,7 +240,7 @@ function RouteStage() {
                         aria-current={i === active ? 'step' : undefined}
                     >
                         <span
-                            className={`block h-2 w-2 rounded-full transition-all duration-500 ${i <= active ? 'bg-violet-400' : 'bg-text-mute/50'} ${i === active ? 'scale-150 shadow-[0_0_18px_rgba(139,92,246,0.6)]' : ''}`}
+                            className={`block h-2 w-2 rounded-full transition-all duration-500 ${i <= active ? 'bg-signal' : 'bg-text-mute/50'} ${i === active ? 'scale-150 shadow-[0_0_18px_color-mix(in_srgb,var(--color-signal)_60%,transparent)]' : ''}`}
                         />
                         <span
                             className={`absolute left-1/2 top-full -translate-x-1/2 whitespace-nowrap text-center font-mono text-[10px] uppercase tracking-[0.24em] transition-colors ${i === active ? 'text-text-strong' : 'text-text-mute group-hover:text-text'}`}
@@ -253,7 +253,7 @@ function RouteStage() {
 
                 {/* The aircraft: a bright point riding the arc. */}
                 <div ref={markerRef} aria-hidden="true" className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2">
-                    <span className="block h-3 w-3 rounded-full border border-violet-300/80 bg-bg shadow-[0_0_18px_rgba(139,92,246,0.6)]" />
+                    <span className="block h-3 w-3 rounded-full border border-signal/80 bg-bg shadow-[0_0_18px_color-mix(in_srgb,var(--color-signal)_60%,transparent)]" />
                 </div>
 
                 <div className="pointer-events-none relative mx-auto flex h-full max-w-6xl flex-col justify-between py-28">

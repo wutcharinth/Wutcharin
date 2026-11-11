@@ -299,7 +299,7 @@ body.cursor-enhanced select {
 /* A11y: preserve keyboard focus rings — they'd otherwise be invisible
    against the custom cursor's mix-blend-difference layer. */
 :focus-visible {
-  outline: 2px solid rgba(167, 139, 250, 0.9);
+  outline: 2px solid color-mix(in srgb, var(--color-signal) 90%, transparent);
   outline-offset: 3px;
   border-radius: 4px;
 }
@@ -387,4 +387,199 @@ html.light {
   --pg-warn: #93590a;
   --pg-block: #bf3329;
   --pg-info: #1e48a6;
+}
+
+/* ============================================================
+   Style previews. Each block re-points the brand tokens; nothing else in
+   the site knows which style is on. Chosen with ?style=<name> (lib/theme.ts).
+   With no data-style the site is the original Midnight Console.
+   ============================================================ */
+
+/* A. Ember: warm charcoal, ember orange. */
+html[data-style="ember"]:not(.light) {
+  --color-bg: #0f0b08;
+  --color-bg-step: #080604;
+  --color-void: #070503;
+  --color-veil: rgba(15, 11, 8, 0.78);
+  --color-veil-soft: rgba(15, 11, 8, 0.55);
+  --color-text: #d8d0c6;
+  --color-text-mute: #a79a8b;
+  --color-text-strong: #fffaf3;
+  --color-signal: #ff8a3d;
+  --color-signal-deep: #e2520f;
+  --color-signal-glow: #5a2408;
+  --color-hairline: rgba(255, 240, 225, 0.10);
+  --color-hairline-strong: rgba(255, 240, 225, 0.2);
+  --color-panel: rgba(255, 240, 225, 0.035);
+  --color-panel-strong: rgba(255, 240, 225, 0.07);
+}
+html.light[data-style="ember"] {
+  --color-bg: #f7f2ea;
+  --color-bg-step: #ece4d7;
+  --color-signal: #c2410c;
+  --color-signal-deep: #9a3412;
+  --color-signal-glow: #fed7aa;
+}
+
+/* B. Paper & Ink: warm paper, ink type, one vermilion. Light by default. */
+html.light[data-style="paper"] {
+  --color-bg: #f3eee3;
+  --color-bg-step: #e9e2d3;
+  --color-void: #e4dccb;
+  --color-veil: rgba(243, 238, 227, 0.84);
+  --color-veil-soft: rgba(243, 238, 227, 0.6);
+  --color-text: #3a342b;
+  --color-text-mute: #6b6355;
+  --color-text-strong: #14110c;
+  --color-signal: #c8321a;
+  --color-signal-deep: #a82510;
+  --color-signal-glow: #f3c9bb;
+  --color-hairline: rgba(20, 17, 12, 0.14);
+  --color-hairline-strong: rgba(20, 17, 12, 0.28);
+  --color-panel: rgba(20, 17, 12, 0.04);
+  --color-panel-strong: rgba(20, 17, 12, 0.07);
+}
+html[data-style="paper"]:not(.light) {
+  --color-bg: #14110c;
+  --color-bg-step: #0c0a07;
+  --color-void: #0a0806;
+  --color-veil: rgba(20, 17, 12, 0.8);
+  --color-veil-soft: rgba(20, 17, 12, 0.55);
+  --color-text: #d9d2c4;
+  --color-text-mute: #a39a89;
+  --color-text-strong: #f6f0e4;
+  --color-signal: #ff6a45;
+  --color-signal-deep: #c8321a;
+  --color-signal-glow: #4a1408;
+}
+/* The serif takes the headings; Clash stays on numbers and labels. */
+html[data-style="paper"] :is(h1, h2, h3) {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+}
+
+/* C. Phosphor: graphite, acid lime, mono accents. */
+html[data-style="phosphor"]:not(.light) {
+  --color-bg: #0a0c0a;
+  --color-bg-step: #060706;
+  --color-void: #040504;
+  --color-veil: rgba(10, 12, 10, 0.8);
+  --color-veil-soft: rgba(10, 12, 10, 0.55);
+  --color-text: #cfd6cc;
+  --color-text-mute: #909a8d;
+  --color-text-strong: #f6fff0;
+  --color-signal: #c6f432;
+  --color-signal-deep: #7fa800;
+  --color-signal-glow: #2c3d00;
+  --color-hairline: rgba(230, 255, 220, 0.10);
+  --color-hairline-strong: rgba(230, 255, 220, 0.2);
+  --color-panel: rgba(230, 255, 220, 0.03);
+  --color-panel-strong: rgba(230, 255, 220, 0.06);
+}
+html.light[data-style="phosphor"] {
+  --color-bg: #f3f5f0;
+  --color-bg-step: #e7eae2;
+  --color-signal: #4d7c0f;
+  --color-signal-deep: #3f6212;
+  --color-signal-glow: #d9f99d;
+}
+/* The human-voice accent becomes a machine voice: upright mono. */
+html[data-style="phosphor"] .font-serif {
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: -0.06em;
+}
+
+/* D. Ultramarine: a saturated blue room, white type, coral signal. */
+html[data-style="ultramarine"]:not(.light) {
+  --color-bg: #1a1fb8;
+  --color-bg-step: #141896;
+  --color-void: #10137c;
+  --color-veil: rgba(26, 31, 184, 0.82);
+  --color-veil-soft: rgba(26, 31, 184, 0.6);
+  --color-text: #e6e8ff;
+  --color-text-mute: #bfc5ff;
+  --color-text-strong: #ffffff;
+  --color-signal: #ff7a66;
+  --color-signal-deep: #5b6bff;
+  --color-signal-glow: #0d1380;
+  --color-hairline: rgba(255, 255, 255, 0.16);
+  --color-hairline-strong: rgba(255, 255, 255, 0.3);
+  --color-panel: rgba(255, 255, 255, 0.05);
+  --color-panel-strong: rgba(255, 255, 255, 0.1);
+}
+html.light[data-style="ultramarine"] {
+  --color-signal: #1a1fb8;
+  --color-signal-deep: #141896;
+  --color-signal-glow: #c7d2fe;
+}
+html[data-style="ultramarine"] :is(h1, h2, h3) {
+  font-weight: 700;
+}
+
+/* E. Stop Motion: a paper-craft set. Cut-paper colours, hard offset shadows,
+   edges that "boil", and every transition stepped like frames shot on twos. */
+html.light[data-style="stopmotion"] {
+  --color-bg: #efe3cb;
+  --color-bg-step: #e3d5b8;
+  --color-void: #dccdae;
+  --color-veil: rgba(239, 227, 203, 0.86);
+  --color-veil-soft: rgba(239, 227, 203, 0.6);
+  --color-text: #3b3429;
+  --color-text-mute: #6a5f4e;
+  --color-text-strong: #1c1812;
+  --color-signal: #0e6f6a;
+  --color-signal-deep: #e8a53a;
+  --color-signal-glow: #f3d9a4;
+  --color-hairline: rgba(28, 24, 18, 0.18);
+  --color-hairline-strong: rgba(28, 24, 18, 0.36);
+  --color-panel: rgba(28, 24, 18, 0.045);
+  --color-panel-strong: rgba(28, 24, 18, 0.08);
+  --stop-cut: #d9482b;
+}
+html[data-style="stopmotion"]:not(.light) {
+  --color-bg: #1c1812;
+  --color-bg-step: #14110c;
+  --color-void: #100d09;
+  --color-veil: rgba(28, 24, 18, 0.82);
+  --color-veil-soft: rgba(28, 24, 18, 0.58);
+  --color-text: #ddd3bf;
+  --color-text-mute: #a89c86;
+  --color-text-strong: #f6eeda;
+  --color-signal: #4fc4bb;
+  --color-signal-deep: #e8a53a;
+  --color-signal-glow: #4a3410;
+  --stop-cut: #ef6a4c;
+}
+html[data-style="stopmotion"] {
+  /* Frames, not curves: anything eased by the motion tokens now steps. */
+  --ease-out-expo: steps(6, end);
+  --ease-out-quart: steps(5, end);
+  --ease-in-out-quart: steps(6, end);
+}
+html[data-style="stopmotion"] * {
+  transition-timing-function: steps(5, end) !important;
+}
+html[data-style="stopmotion"] :is(h1, h2) {
+  filter: url(#boil);
+}
+/* Cut paper sits on the table and throws a hard shadow. */
+html[data-style="stopmotion"] .aspect-video {
+  box-shadow: 10px 10px 0 var(--stop-cut);
+  transform: rotate(-1.2deg);
+  border-color: var(--color-text-strong);
+  border-width: 2px;
+}
+html[data-style="stopmotion"] .bg-text-strong:is(a, button) {
+  box-shadow: 4px 4px 0 var(--stop-cut);
+}
+html[data-style="stopmotion"] .rounded-full.border {
+  border-width: 1.5px;
+  border-color: var(--color-text-strong);
+}
+html[data-style="stopmotion"] .rounded-full.border.inline-flex:not(button):not(a) {
+  transform: rotate(-2deg);
+  background: var(--color-signal-glow);
 }

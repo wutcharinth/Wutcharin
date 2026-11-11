@@ -1,17 +1,19 @@
 import { useEffect, useMemo, useState, useSyncExternalStore } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Canvas } from '@react-three/fiber';
+import { Canvas, invalidate } from '@react-three/fiber';
 import { PerformanceMonitor } from '@react-three/drei';
 import { sceneBus } from './sceneBus';
 import { detectTier } from './tier';
 import { ROUTE_SCENES, FALLBACK_SCENE } from './routeScenes';
 import ParticleField from './ParticleField';
 import CameraRig from './CameraRig';
-import { useTheme } from '../lib/theme';
+import { useTheme, style } from '../lib/theme';
 
+// Mixed from the surface token, so the scrim follows whatever style is on.
+const mix = (pct: number) => `color-mix(in srgb, var(--color-bg) ${pct}%, transparent)`;
 const SCRIM = {
-    dark: 'linear-gradient(180deg, rgba(2,6,23,0.28) 0%, rgba(2,6,23,0.46) 55%, rgba(2,6,23,0.52) 100%)',
-    light: 'linear-gradient(180deg, rgba(244,245,249,0.30) 0%, rgba(244,245,249,0.48) 55%, rgba(244,245,249,0.55) 100%)',
+    dark: `linear-gradient(180deg, ${mix(28)} 0%, ${mix(46)} 55%, ${mix(52)} 100%)`,
+    light: `linear-gradient(180deg, ${mix(30)} 0%, ${mix(48)} 55%, ${mix(55)} 100%)`,
 } as const;
 
 /**
@@ -57,6 +59,14 @@ export default function SceneRoot() {
     }, [tier]);
 
     const mode = useSyncExternalStore(sceneBus.subscribe, () => sceneBus.targets.mode);
+
+    // Stop-motion preview: the field is shot "on twos", 12 frames a second.
+    const stepped = style === 'stopmotion';
+    useEffect(() => {
+        if (!stepped || !tier) return;
+        const id = window.setInterval(() => invalidate(), 1000 / 12);
+        return () => window.clearInterval(id);
+    }, [stepped, tier]);
     const light = useTheme() === 'light';
 
     if (!tier) return null;
@@ -74,7 +84,7 @@ export default function SceneRoot() {
             }}
         >
             <Canvas
-                frameloop={hidden ? 'never' : 'always'}
+                frameloop={hidden ? 'never' : stepped ? 'demand' : 'always'}
                 dpr={[1, dprMax]}
                 gl={{ antialias: false, alpha: true, powerPreference: 'high-performance' }}
                 camera={{ fov: 50, near: 0.1, far: 60, position: [0, 0, 14] }}

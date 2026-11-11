@@ -1,3 +1,4 @@
+import { style } from './lib/theme';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useEffect, useState, lazy, Suspense } from 'react';
 import Home from './pages/Home';
@@ -69,7 +70,7 @@ const RouteLoader = () => (
   <div className="fixed inset-0 z-[8000] flex flex-col items-center justify-center gap-4 bg-[#020617]/60">
     <div className="relative h-8 w-8">
       <div className="absolute inset-0 rounded-full border border-white/10" />
-      <div className="absolute inset-0 rounded-full border-t border-violet-400 animate-spin [animation-duration:0.9s]" />
+      <div className="absolute inset-0 rounded-full border-t border-signal animate-spin [animation-duration:0.9s]" />
     </div>
     <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/35">
       Resolving / Signal
@@ -110,6 +111,17 @@ function App() {
   return (
     <Router>
       <a href="#main-content" className="skip-link">Skip to main content</a>
+      {/* Stop-motion preview: a "line boil" filter that re-draws edges 8 times a second. */}
+      {style === 'stopmotion' && (
+        <svg aria-hidden="true" width="0" height="0" className="absolute">
+          <filter id="boil" x="-5%" y="-10%" width="110%" height="120%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="1">
+              <animate attributeName="seed" values="1;7;13;4;9;2" dur="0.75s" calcMode="discrete" repeatCount="indefinite" />
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" scale="5" />
+          </filter>
+        </svg>
+      )}
       <ScrollProvider>
         <ScrollToTop />
         <DeferredScene />

@@ -86,6 +86,8 @@ export default function ParticleField({ texSize, light = false }: { texSize: num
             uOpacity: { value: 0 },
             uGlow: { value: GLOW },
             uLight: { value: light ? 1 : 0 },
+            // Ink accent on light surfaces: the original violet unless a style preview re-points it.
+            uLightAccent: { value: sceneBus.lightAccent ? new THREE.Color(sceneBus.lightAccent) : new THREE.Color().setRGB(0.37, 0.15, 0.78) },
         };
         return { geometry, uniforms };
         // eslint-disable-next-line react-hooks/exhaustive-deps
