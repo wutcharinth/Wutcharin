@@ -1,0 +1,2286 @@
+<title>ปิดงวด Pidngod</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Noto+Serif+Thai:wght@500;600;700;800&family=Sarabun:wght@400;600;700&family=Mali:wght@500&display=swap">
+<style>
+/* Layout: a ledger page that walks one accountant's month, day 1 to day 23, with a live demo at each stop. */
+:root{
+  --paper:#EEF3EF; --sheet:#FFFFFF; --sheet-2:#F7FAF8; --ink:#12211B; --muted:#55655D; --rule:#D2DCD5;
+  --ledger:#0B6A4E; --ledger-ink:#FFFFFF; --ledger-soft:#DBEDE4;
+  --stamp:#BF3329; --stamp-soft:#F9E3E0;
+  --blue:#1E48A6; --blue-soft:#E2E9F9;
+  --amber:#9A5F00; --amber-soft:#FAEDD2;
+  --line:#06C755; --chat:#9DB6DA; --bubble:#FFFFFF; --bubble-me:#8DE055; --bubble-ink:#111;
+  --shadow:0 1px 2px rgba(18,33,27,.06),0 12px 32px -12px rgba(18,33,27,.18);
+  --f-display:"Noto Serif Thai","Noto Serif",Georgia,serif;
+  --f-body:"IBM Plex Sans Thai","Noto Sans Thai",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --f-doc:"Sarabun","TH Sarabun New","Noto Sans Thai",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0C1411; --sheet:#141F1A; --sheet-2:#18251F; --ink:#E5EEE8; --muted:#9AAAA2; --rule:#28372F;
+  --ledger:#3FC08F; --ledger-ink:#06140E; --ledger-soft:#173A2C;
+  --stamp:#F26B5E; --stamp-soft:#3A1916;
+  --blue:#8EAEFF; --blue-soft:#1A2440;
+  --amber:#F0B44C; --amber-soft:#35270C;
+  --chat:#2B3A52; --bubble:#25313D; --bubble-me:#3E7D2A; --bubble-ink:#EEF2F5;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 16px 40px -16px rgba(0,0,0,.7);
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0C1411; --sheet:#141F1A; --sheet-2:#18251F; --ink:#E5EEE8; --muted:#9AAAA2; --rule:#28372F;
+  --ledger:#3FC08F; --ledger-ink:#06140E; --ledger-soft:#173A2C;
+  --stamp:#F26B5E; --stamp-soft:#3A1916;
+  --blue:#8EAEFF; --blue-soft:#1A2440;
+  --amber:#F0B44C; --amber-soft:#35270C;
+  --chat:#2B3A52; --bubble:#25313D; --bubble-me:#3E7D2A; --bubble-ink:#EEF2F5;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 16px 40px -16px rgba(0,0,0,.7);
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.7;margin:0;
+  background-image:repeating-linear-gradient(to bottom,transparent 0 31px,color-mix(in srgb,var(--rule) 45%,transparent) 31px 32px);}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--sheet)}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ledger);outline-offset:2px;border-radius:4px}
+.num,.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.3;margin:0}
+p{margin:0}
+.eyebrow{font-size:.8rem;letter-spacing:.06em;color:var(--muted);font-weight:600}
+
+/* Header + day rail */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--sheet) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
+.top-in{display:flex;align-items:center;gap:20px;padding-block:10px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--f-display);font-weight:800;font-size:1.25rem}
+.brand small{font-family:var(--f-mono);font-weight:500;font-size:.72rem;color:var(--muted);letter-spacing:.04em}
+.nav{display:flex;gap:18px;margin-left:auto;font-size:.92rem}
+.nav a{text-decoration:none;color:var(--muted)}
+.nav a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-weight:600;text-decoration:none;cursor:pointer;font-size:.95rem;transition:transform .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.sm{padding:6px 14px;font-size:.85rem}
+.btn.go{background:var(--ledger);border-color:var(--ledger);color:var(--ledger-ink)}
+.rail{display:flex;align-items:center;gap:12px;padding-block:6px 9px;font-size:.78rem;color:var(--muted)}
+.rail-ticks{flex:1;display:grid;grid-template-columns:repeat(23,1fr);gap:3px;min-width:0}
+.rail-ticks i{height:6px;border-radius:2px;background:var(--rule);transition:background .3s}
+.rail-ticks i.dl{background:color-mix(in srgb,var(--stamp) 45%,var(--rule))}
+.rail-ticks i.on{background:var(--ledger)}
+.rail-label{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:46%}
+.rail-label b{color:var(--ink)}
+.proto{background:var(--amber-soft);color:var(--amber);font-size:.8rem;text-align:center;padding-block:5px}
+@media (max-width:860px){.nav{display:none}.pitch-btn{margin-left:auto}}
+@media (max-width:560px){.brand small{display:none}.top .btn.go{display:none}.pitch-btn{white-space:nowrap}.top-in{gap:10px}}
+
+/* Hero */
+.hero{padding-block:56px 40px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:48px;align-items:center}
+.hero h1{font-size:clamp(2.1rem,4.4vw,3.6rem);font-weight:800;letter-spacing:-.01em;margin-top:14px}
+.hero h1 em{font-style:normal;color:var(--ledger);position:relative;white-space:nowrap}
+.hero h1 em::after{content:"";position:absolute;left:0;right:0;bottom:.08em;height:.12em;background:var(--stamp);opacity:.75;transform-origin:left;animation:underline 1.1s 1.1s cubic-bezier(.2,.8,.2,1) both}
+@keyframes underline{from{transform:scaleX(0)}}
+.lead{font-size:1.1rem;color:var(--muted);margin-top:18px;max-width:34em}
+.lead b{color:var(--ink);font-weight:600}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.forms-line{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.tag{font-size:.8rem;border:1px solid var(--rule);background:var(--sheet);padding:3px 10px;border-radius:6px;font-weight:500}
+@media (max-width:960px){.hero-grid{grid-template-columns:minmax(0,1fr)}}
+
+/* Board */
+.board{background:var(--sheet);border:1px solid var(--rule);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.board-head{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--rule);background:var(--sheet-2)}
+.board-head h3{font-size:1.02rem}
+.board-head .meta{font-size:.8rem;color:var(--muted)}
+.count-chip{font-family:var(--f-mono);font-size:.8rem;background:var(--ledger-soft);color:var(--ledger);padding:3px 10px;border-radius:999px;font-weight:600}
+.scroll-x{overflow-x:auto}
+table.grid{border-collapse:collapse;width:100%;min-width:560px;font-size:.85rem}
+table.grid th,table.grid td{padding:9px 10px;border-bottom:1px solid var(--rule);text-align:left;white-space:nowrap}
+table.grid th{font-weight:600;color:var(--muted);font-size:.78rem}
+table.grid td:first-child{font-weight:500}
+.cell{display:inline-flex;align-items:center;justify-content:center;min-width:78px;height:26px;padding:0 8px;border-radius:6px;font-size:.75rem;font-weight:600;position:relative;transition:background .3s,color .3s}
+.s0{background:var(--amber-soft);color:var(--amber)}
+.s1{background:var(--blue-soft);color:var(--blue)}
+.s2{background:transparent;color:var(--ledger);box-shadow:inset 0 0 0 1.5px var(--ledger)}
+.s3{background:transparent;color:var(--stamp);box-shadow:inset 0 0 0 2px var(--stamp);transform:rotate(-4deg);letter-spacing:.04em}
+.s4{background:var(--ledger);color:var(--ledger-ink)}
+.sx{color:var(--rule);min-width:78px}
+.thump{animation:thump .45s cubic-bezier(.3,1.6,.5,1)}
+@keyframes thump{0%{transform:scale(2.1) rotate(-12deg);opacity:0}70%{opacity:1}100%{transform:scale(1) rotate(-4deg)}}
+.legend{display:flex;flex-wrap:wrap;gap:8px 14px;padding:12px 18px;font-size:.75rem;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend .cell{min-width:0;height:18px;font-size:.68rem;padding:0 6px}
+
+/* Crunch */
+.band{padding-block:72px;border-top:1px solid var(--rule)}
+.band h2{font-size:clamp(1.6rem,3vw,2.4rem)}
+.sub{color:var(--muted);margin-top:10px;max-width:42em}
+.strip{display:grid;grid-template-columns:repeat(23,minmax(0,1fr));gap:4px;margin-top:34px}
+.strip .d{aspect-ratio:1/1.5;border-radius:6px;background:var(--sheet);border:1px solid var(--rule);display:flex;align-items:flex-end;justify-content:center;padding-bottom:4px;font-family:var(--f-mono);font-size:.72rem;color:var(--muted);position:relative;overflow:hidden}
+.strip .d .fill{position:absolute;inset:auto 0 0 0;background:var(--amber-soft);height:0;transition:height .9s cubic-bezier(.2,.8,.2,1)}
+.strip .d span{position:relative}
+.strip .d.dl{border-color:var(--stamp);color:var(--stamp);font-weight:700}
+.strip-notes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:16px;font-size:.85rem}
+.strip-notes div{border-left:3px solid var(--stamp);padding-left:10px}
+.strip-notes b{font-family:var(--f-mono);color:var(--stamp)}
+.pains{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin-top:44px}
+.pains h3{font-size:1.1rem;margin-bottom:6px}
+.pains p{color:var(--muted);font-size:.93rem}
+@media (max-width:860px){.pains{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.strip-notes{grid-template-columns:minmax(0,1fr)}.strip{gap:2px}.strip .d{font-size:.55rem}}
+@media (max-width:520px){.pains{grid-template-columns:minmax(0,1fr)}}
+
+/* Day sections */
+.month-intro{padding-block:64px 8px}
+.day{padding-block:64px;border-top:1px dashed var(--rule)}
+.day-grid{display:grid;grid-template-columns:110px minmax(0,4fr) minmax(0,6fr);gap:36px;align-items:start}
+.day-grid.flip{grid-template-columns:110px minmax(0,6fr) minmax(0,4fr)}
+.day-mark{position:sticky;top:120px;text-align:center}
+.day-mark small{display:block;font-size:.78rem;color:var(--muted);font-weight:600}
+.day-mark b{display:block;font-family:var(--f-display);font-size:4.2rem;line-height:1;font-weight:800;color:var(--ledger)}
+.day-mark.dl b{color:var(--stamp)}
+.day-mark span{display:block;font-size:.75rem;color:var(--muted);margin-top:4px}
+.copy h2{font-size:clamp(1.45rem,2.6vw,2.05rem)}
+.copy .sub{margin-top:14px}
+.ticks{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:10px}
+.ticks li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:8px;font-size:.95rem}
+.ticks li::before{content:"✓";color:var(--ledger);font-weight:700}
+@media (max-width:960px){
+  .day-grid,.day-grid.flip{grid-template-columns:minmax(0,1fr);gap:22px}
+  .day-mark{position:static;display:flex;align-items:baseline;gap:10px;text-align:left}
+  .day-mark b{font-size:2.6rem}
+  .flip .demo-col{order:3}
+}
+.demo{background:var(--sheet);border:1px solid var(--rule);border-radius:14px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.demo-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;border-bottom:1px solid var(--rule);background:var(--sheet-2);font-size:.8rem;color:var(--muted)}
+.replay{white-space:nowrap;flex-shrink:0;border:1px solid var(--rule);background:var(--sheet);border-radius:999px;padding:3px 12px;font-size:.78rem;cursor:pointer}
+.replay:hover{border-color:var(--ink)}
+.pad{padding:18px}
+.fade-in{animation:fadein .4s ease both}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}}
+
+/* Phone */
+.phone{width:min(340px,100%);margin:0 auto;border-radius:34px;background:#0F1512;padding:10px;box-shadow:var(--shadow)}
+.phone-in{border-radius:26px;overflow:hidden;background:var(--chat);height:560px;display:flex;flex-direction:column}
+.phone-head{background:#1F2A37;color:#fff;padding:12px 14px;font-size:.85rem;display:flex;align-items:center;gap:10px}
+.phone-head .av{width:30px;height:30px;border-radius:50%;background:var(--line);display:grid;place-items:center;font-weight:700;font-size:.7rem;color:#04210F}
+.chat{flex:1;overflow:hidden;padding:12px;display:flex;flex-direction:column;gap:9px;justify-content:flex-end}
+.msg{max-width:84%;padding:8px 11px;border-radius:16px;font-size:.82rem;line-height:1.55;background:var(--bubble);color:var(--bubble-ink)}
+.msg.me{align-self:flex-end;background:var(--bubble-me);color:#0B1A06}
+.msg.bot{border-top-left-radius:4px}
+.msg.me{border-top-right-radius:4px}
+.msg .ok{color:#0B7A47;font-weight:700}
+.msg .bad{color:#C0392B;font-weight:700}
+.msg.photo{padding:5px;background:transparent}
+.rcpt{width:120px;background:#FBFBF7;border-radius:6px;padding:8px;transform:rotate(2deg);box-shadow:0 2px 6px rgba(0,0,0,.25);font-family:var(--f-doc);color:#333;font-size:.5rem;line-height:1.4}
+.rcpt i{display:block;height:3px;background:#C9C9C0;margin:3px 0;border-radius:2px}
+.rcpt b{display:block;font-size:.55rem}
+.quick{display:flex;gap:6px;flex-wrap:wrap}
+.quick span{background:var(--bubble);color:var(--line);border:1px solid var(--line);padding:3px 10px;border-radius:999px;font-size:.72rem;font-weight:600}
+.typing{display:inline-flex;gap:4px;padding:10px 12px}
+.typing i{width:6px;height:6px;border-radius:50%;background:#8a95a3;animation:blink 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes blink{50%{opacity:.25}}
+.card-mini{background:var(--bubble);color:var(--bubble-ink);border-radius:14px;padding:10px 12px;font-size:.78rem}
+.card-mini h4{margin:0 0 4px;font-size:.8rem}
+.card-mini .row{display:flex;justify-content:space-between;gap:8px}
+
+/* Extraction */
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button{border:1px solid var(--rule);background:var(--sheet);border-radius:999px;padding:4px 12px;font-size:.8rem;cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.x-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media (max-width:620px){.x-grid{grid-template-columns:minmax(0,1fr)}}
+.inv{font-family:var(--f-doc);background:#FFFEF9;color:#1d1d1d;border:1px solid #E3E0D3;border-radius:6px;padding:14px;font-size:.74rem;line-height:1.5;position:relative;overflow:hidden;transform:rotate(-.6deg)}
+.inv .t{text-align:center;font-weight:700;font-size:.95rem}
+.inv .t small{display:block;font-weight:400;font-size:.68rem;color:#555}
+.inv .two{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.inv table{width:100%;border-collapse:collapse;margin-top:8px;font-size:.7rem}
+.inv td,.inv th{border-bottom:1px solid #E6E3D8;padding:3px 2px;text-align:left}
+.inv td.r,.inv th.r{text-align:right}
+.inv .tot{margin-top:6px;display:grid;justify-content:end;gap:1px;text-align:right}
+.inv [data-f]{border-radius:3px;transition:background .3s,box-shadow .3s}
+.inv [data-f].hl{background:rgba(30,72,166,.14);box-shadow:0 0 0 1.5px rgba(30,72,166,.55)}
+.inv [data-f].miss{background:rgba(191,51,41,.12);box-shadow:0 0 0 1.5px rgba(191,51,41,.6)}
+.beam{position:absolute;left:0;right:0;height:46px;top:-60px;background:linear-gradient(to bottom,transparent,rgba(11,106,78,.22),transparent);border-bottom:2px solid rgba(11,106,78,.7);pointer-events:none}
+.beam.run{animation:beam 1.5s cubic-bezier(.45,0,.55,1)}
+@keyframes beam{from{top:-60px}to{top:100%}}
+.fields{display:grid;gap:4px;font-size:.8rem}
+.field{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 8px;padding:6px 8px;border-radius:8px;background:var(--sheet-2);border:1px solid var(--rule)}
+.field small{color:var(--muted);font-size:.7rem;grid-column:1/-1;line-height:1.2}
+.field .v{font-weight:600;min-width:0;overflow-wrap:anywhere}
+.field .c{font-family:var(--f-mono);font-size:.7rem;color:var(--muted);align-self:center}
+.field.empty .v{color:var(--stamp)}
+.checks{display:grid;gap:4px;margin-top:10px;font-size:.78rem}
+.chk{display:grid;grid-template-columns:52px minmax(0,1fr);gap:8px;align-items:start}
+.badge{font-family:var(--f-mono);font-size:.68rem;font-weight:600;text-align:center;border-radius:4px;padding:1px 0}
+.b-ok{background:var(--ledger-soft);color:var(--ledger)}
+.b-block{background:var(--stamp-soft);color:var(--stamp)}
+.b-warn{background:var(--amber-soft);color:var(--amber)}
+.verdict{margin-top:12px;border-radius:10px;padding:10px 12px;font-weight:600;font-size:.88rem;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.verdict.ok{background:var(--ledger-soft);color:var(--ledger)}
+.verdict.no{background:var(--stamp-soft);color:var(--stamp)}
+.kbd{font-family:var(--f-mono);font-size:.7rem;border:1px solid currentColor;border-radius:4px;padding:0 5px}
+.tin-try{margin-top:18px;padding-top:14px;border-top:1px dashed var(--rule);display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:.85rem}
+.tin-try input{font-family:var(--f-mono);letter-spacing:.08em;border:1px solid var(--rule);background:var(--sheet-2);border-radius:8px;padding:6px 10px;width:13.5em;max-width:100%}
+.tin-out{font-weight:600}
+
+/* WHT */
+.ctrls{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px 14px;font-size:.85rem}
+.ctrls label{display:grid;gap:4px;color:var(--muted);font-size:.78rem}
+.ctrls select,.ctrls input{border:1px solid var(--rule);background:var(--sheet-2);border-radius:8px;padding:7px 10px;font-size:.9rem;width:100%}
+.ctrls .full{grid-column:1/-1}
+@media (max-width:520px){.ctrls{grid-template-columns:minmax(0,1fr)}}
+.wht-sum{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.pill{font-size:.78rem;font-weight:600;padding:3px 10px;border-radius:999px;background:var(--sheet-2);border:1px solid var(--rule)}
+.pill.g{background:var(--ledger-soft);color:var(--ledger);border-color:transparent}
+.pill.a{background:var(--amber-soft);color:var(--amber);border-color:transparent}
+.cert{font-family:var(--f-doc);background:#FFFEF9;color:#1d1d1d;border:1px solid #E3E0D3;border-radius:6px;padding:16px;margin-top:14px;font-size:.74rem;line-height:1.5;position:relative}
+.cert .t{text-align:center;font-weight:700;font-size:1rem}
+.cert .t small{display:block;font-weight:400;font-size:.68rem}
+.cert .no{position:absolute;right:14px;top:12px;font-size:.68rem}
+.cert .box{border:1px solid #CFCBBE;border-radius:4px;padding:6px 8px;margin-top:8px}
+.cert .lbl{font-size:.64rem;color:#666}
+.cert .cb{display:inline-flex;gap:14px;margin-top:6px}
+.cert .cb span::before{content:"☐ ";}
+.cert .cb span.on::before{content:"☑ ";color:#0B6A4E}
+.cert table{width:100%;border-collapse:collapse;margin-top:8px;font-size:.7rem}
+.cert th,.cert td{border:1px solid #CFCBBE;padding:4px 6px}
+.cert td.r{text-align:right;font-variant-numeric:tabular-nums}
+.cert .words{margin-top:6px;font-weight:600}
+.cert .seal{position:absolute;right:18px;bottom:16px;border:2px solid #BF3329;color:#BF3329;border-radius:6px;padding:2px 8px;font-weight:700;transform:rotate(-8deg);font-size:.7rem;opacity:.85}
+.restamp{animation:restamp .5s ease}
+@keyframes restamp{0%{opacity:.3;transform:translateY(4px)}}
+
+/* Due dates */
+.due-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+@media (max-width:620px){.due-grid{grid-template-columns:minmax(0,1fr)}}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:999px;overflow:hidden}
+.seg button{border:0;background:transparent;padding:5px 12px;font-size:.8rem;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;font-family:var(--f-mono);font-size:.75rem;margin-top:12px}
+.cal .h{text-align:center;color:var(--muted);font-family:var(--f-body);font-size:.68rem}
+.cal .c{aspect-ratio:1;border-radius:6px;display:grid;place-items:center;background:var(--sheet-2);position:relative}
+.cal .c.we{color:var(--muted);background:transparent}
+.cal .c.hol{color:var(--amber);background:var(--amber-soft)}
+.cal .c.due{background:var(--stamp);color:#fff;font-weight:700}
+.cal .c.due.drop{animation:drop .5s cubic-bezier(.3,1.5,.5,1) both}
+@keyframes drop{from{transform:translateY(-14px) scale(1.3);opacity:0}}
+.due-list{display:grid;gap:6px;font-size:.84rem}
+.due-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;padding:8px 10px;border-radius:8px;border:1px solid var(--rule);background:var(--sheet-2)}
+.due-row b{font-family:var(--f-mono)}
+.due-row small{grid-column:1/-1;color:var(--amber);font-size:.72rem}
+
+/* PP30 */
+.pp{width:100%;border-collapse:collapse;font-size:.85rem}
+.pp td{padding:8px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+.pp td:first-child{font-family:var(--f-mono);color:var(--muted);width:2.2em}
+.pp td.r{text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pp tr.click{cursor:pointer}
+.pp tr.click:hover td{background:var(--blue-soft)}
+.pp tr.click td:nth-child(2)::after{content:" ↗";color:var(--blue);font-size:.75rem}
+.pp tr.total td{font-weight:700;font-size:.95rem;border-bottom:0;background:var(--ledger-soft);color:var(--ledger)}
+.pp tr.on td{background:var(--blue-soft)}
+.guard{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:14px 18px;border-top:1px solid var(--rule);background:var(--sheet-2)}
+.guard div{font-size:.78rem;color:var(--muted)}
+.guard b{display:block;font-family:var(--f-mono);font-size:1rem;color:var(--stamp)}
+@media (max-width:520px){.guard{grid-template-columns:minmax(0,1fr)}}
+.trace{border-top:1px solid var(--rule);padding:14px 18px;font-size:.8rem}
+.trace h4{margin:0 0 8px;font-size:.88rem}
+.trace-row{display:grid;grid-template-columns:5.5em minmax(0,1fr) auto;gap:10px;padding:5px 0;border-bottom:1px dashed var(--rule)}
+.trace-row .num{text-align:right}
+.trace-foot{margin-top:8px;color:var(--ledger);font-weight:600}
+
+/* Owner app */
+.liff{background:var(--paper);flex:1;overflow:hidden;padding:12px;display:grid;gap:10px;align-content:start;color:var(--ink)}
+.liff .card{background:var(--sheet);border:1px solid var(--rule);border-radius:14px;padding:12px;font-size:.8rem}
+.liff h4{margin:0 0 6px;font-size:.82rem}
+.bars{display:grid;gap:7px}
+.bar{display:grid;grid-template-columns:5.5em minmax(0,1fr) auto;gap:8px;align-items:center;font-size:.74rem}
+.bar .tr{height:8px;background:var(--sheet-2);border-radius:4px;overflow:hidden;border:1px solid var(--rule)}
+.bar .tr i{display:block;height:100%;background:var(--ledger);width:0;transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.liff .act{display:flex;gap:6px;margin-top:8px}
+.liff .act button{flex:1;border-radius:10px;border:0;padding:8px;font-weight:700;font-size:.8rem;cursor:pointer;background:var(--line);color:#04210F}
+.liff .act button:disabled{opacity:.45;cursor:default}
+.liff .stampbig{display:inline-block;border:2px solid var(--stamp);color:var(--stamp);padding:1px 10px;border-radius:6px;font-weight:800;transform:rotate(-6deg)}
+.steps{display:flex;gap:4px;margin-top:4px}
+.steps i{flex:1;height:4px;border-radius:2px;background:var(--rule)}
+.steps i.on{background:var(--ledger)}
+
+/* Close */
+.clist{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:.88rem}
+.clist li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:8px;align-items:start;padding:6px 0;border-bottom:1px dashed var(--rule)}
+.clist li .bx{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--rule);display:grid;place-items:center;font-size:.72rem;margin-top:3px;transition:all .25s}
+.clist li.done .bx{background:var(--ledger);border-color:var(--ledger);color:var(--ledger-ink)}
+.clist li.warn .bx{background:var(--amber);border-color:var(--amber);color:#fff}
+.clist li small{display:block;color:var(--muted);font-size:.75rem}
+.tie{width:100%;border-collapse:collapse;font-size:.78rem;margin-top:14px}
+.tie th,.tie td{padding:6px 8px;border-bottom:1px solid var(--rule);text-align:right;white-space:nowrap}
+.tie th:first-child,.tie td:first-child{text-align:left;white-space:normal}
+.tie th{color:var(--muted);font-weight:600;font-size:.72rem}
+.tie td{font-family:var(--f-mono)}
+.tie td:first-child{font-family:var(--f-body)}
+.exp{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:14px;font-size:.8rem}
+.exp .tag.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+/* Calculator, pricing, trust */
+.calc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;margin-top:30px;align-items:center}
+@media (max-width:860px){.calc{grid-template-columns:minmax(0,1fr)}}
+.sl{display:grid;gap:6px;margin-bottom:18px}
+.sl label{display:flex;justify-content:space-between;font-size:.9rem}
+.sl label b{font-family:var(--f-mono)}
+input[type=range]{width:100%;accent-color:var(--ledger)}
+.result{background:var(--ink);color:var(--paper);border-radius:16px;padding:26px}
+.result .big{font-family:var(--f-display);font-size:clamp(2.6rem,6vw,4rem);font-weight:800;line-height:1}
+.result .big small{font-size:1rem;font-family:var(--f-body);font-weight:500}
+.result p{opacity:.8;font-size:.9rem;margin-top:10px}
+.result .row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin-top:20px;padding-top:16px;border-top:1px solid color-mix(in srgb,var(--paper) 25%,transparent)}
+.result .row b{display:block;font-family:var(--f-mono);font-size:1.3rem}
+.result .row span{font-size:.78rem;opacity:.75}
+.note{font-size:.78rem;color:var(--muted);margin-top:12px}
+.price{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:20px;margin-top:30px}
+@media (max-width:860px){.price{grid-template-columns:minmax(0,1fr)}}
+.plan{background:var(--sheet);border:1px solid var(--rule);border-radius:16px;padding:24px}
+.plan.main{border:2px solid var(--ledger)}
+.plan h3{font-size:1.2rem}
+.plan .p{font-family:var(--f-display);font-size:2.4rem;font-weight:800;margin-top:10px;line-height:1.1}
+.plan .p small{font-size:.9rem;font-family:var(--f-body);font-weight:500;color:var(--muted)}
+.plan ul{margin:14px 0 0;padding-left:1.1em;color:var(--muted);font-size:.92rem}
+.trust{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 32px;margin-top:34px}
+.trust h3{font-size:1.05rem;margin-bottom:6px}
+.trust p{color:var(--muted);font-size:.92rem}
+@media (max-width:860px){.trust{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+@media (max-width:520px){.trust{grid-template-columns:minmax(0,1fr)}}
+.road{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:34px;border-top:2px solid var(--ink)}
+.road div{padding:14px 16px 0 0;position:relative}
+.road div::before{content:"";position:absolute;top:-7px;left:0;width:12px;height:12px;border-radius:50%;background:var(--paper);border:2px solid var(--ink)}
+.road div:first-child::before{background:var(--ledger);border-color:var(--ledger)}
+.road b{font-family:var(--f-mono);font-size:.8rem;color:var(--muted)}
+.road h3{font-size:1rem;margin-top:4px}
+.road p{font-size:.86rem;color:var(--muted);margin-top:4px}
+@media (max-width:860px){.road{grid-template-columns:minmax(0,1fr) minmax(0,1fr);row-gap:24px}}
+@media (max-width:520px){.road{grid-template-columns:minmax(0,1fr)}}
+.pilot{background:var(--ledger);color:var(--ledger-ink);border-radius:22px;padding:44px clamp(20px,5vw,56px);display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:32px;align-items:center}
+.pilot h2{font-size:clamp(1.7rem,3.4vw,2.6rem)}
+.pilot p{opacity:.9;margin-top:12px}
+.pilot ul{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.pilot li{background:color-mix(in srgb,var(--ledger-ink) 10%,transparent);border-radius:12px;padding:12px 14px;font-size:.95rem}
+.contact{margin-top:20px;font-weight:600}
+@media (max-width:860px){.pilot{grid-template-columns:minmax(0,1fr)}}
+footer{padding-block:40px 60px;color:var(--muted);font-size:.85rem;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
+
+
+/* ---- v2: hero pipeline, race, pitch mode, reveals ---- */
+.kw{display:inline-block;animation:kw .9s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i)*130ms + 150ms)}
+@keyframes kw{from{transform:translateY(.55em) rotate(2deg);opacity:0;filter:blur(8px)}}
+.pipe{background:var(--sheet);border:1px solid var(--rule);border-radius:18px;box-shadow:var(--shadow);overflow:hidden;position:relative}
+.pipe-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 18px;border-bottom:1px solid var(--rule);background:var(--sheet-2);font-size:.82rem}
+.live{display:inline-flex;align-items:center;gap:7px;font-weight:600}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--stamp);box-shadow:0 0 0 0 var(--stamp);animation:live 1.6s infinite}
+@keyframes live{70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}
+#pipeCanvas{display:block;width:100%;height:400px}
+@media (max-width:560px){#pipeCanvas{height:470px}}
+.pipe-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--rule)}
+.pipe-stats div{padding:10px 14px;border-right:1px solid var(--rule);font-size:.72rem;color:var(--muted);min-width:0}
+.pipe-stats div:last-child{border-right:0}
+.pipe-stats b{display:block;font-family:var(--f-mono);font-size:1.15rem;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pipe-stats .bad b{color:var(--stamp)}
+.pipe-stats .good b{color:var(--ledger)}
+@media (max-width:560px){.pipe-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.pipe-stats div:nth-child(2){border-right:0}.pipe-stats div:nth-child(-n+2){border-bottom:1px solid var(--rule)}}
+
+.race{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;margin-top:30px}
+@media (max-width:760px){.race{grid-template-columns:minmax(0,1fr)}}
+.race-side{background:var(--sheet);border:1px solid var(--rule);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+.race-side.us{border:2px solid var(--ledger)}
+.race-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.race-top h3{font-size:1.15rem}
+.race-day{font-family:var(--f-display);font-size:2.4rem;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.race-day small{font-family:var(--f-body);font-size:.8rem;font-weight:500;color:var(--muted)}
+.dots{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:6px;margin-top:16px}
+.dots i{aspect-ratio:1;border-radius:6px;background:var(--sheet-2);border:1px solid var(--rule);transition:background .25s,border-color .25s,transform .25s}
+.dots i.w{background:var(--amber-soft);border-color:var(--amber);animation:pulse 1s infinite}
+.dots i.d{background:var(--ledger);border-color:var(--ledger);transform:scale(.92)}
+.dots i.l{background:var(--stamp);border-color:var(--stamp)}
+@keyframes pulse{50%{opacity:.55}}
+.race-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:16px;font-size:.75rem;color:var(--muted)}
+.race-stats b{display:block;font-family:var(--f-mono);font-size:1.25rem;color:var(--ink)}
+.race-stats .late b{color:var(--stamp)}
+.race-bar{position:relative;height:8px;background:var(--sheet-2);border:1px solid var(--rule);border-radius:4px;margin-top:26px}
+.race-bar i{position:absolute;inset:0 auto 0 0;background:var(--ink);border-radius:4px;width:0}
+.race-bar span{position:absolute;top:-22px;transform:translateX(-50%);font-family:var(--f-mono);font-size:.72rem;color:var(--stamp);font-weight:600}
+.race-bar span::after{content:"";position:absolute;left:50%;top:18px;width:2px;height:12px;background:var(--stamp)}
+.race-ctl{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:22px}
+
+.ov-grid{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:40px;align-items:center}
+@media (max-width:960px){.ov-grid{grid-template-columns:minmax(0,1fr)}}
+
+.pitch-btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--rule);background:var(--sheet);border-radius:999px;padding:6px 12px;font-size:.85rem;font-weight:600;cursor:pointer}
+.pitch-btn:hover{border-color:var(--ink)}
+.pitchbar{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:80;background:var(--ink);color:var(--paper);border-radius:16px;padding:10px 12px 12px;width:min(640px,calc(100% - 32px));box-shadow:0 20px 60px -10px rgba(0,0,0,.5)}
+.pitchbar[hidden]{display:none!important}
+.pb-row{display:flex;align-items:center;gap:8px}
+.pb-row button{border:0;background:color-mix(in srgb,var(--paper) 14%,transparent);color:var(--paper);border-radius:10px;min-width:38px;height:36px;cursor:pointer;font-size:.95rem}
+.pb-row button:hover{background:color-mix(in srgb,var(--paper) 26%,transparent)}
+.pb-cap{flex:1;min-width:0;font-size:.88rem;line-height:1.35}
+.pb-cap small{display:block;opacity:.65;font-family:var(--f-mono);font-size:.72rem}
+.pb-cap b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pb-prog{height:3px;background:color-mix(in srgb,var(--paper) 18%,transparent);border-radius:2px;margin-top:9px;overflow:hidden}
+.pb-prog i{display:block;height:100%;width:0;background:var(--ledger)}
+.pb-keys{font-size:.68rem;opacity:.55;margin-top:6px;text-align:center}
+body.pitching .day,body.pitching .band{transition:opacity .5s}
+.spot{outline:3px solid color-mix(in srgb,var(--ledger) 60%,transparent);outline-offset:8px;border-radius:18px;transition:outline-color .4s}
+
+@supports (animation-timeline: view()){
+  .rv{animation:rv linear both;animation-timeline:view();animation-range:entry 0% cover 28%}
+  @keyframes rv{from{opacity:0;transform:translateY(48px) scale(.98)}}
+}
+
+
+/* ---- v3: more examples ---- */
+.demo-bar .tabs{min-width:0}
+.tabs button{white-space:nowrap}
+.onb{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
+.onb > div:first-child{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 20px;align-items:start;padding-bottom:14px;border-bottom:1px dashed var(--rule)}
+.onb > div:first-child > label,.onb .lk-row{grid-column:1/-1}
+.onb .sw{border-top:0;padding-top:0}
+@media (max-width:520px){.onb > div:first-child{grid-template-columns:minmax(0,1fr)}}
+.lk-row{display:flex;gap:8px;align-items:center;margin-top:4px}
+.lk-row input{flex:1;min-width:0;font-family:var(--f-mono);letter-spacing:.06em;border:1px solid var(--rule);background:var(--sheet-2);border-radius:8px;padding:7px 10px}
+.lk-st{font-size:.78rem;font-weight:600;color:var(--muted);white-space:nowrap}
+.lk-st.ok{color:var(--ledger)}
+.prof{margin-top:12px;font-size:.82rem;min-height:20px}
+.prof b{font-family:var(--f-display);font-size:1rem}
+.prof dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 12px;margin:6px 0}
+.prof dt{color:var(--muted)}.prof dd{margin:0}
+.prof small{color:var(--ledger);font-size:.72rem}
+.sw{display:grid;gap:6px;margin-top:12px;font-size:.84rem;border-top:1px dashed var(--rule);padding-top:10px}
+.sw label{display:flex;align-items:center;gap:8px;cursor:pointer}
+.sw label.dim{opacity:.45}
+.sw input{accent-color:var(--ledger);width:16px;height:16px}
+.sw select{border:1px solid var(--rule);background:var(--sheet-2);border-radius:6px;padding:2px 6px;font-size:.8rem}
+.onb-big{display:flex;align-items:center;gap:12px}
+.onb-big b{font-family:var(--f-display);font-size:3.2rem;line-height:1;color:var(--ledger);font-variant-numeric:tabular-nums}
+.onb-big span{font-size:.82rem;color:var(--muted);line-height:1.4}
+.mbars{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:4px;height:104px;margin-top:12px}
+.mbars div{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;font-size:.6rem;color:var(--muted);min-width:0}
+.mbars span{font-family:var(--f-mono);color:var(--ink)}
+.mbars i{width:100%;background:var(--ledger);border-radius:3px 3px 0 0;transition:height .7s cubic-bezier(.2,.8,.2,1);min-height:2px}
+.mbars i.pk{background:var(--stamp)}
+.mbars em{font-style:normal;margin-top:3px;white-space:nowrap}
+.ob-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.obc{display:grid;font-size:.7rem;color:var(--muted);border:1px solid var(--rule);background:var(--sheet-2);border-radius:8px;padding:4px 8px;line-height:1.35}
+.obc b{color:var(--ink);font-size:.82rem}
+.obc em{font-style:normal;color:var(--ledger);font-weight:600}
+.ob-list{display:grid;gap:4px;margin-top:6px;font-size:.78rem}
+.obl{display:grid;grid-template-columns:5.2em minmax(0,1fr) auto;gap:8px;padding:5px 0;border-bottom:1px dashed var(--rule)}
+.obl em{font-style:normal;font-family:var(--f-mono);font-size:.74rem;white-space:nowrap}
+.obl span{color:var(--muted)}
+.filemsg{display:flex;gap:8px;align-items:center}
+.filemsg .fi{background:#D9473A;color:#fff;font-weight:700;font-size:.62rem;border-radius:4px;padding:6px 5px}
+.filemsg small{opacity:.7}
+.queue{display:flex;gap:6px;overflow-x:auto;padding:10px 14px;border-bottom:1px solid var(--rule);scrollbar-width:thin;scroll-behavior:smooth}
+.qi{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--rule);background:var(--sheet);border-radius:999px;padding:4px 11px;font-size:.76rem;cursor:pointer;white-space:nowrap}
+.qi[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.qd{width:8px;height:8px;border-radius:50%;background:var(--rule);flex:0 0 auto}
+.qi.st-ok .qd{background:var(--ledger)}.qi.st-warn .qd{background:var(--amber)}.qi.st-no .qd{background:var(--stamp)}.qi.st-info .qd{background:var(--blue)}
+.b-info{background:var(--blue-soft);color:var(--blue)}
+.verdict.warn{background:var(--amber-soft);color:var(--amber)}
+.verdict.info{background:var(--blue-soft);color:var(--blue)}
+.xml{font-family:var(--f-mono);font-size:.62rem;line-height:1.6;background:#F3F5FA;border:1px solid #DCE2EE;border-radius:4px;padding:8px;margin:8px 0 0;white-space:pre-wrap;overflow-wrap:anywhere;color:#283048}
+.xml .tg{color:#8590A6}
+.sig{display:inline-block;margin-top:6px;font-size:.66rem;font-weight:700;color:#0B6A4E;border:1px solid #0B6A4E;border-radius:4px;padding:0 6px}
+.inv.hand{font-family:"Mali","Sarabun",cursive;background-color:#FFFBEA;background-image:repeating-linear-gradient(to bottom,transparent 0 21px,#EAE0BF 21px 22px);color:#1F3A8A}
+.inv.en{font-family:var(--f-body)}
+.batch{width:100%;border-collapse:collapse;font-size:.78rem;min-width:540px}
+.batch th,.batch td{padding:7px 10px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:middle}
+.batch th{color:var(--muted);font-weight:600;font-size:.72rem}
+.batch .r{text-align:right;white-space:nowrap}
+.batch small{color:var(--muted);font-size:.7rem}
+.batch tr.pend td{color:var(--muted)}
+.btot{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:var(--sheet-2)}
+.btot div{padding:10px 14px;border-right:1px solid var(--rule);font-size:.72rem;color:var(--muted)}
+.btot div:last-child{border-right:0}
+.btot b{display:block;font-size:1.05rem;color:var(--ink)}
+.btot .g b{color:var(--ledger)}
+@media (max-width:520px){.btot{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.pp-tabs{padding:10px 14px;border-bottom:1px solid var(--rule)}
+.pp tr.refund td{background:var(--blue-soft);color:var(--blue)}
+
+
+/* ---- v4: sync hub, payroll, firm ---- */
+.span2{grid-column:2 / -1}
+@media (max-width:960px){.span2{grid-column:auto}}
+.flowbar{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--rule);overflow:hidden}
+.fb-in{display:flex;gap:4px;flex-wrap:wrap;max-width:40%}
+.fb-in i,.sb{font-style:normal;display:inline-grid;place-items:center;min-width:30px;height:24px;padding:0 6px;border-radius:6px;background:var(--c);color:#fff;font-weight:700;font-size:.66rem}
+.fb-line{flex:1;min-width:20px;height:2px;background:repeating-linear-gradient(90deg,var(--ledger) 0 6px,transparent 6px 14px);background-size:14px 2px;animation:flow 0.6s linear infinite;opacity:.7}
+@keyframes flow{to{background-position:14px 0}}
+.fb-core{background:var(--ink);color:var(--paper);border-radius:12px;padding:8px 14px;font-family:var(--f-display);font-weight:800;text-align:center;line-height:1.2}
+.fb-core small{display:block;font-family:var(--f-body);font-weight:500;font-size:.62rem;opacity:.75}
+.fb-out{display:flex;flex-direction:column;gap:3px;font-size:.7rem}
+.fb-out span{border:1px solid var(--rule);border-radius:6px;padding:1px 8px;background:var(--sheet-2);white-space:nowrap}
+@media (max-width:640px){.fb-out{display:none}.fb-in{max-width:60%}}
+.sync{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,9fr)}
+@media (max-width:860px){.sync{grid-template-columns:minmax(0,1fr)}.src-list{flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--rule)}.src{flex:0 0 auto;max-width:240px}}
+.src-list{display:flex;flex-direction:column;border-right:1px solid var(--rule);padding:8px}
+.src{display:flex;gap:10px;align-items:center;text-align:left;border:1px solid transparent;background:transparent;border-radius:10px;padding:8px 10px;cursor:pointer}
+.src[aria-pressed="true"]{background:var(--sheet-2);border-color:var(--rule)}
+.src b{display:block;font-size:.85rem}
+.src small{display:block;font-size:.7rem;color:var(--muted);line-height:1.3}
+.src-detail{padding:16px 18px;min-width:0;min-height:380px}
+.sd-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.sd-head > div{flex:1;min-width:0}
+.sd-head small{display:block;color:var(--muted);font-size:.74rem}
+.map{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.map span{font-size:.72rem;border:1px dashed var(--rule);border-radius:6px;padding:2px 8px;color:var(--muted);transition:all .3s}
+.map span.on,.map span:not([class]){border-style:solid;color:var(--ink);background:var(--sheet-2)}
+.map em{font-style:normal;color:var(--ledger);font-family:var(--f-mono);font-size:.66rem}
+.sheet{width:100%;border-collapse:collapse;font-size:.74rem;min-width:520px}
+.sheet th{background:var(--sheet-2);color:var(--muted);font-weight:500;font-size:.66rem;border:1px solid var(--rule);padding:2px 6px}
+.sheet td{border:1px solid var(--rule);padding:4px 6px;transition:background .3s}
+.sheet .hdr td{background:var(--sheet-2);font-weight:600}
+.sheet td.r{text-align:right;font-family:var(--f-mono)}
+.sheet small{color:var(--muted);font-size:.66rem}
+.sheet tr.s-ok td{background:color-mix(in srgb,var(--ledger-soft) 55%,transparent)}
+.sheet tr.s-warn td{background:color-mix(in srgb,var(--amber-soft) 70%,transparent)}
+.sheet tr.s-no td{background:color-mix(in srgb,var(--stamp-soft) 70%,transparent)}
+.sheet tr.s-dup td{color:var(--muted);text-decoration:line-through}
+.pill.r{background:var(--stamp-soft);color:var(--stamp);border-color:transparent}
+.pill.b{background:var(--blue-soft);color:var(--blue);border-color:transparent}
+.slog{margin-top:10px;border-top:1px dashed var(--rule);padding-top:8px;display:grid;gap:3px;font-size:.76rem}
+.slog div{display:grid;grid-template-columns:4.6em minmax(0,1fr);gap:8px}
+.slog .num{color:var(--muted);font-size:.7rem}
+.file{display:inline-grid;gap:3px;font-size:.74rem;border:1px solid var(--rule);border-radius:8px;padding:4px 10px;background:var(--sheet-2)}
+.file i{display:block;height:3px;background:var(--ledger);border-radius:2px;transition:width .5s}
+.addr{border:1px solid var(--rule);background:var(--sheet-2);border-radius:10px;padding:10px 12px;font-size:.8rem;margin-bottom:10px}
+.addr b{display:block;font-size:.95rem;color:var(--ledger)}
+.addr small{color:var(--muted)}
+.inbox{display:grid;gap:6px}
+.mail{display:grid;grid-template-columns:10px minmax(0,1fr) minmax(0,auto);gap:10px;align-items:start;border-bottom:1px solid var(--rule);padding:8px 0;font-size:.78rem}
+.mail b{display:block}.mail small{display:block;color:var(--muted);font-size:.7rem}
+.mail .res{text-align:right;max-width:46%}
+.dot{width:8px;height:8px;border-radius:50%;margin-top:6px;background:var(--rule)}
+.dot.s-ok{background:var(--ledger)}.dot.s-warn{background:var(--amber)}.dot.s-info{background:var(--blue)}
+.tree{font-size:.8rem;display:grid;gap:4px}
+.drf span{color:var(--ledger);font-size:.74rem}
+.bank{display:grid;gap:4px}
+.bkr{display:grid;grid-template-columns:3em minmax(0,1.2fr) 7em minmax(0,1.6fr);gap:8px;align-items:center;font-size:.76rem;padding:6px 8px;border-radius:8px;border:1px solid var(--rule);transition:background .3s}
+.bkr b.in{color:var(--ledger)}
+.bkr b{text-align:right}
+.bkr .link{color:var(--muted);font-size:.72rem}
+.bkr.s-ok{background:color-mix(in srgb,var(--ledger-soft) 55%,transparent)}.bkr.s-ok .link{color:var(--ledger)}
+.bkr.s-warn{background:var(--amber-soft)}.bkr.s-warn .link{color:var(--amber)}
+.bkr.s-info .link{color:var(--blue)}
+@media (max-width:560px){.bkr{grid-template-columns:3em minmax(0,1fr) auto}.bkr .link{grid-column:1/-1}}
+.days{display:grid;grid-template-columns:repeat(31,minmax(0,1fr));gap:2px;height:70px;align-items:end;margin:6px 0 10px}
+.days i{background:var(--amber);border-radius:2px 2px 0 0;transition:height .4s}
+.plat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.plat div{border:1px solid var(--rule);border-radius:10px;padding:8px 10px;font-size:.74rem;opacity:.35;transition:opacity .4s}
+.plat div.on{opacity:1}
+.plat b{display:block}.plat .num{font-size:.95rem}.plat small{display:block;color:var(--muted);font-size:.66rem}
+@media (max-width:560px){.plat{grid-template-columns:minmax(0,1fr)}}
+.targets{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.jr{border:1px solid var(--rule);border-radius:10px;padding:8px 12px;margin-bottom:8px;font-size:.76rem;transition:opacity .4s}
+.jr.dim{opacity:.3}
+.jr table{width:100%;border-collapse:collapse;margin-top:4px}
+.jr td{padding:2px 0}.jr td.r{width:7.5em;text-align:right}
+.payt{width:100%;border-collapse:collapse;font-size:.8rem;min-width:520px}
+.payt th,.payt td{padding:6px 10px;border-bottom:1px solid var(--rule);text-align:left}
+.payt th{font-size:.72rem;color:var(--muted);font-weight:600}
+.payt .r{text-align:right}
+.payt small{display:block;color:var(--muted);font-size:.68rem}
+.payt input{width:7.5em;text-align:right;border:1px solid var(--rule);background:var(--sheet-2);border-radius:6px;padding:3px 6px;font-size:.8rem}
+.staff{display:grid;gap:10px}
+.sc{border:1px solid var(--rule);border-radius:12px;padding:10px 12px;display:grid;gap:6px}
+.sh{display:flex;align-items:center;gap:10px}
+.sh div{flex:1}.sh small{display:block;color:var(--muted);font-size:.72rem}
+.av2{width:32px;height:32px;border-radius:50%;background:var(--ledger-soft);color:var(--ledger);display:grid;place-items:center;font-weight:700}
+.lb small{font-size:.7rem;color:var(--muted)}
+.lb .tr{height:7px;background:var(--sheet-2);border:1px solid var(--rule);border-radius:4px;overflow:hidden}
+.lb .tr i{display:block;height:100%;background:var(--amber);transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.lb .tr i.g{background:var(--ledger)}
+.revq{display:grid;gap:6px}
+.rv-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;align-items:center;border:1px solid var(--rule);border-radius:10px;padding:8px 12px;font-size:.8rem;transition:background .3s}
+.rv-row small{display:block;color:var(--muted);font-size:.72rem}
+.rv-row.s-ok{background:color-mix(in srgb,var(--ledger-soft) 45%,transparent)}
+.rv-row.s-back{background:var(--amber-soft)}
+.cm{margin-top:4px;color:var(--amber);font-size:.74rem}
+.fees{min-width:0}
+.ask{display:grid;gap:10px}
+.qchips{display:flex;flex-wrap:wrap;gap:6px}
+.qchips .tag{cursor:pointer}
+.qchips .tag.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.qbox{border:1px solid var(--rule);border-radius:10px;padding:10px 12px;background:var(--sheet-2);font-size:.88rem;min-height:44px}
+.abox{border-left:3px solid var(--ledger);padding:4px 0 4px 12px;font-size:.84rem;min-height:120px;display:grid;gap:6px;align-content:start}
+.abox small{color:var(--muted);font-size:.76rem}
+.ans{margin:0;padding-left:1.1em;display:grid;gap:3px}
+.ans small{color:var(--muted)}
+.spark{width:160px;height:40px}
+.tl{display:grid;gap:0;margin-top:8px;border-left:2px solid var(--rule);padding-left:14px}
+.tl div{display:grid;grid-template-columns:7.2em 9em minmax(0,1fr);gap:8px;padding:6px 0;font-size:.78rem;position:relative}
+.tl div::before{content:"";position:absolute;left:-20px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--sheet);border:2px solid var(--ledger)}
+.tl .num{color:var(--muted);font-size:.72rem}
+@media (max-width:560px){.tl div{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:860px){.sync .src-list{flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--rule)}.sync .src{flex:0 0 auto;max-width:230px}.src-detail{min-height:0}}
+
+
+/* ---- v5: compare ---- */
+.cmp{width:100%;border-collapse:collapse;font-size:.84rem;min-width:680px}
+.cmp th,.cmp td{padding:10px 12px;border-bottom:1px solid var(--rule);text-align:center;vertical-align:middle}
+.cmp th:first-child,.cmp td:first-child{text-align:left;width:38%}
+.cmp th{font-family:var(--f-display);font-size:.92rem;line-height:1.3}
+.cmp th small{display:block;font-family:var(--f-body);font-weight:500;font-size:.7rem;color:var(--muted)}
+.cmp .us{background:color-mix(in srgb,var(--ledger-soft) 60%,transparent)}
+.cmp th.us{color:var(--ledger)}
+.cmp tfoot td{font-weight:600;border-bottom:0}
+.cmk{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;font-weight:700;animation:pop .35s cubic-bezier(.3,1.6,.5,1)}
+.cy{background:var(--ledger);color:var(--ledger-ink)}
+.cp{background:var(--amber-soft);color:var(--amber)}
+.cn{color:var(--muted)}
+@keyframes pop{from{transform:scale(.3);opacity:0}}
+
+
+/* ---- v6: classify + PEAK export ---- */
+.cls-steps{display:flex;flex-wrap:wrap;gap:6px 14px;padding:10px 14px;border-bottom:1px solid var(--rule);font-size:.8rem;color:var(--muted)}
+.cls-steps span{display:inline-flex;align-items:center;gap:6px}
+.cls-steps b{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--rule);font-size:.68rem}
+.cls-steps .on{color:var(--ink);font-weight:600}.cls-steps .on b{border-color:var(--ink)}
+.cls-steps .done{color:var(--ledger)}.cls-steps .done b{background:var(--ledger);border-color:var(--ledger);color:var(--ledger-ink)}
+.clst{min-width:860px}
+.clst td{vertical-align:top}
+.clst td small{display:block;color:var(--muted);font-size:.68rem;line-height:1.35;margin-top:2px}
+.coa{border:1px solid var(--rule);background:var(--sheet);border-radius:6px;padding:2px 4px;font-size:.74rem;max-width:230px}
+.conf{display:inline-block;width:46px;height:6px;border-radius:3px;background:var(--sheet-2);border:1px solid var(--rule);overflow:hidden;vertical-align:middle;margin-right:4px}
+.conf i{display:block;height:100%;background:var(--ledger)}
+.conf.lo i{background:var(--amber)}
+.file small{display:block;color:var(--muted);font-size:.7rem}
+
+@media (prefers-reduced-motion: reduce){.rv{animation:none!important}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}html{scroll-behavior:auto}}
+</style>
+
+<header class="top">
+  <div class="proto">ต้นแบบเพื่อการนำเสนอ · ชื่อกิจการ เลขผู้เสียภาษี และตัวเลขทั้งหมดในหน้านี้เป็นข้อมูลสมมติ</div>
+  <div class="wrap">
+    <div class="top-in">
+      <a class="brand" href="#top" aria-label="ปิดงวด หน้าแรก">
+        <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="15" fill="none" stroke="var(--stamp)" stroke-width="2.5"/><circle cx="17" cy="17" r="11" fill="none" stroke="var(--stamp)" stroke-width="1" stroke-dasharray="2 2"/><path d="M11 17.5l4 4 8-9" fill="none" stroke="var(--ledger)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>ปิดงวด <small>PIDNGOD</small></span>
+      </a>
+      <nav class="nav" aria-label="เมนูหลัก">
+        <a href="#day1">ฟีเจอร์</a><a href="#compare">เปรียบเทียบ</a><a href="#calc">คำนวณเวลา</a><a href="#pricing">ราคา</a><a href="#trust">ความปลอดภัย</a>
+      </nav>
+      <button class="pitch-btn" type="button" id="pitchStart" title="เดินผ่านทุกส่วนอัตโนมัติ">▶ โหมดนำเสนอ</button>
+      <a class="btn sm go" href="#pilot">สมัครนำร่อง</a>
+    </div>
+    <div class="rail" aria-hidden="true">
+      <span class="rail-label" id="railLabel">หนึ่งเดือนของสำนักงานบัญชี</span>
+      <div class="rail-ticks" id="railTicks"></div>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">สำหรับผู้ทำบัญชีอิสระ และสำนักงานบัญชีขนาดเล็ก</div>
+        <h1><span class="kw" style="--i:0;white-space:nowrap">ทุกลูกค้า</span> <span class="kw" style="--i:1;white-space:nowrap">ทุกแบบภาษี</span> <span class="kw" style="--i:2"><em>ปิดงวด</em>ได้</span> <span class="kw" style="--i:3">บนกระดานเดียว</span></h1>
+        <p class="lead">รับเอกสารจากลูกค้าผ่าน <b>LINE</b> ให้ <b>AI อ่านใบกำกับภาษี</b> ตรวจตามประมวลรัษฎากร แล้วเตรียม <b>ภ.พ.30 ภ.ง.ด.3 ภ.ง.ด.53</b> และ <b>หนังสือรับรอง 50 ทวิ</b> ให้พร้อมยื่น คุณตรวจและยืนยันทุกตัวเลขเอง</p>
+        <p class="lead" style="margin-top:10px">ใช้คู่กับ Express, PEAK, FlowAccount หรือ Excel ที่ลูกค้าใช้อยู่แล้ว ไม่ต้องย้ายระบบบัญชี</p>
+        <div class="cta-row">
+          <a class="btn" href="#day1">ดูหนึ่งเดือนบนปิดงวด ↓</a>
+          <a class="btn ghost" href="#pilot">เป็นสำนักงานนำร่อง</a>
+        </div>
+        <div class="forms-line" aria-label="แบบที่รองรับ">
+          <span class="tag">ภ.พ.30</span><span class="tag">ภ.ง.ด.1</span><span class="tag">ภ.ง.ด.3</span><span class="tag">ภ.ง.ด.53</span><span class="tag">สปส.1-10</span><span class="tag">50 ทวิ</span><span class="tag">รายงานภาษีซื้อ / ขาย</span>
+        </div>
+      </div>
+      <div class="pipe rv" id="pipe">
+        <div class="pipe-head"><span class="live"><i></i> สายพานเอกสารของสำนักงาน · ตัวอย่างสด</span><span class="eyebrow">เดือนภาษี ต.ค. 2569</span></div>
+        <canvas id="pipeCanvas" aria-label="ภาพเคลื่อนไหว เอกสารจาก LINE อีเมล และ e-Tax ผ่านการอ่านด้วย AI และกฎตรวจ แล้วแยกเข้าแบบ ภ.พ.30 ภ.ง.ด.3 ภ.ง.ด.53 และ 50 ทวิ ใบที่มีปัญหาถูกส่งกลับลูกค้า" role="img"></canvas>
+        <div class="pipe-stats">
+          <div>เอกสารเข้า<b id="psDocs">0</b></div>
+          <div class="good">ผ่านกฎตรวจ<b id="psOk">0</b></div>
+          <div>ภาษีซื้อที่ตรวจแล้ว<b id="psVat">฿0</b></div>
+          <div class="bad">ปัญหาที่จับได้ก่อนยื่น<b id="psBad">0</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="crunch">
+    <div class="wrap">
+      <div class="eyebrow">ปัญหาที่ทุกสำนักงานเจอ</div>
+      <h2>ทุกเดือน ระหว่างวันที่ 1 ถึง 23</h2>
+      <p class="sub">งานยื่นภาษีรายเดือนของลูกค้าทุกราย อัดแน่นอยู่ในสามสัปดาห์ และยิ่งรับลูกค้าเพิ่ม งานก็ยิ่งเพิ่มตาม</p>
+      <div class="strip" id="strip"></div>
+      <div class="strip-notes">
+        <div><b>7</b> ภ.ง.ด.1 · 3 · 53 · 54 และ ภ.พ.36 (ยื่นแบบกระดาษ)</div>
+        <div><b>15</b> ภ.พ.30 แบบกระดาษ · ภ.ง.ด. ยื่นออนไลน์ · ประกันสังคม</div>
+        <div><b>23</b> ภ.พ.30 ยื่นออนไลน์</div>
+      </div>
+      <div class="pains">
+        <div><h3>ตามเอกสารในแชต</h3><p>รูปใบเสร็จจมอยู่ในแชต LINE ของลูกค้าหลายสิบกลุ่ม ต้องเลื่อนหาและทวงทีละราย</p></div>
+        <div><h3>คีย์ทีละใบ</h3><p>ใบกำกับภาษีหลายร้อยใบต่อเดือน พิมพ์เลขผู้เสียภาษี 13 หลักและยอดเงินซ้ำทุกเดือน</p></div>
+        <div><h3>ภาษีซื้อหลุด</h3><p>ใบกำกับภาษีอย่างย่อ ชื่อผู้ซื้อไม่ตรง หรือเกิน 6 เดือน ทำให้นำภาษีซื้อมาหักไม่ได้</p></div>
+        <div><h3>ยื่นช้า ลูกค้าโทษเรา</h3><p>เงินเพิ่มร้อยละ 1.5 ต่อเดือนและเบี้ยปรับ คนที่ต้องอธิบายคือผู้ทำบัญชี</p></div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="band" id="race">
+    <div class="wrap">
+      <div class="eyebrow">จำลอง: ลูกค้า 40 ราย เดือนภาษีเดียวกัน</div>
+      <h2>วิธีเดิม กับ ปิดงวด ในเดือนเดียวกัน</h2>
+      <p class="sub">แต่ละช่องคือลูกค้าหนึ่งราย สีเขียวคือยื่นครบทุกแบบแล้ว สีแดงคือเลยกำหนด</p>
+      <div class="race-bar rv" id="raceBar"><i id="raceFill"></i><span style="left:calc(7/23*100%)">7</span><span style="left:calc(15/23*100%)">15</span><span style="left:100%">23</span></div>
+      <div class="race">
+        <div class="race-side rv" id="raceOld">
+          <div class="race-top"><h3>วิธีเดิม<br><small class="eyebrow">LINE + Excel + คีย์มือ</small></h3><div class="race-day"><small>วันที่ </small><span>23</span></div></div>
+          <div class="dots"></div>
+          <div class="race-stats"><div>ยื่นครบ<b class="r-done">0/40</b></div><div>ชั่วโมงที่ใช้<b class="r-hrs">0</b></div><div class="late">เลยกำหนด<b class="r-late">0</b></div></div>
+        </div>
+        <div class="race-side us rv" id="raceNew">
+          <div class="race-top"><h3>ปิดงวด<br><small class="eyebrow">LINE → AI → ตรวจ → ยื่น</small></h3><div class="race-day"><small>วันที่ </small><span>23</span></div></div>
+          <div class="dots"></div>
+          <div class="race-stats"><div>ยื่นครบ<b class="r-done">0/40</b></div><div>ชั่วโมงที่ใช้<b class="r-hrs">0</b></div><div class="late">เลยกำหนด<b class="r-late">0</b></div></div>
+        </div>
+      </div>
+      <div class="race-ctl"><button class="btn" type="button" id="raceGo">▶ เริ่มจำลองทั้งเดือน</button><span class="note" style="margin:0">จำลองจาก 120 นาทีต่อลูกค้า และเป้าหมายลดเวลาร้อยละ 50 ของช่วงนำร่อง ไม่ใช่ผลที่วัดได้จริง</span></div>
+    </div>
+  </section>
+
+  <section class="band" id="overview" data-day="1" data-label="กระดานกำหนดยื่น">
+    <div class="wrap ov-grid">
+      <div class="copy rv">
+        <div class="eyebrow">กระดานกำหนดยื่น</div>
+        <h2>เห็นทุกลูกค้า ทุกแบบ ทุกสถานะ ในหน้าเดียว</h2>
+        <p class="sub">ไม่ต้องเปิดแฟ้มทีละราย ไม่ต้องจดในสมุด รู้ทันทีว่าใครยังไม่ส่งเอกสาร ใบไหนรอตรวจ ลูกค้ารายไหนยังไม่อนุมัติ และแบบไหนยื่นแล้วแต่ยังไม่ชำระ</p>
+        <ul class="ticks"><li>เรียงตามวันครบกำหนด และเตือนก่อนถึงวันจริง</li><li>มอบหมายลูกค้าให้ผู้ทำบัญชีแต่ละคนในสำนักงาน</li><li>ผู้ตรวจอนุมัติก่อนยื่นได้ สำหรับสำนักงานที่มีหลายคน</li></ul>
+      </div>
+      <div class="board rv" id="heroBoard">
+        <div class="board-head">
+          <div>
+            <h3>กระดานกำหนดยื่น · เดือนภาษี ต.ค. 2569</h3>
+            <div class="meta">ยื่นออนไลน์ · ภ.ง.ด. และ สปส. ภายใน 16 พ.ย. · ภ.พ.30 ภายใน 23 พ.ย.</div>
+          </div>
+          <span class="count-chip" id="boardCount">ยื่นแล้ว 0/0</span>
+        </div>
+        <div class="scroll-x"><table class="grid" id="boardTable"></table></div>
+        <div class="legend">
+          <span><i class="cell s0">รอเอกสาร</i></span><span><i class="cell s1">กำลังตรวจ</i></span><span><i class="cell s2">รออนุมัติ</i></span><span><i class="cell s3" style="transform:none">ยื่นแล้ว</i></span><span><i class="cell s4">ชำระแล้ว</i></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="month-intro">
+    <div class="wrap">
+      <div class="eyebrow">เดินตามหนึ่งเดือนจริงของสำนักงานบัญชี</div>
+      <h2 style="font-size:clamp(1.6rem,3vw,2.4rem)">ตัวอย่าง: เดือนภาษีตุลาคม 2569 ของ บจ. สยามคลีนนิ่ง</h2>
+      <p class="sub">กด "เล่นอีกครั้ง" ที่มุมขวาของแต่ละเดโมเพื่อดูซ้ำ หลายเดโมกดลองเองได้</p>
+    </div>
+  </section>
+
+  <!-- Day 1 -->
+  <section class="day" id="day0" data-day="1" data-label="รับลูกค้าใหม่">
+    <div class="wrap day-grid">
+      <div class="day-mark"><small>เริ่มต้น</small><b>0</b><span>รับลูกค้าใหม่</span></div>
+      <div class="copy rv">
+        <div class="eyebrow">รับลูกค้าใหม่ในสองนาที</div>
+        <h2>ใส่เลขนิติบุคคล ระบบรู้เลยว่าลูกค้าต้องยื่นอะไรบ้างทั้งปี</h2>
+        <p class="sub">ดึงชื่อ ที่อยู่ ทุนจดทะเบียน และประเภทกิจการจากข้อมูลกรมพัฒนาธุรกิจการค้า ตอบคำถามสั้นๆ ไม่กี่ข้อ แล้วระบบสร้างปฏิทินภาษีทั้งปีให้ ทั้งแบบรายเดือนและรายปี</p>
+        <ul class="ticks">
+          <li>รองรับบริษัท ห้างหุ้นส่วน และร้านค้าบุคคลธรรมดา</li>
+          <li>รอบบัญชีไม่ตรงปีปฏิทิน ก็คำนวณวันยื่น ภ.ง.ด.51 และ ภ.ง.ด.50 ให้ถูก</li>
+          <li>ลูกค้าจด VAT หรือจ้างพนักงานระหว่างปี ปฏิทินปรับตามทันที</li>
+        </ul>
+      </div>
+      <div class="demo-col rv">
+        <div class="demo" id="demoOnb">
+          <div class="demo-bar"><div class="tabs" id="onbTabs" role="group" aria-label="ตัวอย่างลูกค้า"></div><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
+          <div class="pad onb">
+            <div>
+              <label class="eyebrow" for="onbTin">เลขทะเบียนนิติบุคคล / เลขผู้เสียภาษี</label>
+              <div class="lk-row"><input id="onbTin" readonly><span class="lk-st" id="onbSt"></span></div>
+              <div class="prof" id="onbProf"></div>
+              <div class="sw" id="onbSw"></div>
+            </div>
+            <div>
+              <div class="onb-big"><b id="onbTotal">0</b><span>ครั้งที่ต้องยื่นใน 12 เดือนข้างหน้า<br><small id="onbRange"></small></span></div>
+              <div class="mbars" id="onbBars"></div>
+              <div class="eyebrow" style="margin-top:14px">ทุกเดือน</div>
+              <div class="ob-chips" id="onbMonthly"></div>
+              <div class="eyebrow" style="margin-top:12px">รายปี</div>
+              <div class="ob-list" id="onbAnnual"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="day" id="day1" data-day="1" data-label="รับเอกสารผ่าน LINE">
+    <div class="wrap day-grid">
+      <div class="day-mark"><small>วันที่</small><b>1</b><span>รับเอกสาร</span></div>
+      <div class="copy rv">
+        <div class="eyebrow">LINE ของสำนักงาน · 5 สถานการณ์จริง</div>
+        <h2>ลูกค้าส่งรูปใบเสร็จใน LINE ระบบจัดเข้าแฟ้มและตอบให้เอง</h2>
+        <p class="sub">สำนักงานเชื่อม LINE Official Account ของตัวเอง เจ้าของกิจการถ่ายรูปส่งเหมือนเดิม เอกสารเข้าแฟ้มลูกค้าและเดือนภาษีที่ถูกต้องทันที และได้คำตอบกลับตอนที่ยังขอใบใหม่จากร้านได้ เลือกดูสถานการณ์ด้านบนของโทรศัพท์</p>
+        <ul class="ticks">
+          <li>บอกทันทีว่าใบไหนใช้ได้ ใบไหนต้องขอใหม่</li>
+          <li>ตอบคำถามเรื่องยอดภาษีจากเอกสารที่ได้รับแล้ว</li>
+          <li>เตือนเอกสารที่ยังขาดทุกสิ้นเดือน และจับคู่ Statement ให้</li>
+          <li>เจ้าของกิจการออก 50 ทวิ ในแชตได้ตอนจ่ายเงิน</li>
+          <li>รู้ว่าบิลจากต่างประเทศต้องยื่น ภ.พ.36</li>
+        </ul>
+      </div>
+      <div class="demo-col rv">
+        <div class="demo" id="demoLine">
+          <div class="demo-bar"><div class="tabs" id="lineTabs" role="group" aria-label="สถานการณ์"></div><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
+          <div class="pad">
+            <div class="phone"><div class="phone-in">
+              <div class="phone-head"><div class="av">บช</div><div><b>สำนักงานบัญชีวีรยา</b><br><span style="opacity:.7;font-size:.72rem">บัญชีทางการ · ปิดงวด</span></div></div>
+              <div class="chat" id="chat"></div>
+            </div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Day 2 -->
+  <section class="day" id="day2" data-day="2" data-label="AI อ่านเอกสาร และตรวจตามกฎ">
+    <div class="wrap day-grid flip">
+      <div class="day-mark"><small>วันที่</small><b>2</b><span>อ่านและตรวจ</span></div>
+      <div class="demo-col rv">
+        <div class="demo" id="demoX">
+          <div class="demo-bar"><span id="qSum">คิวตรวจ · 12 เอกสาร</span><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
+          <div class="queue" id="queue" role="group" aria-label="คิวเอกสาร"></div>
+          <div class="pad">
+            <div class="x-grid">
+              <div class="inv" id="inv"><div class="beam" id="beam"></div><div id="invBody"></div></div>
+              <div>
+                <div class="eyebrow" style="margin-bottom:6px">ข้อมูลที่อ่านได้ · ความมั่นใจ</div>
+                <div class="fields" id="fields"></div>
+                <div class="eyebrow" style="margin:12px 0 0">ผลตรวจตามกฎ</div>
+                <div class="checks" id="checks"></div>
+                <div id="verdict"></div>
+              </div>
+            </div>
+            <div class="tin-try">
+              <label for="tinInput">ลองตรวจเลขผู้เสียภาษี 13 หลัก</label>
+              <input id="tinInput" inputmode="numeric" maxlength="13" value="0999999000012" autocomplete="off">
+              <span class="tin-out" id="tinOut" aria-live="polite"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="copy rv">
+        <div class="eyebrow">AI อ่าน · กฎตรวจ · คนยืนยัน</div>
+        <h2>12 แบบเอกสารที่เจอทุกเดือน ระบบรู้ว่าต้องทำอะไรกับแต่ละใบ</h2>
+        <p class="sub">ระบบดึงข้อมูลจากรูป PDF และ XML แล้วตรวจซ้ำด้วยกฎที่ตายตัว ตัวเลขจะเข้าแบบภาษีก็ต่อเมื่อผู้ทำบัญชียืนยันแล้วเท่านั้น คลิกเอกสารในคิวเพื่อดูทีละใบ</p>
+        <ul class="ticks">
+          <li>ใบกำกับเต็มรูป ใบอย่างย่อ บิลเงินสด e-Tax Invoice และใบแจ้งหนี้ต่างประเทศ</li>
+          <li>จับใบซ้ำ VAT คำนวณไม่ตรง ผู้ขายไม่จด VAT และใบที่เกิน 6 เดือน</li>
+          <li>กันภาษีซื้อต้องห้าม เช่น ค่ารับรอง และรถยนต์นั่ง</li>
+          <li>รับ 50 ทวิ ที่ลูกค้าถูกหัก เก็บเป็นเครดิตภาษีปลายปี</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Day 5 -->
+  <section class="day" id="day3" data-day="3" data-label="ซิงค์ข้อมูลจากทุกแหล่ง">
+    <div class="wrap">
+      <div class="day-grid">
+        <div class="day-mark"><small>วันที่</small><b>3</b><span>ซิงค์ข้อมูล</span></div>
+        <div class="copy rv span2">
+          <div class="eyebrow">Google Sheets · Excel · อีเมล · Drive · ธนาคาร · POS · โปรแกรมบัญชี</div>
+          <h2>ข้อมูลอยู่ที่ไหนก็ได้ ปิดงวดดึงเข้ามาที่แฟ้มเดียว แล้วส่งผลกลับให้</h2>
+          <p class="sub">ลูกค้าบางรายจดยอดขายใน Google Sheets บางรายส่ง Excel บางรายส่งอีเมล ปิดงวดเชื่อมได้ทุกทาง จับคู่คอลัมน์ให้อัตโนมัติ ตรวจด้วยกฎชุดเดียวกับเอกสารจาก LINE และซิงค์ซ้ำได้โดยไม่สร้างรายการซ้ำ เลือกแหล่งข้อมูลทางซ้ายเพื่อดูการทำงาน</p>
+        </div>
+      </div>
+      <div class="demo rv" id="demoSync" style="margin-top:28px">
+        <div class="demo-bar"><span>แหล่งข้อมูลของ บจ. สยามคลีนนิ่ง และลูกค้าอื่น</span><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
+        <div class="flowbar" aria-hidden="true">
+          <div class="fb-in"><i style="--c:#06C755">LINE</i><i style="--c:#C5221F">@</i><i style="--c:#1E8E3E">GS</i><i style="--c:#1D6F42">XL</i><i style="--c:#1A73E8">DR</i><i style="--c:#0B6A4E">฿</i><i style="--c:#9A5F00">POS</i></div>
+          <div class="fb-line"></div>
+          <div class="fb-core">ปิดงวด<small>ตรวจ · จัดเข้าแฟ้ม · ไม่ซ้ำ</small></div>
+          <div class="fb-line"></div>
+          <div class="fb-out"><span>แบบภาษี</span><span>รายงาน</span><span>สมุดรายวัน</span><span>Google Sheets</span></div>
+        </div>
+        <div class="sync">
+          <div class="src-list" id="srcList" role="group" aria-label="แหล่งข้อมูล"></div>
+          <div class="src-detail" id="srcDetail"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="day" id="day4" data-day="4" data-label="เงินเดือน ภ.ง.ด.1 และประกันสังคม">
+    <div class="wrap day-grid flip">
+      <div class="day-mark"><small>วันที่</small><b>4</b><span>เงินเดือน</span></div>
+      <div class="demo-col rv">
+        <div class="demo" id="demoPay">
+          <div class="demo-bar">
+            <span>สรุปเงินเดือน ต.ค. 2569 · นำเข้าจาก Google Sheets</span>
+            <div class="seg" role="group" aria-label="เพดานค่าจ้างประกันสังคม">
+              <button type="button" data-ceil="15000" aria-pressed="false">เพดาน 15,000</button>
+              <button type="button" data-ceil="17500" aria-pressed="true">เพดาน 17,500</button>
+            </div>
+          </div>
+          <div class="scroll-x"><table class="payt" id="payT"></table></div>
+          <div class="btot" id="payTot"></div>
+          <div class="pad" style="padding-top:12px"><p class="note" style="margin:0">ภาษีเงินเดือนเป็นการประมาณทั้งปี หักค่าใช้จ่าย 50% ไม่เกิน 100,000 ลดหย่อนส่วนตัว 60,000 และเงินสมทบประกันสังคม พนักงานแจ้งลดหย่อนอื่นด้วยแบบ ล.ย.01 ได้ แก้เงินเดือนในตารางเพื่อดูผลทันที ชื่อพนักงานเป็นชื่อสมมติ</p></div>
+        </div>
+      </div>
+      <div class="copy rv">
+        <div class="eyebrow">เงินเดือน → ภ.ง.ด.1 · สปส.1-10</div>
+        <h2>ตารางเงินเดือนจาก Excel หรือ Google Sheets กลายเป็น ภ.ง.ด.1 และประกันสังคมในคลิกเดียว</h2>
+        <p class="sub">ระบบคำนวณเงินสมทบประกันสังคมตามเพดานค่าจ้างที่มีผลในเดือนนั้น และประมาณภาษีหัก ณ ที่จ่ายเงินเดือนทั้งปีให้ ลองสลับเพดานด้านบนเพื่อดูว่าเมื่อกฎเปลี่ยน ตัวเลขเปลี่ยนตามโดยไม่ต้องแก้โปรแกรม</p>
+        <ul class="ticks">
+          <li>เพดานค่าจ้าง 17,500 บาท ตั้งแต่ปี 2569 เก็บในตารางกฎ</li>
+          <li>ไฟล์ สปส.1-10 และ ภ.ง.ด.1 พร้อมยื่น</li>
+          <li>สิ้นปีรวมเป็น ภ.ง.ด.1ก และหนังสือรับรองให้พนักงานทุกคน</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="day" id="day5" data-day="5" data-label="ภาษีหัก ณ ที่จ่าย และ 50 ทวิ">
+    <div class="wrap day-grid">
+      <div class="day-mark"><small>วันที่</small><b>5</b><span>หัก ณ ที่จ่าย</span></div>
+      <div class="copy rv">
+        <div class="eyebrow">ภ.ง.ด.3 · ภ.ง.ด.53 · ภ.ง.ด.54 · 50 ทวิ</div>
+        <h2>จัดประเภทการจ่ายทั้งเดือนในครั้งเดียว ออก 50 ทวิ ครบทุกใบ</h2>
+        <p class="sub">ระบบดูประเภทเงินได้และเลขผู้เสียภาษีของผู้รับเงิน เสนออัตราจากตารางภาษี แยก ภ.ง.ด.3 53 และ 54 บอกรายการที่ไม่ต้องหัก แล้วสร้างหนังสือรับรองพร้อมจำนวนเงินตัวอักษร</p>
+        <ul class="ticks">
+          <li>ยอดต่ำกว่า 1,000 บาท และการซื้อสินค้า ระบบบอกว่าไม่ต้องหัก</li>
+          <li>จ่ายต่างประเทศ เตือนให้ตรวจอนุสัญญาภาษีซ้อน และ ภ.พ.36</li>
+          <li>เลขที่หนังสือรับรองเรียงต่อเนื่องแยกตามลูกค้า</li>
+        </ul>
+      </div>
+      <div class="demo-col rv">
+        <div class="demo" id="demoWht">
+          <div class="demo-bar"><span>รายการจ่าย ต.ค. 2569 · บจ. สยามคลีนนิ่ง</span><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
+          <div class="scroll-x"><table class="batch" id="batch"></table></div>
+          <div class="btot" id="btot"></div>
+          <div class="pad" style="border-top:1px solid var(--rule)">
+            <div class="eyebrow" style="margin-bottom:8px">ลองออก 50 ทวิ เอง</div>
+            <div class="ctrls">
+              <label class="full">ผู้รับเงิน
+                <select id="whtPayee">
+                  <option value="0">บริษัท ทองดีโลจิสติกส์ จำกัด · 0999999000047</option>
+                  <option value="1">นายสมชาย ใจดี · 1234567890121</option>
+                  <option value="2">บริษัท ออฟฟิศเมท ซัพพลาย จำกัด · 0999999000012</option>
+                </select>
+              </label>
+              <label>ประเภทเงินได้
+                <select id="whtType"></select>
+              </label>
+              <label>จำนวนเงินที่จ่าย (ก่อน VAT)
+                <input id="whtAmt" inputmode="decimal" value="18,500.00">
+              </label>
+            </div>
+            <div class="wht-sum" id="whtSum"></div>
+            <div class="cert" id="cert"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Day 7 -->
+  <section class="day" id="day6" data-day="6" data-label="จัดประเภท เสนอรหัสบัญชี ส่งเข้า PEAK">
+    <div class="wrap">
+      <div class="day-grid">
+        <div class="day-mark"><small>วันที่</small><b>6</b><span>ส่งเข้าโปรแกรมบัญชี</span></div>
+        <div class="copy rv span2">
+          <div class="eyebrow">สิ่งที่สำนักงานที่ใช้ PEAK ขอ</div>
+          <h2>AI ตรวจเอกสาร เช็กซ้ำ จัดประเภทค่าใช้จ่าย และเสนอรหัสบัญชี ก่อนส่งไฟล์นำเข้า PEAK</h2>
+          <p class="sub">ไม่ต้องคีย์ทีละรายการ และไม่ต้องแก้ไฟล์นำเข้าด้วยมือ ระบบใช้ผังบัญชีของลูกค้าเอง เรียนรู้จากการบันทึกครั้งก่อน และบอกเหตุผลของทุกรหัสที่เสนอ รายการที่ไม่แน่ใจจะถูกยกให้คุณตรวจก่อน ลองเปลี่ยนรหัสบัญชีในตารางได้</p>
+          <ul class="ticks">
+            <li>ใช้ผังบัญชีที่ส่งออกจาก PEAK ของลูกค้าแต่ละราย</li>
+            <li>ภาษีซื้อต้องห้ามรวมเข้าค่าใช้จ่ายให้ ราคาเกินเกณฑ์เสนอเป็นสินทรัพย์</li>
+            <li>แก้รหัสครั้งเดียว ระบบจำไว้สำหรับผู้ขายรายนั้น</li>
+            <li>ไฟล์รูปแบบเดียวกันส่งเข้า Express และ FlowAccount ได้ในแผนงาน</li>
+            <li><a href="https://claude.ai/artifact/E84GUcymXRxJkWyej5BwwS" target="_blank" rel="noopener"><b>ลองใช้ต้นแบบที่ทำงานได้จริง พร้อมข้อมูลตัวอย่าง →</b></a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="demo rv" id="demoCls" style="margin-top:26px">
+        <div class="demo-bar"><span>บจ. สยามคลีนนิ่ง · ค่าใช้จ่าย ต.ค. 2569 · ผังบัญชีจาก PEAK ของลูกค้า</span><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
+        <div class="cls-steps" id="clsSteps"></div>
+        <div class="scroll-x"><table class="sheet clst" id="clsT"></table></div>
+        <div class="pad" id="clsOut"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="day" id="day7" data-day="7" data-label="กำหนดยื่นคำนวณให้อัตโนมัติ">
+    <div class="wrap day-grid flip">
+      <div class="day-mark dl"><small>วันที่</small><b>7</b><span>กำหนดยื่น</span></div>
+      <div class="demo-col rv">
+        <div class="demo" id="demoDue">
+          <div class="demo-bar">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+              <label for="dueMonth" class="eyebrow" style="font-weight:600">เดือนภาษี</label>
+              <select id="dueMonth" style="border:1px solid var(--rule);border-radius:8px;background:var(--sheet);padding:3px 8px;font-size:.82rem"></select>
+              <div class="seg" role="group" aria-label="ช่องทางยื่น">
+                <button type="button" data-ch="e" aria-pressed="true">ยื่นออนไลน์</button>
+                <button type="button" data-ch="p" aria-pressed="false">ยื่นกระดาษ</button>
+              </div>
+            </div>
+            <button class="replay" type="button">↻</button>
+          </div>
+          <div class="pad due-grid">
+            <div>
+              <div class="eyebrow" id="calTitle"></div>
+              <div class="cal" id="cal"></div>
+            </div>
+            <div class="due-list" id="dueList"></div>
+          </div>
+        </div>
+      </div>
+      <div class="copy rv">
+        <div class="eyebrow">ไม่ต้องจำวันยื่นอีกต่อไป</div>
+        <h2>วันครบกำหนดคำนวณให้ เลื่อนตามวันหยุดให้เอง</h2>
+        <p class="sub">ระบบคำนวณวันยื่นจากเดือนภาษี ช่องทางยื่น และวันหยุด ถ้าตรงวันเสาร์ อาทิตย์ หรือวันหยุดราชการ ก็เลื่อนเป็นวันทำการถัดไปให้อัตโนมัติ</p>
+        <ul class="ticks">
+          <li>อัตราภาษีและกำหนดยื่นเก็บเป็นตารางกฎที่มีวันมีผลบังคับ</li>
+          <li>กรมสรรพากรขยายเวลาหรือ ครม. เพิ่มวันหยุด แก้ที่ตารางได้ทันที</li>
+          <li>ทุกลูกค้าเรียงตามวันครบกำหนดบนกระดานเดียว</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Day 10 -->
+  <section class="day" id="day10" data-day="10" data-label="ภ.พ.30 พร้อมรายงานภาษี">
+    <div class="wrap day-grid">
+      <div class="day-mark"><small>วันที่</small><b>10</b><span>ภาษีมูลค่าเพิ่ม</span></div>
+      <div class="copy rv">
+        <div class="eyebrow">ภ.พ.30 · รายงานภาษีซื้อ · รายงานภาษีขาย</div>
+        <h2>ภ.พ.30 พร้อมยื่น ทั้งกรณีต้องชำระ ขอคืน และมีเครดิตยกมา</h2>
+        <p class="sub">ระบบสร้างรายงานภาษีซื้อ รายงานภาษีขาย และแบบ ภ.พ.30 จากเอกสารที่ยืนยันแล้ว คลิกที่ตัวเลขเพื่อดูว่ามาจากใบไหนบ้าง ลองสลับดูลูกค้าสามแบบด้านบนของตาราง</p>
+        <ul class="ticks">
+          <li>บริษัทบริการที่ต้องชำระ ผู้ส่งออกที่ขอคืน และร้านอาหารที่มีเครดิตยกมา</li>
+          <li>กันภาษีซื้อต้องห้ามและใบที่ไม่ผ่านกฎออกให้ก่อนยื่น</li>
+          <li>ส่งออก PDF ให้ลูกค้าอนุมัติ และไฟล์สำหรับยื่น โดยไม่ต้องให้รหัสผ่าน e-Filing กับเรา</li>
+        </ul>
+      </div>
+      <div class="demo-col rv">
+        <div class="demo" id="demoPP">
+          <div class="demo-bar"><span id="ppHead"></span><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
+          <div class="tabs pp-tabs" id="ppTabs" role="group" aria-label="ตัวอย่างลูกค้า"></div>
+          <table class="pp" id="ppTable"></table>
+          <div class="guard" id="ppGuard"></div>
+          <div class="trace" id="trace"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Day 12 -->
+  <section class="day" id="day12" data-day="12" data-label="แอปเจ้าของกิจการ">
+    <div class="wrap day-grid flip">
+      <div class="day-mark"><small>วันที่</small><b>12</b><span>ลูกค้าอนุมัติ</span></div>
+      <div class="demo-col rv">
+        <div class="demo" id="demoOwner">
+          <div class="demo-bar"><span>มุมมองเจ้าของกิจการใน LINE · กดปุ่มได้</span><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
+          <div class="pad">
+            <div class="phone"><div class="phone-in">
+              <div class="phone-head"><div class="av">ปง</div><div><b>ปิดงวด · บจ. สยามคลีนนิ่ง</b><br><span style="opacity:.7;font-size:.72rem">ดูแลโดย สำนักงานบัญชีวีรยา</span></div></div>
+              <div class="liff" id="liff"></div>
+            </div></div>
+          </div>
+        </div>
+      </div>
+      <div class="copy rv">
+        <div class="eyebrow">ฟรีสำหรับลูกค้าของคุณ</div>
+        <h2>เจ้าของกิจการเห็นภาษีล่วงหน้า อนุมัติยอดและส่งสลิปได้จาก LINE</h2>
+        <p class="sub">ลูกค้าไม่ต้องเจอบิลภาษีแบบไม่ทันตั้งตัว และคุณไม่ต้องตามสลิปอีก ระบบตรวจสลิปโอนเงินกับยอดและเลขอ้างอิงให้ แล้วขึ้นสถานะชำระแล้วบนกระดานของคุณ</p>
+        <ul class="ticks">
+          <li>ประมาณการภาษีเดือนนี้ อัปเดตตามเอกสารที่ส่งเข้ามา</li>
+          <li>เห็นภาษีซื้อที่ประหยัดได้ และ 50 ทวิ ที่ได้รับไว้ใช้ปลายปี</li>
+          <li>ลูกค้าที่ใช้ง่ายและเห็นประโยชน์ ส่งเอกสารเร็วขึ้น</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Day 20 -->
+  <section class="day" id="day20" data-day="20" data-label="ปิดงวดและส่งออกรายการบัญชี">
+    <div class="wrap day-grid">
+      <div class="day-mark"><small>วันที่</small><b>20</b><span>ปิดงวด</span></div>
+      <div class="copy rv">
+        <div class="eyebrow">กระทบยอด · ส่งออก</div>
+        <h2>ปิดงวดครบทุกขั้น แล้วส่งรายการบัญชีเข้าโปรแกรมเดิม</h2>
+        <p class="sub">นำเข้างบทดลองจากโปรแกรมบัญชีของลูกค้า ระบบกระทบยอดภาษีขาย ภาษีซื้อ และภาษีหัก ณ ที่จ่ายค้างจ่ายให้ ถ้ามีผลต่างจะบอกว่ามาจากเอกสารใบไหน</p>
+        <ul class="ticks">
+          <li>เช็กลิสต์ปิดงวดแยกตามลูกค้าและเดือน</li>
+          <li>ส่งออกสมุดรายวันเป็น Excel ได้ตั้งแต่วันแรก</li>
+          <li>ทุกการแก้ไขมีบันทึกย้อนหลัง ตรวจสอบได้ว่าใครแก้อะไรเมื่อไร</li>
+        </ul>
+      </div>
+      <div class="demo-col rv">
+        <div class="demo" id="demoClose">
+          <div class="demo-bar"><span>เช็กลิสต์ปิดงวด · ต.ค. 2569</span><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
+          <div class="pad">
+            <ul class="clist" id="clist"></ul>
+            <div class="scroll-x"><table class="tie" id="tie"></table></div>
+            <div class="exp" id="exp"></div>
+            <p class="note">การเชื่อมต่อกับ Express, PEAK และ FlowAccount อยู่ในแผนงาน ชื่อโปรแกรมเป็นของเจ้าของแต่ละราย</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="day" id="firm" data-day="21" data-label="บริหารสำนักงาน">
+    <div class="wrap day-grid">
+      <div class="day-mark"><small>ทุกวัน</small><b>★</b><span>บริหารสำนักงาน</span></div>
+      <div class="copy rv">
+        <div class="eyebrow">สำหรับเจ้าของสำนักงาน</div>
+        <h2>บริหารทีม ตรวจงาน เก็บค่าทำบัญชี และถามอะไรก็ได้เกี่ยวกับลูกค้าทั้งหมด</h2>
+        <p class="sub">เมื่อสำนักงานมีมากกว่าหนึ่งคน ปิดงวดช่วยแบ่งงาน ให้ผู้ตรวจอนุมัติก่อนยื่น ออกใบแจ้งหนี้ค่าทำบัญชีทาง LINE และตอบคำถามจากข้อมูลในสำนักงานของคุณเท่านั้น</p>
+        <ul class="ticks">
+          <li>เห็นภาระงานของแต่ละคน และเตือนก่อนถึงเพดาน 100 รายต่อผู้ทำบัญชี</li>
+          <li>ผู้จัดทำกับผู้ตรวจเป็นคนละคน ส่งกลับพร้อมความเห็นได้</li>
+          <li>ค่าทำบัญชีที่ลูกค้าหัก 3% ระบบรอรับ 50 ทวิ ให้</li>
+          <li>ทุกการแก้ไขและการเปิดดูข้อมูลส่วนบุคคลถูกบันทึก</li>
+        </ul>
+      </div>
+      <div class="demo-col rv">
+        <div class="demo" id="demoFirm">
+          <div class="demo-bar"><div class="tabs" id="firmTabs" role="group" aria-label="มุมมอง"></div><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
+          <div class="pad" id="firmBody"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="calc" data-day="23" data-label="เวลาที่ได้คืน">
+    <div class="wrap">
+      <div class="eyebrow">ใส่ตัวเลขของสำนักงานคุณ</div>
+      <h2>ได้เวลาคืนเท่าไรต่อเดือน</h2>
+      <div class="calc rv">
+        <div>
+          <div class="sl"><label for="cClients">จำนวนลูกค้าที่ยื่นภาษีรายเดือน <b id="vClients"></b></label><input type="range" id="cClients" min="5" max="100" step="1" value="40"></div>
+          <div class="sl"><label for="cMin">นาทีต่อลูกค้าต่อเดือน สำหรับ VAT และหัก ณ ที่จ่าย <b id="vMin"></b></label><input type="range" id="cMin" min="30" max="300" step="5" value="120"></div>
+          <div class="sl"><label for="cCut">ลดเวลาลง <b id="vCut"></b></label><input type="range" id="cCut" min="20" max="70" step="5" value="50"></div>
+          <p class="note">ร้อยละ 50 คือเป้าหมายของช่วงนำร่อง ไม่ใช่ผลที่วัดได้แล้ว เราจะวัดเวลาจริงร่วมกับสำนักงานนำร่องทุกแห่ง</p>
+        </div>
+        <div class="result" aria-live="polite">
+          <div class="big"><span id="rHours">0</span> <small>ชั่วโมงต่อเดือน</small></div>
+          <p>เวลาที่ได้คืนช่วงวันที่ 1 ถึง 23 ของทุกเดือน</p>
+          <div class="row">
+            <div><b id="rYear">0</b><span>ชั่วโมงต่อปี</span></div>
+            <div><b id="rMore">0</b><span>ลูกค้าที่รับเพิ่มได้ด้วยเวลาเท่าเดิม</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="compare">
+    <div class="wrap">
+      <div class="eyebrow">เทียบกับทางเลือกอื่น</div>
+      <h2>ทางเลือกอื่นช่วยได้บางขั้น ปิดงวดเชื่อมตั้งแต่เอกสารจนถึงยื่นและชำระ</h2>
+      <p class="sub">ปิดงวดไม่ได้มาแทนโปรแกรมบัญชีที่ลูกค้าใช้อยู่ แต่เป็นที่ทำงานของสำนักงาน ที่ดูแลลูกค้าทุกรายได้ในที่เดียว</p>
+      <div class="demo rv" id="demoCmp" style="margin-top:26px">
+        <div class="demo-bar"><span>เทียบตามประเภทเครื่องมือ</span><button class="replay" type="button">↻ เล่นอีกครั้ง</button></div>
+        <div class="scroll-x"><table class="cmp" id="cmpT"></table></div>
+        <div class="pad" style="padding-top:10px"><p class="note" style="margin:0">✓ ทำได้ · ◐ ทำได้บางส่วน หรือขึ้นกับแพ็กเกจ · — ไม่มี เป็นการเทียบตามประเภทเครื่องมือ ความสามารถของแต่ละผลิตภัณฑ์แตกต่างกัน และอาจเปลี่ยนแปลง</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="pricing">
+    <div class="wrap">
+      <div class="eyebrow">ราคาสำหรับช่วงนำร่อง (ร่าง)</div>
+      <h2>จ่ายตามจำนวนลูกค้าที่ใช้งาน เหมือนที่คุณเก็บค่าทำบัญชี</h2>
+      <div class="price">
+        <div class="plan rv">
+          <h3>เริ่มต้น</h3>
+          <div class="p">ฟรี <small>ลูกค้าไม่เกิน 5 ราย</small></div>
+          <ul><li>ทุกฟีเจอร์ในหน้านี้</li><li>เหมาะกับผู้ทำบัญชีอิสระที่อยากลองกับลูกค้าบางราย</li></ul>
+        </div>
+        <div class="plan main rv">
+          <h3>สำนักงาน</h3>
+          <div class="p">฿249 <small>ต่อลูกค้าที่ใช้งาน ต่อเดือน</small></div>
+          <ul>
+            <li>คิดเฉพาะเดือนที่ลูกค้ามีแบบต้องยื่น</li>
+            <li>แอปเจ้าของกิจการใน LINE ฟรีสำหรับลูกค้าทุกราย</li>
+            <li>ผู้ใช้ในสำนักงานไม่จำกัด กำหนดสิทธิ์ผู้จัดทำและผู้ตรวจได้</li>
+            <li>สำนักงานนำร่องใช้ฟรีตลอดช่วงนำร่อง และได้ราคาพิเศษหลังจากนั้น</li>
+          </ul>
+        </div>
+      </div>
+      <p class="note">ราคาอยู่ระหว่างทดสอบกับสำนักงานนำร่อง และอาจเปลี่ยนแปลง</p>
+    </div>
+  </section>
+
+  <section class="band" id="trust">
+    <div class="wrap">
+      <div class="eyebrow">ความปลอดภัยและความรับผิดชอบ</div>
+      <h2>ข้อมูลลูกค้าคือความเชื่อใจของสำนักงาน เราออกแบบโดยเริ่มจากตรงนั้น</h2>
+      <div class="trust">
+        <div class="rv"><h3>ไม่เก็บรหัสผ่าน e-Filing</h3><p>เราเตรียมแบบและไฟล์ให้พร้อม คุณยื่นกับกรมสรรพากรด้วยบัญชีของลูกค้าเหมือนเดิม</p></div>
+        <div class="rv"><h3>เลขบัตรประชาชนเข้ารหัสและปิดบัง</h3><p>เลขประจำตัวผู้เสียภาษีของบุคคลและเลขบัญชีธนาคารถูกเข้ารหัสแยกช่อง หน้าจอแสดงเป็น 1-2345-xxxxx-12-1 การเปิดดูเต็มต้องกดและถูกบันทึก</p></div>
+        <div class="rv"><h3>แยกขาดระหว่างสำนักงาน</h3><p>แต่ละสำนักงานมีกุญแจเข้ารหัสของตัวเอง ผู้ทำบัญชีเห็นเฉพาะลูกค้าที่ได้รับมอบหมาย เจ้าของกิจการเห็นเฉพาะกิจการของตัวเอง</p></div>
+        <div class="rv"><h3>ไม่มีข้อมูลส่วนบุคคลในแจ้งเตือน LINE</h3><p>ข้อความแจ้งเตือนบอกแค่ว่ามีอะไรต้องทำ รายละเอียดเปิดดูได้หลังเข้าสู่ระบบด้วย LINE เท่านั้น</p></div>
+        <div class="rv"><h3>AI ไม่เก็บ ไม่ฝึก ด้วยข้อมูลลูกค้า</h3><p>ส่งเอกสารไปอ่านทีละใบ ผ่านผู้ให้บริการในภูมิภาคเดียวกับที่เก็บข้อมูล ตามสัญญาว่าไม่เก็บและไม่ใช้ฝึกโมเดล</p></div>
+        <div class="rv"><h3>คนยืนยันทุกตัวเลข</h3><p>AI เป็นผู้ช่วยอ่าน ไม่ใช่ผู้ตัดสิน ตัวเลขเข้าแบบภาษีเมื่อผู้ทำบัญชีกดยืนยันเท่านั้น</p></div>
+        <div class="rv"><h3>ตาม PDPA ตั้งแต่วันแรก</h3><p>สัญญาประมวลผลข้อมูลสำหรับสำนักงาน และแม่แบบสัญญาระหว่างสำนักงานกับลูกค้า พร้อมรายชื่อผู้ให้บริการช่วงที่เปิดเผย</p></div>
+        <div class="rv"><h3>ต้นฉบับแก้ไขไม่ได้ ตรวจย้อนหลังได้</h3><p>เก็บเอกสารต้นฉบับแบบแก้ไขไม่ได้ 7 ปี ใครรับ ใครแก้ ใครอนุมัติ ใครยื่น บันทึกไว้ทั้งหมด</p></div>
+        <div class="rv"><h3>แจ้งสำนักงานภายใน 24 ชั่วโมง</h3><p>หากเกิดเหตุละเมิดข้อมูล เราแจ้งภายใน 24 ชั่วโมง เพื่อให้ลูกค้าแจ้งสำนักงานคณะกรรมการคุ้มครองข้อมูลส่วนบุคคลได้ทันกำหนด 72 ชั่วโมง</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="eyebrow">แผนงาน</div>
+      <h2>จากต้นแบบสู่เดือนภาษีจริง</h2>
+      <div class="road">
+        <div><b>พ.ย.–ธ.ค. 2569</b><h3>คุยกับสำนักงาน</h3><p>สัมภาษณ์ วัดเวลาจริง รวบรวมเอกสารตัวอย่าง</p></div>
+        <div><b>ม.ค.–มี.ค. 2570</b><h3>สร้างรุ่นแรก</h3><p>LINE · AI อ่านเอกสาร · ภ.พ.30 · ภ.ง.ด.3/53 · 50 ทวิ · กระดาน</p></div>
+        <div><b>เม.ย.–ก.ค. 2570</b><h3>นำร่องเดือนภาษีจริง</h3><p>ใช้คู่ขนานกับวิธีเดิม แล้วเพิ่ม ภ.ง.ด.1 และประกันสังคม</p></div>
+        <div><b>ส.ค.–ธ.ค. 2570</b><h3>ขยาย</h3><p>กระทบยอดธนาคาร เชื่อมโปรแกรมบัญชี และงานปิดงบประจำปี</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="pilot">
+    <div class="wrap">
+      <div class="pilot rv">
+        <div>
+          <h2>รับสำนักงานนำร่อง 10 แห่ง</h2>
+          <p>สำหรับผู้ทำบัญชีอิสระและสำนักงานที่ดูแลลูกค้า 15 ถึง 100 ราย ที่อยากใช้เวลาช่วงต้นเดือนกับงานที่มีค่ากว่าการคีย์เอกสาร</p>
+          <p class="contact" id="contact">สนใจ พูดคุยกับผู้นำเสนอได้เลย</p>
+        </div>
+        <ul>
+          <li>ใช้ฟรีตลอดช่วงนำร่อง พร้อมราคาพิเศษหลังจากนั้น</li>
+          <li>ร่วมกำหนดฟีเจอร์ ให้ตรงกับงานจริงของสำนักงานคุณ</li>
+          <li>เริ่มจากลูกค้า 2 ถึง 3 ราย ไม่ต้องเปลี่ยนวิธีทำงานทั้งหมด</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <span>ปิดงวด (Pidngod) · ต้นแบบโดย bancheesolution</span>
+  <span>ข้อมูลอัตราภาษีและกำหนดยื่นในต้นแบบนี้ใช้เพื่อสาธิต ต้องตรวจสอบกับกรมสรรพากรก่อนใช้งานจริง</span>
+</footer>
+
+<div class="pitchbar" id="pitchbar" hidden role="region" aria-label="โหมดนำเสนอ">
+  <div class="pb-row">
+    <button type="button" id="pbPrev" aria-label="ก่อนหน้า">◀</button>
+    <button type="button" id="pbPlay" aria-label="หยุดชั่วคราว">❚❚</button>
+    <button type="button" id="pbNext" aria-label="ถัดไป">▶</button>
+    <div class="pb-cap"><small id="pbNum"></small><b id="pbCap"></b></div>
+    <button type="button" id="pbExit" aria-label="ออกจากโหมดนำเสนอ">✕</button>
+  </div>
+  <div class="pb-prog"><i id="pbProg"></i></div>
+  <div class="pb-keys">← → เลื่อน · เว้นวรรค หยุด/เล่น · Esc ออก</div>
+</div>
+
+<script>
+/* Set this to your LINE ID / phone / email to show it in the pilot section. */
+const CONTACT = "";
+
+(() => {
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const REDUCE = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const fmt = n => n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const TH_M = ["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
+const TH_MF = ["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
+const TH_D = ["อา","จ","อ","พ","พฤ","ศ","ส"];
+const TH_DF = ["วันอาทิตย์","วันจันทร์","วันอังคาร","วันพุธ","วันพฤหัสบดี","วันศุกร์","วันเสาร์"];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+if (CONTACT) $("#contact").textContent = "ติดต่อ: " + CONTACT;
+
+/* ---------- Thai tax helpers (real logic) ---------- */
+function tinValid(t) {
+  if (!/^\d{13}$/.test(t)) return false;
+  let s = 0; for (let i = 0; i < 12; i++) s += +t[i] * (13 - i);
+  return (11 - (s % 11)) % 10 === +t[12];
+}
+const DIG = ["", "หนึ่ง", "สอง", "สาม", "สี่", "ห้า", "หก", "เจ็ด", "แปด", "เก้า"];
+const POS = ["", "สิบ", "ร้อย", "พัน", "หมื่น", "แสน"];
+function chunk(n, higher) {
+  const s = String(n); let out = "";
+  for (let i = 0; i < s.length; i++) {
+    const d = +s[i], p = s.length - i - 1;
+    if (!d) continue;
+    if (p === 1) out += d === 1 ? "สิบ" : d === 2 ? "ยี่สิบ" : DIG[d] + "สิบ";
+    else if (p === 0) out += d === 1 && (n > 9 || higher) ? "เอ็ด" : DIG[d];
+    else out += DIG[d] + POS[p];
+  }
+  return out;
+}
+function thNum(n) {
+  if (n >= 1e6) { const hi = Math.floor(n / 1e6), lo = n % 1e6; return thNum(hi) + "ล้าน" + (lo ? chunk(lo, true) : ""); }
+  return chunk(n, false);
+}
+function bahtText(x) {
+  const c = Math.round(x * 100), b = Math.floor(c / 100), st = c % 100;
+  if (!b && !st) return "ศูนย์บาทถ้วน";
+  return (b ? thNum(b) + "บาท" : "") + (st ? thNum(st) + "สตางค์" : "ถ้วน");
+}
+const thDate = d => `${d.getDate()} ${TH_M[d.getMonth()]} ${d.getFullYear() + 543}`;
+
+/* ---------- Demo runner ---------- */
+const demos = [];
+function demo(el, final, play) {
+  const d = { el, run: 0, final, played: false };
+  d.play = async () => {
+    const id = ++d.run;
+    if (REDUCE) { final(); return; }
+    const w = ms => new Promise(r => setTimeout(r, ms)).then(() => { if (id !== d.run) throw "stop"; });
+    try { await play(w); } catch (e) { if (e !== "stop") console.error(e); }
+  };
+  const rp = $(".replay", el); if (rp) rp.addEventListener("click", () => d.play());
+  final(); demos.push(d); return d;
+}
+const io = new IntersectionObserver(es => es.forEach(e => {
+  const d = demos.find(x => x.el === e.target);
+  if (d && e.isIntersecting && !d.played) { d.played = true; d.play(); }
+}), { threshold: 0.35 });
+
+function countUp(el, to, ms = 900, f = fmt) {
+  if (REDUCE) { el.textContent = f(to); return; }
+  const t0 = performance.now();
+  const step = t => { const k = Math.min(1, (t - t0) / ms), e = 1 - Math.pow(1 - k, 3); el.textContent = f(to * e); if (k < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+
+/* ---------- Day rail ---------- */
+const ticks = $("#railTicks");
+for (let i = 1; i <= 23; i++) { const t = document.createElement("i"); if ([7, 15, 23].includes(i)) t.className = "dl"; ticks.appendChild(t); }
+const railSet = (day, label) => {
+  [...ticks.children].forEach((t, i) => t.classList.toggle("on", i < day));
+  $("#railLabel").innerHTML = day ? `<b>วันที่ ${day}</b> · ${esc(label)}` : "หนึ่งเดือนของสำนักงานบัญชี";
+};
+const sio = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) railSet(+e.target.dataset.day, e.target.dataset.label); }), { rootMargin: "-40% 0px -55% 0px" });
+$$("[data-day]").forEach(s => sio.observe(s));
+
+/* ---------- Hero board ---------- */
+const FORMS = ["ภ.ง.ด.1", "ภ.ง.ด.3", "ภ.ง.ด.53", "สปส.1-10", "ภ.พ.30"];
+const LABEL = ["รอเอกสาร", "กำลังตรวจ", "รออนุมัติ", "ยื่นแล้ว", "ชำระแล้ว"];
+const CLIENTS = ["บจ. สยามคลีนนิ่ง", "ร้านกาแฟบ้านสวน", "หจก. ช่างเหล็กรุ่งเรือง", "ร้านดอกไม้ลลิตา", "บจ. ทองดีโลจิสติกส์", "คลินิกทันตกรรมยิ้มใส", "บจ. เฮลตี้มีลบ็อกซ์"];
+const START = [
+  [4, 3, 3, 4, 2],
+  [3, 2, -1, 1, -1],
+  [2, 1, 1, 2, 0],
+  [-1, 0, 1, -1, 0],
+  [3, 3, 2, 3, 1],
+  [1, 0, 2, 1, 0],
+  [4, 4, 3, 4, 2],
+];
+let B = START.map(r => r.slice());
+const tbl = $("#boardTable");
+function drawBoard(flash) {
+  tbl.innerHTML = `<thead><tr><th>ลูกค้า</th>${FORMS.map(f => `<th>${f}</th>`).join("")}</tr></thead><tbody>${
+    B.map((r, i) => `<tr><td>${CLIENTS[i]}</td>${r.map((s, j) => `<td>${s < 0 ? '<span class="cell sx">—</span>' : `<span class="cell s${s}${flash && flash[0] === i && flash[1] === j && s === 3 ? " thump" : ""}">${LABEL[s]}</span>`}</td>`).join("")}</tr>`).join("")}</tbody>`;
+  let tot = 0, done = 0; B.flat().forEach(s => { if (s >= 0) { tot++; if (s >= 3) done++; } });
+  $("#boardCount").textContent = `ยื่นแล้ว ${done}/${tot}`;
+}
+drawBoard();
+let heroVisible = true;
+new IntersectionObserver(es => { heroVisible = es[0].isIntersecting; }).observe($("#heroBoard"));
+if (!REDUCE) {
+  let pause = 0;
+  setInterval(() => {
+    if (!heroVisible || document.hidden) return;
+    if (pause) { pause--; if (!pause) { B = START.map(r => r.slice()); drawBoard(); } return; }
+    const open = []; B.forEach((r, i) => r.forEach((s, j) => { if (s >= 0 && s < 4) open.push([i, j]); }));
+    if (!open.length) { pause = 3; return; }
+    const [i, j] = open[Math.floor(Math.random() * open.length)];
+    B[i][j]++; drawBoard([i, j]);
+  }, 900);
+}
+
+/* ---------- Crunch strip ---------- */
+const strip = $("#strip");
+const LOAD = [2,3,4,5,6,7,9,5,5,6,7,8,8,9,10,4,4,5,5,6,7,8,9];
+for (let i = 1; i <= 23; i++) {
+  const d = document.createElement("div"); d.className = "d" + ([7, 15, 23].includes(i) ? " dl" : "");
+  d.innerHTML = `<div class="fill"></div><span>${i}</span>`; strip.appendChild(d);
+}
+const fillStrip = (on) => $$(".d .fill", strip).forEach((f, i) => { f.style.height = on ? LOAD[i] * 9 + "%" : "0"; f.style.transitionDelay = on ? i * 40 + "ms" : "0ms"; });
+fillStrip(true);
+let stripPlayed = false;
+new IntersectionObserver(es => { if (es[0].isIntersecting && !stripPlayed && !REDUCE) { stripPlayed = true; fillStrip(false); requestAnimationFrame(() => requestAnimationFrame(() => fillStrip(true))); } }, { threshold: .4 }).observe(strip);
+
+/* ---------- Day 0: onboarding ---------- */
+const withCheck = s => { let t = 0; for (let i = 0; i < 12; i++) t += +s[i] * (13 - i); return s + ((11 - (t % 11)) % 10); };
+const TYPE_L = { co: "บริษัทจำกัด", lp: "ห้างหุ้นส่วนจำกัด", sole: "บุคคลธรรมดา" };
+const ONB = [
+  { short: "สยามคลีนนิ่ง", name: "บริษัท สยามคลีนนิ่ง จำกัด", type: "co", tin: "0999999000021", cap: "5,000,000 บาท", addr: "แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพฯ", biz: "บริการทำความสะอาดอาคาร", fye: 11, vat: true, emp: true, pay: true, foreign: true },
+  { short: "ร้านกาแฟบ้านสวน", name: "ร้านกาแฟบ้านสวน", type: "sole", tin: "1-2345-xxxxx-xx-x", cap: "ไม่มี (บุคคลธรรมดา)", addr: "อำเภอเมือง เชียงใหม่", biz: "ร้านกาแฟ", fye: 11, vat: false, emp: true, pay: false, foreign: false },
+  { short: "ช่างเหล็กรุ่งเรือง", name: "ห้างหุ้นส่วนจำกัด ช่างเหล็กรุ่งเรือง", type: "lp", tin: withCheck("099999900006"), cap: "1,000,000 บาท", addr: "อำเภอบางพลี สมุทรปราการ", biz: "รับเหมางานโครงสร้างเหล็ก", fye: 11, vat: true, emp: true, pay: true, foreign: false },
+  { short: "ไทยเฟรช เอ็กซ์ปอร์ต", name: "บริษัท ไทยเฟรช เอ็กซ์ปอร์ต จำกัด", type: "co", tin: withCheck("099999900007"), cap: "20,000,000 บาท", addr: "อำเภอเมือง ฉะเชิงเทรา", biz: "ส่งออกผลไม้สด", fye: 5, vat: true, emp: true, pay: true, foreign: true },
+];
+const SW = [["vat", "จดทะเบียนภาษีมูลค่าเพิ่ม"], ["emp", "มีลูกจ้าง"], ["pay", "จ่ายค่าบริการ ค่าเช่า ให้ผู้อื่น"], ["foreign", "ซื้อบริการจากต่างประเทศ"]];
+const TODAY = new Date(2026, 10, 10);
+const eom = (y, m) => new Date(y, m + 1, 0);
+const nextEom = m => { let d = eom(TODAY.getFullYear(), m); if (d < TODAY) d = eom(TODAY.getFullYear() + 1, m); return d; };
+let onbIdx = 0, cur = { ...ONB[0] };
+function onbCompute(c) {
+  const mo = [];
+  if (c.vat) mo.push(["ภ.พ.30", "ภาษีมูลค่าเพิ่ม", "15 · ออนไลน์ 23"]);
+  if (c.emp) { mo.push(["ภ.ง.ด.1", "หัก ณ ที่จ่าย เงินเดือน", "7 · ออนไลน์ 15"]); mo.push(["สปส.1-10", "ประกันสังคม", "15"]); }
+  if (c.pay) { mo.push(["ภ.ง.ด.3", "หัก ณ ที่จ่าย บุคคล", "7 · ออนไลน์ 15"]); mo.push(["ภ.ง.ด.53", "หัก ณ ที่จ่าย นิติบุคคล", "7 · ออนไลน์ 15"]); }
+  if (c.foreign) { mo.push(["ภ.พ.36", "VAT บริการต่างประเทศ", "7 · ออนไลน์ 15"]); mo.push(["ภ.ง.ด.54", "หัก ณ ที่จ่าย ต่างประเทศ", "7 · ออนไลน์ 15"]); }
+  const an = [];
+  if (c.type === "sole") {
+    an.push(["ภ.ง.ด.90", "ภาษีเงินได้บุคคลธรรมดา ปีภาษี 2569", new Date(2027, 2, 31)]);
+    an.push(["ภ.ง.ด.94", "ภาษีครึ่งปี 2570", new Date(2027, 8, 30)]);
+  } else {
+    const fy = nextEom(c.fye), half = nextEom((c.fye + 6) % 12);
+    an.push(["ภ.ง.ด.51", `ภาษีครึ่งรอบบัญชี ถึง ${thDate(half)}`, eom(half.getFullYear(), half.getMonth() + 2)]);
+    an.push(["ภ.ง.ด.50", `ภาษีนิติบุคคล รอบสิ้นสุด ${thDate(fy)}`, new Date(fy.getFullYear(), fy.getMonth(), fy.getDate() + 150)]);
+    an.push(["งบการเงิน", `ส่งกรมพัฒนาธุรกิจการค้า ${c.type === "co" ? "ผู้สอบบัญชีรับอนุญาตรับรอง" : "รับรองโดย CPA หรือ TA ได้"} (โดยประมาณ)`, eom(fy.getFullYear(), fy.getMonth() + 5)]);
+    if (c.type === "co") an.push(["บอจ.5", "บัญชีรายชื่อผู้ถือหุ้น หลังประชุมสามัญ (โดยประมาณ)", new Date(fy.getFullYear(), fy.getMonth() + 5, 14)]);
+  }
+  if (c.emp) { an.push(["ภ.ง.ด.1ก", "สรุปเงินเดือนทั้งปี 2569", new Date(2027, 1, 28)]); an.push(["กท.20ก", "กองทุนเงินทดแทน ค่าจ้างทั้งปี", new Date(2027, 1, 28)]); }
+  an.sort((a, b) => a[2] - b[2]);
+  const months = []; for (let i = 0; i < 12; i++) { const d = new Date(2026, 11 + i, 1); months.push({ y: d.getFullYear(), m: d.getMonth(), n: mo.length }); }
+  an.forEach(a => { const x = months.find(z => z.y === a[2].getFullYear() && z.m === a[2].getMonth()); if (x) x.n++; });
+  return { mo, an, months, total: months.reduce((s, x) => s + x.n, 0) };
+}
+function onbTabs() { $("#onbTabs").innerHTML = ONB.map((c, i) => `<button type="button" data-i="${i}" aria-pressed="${i === onbIdx}">${c.short}</button>`).join(""); $$("#onbTabs button").forEach(b => b.onclick = () => { onbIdx = +b.dataset.i; cur = { ...ONB[onbIdx] }; onbTabs(); onbDemo.play(); }); }
+function onbProfile(show) {
+  $("#onbProf").innerHTML = show ? `<b>${esc(cur.name)}</b><dl><dt>ประเภท</dt><dd>${TYPE_L[cur.type]}</dd><dt>ธุรกิจ</dt><dd>${esc(cur.biz)}</dd><dt>ทุนจดทะเบียน</dt><dd>${cur.cap}</dd><dt>ที่ตั้ง</dt><dd>${esc(cur.addr)}</dd></dl><small>${cur.type === "sole" ? "บุคคลธรรมดา กรอกเอง · เลขประจำตัวแสดงแบบปิดบัง" : "ดึงจากข้อมูลกรมพัฒนาธุรกิจการค้า (สาธิต)"}</small>` : "";
+}
+function onbSwitches(n = 99) {
+  $("#onbSw").innerHTML = SW.map(([k, l], i) => `<label class="${i < n ? "" : "dim"}"><input type="checkbox" data-k="${k}" ${i < n && cur[k] ? "checked" : ""}> ${l}</label>`).join("") +
+    `<label>รอบบัญชีสิ้นสุด <select id="onbFye" ${cur.type === "sole" ? "disabled" : ""}>${TH_MF.map((m, i) => `<option value="${i}" ${i === cur.fye ? "selected" : ""}>${eom(2026, i).getDate()} ${m}</option>`).join("")}</select></label>`;
+  $$("#onbSw input").forEach(x => x.onchange = () => { cur[x.dataset.k] = x.checked; onbOut(true); });
+  $("#onbFye").onchange = e => { cur.fye = +e.target.value; onbOut(true); };
+}
+function onbOut(anim) {
+  const r = onbCompute(cur), max = Math.max(...r.months.map(m => m.n), 1);
+  if (anim) countUp($("#onbTotal"), r.total, 700, v => Math.round(v)); else $("#onbTotal").textContent = r.total;
+  $("#onbRange").textContent = "ธ.ค. 2569 ถึง พ.ย. 2570";
+  $("#onbBars").innerHTML = r.months.map(m => `<div><span>${m.n}</span><i class="${m.n > r.mo.length ? "pk" : ""}" style="height:${anim && !REDUCE ? 0 : m.n / max * 100}%" data-h="${m.n / max * 100}"></i><em>${TH_M[m.m]}</em></div>`).join("");
+  if (anim && !REDUCE) requestAnimationFrame(() => requestAnimationFrame(() => $$("#onbBars i").forEach(i => i.style.height = i.dataset.h + "%")));
+  $("#onbMonthly").innerHTML = r.mo.length ? r.mo.map(m => `<span class="obc${anim ? " fade-in" : ""}"><b>${m[0]}</b>${m[1]}<em>วันที่ ${m[2]}</em></span>`).join("") : `<span class="note" style="margin:0">ไม่มีแบบรายเดือน</span>`;
+  $("#onbAnnual").innerHTML = r.an.map(a => `<div class="obl${anim ? " fade-in" : ""}"><b>${a[0]}</b><span>${a[1]}</span><em>${thDate(a[2])}</em></div>`).join("");
+}
+function onbFinal() { onbTabs(); $("#onbTin").value = cur.tin; $("#onbSt").textContent = "พบข้อมูล ✓"; $("#onbSt").className = "lk-st ok"; onbProfile(true); onbSwitches(); onbOut(false); }
+const onbDemo = demo($("#demoOnb"), onbFinal, async w => {
+  cur = { ...ONB[onbIdx] }; onbTabs();
+  $("#onbTin").value = ""; $("#onbSt").textContent = ""; onbProfile(false); onbSwitches(0); $("#onbTotal").textContent = "0"; $("#onbBars").innerHTML = ""; $("#onbMonthly").innerHTML = ""; $("#onbAnnual").innerHTML = "";
+  for (let i = 1; i <= cur.tin.length; i++) { $("#onbTin").value = cur.tin.slice(0, i); await w(45); }
+  $("#onbSt").textContent = "กำลังค้นหา…"; $("#onbSt").className = "lk-st"; await w(700);
+  $("#onbSt").textContent = "พบข้อมูล ✓"; $("#onbSt").className = "lk-st ok"; onbProfile(true); await w(500);
+  for (let n = 1; n <= SW.length; n++) { onbSwitches(n); await w(330); }
+  onbSwitches(); onbOut(true);
+});
+
+/* ---------- Day 1: LINE ---------- */
+const chat = $("#chat");
+const RC = (title, lines, amt = "2,835.50") => `<div class="rcpt"><b>${title}</b>${"<i></i>".repeat(lines)}<b style="text-align:right">${amt}</b></div>`;
+const FILE = (name, meta) => `<div class="filemsg"><span class="fi">PDF</span><span><b>${name}</b><br><small>${meta}</small></span></div>`;
+const CHATS = [
+  { t: "ส่งใบเสร็จ", m: [
+    { k: "me photo", h: RC("ใบกำกับภาษี", 5) },
+    { k: "bot", h: `<span class="ok">✓ ใบกำกับภาษีเต็มรูป</span><br>บจ. ออฟฟิศเมท ซัพพลาย<br>ภาษีซื้อ <b>฿185.50</b> · เข้างวด ต.ค. 2569` },
+    { k: "me photo", h: RC("ใบกำกับภาษีอย่างย่อ", 3, "200.00") },
+    { k: "bot", h: `<span class="bad">✗ ใบกำกับภาษีอย่างย่อ</span><br>ใช้หักภาษีซื้อไม่ได้ ครั้งหน้าขอใบกำกับภาษีเต็มรูปจากร้าน โดยแจ้งชื่อ เลขผู้เสียภาษี และสาขาของบริษัทได้ไหมคะ` },
+    { k: "quick", h: `<span>ขอใบใหม่แล้ว</span><span>ใช้เป็นค่าใช้จ่ายไป</span>` },
+  ] },
+  { t: "ถามยอดภาษี", m: [
+    { k: "me", h: "เดือนนี้ต้องจ่าย VAT ประมาณเท่าไรครับ จะได้เตรียมเงิน" },
+    { k: "bot", h: `<div class="card-mini"><h4>ประมาณการ ต.ค. 2569 จากเอกสาร 259 ใบ</h4><div class="row"><span>ภ.พ.30</span><b>฿70,738.70</b></div><div class="row"><span>ภ.ง.ด.3 และ 53</span><b>฿4,215.00</b></div><div class="row"><span>ประกันสังคม</span><b>฿11,850.00</b></div></div>` },
+    { k: "bot", h: `ยอดอาจเปลี่ยนเมื่อได้ Statement ธนาคารครบ ภ.พ.30 ครบกำหนดชำระวันที่ 23 พ.ย. ค่ะ` },
+    { k: "quick", h: `<span>ดูรายละเอียด</span><span>เตือนก่อนครบกำหนด</span>` },
+  ] },
+  { t: "เตือนสิ้นเดือน", m: [
+    { k: "bot", h: `<b>สรุปเอกสาร ต.ค. 2569</b><br>ได้รับแล้ว 259 ใบ · ยังขาด 3 รายการ` },
+    { k: "bot", h: `<div class="card-mini"><h4>ยังขาด</h4><div class="row"><span>Statement KBank ต.ค.</span><b>✗</b></div><div class="row"><span>สรุปเงินเดือน ต.ค.</span><b>✗</b></div><div class="row"><span>ใบกำกับภาษีขาย 1285–1288</span><b>✗</b></div></div>` },
+    { k: "me", h: FILE("Statement_KBank_Oct2569.pdf", "2 หน้า · 184 KB") },
+    { k: "bot", h: `<span class="ok">✓ Statement KBank ต.ค. 2569</span><br>43 รายการ · จับคู่กับเอกสารแล้ว 39 รายการ<br>อีก 4 รายการยังไม่มีเอกสาร` },
+    { k: "quick", h: `<span>ดู 4 รายการ</span><span>ส่งเอกสารเพิ่ม</span>` },
+  ] },
+  { t: "ออก 50 ทวิ", m: [
+    { k: "me", h: "จ่ายค่าขนส่งให้ทองดีโลจิสติกส์ 18,500 บาท ต้องหักไหมครับ" },
+    { k: "bot", h: `ค่าขนส่งจ่ายนิติบุคคล หัก <b>1%</b><br>หัก <b>฿185.00</b> · โอนสุทธิ <b>฿18,315.00</b><br>เข้า ภ.ง.ด.53 เดือน พ.ย. 2569` },
+    { k: "quick", h: `<span>ออก 50 ทวิ เลย</span><span>แก้ประเภท</span>` },
+    { k: "me", h: "ออก 50 ทวิ เลย" },
+    { k: "bot", h: FILE("50ทวิ_2569-0043_ทองดีโลจิสติกส์.pdf", "ส่งต่อให้ผู้รับเงินได้ทันที") },
+  ] },
+  { t: "บิลต่างประเทศ", m: [
+    { k: "me photo", h: RC("INVOICE", 4, "THB 5,000.00") },
+    { k: "bot", h: `<span class="ok">✓ ค่าโฆษณาออนไลน์ จากผู้ให้บริการในไอร์แลนด์</span><br>ไม่มี VAT ไทยในใบแจ้งหนี้ ต้องยื่น <b>ภ.พ.36</b> นำส่ง VAT 7% = <b>฿350.00</b> ภายใน 15 พ.ย. (ออนไลน์)` },
+    { k: "bot", h: `ชำระแล้วนำ ฿350.00 ไปใช้เป็นภาษีซื้อเดือนถัดไปได้ สำนักงานเตรียมแบบให้แล้วค่ะ` },
+  ] },
+];
+let chatIdx = 0;
+const msgEl = m => `<div class="${m.k === "quick" ? "quick" : "msg " + m.k}">${m.h}</div>`;
+function lineTabs() { $("#lineTabs").innerHTML = CHATS.map((c, i) => `<button type="button" data-i="${i}" aria-pressed="${i === chatIdx}">${c.t}</button>`).join(""); $$("#lineTabs button").forEach(b => b.onclick = () => { chatIdx = +b.dataset.i; lineTabs(); lineDemo.play(); }); }
+const lineDemo = demo($("#demoLine"), () => { lineTabs(); chat.innerHTML = CHATS[chatIdx].m.map(msgEl).join(""); }, async w => {
+  lineTabs(); chat.innerHTML = ""; await w(350);
+  for (const m of CHATS[chatIdx].m) {
+    if (m.k === "bot") { const t = document.createElement("div"); t.className = "msg bot typing"; t.innerHTML = "<i></i><i></i><i></i>"; chat.appendChild(t); await w(800); t.remove(); }
+    const d = document.createElement("div"); d.className = (m.k === "quick" ? "quick" : "msg " + m.k) + " fade-in"; d.innerHTML = m.h; chat.appendChild(d);
+    await w(m.k.startsWith("me") ? 700 : 950);
+  }
+});
+
+/* ---------- Day 2: review queue ---------- */
+const CLIENT = { name: "บริษัท สยามคลีนนิ่ง จำกัด", tin: "0999999000021", br: "00000" };
+const TAXMONTH = { y: 2026, m: 9 };
+const HQ = "สำนักงานใหญ่";
+const D1 = { q: "ออฟฟิศเมท", kind: "full", title: "ใบกำกับภาษี / ใบเสร็จรับเงิน", seller: "บริษัท ออฟฟิศเมท ซัพพลาย จำกัด", sTin: "0999999000012", sBr: HQ, buyer: CLIENT.name, bTin: CLIENT.tin, bBr: HQ, no: "IV6910-0457", date: [2026, 9, 28], items: [["กระดาษถ่ายเอกสาร A4 80 แกรม", 10, 120], ["ตลับหมึกพิมพ์เลเซอร์", 1, 1450]], vat: 185.50, vatReg: true };
+const DOCS = [
+  D1,
+  { q: "รุ่งเรืองเครื่องมือ", kind: "full", title: "ใบกำกับภาษี", seller: "บริษัท รุ่งเรืองเครื่องมือช่าง จำกัด", sTin: "0999999000039", sBr: "สาขา 00002", buyer: "สยามคลีนนิ่ง", bTin: "", bBr: "", no: "TX-2569/0311", date: [2026, 2, 14], items: [["เครื่องขัดพื้น รุ่น FX-17", 1, 6500]], vat: 455.00, vatReg: true },
+  { q: "ร้านสะดวกซื้อ", kind: "abb", title: "ใบกำกับภาษีอย่างย่อ", seller: "ร้านสะดวกซื้อ สาขาสุขุมวิท 21", sTin: withCheck("099999900005"), sBr: "สาขา 01842", no: "POS 004812", date: [2026, 9, 17], items: [["น้ำดื่ม เครื่องดื่ม ขนม", 1, 186.92]], vat: 13.08, vatReg: true },
+  { q: "ห้องอาหารบ้านไทย", kind: "full", cat: "ent", title: "ใบกำกับภาษี / ใบเสร็จรับเงิน", seller: "บริษัท ห้องอาหารบ้านไทย จำกัด", sTin: withCheck("099999900011"), sBr: HQ, buyer: CLIENT.name, bTin: CLIENT.tin, bBr: HQ, no: "RC-10-0921", date: [2026, 9, 22], items: [["อาหารและเครื่องดื่ม รับรองลูกค้า 6 ท่าน", 1, 4800]], vat: 336.00, vatReg: true },
+  { q: "เอเชียมอเตอร์", kind: "full", cat: "car", title: "ใบกำกับภาษี", seller: "บริษัท เอเชียมอเตอร์ เซอร์วิส จำกัด", sTin: withCheck("099999900012"), sBr: "สาขา 00005", buyer: CLIENT.name, bTin: CLIENT.tin, bBr: HQ, no: "SV69-10233", date: [2026, 9, 9], items: [["ซ่อมบำรุงรถยนต์นั่ง ทะเบียน 1กข 1234", 1, 6200]], vat: 434.00, vatReg: true },
+  { ...D1, q: "ออฟฟิศเมท (ส่งซ้ำ)", dup: "28 ต.ค. 2569" },
+  { q: "น้ำยาสะอาดไทย", kind: "full", title: "ใบกำกับภาษี", seller: "บริษัท น้ำยาสะอาดไทย จำกัด", sTin: withCheck("099999900013"), sBr: HQ, buyer: CLIENT.name, bTin: CLIENT.tin, bBr: HQ, no: "INV-25691025", date: [2026, 9, 25], items: [["น้ำยาทำความสะอาดพื้น 20 ลิตร", 4, 250]], vat: 72.00, vatReg: true },
+  { q: "ร้านป้ายสวยงาม", kind: "full", title: "ใบกำกับภาษี", seller: "ร้านป้ายสวยงาม", sTin: withCheck("123456789013"), sBr: "", buyer: CLIENT.name, bTin: CLIENT.tin, bBr: HQ, no: "005/2569", date: [2026, 9, 12], items: [["ป้ายไวนิลหน้าอาคาร", 2, 1500]], vat: 210.00, vatReg: false },
+  { q: "อินเทอร์เน็ตไทย e-Tax", kind: "etax", title: "ใบกำกับภาษีอิเล็กทรอนิกส์", seller: "บริษัท อินเทอร์เน็ตไทย จำกัด", sTin: withCheck("099999900014"), sBr: HQ, buyer: CLIENT.name, bTin: CLIENT.tin, bBr: HQ, no: "ET2569100088", date: [2026, 9, 1], items: [["อินเทอร์เน็ตองค์กร 1 Gbps ต.ค. 2569", 1, 1890]], vat: 132.30, vatReg: true },
+  { q: "บิลเงินสด ช.การช่าง", kind: "cash", title: "บิลเงินสด", seller: "ร้าน ช.การช่าง วัสดุก่อสร้าง", no: "เล่ม 12 เลขที่ 37", date: [2026, 9, 19], items: [["ปูนกาว", 2, 180], ["แปรงทาสี", 4, 70]], vat: 0 },
+  { q: "โฆษณาต่างประเทศ", kind: "foreign", title: "INVOICE", seller: "Online Ads Global Ltd.", sAddr: "Dublin, Ireland", no: "INV-TH-883120", date: [2026, 9, 31], items: [["Online advertising, October 2026", 1, 5000]], vat: 0 },
+  { q: "50 ทวิ จากเมกะมอลล์", kind: "whtin", title: "หนังสือรับรองการหักภาษี ณ ที่จ่าย", seller: "บริษัท เมกะมอลล์ จำกัด", sTin: withCheck("099999900015"), no: "2569/1182", date: [2026, 9, 30], items: [["ค่าบริการทำความสะอาด ต.ค. 2569", 1, 150000]], vat: 0, wht: 4500 },
+];
+let docIdx = 0, qSt = DOCS.map(() => null);
+const sub = d => d.items.reduce((a, [, q, p]) => a + q * p, 0);
+const vat7 = b => Math.round(b * 7) / 100;
+const monthsBack = d => (TAXMONTH.y - d.date[0]) * 12 + (TAXMONTH.m - d.date[1]);
+const dOf = d => new Date(d.date[0], d.date[1], d.date[2]);
+const itemsTbl = (d, cur = "") => `<table><thead><tr><th>${d.kind === "foreign" ? "Description" : "รายการ"}</th><th class="r">${d.kind === "foreign" ? "Qty" : "จำนวน"}</th><th class="r">${d.kind === "foreign" ? "Amount" : "รวม"}</th></tr></thead><tbody>${d.items.map(([n, q, p]) => `<tr><td>${n}</td><td class="r">${q}</td><td class="r">${cur}${fmt(q * p)}</td></tr>`).join("")}</tbody></table>`;
+function invHTML(d) {
+  const base = sub(d), dt = thDate(dOf(d));
+  if (d.kind === "etax") return `<div class="t" data-f="type">${d.title}<small>e-Tax Invoice · XML มาตรฐาน สพธอ.</small></div>
+<pre class="xml"><span class="tg">&lt;ram:SellerTradeParty&gt;</span>
+  <span class="tg">&lt;ram:Name&gt;</span><span data-f="seller">${d.seller}</span>
+  <span class="tg">&lt;ram:ID&gt;</span><span data-f="sTin">${d.sTin}</span> · ${d.sBr}
+<span class="tg">&lt;ram:BuyerTradeParty&gt;</span>
+  <span class="tg">&lt;ram:Name&gt;</span><span data-f="buyer">${d.buyer}</span>
+  <span class="tg">&lt;ram:ID&gt;</span><span data-f="bTin">${d.bTin}</span> · ${d.bBr}
+<span class="tg">&lt;ram:ID&gt;</span><span data-f="no">${d.no}</span> · ${dt}
+<span class="tg">&lt;ram:LineTotalAmount&gt;</span><span data-f="base">${fmt(base)}</span>
+<span class="tg">&lt;ram:TaxTotalAmount&gt;</span>${fmt(d.vat)}</pre><span class="sig">✓ ลายมือชื่อดิจิทัลถูกต้อง</span>`;
+  if (d.kind === "cash") return `<div class="t" data-f="type">บิลเงินสด</div><div style="margin-top:6px"><span data-f="seller">${d.seller}</span></div><div style="text-align:right"><span data-f="no">${d.no}</span><br>วันที่ ${dt}</div>${itemsTbl(d)}<div class="tot"><b>รวม <span data-f="base">${fmt(base)}</span> บาท</b><span>ผู้รับเงิน ............ ช.</span></div>`;
+  if (d.kind === "foreign") return `<div class="t" data-f="type" style="text-align:left">INVOICE</div><div class="two"><div><b data-f="seller">${d.seller}</b><br>${d.sAddr}<br>VAT ID: IE-XXXXXXX</div><div style="text-align:right">No. <span data-f="no">${d.no}</span><br>Date 31 Oct 2026</div></div><div style="margin-top:6px"><b>Bill to</b> Siam Cleaning Co., Ltd. (Thailand)</div>${itemsTbl(d, "THB ")}<div class="tot"><b>Amount due THB <span data-f="base">${fmt(base)}</span></b><span>VAT: not charged, customer to account (reverse charge)</span></div>`;
+  if (d.kind === "whtin") return `<div class="t" data-f="type">หนังสือรับรองการหักภาษี ณ ที่จ่าย<small>ตามมาตรา 50 ทวิ · เลขที่ ${d.no}</small></div><div class="two"><div><b>ผู้หักภาษี</b><br><span data-f="seller">${d.seller}</span><br><span data-f="sTin">${d.sTin}</span></div><div><b>ผู้ถูกหักภาษี</b><br>${CLIENT.name}<br>${CLIENT.tin}</div></div>${itemsTbl(d)}<div class="tot"><span>ภาษีที่หักไว้ 3% <b data-f="base">${fmt(d.wht)}</b></span><span>(สี่พันห้าร้อยบาทถ้วน)</span></div>`;
+  return `<div class="t" data-f="type">${d.title}${d.kind === "full" ? "<small>เอกสารออกเป็นชุด</small>" : ""}</div>
+  <div class="two"><div><b>ผู้ขาย</b><br><span data-f="seller">${d.seller}</span><br>เลขผู้เสียภาษี <span data-f="sTin">${d.sTin}</span> ${d.sBr}</div><div style="text-align:right">เลขที่ <span data-f="no">${d.no}</span><br>วันที่ ${dt}</div></div>
+  ${d.kind === "full" ? `<div style="margin-top:6px"><b>ผู้ซื้อ</b> <span data-f="buyer">${d.buyer}</span>${d.bTin ? ` · เลขผู้เสียภาษี <span data-f="bTin">${d.bTin}</span> ${d.bBr}` : ` <span data-f="bTin" style="color:#999">(ไม่ระบุเลขผู้เสียภาษีและสาขา)</span>`}</div>` : ""}
+  ${itemsTbl(d)}<div class="tot"><span>มูลค่าสินค้า <span data-f="base">${fmt(base)}</span></span><span>ภาษีมูลค่าเพิ่ม 7% ${fmt(d.vat)}</span><b>รวมทั้งสิ้น ${fmt(base + d.vat)}</b></div>`;
+}
+function analyze(d) {
+  const base = sub(d), calc = vat7(base), F = [], C = [], dt = thDate(dOf(d));
+  const ok = s => C.push(["ok", s]), warn = s => C.push(["warn", s]), block = s => C.push(["block", s]), info = s => C.push(["info", s]);
+  const cf = n => d.kind === "etax" ? 100 : n;
+  if (["full", "abb", "etax"].includes(d.kind)) {
+    F.push(["type", "ประเภทเอกสาร", d.kind === "abb" ? "ใบกำกับภาษีอย่างย่อ" : d.kind === "etax" ? "e-Tax Invoice (XML)" : "ใบกำกับภาษีเต็มรูป", cf(99)]);
+    F.push(["seller", "ผู้ขาย", d.seller, cf(97)]);
+    F.push(["sTin", "เลขผู้เสียภาษีผู้ขาย · สาขา", d.sTin + (d.sBr ? " · " + d.sBr : ""), cf(98)]);
+    if (d.kind !== "abb") { F.push(["buyer", "ผู้ซื้อ", d.buyer || "ไม่มี", d.buyer ? cf(96) : 0]); F.push(["bTin", "เลขผู้เสียภาษีผู้ซื้อ · สาขา", d.bTin ? `${d.bTin} · ${d.bBr}` : "ไม่มี", d.bTin ? cf(98) : 0]); }
+    F.push(["no", "เลขที่ · วันที่", `${d.no} · ${dt}`, cf(95)]);
+    F.push(["base", "มูลค่า · VAT", `${fmt(base)} · ${fmt(d.vat)}`, cf(99)]);
+    if (d.kind === "etax") ok("ลายมือชื่ออิเล็กทรอนิกส์ถูกต้อง อ่านจาก XML ไม่ต้องใช้ OCR");
+    if (d.kind === "abb") { block("ใบกำกับภาษีอย่างย่อ นำภาษีซื้อมาหักไม่ได้"); info(`บันทึกเป็นค่าใช้จ่ายรวม VAT ฿${fmt(base + d.vat)}`); }
+    else { ok("เป็นใบกำกับภาษีเต็มรูป"); d.bTin === CLIENT.tin ? ok("ผู้ซื้อ เลขผู้เสียภาษี และสาขาตรงกับลูกค้า") : block("ไม่มีเลขผู้เสียภาษีและสาขาของผู้ซื้อ รายการไม่ครบตามมาตรา 86/4"); }
+    tinValid(d.sTin) ? ok(`เลขผู้เสียภาษีผู้ขายถูกต้อง (หลักตรวจสอบ ${d.sTin[12]})`) : block("เลขผู้เสียภาษีผู้ขายผิด");
+    if (d.kind !== "abb") {
+      d.vatReg ? ok("ผู้ขายจดทะเบียนภาษีมูลค่าเพิ่ม") : block("ผู้ขายไม่ได้จดทะเบียน VAT จึงออกใบกำกับภาษีไม่ได้");
+      Math.abs(calc - d.vat) <= 0.01 ? ok(`VAT 7% × ${fmt(base)} = ${fmt(calc)} ตรงกับเอกสาร`) : warn(`VAT ควรเป็น ${fmt(calc)} แต่เอกสารระบุ ${fmt(d.vat)}`);
+      monthsBack(d) <= 6 ? ok(`อยู่ในกำหนด 6 เดือน (ห่างจากเดือนภาษี ${monthsBack(d)} เดือน)`) : block(`เกินกำหนด 6 เดือน (ใบลงวันที่ ${TH_M[d.date[1]]} ${d.date[0] + 543} ห่าง ${monthsBack(d)} เดือน)`);
+      d.dup ? block(`ซ้ำกับใบที่ยืนยันแล้วเมื่อ ${d.dup} ผู้ขายและเลขที่เดียวกัน`) : ok("ไม่ซ้ำกับใบที่เคยใช้");
+      if (d.cat === "ent") warn("ค่ารับรอง เป็นภาษีซื้อต้องห้ามตามมาตรา 82/5");
+      if (d.cat === "car") warn("ค่าใช้จ่ายรถยนต์นั่ง เป็นภาษีซื้อต้องห้ามตามมาตรา 82/5");
+    }
+  } else if (d.kind === "cash") {
+    F.push(["type", "ประเภทเอกสาร", "บิลเงินสด (ลายมือ)", 88]); F.push(["seller", "ผู้ขาย", d.seller, 84]); F.push(["no", "เลขที่ · วันที่", `${d.no} · ${dt}`, 79]); F.push(["base", "จำนวนเงิน", fmt(base), 91]);
+    info("ไม่มี VAT จึงไม่มีภาษีซื้อ"); ok("วันที่อยู่ในเดือนภาษี"); warn("ไม่มีเลขผู้เสียภาษีผู้ขาย ให้เจ้าของกิจการรับรองการจ่ายในแอป");
+  } else if (d.kind === "foreign") {
+    F.push(["type", "ประเภทเอกสาร", "ใบแจ้งหนี้จากต่างประเทศ", 97]); F.push(["seller", "ผู้ให้บริการ", `${d.seller} · ${d.sAddr}`, 96]); F.push(["no", "เลขที่ · วันที่", `${d.no} · ${dt}`, 95]); F.push(["base", "จำนวนเงิน", `THB ${fmt(base)}`, 98]);
+    info("ผู้ให้บริการอยู่ต่างประเทศ ไม่มี VAT ไทยในใบแจ้งหนี้"); warn(`ต้องยื่น ภ.พ.36 นำส่ง VAT 7% = ฿${fmt(calc)} ภายใน 15 พ.ย. (ออนไลน์)`); info("ชำระ ภ.พ.36 แล้ว ใช้เป็นภาษีซื้อเดือนถัดไปได้");
+  } else {
+    F.push(["type", "ประเภทเอกสาร", "50 ทวิ ที่ลูกค้าได้รับ", 98]); F.push(["seller", "ผู้หักภาษี", d.seller, 97]); F.push(["sTin", "เลขผู้เสียภาษีผู้หัก", d.sTin, 98]); F.push(["base", "เงินได้ · ภาษีที่ถูกหัก", `${fmt(base)} · ${fmt(d.wht)}`, 99]);
+    tinValid(d.sTin) ? ok("เลขผู้เสียภาษีผู้หักถูกต้อง") : block("เลขผู้เสียภาษีผู้หักผิด");
+    ok(`อัตรา 3% × ${fmt(base)} = ${fmt(d.wht)} ถูกต้อง`); info("บันทึกเป็นภาษีถูกหัก ณ ที่จ่าย ใช้เครดิตตอนยื่น ภ.ง.ด.50");
+  }
+  const blocks = C.filter(c => c[0] === "block").length;
+  let v;
+  if (d.dup) v = ["no", "ส่งซ้ำ · ไม่บันทึกซ้ำ", "แจ้งเจ้าของกิจการ"];
+  else if (d.kind === "abb") v = ["no", `หักภาษีซื้อไม่ได้ · ลงค่าใช้จ่าย ฿${fmt(base + d.vat)}`, "ขอใบเต็มรูปครั้งหน้า"];
+  else if (d.kind === "full" && !d.vatReg) v = ["no", "ผู้ขายไม่ได้จด VAT · ใบนี้ใช้ไม่ได้", "แจ้งลูกค้า"];
+  else if (blocks) v = ["no", `ติดปัญหา ${blocks} ข้อ · ยังไม่เข้าแบบภาษี`, "ขอเอกสารใหม่ทาง LINE"];
+  else if (d.cat) v = ["warn", `ลงค่าใช้จ่าย · ไม่หักภาษีซื้อ ฿${fmt(d.vat)}`, "Enter ยืนยัน"];
+  else if (d.kind === "full" && Math.abs(calc - d.vat) > .01) v = ["warn", "VAT ไม่ตรง · ขอใบแก้ไขจากผู้ขาย", "ส่งข้อความถึงผู้ขาย"];
+  else if (d.kind === "cash") v = ["info", `ค่าใช้จ่าย ฿${fmt(base)} · ไม่มีภาษีซื้อ`, "ขอการรับรองจากเจ้าของ"];
+  else if (d.kind === "foreign") v = ["info", `ส่งเข้า ภ.พ.36 · VAT ฿${fmt(calc)}`, "Enter ยืนยัน"];
+  else if (d.kind === "whtin") v = ["info", `บันทึกเครดิตภาษี ฿${fmt(d.wht)}`, "Enter ยืนยัน"];
+  else v = ["ok", `พร้อมยืนยัน · ภาษีซื้อ ฿${fmt(d.vat)}`, "Enter ยืนยัน"];
+  return { F, C, v };
+}
+const BADGE = { ok: ["b-ok", "ผ่าน"], block: ["b-block", "ติด"], warn: ["b-warn", "เตือน"], info: ["b-info", "ข้อมูล"] };
+const fieldHTML = f => `<div class="field${f[3] ? "" : " empty"} fade-in"><small>${f[1]}</small><span class="v">${esc(f[2])}</span><span class="c">${f[3] ? f[3] + "%" : "—"}</span></div>`;
+const chkHTML = c => `<div class="chk fade-in"><span class="badge ${BADGE[c[0]][0]}">${BADGE[c[0]][1]}</span><span>${c[1]}</span></div>`;
+const verdictHTML = v => `<div class="verdict ${v[0]} fade-in"><span>${v[1]}</span><span><span class="kbd">${v[2].startsWith("Enter") ? "Enter" : "→"}</span> ${v[2].replace("Enter ", "")}</span></div>`;
+function drawQueue() {
+  $("#queue").innerHTML = DOCS.map((d, i) => `<button type="button" class="qi ${qSt[i] ? "st-" + qSt[i] : ""}" data-i="${i}" aria-pressed="${i === docIdx}"><span class="qd"></span>${i + 1}. ${d.q}</button>`).join("");
+  $$("#queue .qi").forEach(b => b.onclick = () => { xDemo.run++; showDoc(+b.dataset.i, true); });
+  const n = k => qSt.filter(x => x === k).length, done = qSt.filter(Boolean).length;
+  $("#qSum").textContent = done ? `${done}/${DOCS.length} ใบ · ผ่าน ${n("ok")} · เตือน ${n("warn")} · ติด ${n("no")} · ข้อมูล ${n("info")}` : `คิวตรวจ · ${DOCS.length} เอกสาร`;
+  const on = $("#queue .qi[aria-pressed=true]"); if (on) { const q = $("#queue"); q.scrollLeft = on.offsetLeft - q.clientWidth / 2 + on.offsetWidth / 2; }
+}
+function markInv(a) { a.F.forEach(f => { const el = $(`#invBody [data-f="${f[0]}"]`); if (el) el.classList.add(f[3] ? "hl" : "miss"); }); }
+function setInv(d) { const inv = $("#inv"); inv.classList.toggle("hand", d.kind === "cash"); inv.classList.toggle("en", d.kind === "foreign"); $("#invBody").innerHTML = invHTML(d); }
+function beamRun(ms) { const b = $("#beam"); b.classList.remove("run"); void b.offsetWidth; b.style.animationDuration = ms + "ms"; b.classList.add("run"); }
+function showDoc(i, anim) {
+  docIdx = i; const d = DOCS[i], a = analyze(d); qSt[i] = a.v[0];
+  setInv(d); $("#fields").innerHTML = a.F.map(fieldHTML).join(""); $("#checks").innerHTML = a.C.map(chkHTML).join(""); $("#verdict").innerHTML = verdictHTML(a.v); markInv(a);
+  if (anim && !REDUCE) beamRun(700);
+  drawQueue();
+}
+async function animDoc(i, w, sp) {
+  docIdx = i; const d = DOCS[i], a = analyze(d); drawQueue();
+  setInv(d); $("#fields").innerHTML = ""; $("#checks").innerHTML = ""; $("#verdict").innerHTML = "";
+  beamRun(1400 * sp); await w(1300 * sp);
+  for (const f of a.F) { const el = $(`#invBody [data-f="${f[0]}"]`); if (el) el.classList.add(f[3] ? "hl" : "miss"); $("#fields").insertAdjacentHTML("beforeend", fieldHTML(f)); await w(240 * sp); }
+  for (const c of a.C) { $("#checks").insertAdjacentHTML("beforeend", chkHTML(c)); await w(300 * sp); }
+  $("#verdict").innerHTML = verdictHTML(a.v); qSt[i] = a.v[0]; drawQueue(); await w(900 * sp);
+}
+const xDemo = demo($("#demoX"), () => { DOCS.forEach((d, i) => qSt[i] = analyze(d).v[0]); showDoc(0, false); }, async w => {
+  qSt = DOCS.map(() => null); await animDoc(0, w, 1);
+  for (let i = 1; i < DOCS.length; i++) await animDoc(i, w, .32);
+  showDoc(1, false);
+});
+const tinIn = $("#tinInput"), tinOut = $("#tinOut");
+function tinCheck() {
+  const v = tinIn.value.replace(/\D/g, "").slice(0, 13); tinIn.value = v;
+  if (v.length < 13) { tinOut.textContent = `ใส่อีก ${13 - v.length} หลัก`; tinOut.style.color = "var(--muted)"; return; }
+  const ok = tinValid(v);
+  tinOut.textContent = ok ? `✓ ถูกต้อง · ${v[0] === "0" ? "นิติบุคคล" : "บุคคลธรรมดา"}` : "✗ หลักตรวจสอบไม่ตรง ตรวจเลขอีกครั้ง";
+  tinOut.style.color = ok ? "var(--ledger)" : "var(--stamp)";
+}
+tinIn.addEventListener("input", tinCheck); tinCheck();
+
+/* ---------- Day 3: sync hub ---------- */
+const SYNC = [
+  { k: "gs", b: "GS", c: "#1E8E3E", n: "Google Sheets", s: "ยอดขายรายวัน · ร้านครัวคุณยาย", t: "ซิงค์ทุก 15 นาที" },
+  { k: "xl", b: "XL", c: "#1D6F42", n: "Excel / CSV", s: "ทะเบียนค่าใช้จ่าย · สยามคลีนนิ่ง", t: "อัปโหลดหรือลากวาง" },
+  { k: "em", b: "@", c: "#C5221F", n: "อีเมล", s: "ส่งต่อจาก Gmail หรือ Outlook", t: "ทันทีที่ได้รับ" },
+  { k: "dr", b: "DR", c: "#1A73E8", n: "Google Drive / OneDrive", s: "โฟลเดอร์ลูกค้า · 2569-10", t: "เฝ้าดูโฟลเดอร์" },
+  { k: "bk", b: "฿", c: "#0B6A4E", n: "Statement ธนาคาร", s: "PDF หรือ CSV · จับคู่กับเอกสาร", t: "ทุกธนาคารหลัก" },
+  { k: "pos", b: "POS", c: "#9A5F00", n: "POS และแอปเดลิเวอรี", s: "ยอดรายวัน · รายงานแพลตฟอร์ม", t: "รายวันและรายเดือน" },
+  { k: "acc", b: "⇄", c: "#5B4BC4", n: "ส่งออกโปรแกรมบัญชี", s: "Excel · Google Sheets · Express · PEAK · FlowAccount", t: "สมุดรายวัน" },
+];
+let srcIdx = 0;
+const st = s => ({ ok: ["g", "✓ เข้าแล้ว"], warn: ["a", "ตรวจเพิ่ม"], dup: ["", "ซ้ำ · ข้าม"], no: ["r", "ติด"], info: ["b", "ข้อมูล"], skip: ["", "ข้าม"] }[s]);
+const pillS = s => { const [c, l] = st(s); return `<span class="pill ${c}">${l}</span>`; };
+const logLine = (t, s) => `<div class="fade-in"><span class="num">${t}</span><span>${s}</span></div>`;
+const GS_ROWS = [["28/10/2569", "POS-2810", "ยอดขายหน้าร้าน", 19850, 1389.50, "ok"], ["29/10/2569", "POS-2910", "ยอดขายหน้าร้าน", 21120, 1478.40, "ok"], ["29/10/2569", "INV-0412", "บจ. จัดเลี้ยงสยาม", 12000, 840, "ok"], ["30/10/2569", "POS-3010", "ยอดขายหน้าร้าน", 18760, 1313.20, "ok"], ["30/10/2569", "INV-0412", "บจ. จัดเลี้ยงสยาม", 12000, 840, "dup"], ["31/10/2569", "POS-3110", "ยอดขายหน้าร้าน", 23604, 1625, "warn"]];
+const badTin = (() => { const t = withCheck("099999900099"); return t.slice(0, 12) + ((+t[12] + 1) % 10); })();
+const XL_ROWS = [["03/10/2026", "บจ. น้ำยาสะอาดไทย", withCheck("099999900013"), 1000, 70, "วัสดุสิ้นเปลือง"], ["09/10/2026", "บจ. เอเชียมอเตอร์ เซอร์วิส", withCheck("099999900012"), 6200, 434, "ซ่อมบำรุงยานพาหนะ"], ["14/10/2026", "บจ. กล่องกระดาษไทย", badTin, 3500, 245, "วัสดุสิ้นเปลือง"], ["20/10/2026", "บจ. ทองดีโลจิสติกส์", "0999999000047", 18500, 1295, "ค่าขนส่ง"], ["25/10/2026", "ร้านกาแฟดีดี", "", 450, 0, "รับรอง"]];
+const xlRes = r => r[2] && !tinValid(r[2]) ? ["no", "เลขผู้เสียภาษีผิดหลักตรวจสอบ"] : /ยานพาหนะ/.test(r[5]) ? ["warn", "ตรวจว่าเป็นรถยนต์นั่งหรือไม่ (ภาษีซื้อต้องห้าม)"] : !r[4] ? ["info", "ไม่มี VAT · ลงค่าใช้จ่าย"] : ["ok", "ผ่าน · VAT 7% ตรง"];
+const EMAILS = [["บจ. อินเทอร์เน็ตไทย", "ใบกำกับภาษีอิเล็กทรอนิกส์ ET2569100088", "XML + PDF", "ลายมือชื่อถูกต้อง · เข้าแฟ้ม ต.ค.", "ok"], ["มาลี (เจ้าของกิจการ)", "Fwd: ใบเสร็จค่าน้ำมัน 3 ใบ", "3 รูป", "เข้าคิว AI อ่าน 3 ใบ", "info"], ["บจ. ออฟฟิศเมท ซัพพลาย", "Statement of account ต.ค. 2569", "PDF", "เทียบยอดเจ้าหนี้ ตรง 4 ใบ · ขาด 1 ใบ", "warn"], ["ร้านค้าออนไลน์", "ลดสูงสุด 70% วันนี้เท่านั้น", "ไม่มี", "ไม่ใช่เอกสารบัญชี", "skip"]];
+const DR_FILES = [["ใบเสร็จ_ร้านป้าย.jpg", "คิว AI อ่าน", "info"], ["สัญญาเช่า_ค่าเช่า_ต.ค.pdf", "ค่าเช่า 30,000 → ภ.ง.ด.3 อัตรา 5%", "ok"], ["สรุปเงินเดือน_ต.ค.xlsx", "เงินเดือน 8 คน → ภ.ง.ด.1 และ สปส.1-10", "ok"], ["รูปครอบครัว.jpg", "ไม่ใช่เอกสารบัญชี · ข้าม", "skip"]];
+const BK_ROWS = [["02/10", "โอนออก ทองดีโลจิสติกส์", -18315, "ใบกำกับ TL-10-2569-88 + 50 ทวิ 2569/0041", "ok"], ["05/10", "รับโอน บจ. เมกะมอลล์", 145500, "ใบกำกับขาย SC-2569-1201 · ถูกหัก 3% (50 ทวิ 2569/1182)", "ok"], ["12/10", "ชำระ ร้านป้ายสวยงาม", -3210, "ใบกำกับภาษี 005/2569", "ok"], ["15/10", "หักบัญชี การไฟฟ้านครหลวง", -10550.20, "ใบแจ้งค่าไฟฟ้า ต.ค.", "ok"], ["18/10", "โอนออก ไม่ระบุผู้รับ", -4800, "ยังไม่มีเอกสาร · ขอทาง LINE แล้ว", "warn"], ["31/10", "ค่าธรรมเนียมธนาคาร", -25, "บันทึกค่าธรรมเนียมอัตโนมัติ", "info"]];
+const PLAT = [["แพลตฟอร์ม A", 128600], ["แพลตฟอร์ม B", 61900], ["แพลตฟอร์ม C", 32700]];
+let sseed = 3; const srnd = () => (sseed = (sseed * 16807) % 2147483647) / 2147483647;
+const POSD = Array.from({ length: 31 }, (_, i) => 9500 + srnd() * 6500 + (i % 7 >= 5 ? 3500 : 0));
+const posScale = 389200 / POSD.reduce((a, b) => a + b, 0); for (let i = 0; i < 31; i++) POSD[i] *= posScale;
+const JOURNAL = [["สมุดรายวันซื้อ · IV6910-0457 · ออฟฟิศเมท", [["5130 วัสดุสิ้นเปลือง", 2650, 0], ["1154 ภาษีซื้อ", 185.50, 0], ["2110 เจ้าหนี้การค้า", 0, 2835.50]]], ["สมุดรายวันจ่าย · ชำระทองดีโลจิสติกส์", [["2110 เจ้าหนี้การค้า", 18500, 0], ["2132 ภาษีหัก ณ ที่จ่ายค้างจ่าย", 0, 185], ["1112 เงินฝากธนาคาร KBank", 0, 18315]]]];
+function srcList() {
+  $("#srcList").innerHTML = SYNC.map((s, i) => `<button type="button" class="src" data-i="${i}" aria-pressed="${i === srcIdx}"><span class="sb" style="--c:${s.c}">${s.b}</span><span><b>${s.n}</b><small>${s.s}</small></span></button>`).join("");
+  $$("#srcList .src").forEach(b => b.onclick = () => { srcIdx = +b.dataset.i; syncDemo.play(); });
+}
+function srcHead(s, extra = "") { return `<div class="sd-head"><span class="sb" style="--c:${s.c}">${s.b}</span><div><b>${s.n}</b><small>${s.s} · ${s.t}</small></div>${extra}</div>`; }
+function srcRender(n, done) {
+  const s = SYNC[srcIdx], show = i => done || i < n;
+  let h = "";
+  if (s.k === "gs") {
+    h = srcHead(s, `<span class="pill g">เชื่อมแล้ว · อ่านอย่างเดียว</span>`) +
+      `<div class="map">${["A → วันที่", "B → เลขที่", "C → คู่ค้า", "D → มูลค่า", "E → VAT"].map(m => `<span>${m}</span>`).join("")}</div>
+      <div class="scroll-x"><table class="sheet"><thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th></th></tr><tr class="hdr"><td>1</td><td>วันที่</td><td>เลขที่</td><td>ลูกค้า</td><td>ยอดก่อนภาษี</td><td>VAT</td><td></td></tr></thead><tbody>${GS_ROWS.map((r, i) => `<tr class="${show(i) ? "s-" + r[5] : ""}"><td>${i + 2}</td><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td class="r">${fmt(r[3])}</td><td class="r">${fmt(r[4])}</td><td>${show(i) ? pillS(r[5]) : ""}</td></tr>`).join("")}</tbody></table></div>`;
+    if (done || n >= GS_ROWS.length) h += `<div class="slog">${logLine("10:15", "เพิ่ม 4 รายการเข้ารายงานภาษีขาย ต.ค.")}${logLine("10:15", "ข้ามแถว 6 ซ้ำกับแถว 4 (INV-0412)")}${logLine("10:15", "แถว 7: VAT ควรเป็น 1,652.28 ไม่ใช่ 1,625.00 ส่งให้ลูกค้าตรวจ")}${logLine("10:16", "อัปเดตแท็บ 'สรุปภาษีจากปิดงวด' ในชีตเดิมแล้ว")}</div>`;
+  } else if (s.k === "xl") {
+    h = srcHead(s, `<span class="file"><b>ทะเบียนค่าใช้จ่าย_ต.ค.xlsx</b><i style="width:${done || n > 0 ? 100 : 0}%"></i></span>`) +
+      `<div class="map">${[["Date", "วันที่", 99], ["Vendor", "ผู้ขาย", 98], ["Tax ID", "เลขผู้เสียภาษี", 99], ["Amount", "มูลค่า", 97], ["VAT", "ภาษีซื้อ", 99], ["Category", "หมวดบัญชี", 92]].map((m, i) => `<span class="${done || n > 0 ? "on" : ""}">${m[0]} → ${m[1]} <em>${m[2]}%</em></span>`).join("")}</div>
+      <div class="scroll-x"><table class="sheet"><thead><tr class="hdr"><td>Date</td><td>Vendor</td><td>Tax ID</td><td>Amount</td><td>VAT</td><td>ผลตรวจ</td></tr></thead><tbody>${XL_ROWS.map((r, i) => { const x = xlRes(r), on = done || i < n - 1; return `<tr class="${on ? "s-" + x[0] : ""}"><td>${r[0]}</td><td>${r[1]}</td><td class="num">${r[2] || "—"}</td><td class="r">${fmt(r[3])}</td><td class="r">${fmt(r[4])}</td><td>${on ? pillS(x[0]) + ` <small>${x[1]}</small>` : ""}</td></tr>`; }).join("")}</tbody></table></div>`;
+    if (done || n > XL_ROWS.length) h += `<div class="slog">${logLine("นำเข้า", "5 แถว · ผ่าน 2 · ตรวจเพิ่ม 1 · ข้อมูล 1 · ติด 1")}${logLine("จำไว้", "ครั้งหน้าไฟล์หัวตารางแบบนี้ จับคู่คอลัมน์ให้ทันที")}</div>`;
+  } else if (s.k === "em") {
+    h = srcHead(s) + `<div class="addr">อีเมลรับเอกสารของลูกค้ารายนี้ <b class="num">siamcleaning@in.pidngod</b><small>ตั้งกฎส่งต่อใน Gmail หรือ Outlook ครั้งเดียว เอกสารเข้าแฟ้มเอง</small></div>
+      <div class="inbox">${EMAILS.map((e, i) => show(i) ? `<div class="mail fade-in"><span class="dot s-${e[4]}"></span><div><b>${e[0]}</b><span>${e[1]}</span><small>แนบ: ${e[2]}</small></div><div class="res">${pillS(e[4])}<small>${e[3]}</small></div></div>` : "").join("")}</div>`;
+  } else if (s.k === "dr") {
+    h = srcHead(s) + `<div class="tree"><div>📁 ลูกค้า</div><div style="padding-left:16px">📁 สยามคลีนนิ่ง</div><div style="padding-left:32px">📁 2569-10 <span class="pill g">เฝ้าดูอยู่</span></div>${DR_FILES.map((f, i) => show(i) ? `<div class="drf fade-in" style="padding-left:48px">📄 ${f[0]} <span>→ ${f[1]}</span></div>` : "").join("")}<div style="padding-left:32px;margin-top:6px">📁 รายงานจากปิดงวด ${done || n >= DR_FILES.length ? `<span class="pill g">+ ภ.พ.30.pdf · รายงานภาษีซื้อ.xlsx · รายงานภาษีขาย.xlsx</span>` : ""}</div></div>`;
+  } else if (s.k === "bk") {
+    h = srcHead(s, `<span class="pill">KBank · กระแสรายวัน · ต.ค. 2569</span>`) + `<div class="bank">${BK_ROWS.map((r, i) => `<div class="bkr ${show(i) ? "s-" + r[4] : ""}"><span class="num">${r[0]}</span><span>${r[1]}</span><b class="num ${r[2] > 0 ? "in" : ""}">${r[2] > 0 ? "+" : ""}${fmt(r[2])}</b><span class="link">${show(i) ? `${r[4] === "ok" ? "⟷" : r[4] === "warn" ? "?" : "＋"} ${r[3]}` : "กำลังจับคู่…"}</span></div>`).join("")}</div>`;
+    if (done || n >= BK_ROWS.length) h += `<div class="slog">${logLine("สรุป", "43 รายการ · จับคู่อัตโนมัติ 39 · ขอเอกสาร 4")}${logLine("ยอด", "ยอดคงเหลือตาม Statement ตรงกับบัญชีเงินฝาก 1112 ✓")}</div>`;
+  } else if (s.k === "pos") {
+    const max = Math.max(...POSD);
+    h = srcHead(s) + `<div class="eyebrow" style="margin-top:6px">ยอดขาย POS รายวัน ต.ค. 2569 · ร้านครัวคุณยาย</div><div class="days">${POSD.map((v, i) => `<i style="height:${show(i * 0.2) ? v / max * 100 : 4}%"></i>`).join("")}</div>
+      <div class="plat">${PLAT.map((p, i) => `<div class="${done || n > 6 + i ? "on" : ""}"><b>${p[0]}</b><span class="num">${fmt(p[1])}</span><small>ค่าคอมมิชชัน 30% มีใบกำกับ → ภาษีซื้อ ${fmt(vat7(p[1] * .3))}</small></div>`).join("")}</div>`;
+    if (done || n > 9) h += `<div class="slog">${logLine("รวม", "POS 389,200.00 + เดลิเวอรี 223,200.00 = ยอดขาย 612,400.00 → ภ.พ.30 บรรทัด 1")}</div>`;
+  } else {
+    h = srcHead(s) + `<div class="targets"><span class="tag on">Excel ✓</span><span class="tag on">Google Sheets ✓</span><span class="tag">Express · แผนงาน</span><span class="tag">PEAK · แผนงาน</span><span class="tag">FlowAccount · แผนงาน</span></div>
+      ${JOURNAL.map((j, k) => `<div class="jr ${done || n > k ? "fade-in" : "dim"}"><b>${j[0]}</b><table>${j[1].map(l => `<tr><td>${l[1] ? "" : "&nbsp;&nbsp;&nbsp;&nbsp;"}${l[0]}</td><td class="r num">${l[1] ? fmt(l[1]) : ""}</td><td class="r num">${l[2] ? fmt(l[2]) : ""}</td></tr>`).join("")}</table></div>`).join("")}`;
+    if (done || n > 2) h += `<div class="slog">${logLine("ส่งออก", "สมุดรายวัน_ต.ค.2569.xlsx · 128 รายการ · เดบิตเท่ากับเครดิต ✓")}${logLine("ซิงค์", "Google Sheets 'สรุปภาษีลูกค้าทั้งหมด' อัปเดต 41 ลูกค้า")}</div>`;
+  }
+  $("#srcDetail").innerHTML = h;
+}
+const SYNC_N = { gs: 6, xl: 7, em: 4, dr: 4, bk: 6, pos: 10, acc: 3 };
+const syncDemo = demo($("#demoSync"), () => { srcList(); srcRender(0, true); }, async w => {
+  srcList(); const k = SYNC[srcIdx].k, N = SYNC_N[k];
+  for (let n = 0; n <= N; n++) { srcRender(n, false); await w(k === "pos" ? 260 : 560); }
+  srcRender(0, true);
+});
+
+/* ---------- Day 4: payroll ---------- */
+const EMP = [["นายอนันต์ ร.", "ผู้จัดการ", 85000], ["นางสาวพิมพ์ ส.", "บัญชี", 32000], ["นายกิตติ ม.", "หัวหน้างาน", 26000], ["นางสาวสุดา ก.", "พนักงาน", 18500], ["นายประเสริฐ ท.", "พนักงาน", 15000], ["นางบุญมี จ.", "พนักงาน", 12000], ["นายสมพงษ์ ว.", "พนักงาน", 11000], ["นางสาวจันทร์ ด.", "พนักงาน", 10500]];
+const BRK = [[150000, 0], [300000, .05], [500000, .10], [750000, .15], [1000000, .20], [2000000, .25], [5000000, .30], [Infinity, .35]];
+const pit = net => { let t = 0, lo = 0; for (const [hi, r] of BRK) { if (net > lo) t += (Math.min(net, hi) - lo) * r; lo = hi; } return t; };
+let ssoCeil = 17500;
+const payCalc = sal => { const sso = Math.round(Math.min(sal, ssoCeil) * 0.05); const an = sal * 12, net = Math.max(0, an - Math.min(an * .5, 100000) - 60000 - sso * 12); return { sso, wht: Math.round(pit(net) / 12 * 100) / 100 }; };
+function payDraw(n = EMP.length, anim) {
+  $("#payT").innerHTML = `<thead><tr><th>พนักงาน</th><th class="r">เงินเดือน</th><th class="r">ประกันสังคม 5%</th><th class="r">นายจ้างสมทบ</th><th class="r">ภาษีหัก ณ ที่จ่าย</th></tr></thead><tbody>${EMP.map((e, i) => { const c = payCalc(e[2]), on = i < n; return `<tr class="${anim && i === n - 1 ? "fade-in" : ""}"><td>${e[0]}<small>${e[1]}</small></td><td class="r"><input class="sal num" data-i="${i}" value="${fmt(e[2])}" inputmode="decimal" aria-label="เงินเดือน ${e[0]}"></td><td class="r num">${on ? fmt(c.sso) : "…"}</td><td class="r num">${on ? fmt(c.sso) : "…"}</td><td class="r num">${on ? (c.wht ? fmt(c.wht) : "—") : "…"}</td></tr>`; }).join("")}</tbody>`;
+  $$("#payT .sal").forEach(x => x.onchange = () => { const v = parseFloat(x.value.replace(/,/g, "")); if (!isNaN(v)) EMP[+x.dataset.i][2] = v; payDraw(); });
+  const cs = EMP.map(e => payCalc(e[2])), sso = cs.reduce((a, c) => a + c.sso, 0), wht = cs.reduce((a, c) => a + c.wht, 0), nw = cs.filter(c => c.wht).length;
+  $("#payTot").innerHTML = n < EMP.length ? "" : `<div><small>ภ.ง.ด.1 · ${nw} คนมีภาษี</small><b class="num">${fmt(wht)}</b></div><div><small>สปส. ลูกจ้าง</small><b class="num">${fmt(sso)}</b></div><div><small>สปส. นายจ้าง</small><b class="num">${fmt(sso)}</b></div><div class="g"><small>นำส่งประกันสังคม</small><b class="num">${fmt(sso * 2)}</b></div>`;
+}
+$$("#demoPay .seg button").forEach(b => b.addEventListener("click", () => { ssoCeil = +b.dataset.ceil; $$("#demoPay .seg button").forEach(x => x.setAttribute("aria-pressed", x === b)); payDraw(EMP.length, false); }));
+demo($("#demoPay"), () => payDraw(), async w => { for (let n = 0; n <= EMP.length; n++) { payDraw(n, true); await w(380); } });
+
+/* ---------- Day 5: WHT ---------- */
+const BATCH = [
+  ["บริษัท ทองดีโลจิสติกส์ จำกัด", "J", "ค่าขนส่ง", 18500, 1],
+  ["นางสมศรี มีที่ดิน (เจ้าของอาคาร)", "P", "ค่าเช่าสำนักงาน", 30000, 5],
+  ["บริษัท ครีเอทีฟมีเดีย จำกัด", "J", "ค่าโฆษณา", 48500, 2],
+  ["หจก. สำนักงานกฎหมายนิติธรรม", "J", "ค่าวิชาชีพ ทนายความ", 40000, 3],
+  ["นายสมชาย ใจดี (ฟรีแลนซ์)", "P", "ค่าจ้างออกแบบ", 12000, 3],
+  ["ร้านซ่อมแอร์เย็นฉ่ำ", "P", "ค่าซ่อมแอร์", 800, 3, "under"],
+  ["การไฟฟ้านครหลวง", "G", "ค่าไฟฟ้า", 9860, 0, "goods"],
+  ["Cloud Software Asia Pte. Ltd. (สิงคโปร์)", "F", "ค่าใช้ซอฟต์แวร์", 20000, 15, "foreign"],
+];
+function batchRes(r) {
+  const [, t, , amt, rate, flag] = r, tax = Math.round(amt * rate) / 100;
+  if (flag === "under") return { f: "ไม่หัก", cls: "a", note: "ต่ำกว่า 1,000 บาท", tax: 0 };
+  if (flag === "goods") return { f: "ไม่หัก", cls: "", note: "ซื้อสินค้า (ไฟฟ้า)", tax: 0 };
+  if (flag === "foreign") return { f: "ภ.ง.ด.54", cls: "a", note: `${rate}% · ตรวจอนุสัญญาภาษีซ้อน · ภ.พ.36 ฿${fmt(vat7(amt))}`, tax };
+  return { f: t === "J" ? "ภ.ง.ด.53" : "ภ.ง.ด.3", cls: "g", note: `${rate}%`, tax };
+}
+function batchDraw(n, anim) {
+  $("#batch").innerHTML = `<thead><tr><th>ผู้รับเงิน</th><th>ประเภท</th><th class="r">จ่าย</th><th>ผล</th><th class="r">ภาษีที่หัก</th></tr></thead><tbody>${BATCH.map((r, i) => {
+    if (i >= n) return `<tr class="pend"><td>${r[0]}</td><td>${r[2]}</td><td class="r num">${fmt(r[3])}</td><td colspan="2"><span class="pill">${i === n ? "กำลังจัดประเภท…" : "รอ"}</span></td></tr>`;
+    const x = batchRes(r);
+    return `<tr class="${anim && i === n - 1 ? "fade-in" : ""}"><td>${r[0]}</td><td>${r[2]}</td><td class="r num">${fmt(r[3])}</td><td><span class="pill ${x.cls}">${x.f}</span> <small>${x.note}</small></td><td class="r num">${x.tax ? fmt(x.tax) : "—"}</td></tr>`;
+  }).join("")}</tbody>`;
+  if (n < BATCH.length) { $("#btot").innerHTML = ""; return; }
+  const sum = f => BATCH.map(batchRes).filter(x => x.f === f), tot = f => sum(f).reduce((a, x) => a + x.tax, 0);
+  const certs = BATCH.map(batchRes).filter(x => x.tax).length;
+  $("#btot").innerHTML = `<div><small>ภ.ง.ด.3 · ${sum("ภ.ง.ด.3").length} ราย</small><b class="num">${fmt(tot("ภ.ง.ด.3"))}</b></div><div><small>ภ.ง.ด.53 · ${sum("ภ.ง.ด.53").length} ราย</small><b class="num">${fmt(tot("ภ.ง.ด.53"))}</b></div><div><small>ภ.ง.ด.54 · ${sum("ภ.ง.ด.54").length} ราย</small><b class="num">${fmt(tot("ภ.ง.ด.54"))}</b></div><div class="g"><small>ออก 50 ทวิ</small><b class="num">${certs} ฉบับ</b></div>`;
+}
+const PAYEES = [
+  { n: "บริษัท ทองดีโลจิสติกส์ จำกัด", tin: "0999999000047", a: "88/9 ถนนพระราม 3 แขวงบางโพงพาง เขตยานนาวา กรุงเทพฯ 10120" },
+  { n: "นายสมชาย ใจดี", tin: "1234567890121", a: "15 ซอยลาดพร้าว 64 แขวงวังทองหลาง เขตวังทองหลาง กรุงเทพฯ 10310" },
+  { n: "บริษัท ออฟฟิศเมท ซัพพลาย จำกัด", tin: "0999999000012", a: "120 ถนนรัชดาภิเษก แขวงดินแดง เขตดินแดง กรุงเทพฯ 10400" },
+];
+const TYPES = [["ค่าขนส่ง", 1], ["ค่าบริการ / ค่าจ้างทำของ", 3], ["ค่าวิชาชีพอิสระ", 3], ["ค่าเช่า", 5], ["ค่าโฆษณา", 2]];
+$("#whtType").innerHTML = TYPES.map((t, i) => `<option value="${i}">${t[0]} · ${t[1]}%</option>`).join("");
+const wP = $("#whtPayee"), wT = $("#whtType"), wA = $("#whtAmt");
+let certNo = 42;
+function whtRender(anim) {
+  const p = PAYEES[+wP.value], t = TYPES[+wT.value];
+  const amt = Math.max(0, parseFloat(wA.value.replace(/,/g, "")) || 0);
+  const tax = Math.round(amt * t[1]) / 100, jur = p.tin[0] === "0", form = jur ? "ภ.ง.ด.53" : "ภ.ง.ด.3";
+  $("#whtSum").innerHTML = `<span class="pill g">${form} · ${jur ? "นิติบุคคล" : "บุคคลธรรมดา"} (จากเลขผู้เสียภาษี)</span><span class="pill">หัก ${t[1]}% = ฿${fmt(tax)}</span><span class="pill">จ่ายสุทธิ ฿${fmt(amt - tax)}</span>${amt < 1000 ? `<span class="pill a">ต่ำกว่า 1,000 บาท โดยทั่วไปไม่ต้องหัก</span>` : ""}`;
+  const c = $("#cert");
+  c.innerHTML = `<div class="no">เล่มที่ 1 · เลขที่ 2569/${String(certNo).padStart(4, "0")}</div>
+  <div class="t">หนังสือรับรองการหักภาษี ณ ที่จ่าย<small>ตามมาตรา 50 ทวิ แห่งประมวลรัษฎากร</small></div>
+  <div class="box"><div class="lbl">ผู้มีหน้าที่หักภาษี ณ ที่จ่าย</div>${CLIENT.name} · เลขประจำตัวผู้เสียภาษี ${CLIENT.tin} · สำนักงานใหญ่</div>
+  <div class="box"><div class="lbl">ผู้ถูกหักภาษี ณ ที่จ่าย</div>${esc(p.n)} · เลขประจำตัวผู้เสียภาษี ${p.tin}<br><span style="font-size:.66rem">${esc(p.a)}</span>
+  <div class="cb"><span class="${jur ? "" : "on"}">ภ.ง.ด.3</span><span class="${jur ? "on" : ""}">ภ.ง.ด.53</span></div></div>
+  <table><thead><tr><th>ประเภทเงินได้ที่จ่าย</th><th>วันที่จ่าย</th><th>จำนวนเงินที่จ่าย</th><th>ภาษีที่หักและนำส่งไว้</th></tr></thead>
+  <tbody><tr><td>${t[0]}</td><td>31 ต.ค. 2569</td><td class="r">${fmt(amt)}</td><td class="r">${fmt(tax)}</td></tr></tbody></table>
+  <div class="words">ภาษีที่หักและนำส่ง (ตัวอักษร): ${bahtText(tax)}</div>
+  <div class="seal">ออกโดยปิดงวด</div>`;
+  if (anim && !REDUCE) { c.classList.remove("restamp"); void c.offsetWidth; c.classList.add("restamp"); }
+}
+[wP, wT].forEach(x => x.addEventListener("change", () => { certNo++; whtRender(true); }));
+wA.addEventListener("input", () => whtRender(false));
+wA.addEventListener("blur", () => { const v = parseFloat(wA.value.replace(/,/g, "")); if (!isNaN(v)) wA.value = fmt(v); whtRender(false); });
+const WHT_STEPS = [[0, 0, 18500], [1, 2, 25000], [0, 3, 42000], [2, 1, 12840]];
+const whtSet = s => { wP.value = s[0]; wT.value = s[1]; wA.value = fmt(s[2]); };
+demo($("#demoWht"), () => { batchDraw(BATCH.length, false); whtSet(WHT_STEPS[0]); whtRender(false); }, async w => {
+  whtSet(WHT_STEPS[0]); whtRender(false);
+  for (let n = 0; n <= BATCH.length; n++) { batchDraw(n, true); await w(n === 0 ? 400 : 520); }
+  await w(800);
+  for (const s of WHT_STEPS.slice(1)) { whtSet(s); certNo++; whtRender(true); await w(1600); }
+});
+
+/* ---------- Day 6: classify + PEAK export ---------- */
+const COA = [["1250", "เครื่องมือและอุปกรณ์"], ["5120", "วัสดุทำความสะอาด (ต้นทุนบริการ)"], ["5130", "วัสดุสิ้นเปลือง"], ["5210", "ค่าขนส่ง"], ["5250", "ค่าซ่อมแซมยานพาหนะ"], ["5310", "ค่าเช่า"], ["5320", "ค่าอินเทอร์เน็ตและโทรศัพท์"], ["5330", "ค่าซอฟต์แวร์และบริการคลาวด์"], ["5340", "ค่ารับรอง"]];
+const CLS0 = [
+  ["28/10/2569", "IV6910-0457", "บจ. ออฟฟิศเมท ซัพพลาย", "กระดาษ A4 และหมึกพิมพ์", 2650, 185.50, 0, "5130", 96, "ผู้ขายนี้เคยบันทึกเป็น 5130 มาแล้ว 6 ครั้ง", ""],
+  ["25/10/2569", "INV-25691025", "บจ. น้ำยาสะอาดไทย", "น้ำยาทำความสะอาดพื้น 4 แกลลอน", 1000, 70, 0, "5120", 93, "ธุรกิจทำความสะอาด น้ำยาเป็นต้นทุนบริการ", ""],
+  ["21/10/2569", "TL-10-2569-88", "บจ. ทองดีโลจิสติกส์", "ค่าขนส่งอุปกรณ์ไปหน้างาน", 18500, 1295, 185, "5210", 97, "รายการค่าขนส่ง และหัก ณ ที่จ่าย 1%", ""],
+  ["22/10/2569", "RC-10-0921", "บจ. ห้องอาหารบ้านไทย", "เลี้ยงรับรองลูกค้า 6 ท่าน", 4800, 336, 0, "5340", 91, "ร้านอาหาร และมีคำว่ารับรองลูกค้า", "vatx"],
+  ["09/10/2569", "SV69-10233", "บจ. เอเชียมอเตอร์ เซอร์วิส", "ซ่อมบำรุงรถยนต์นั่ง 1กข 1234", 6200, 434, 0, "5250", 88, "ทะเบียนนี้อยู่ในทะเบียนทรัพย์สินเป็นรถยนต์นั่ง", "vatx"],
+  ["28/10/2569", "IV6910-0457", "บจ. ออฟฟิศเมท ซัพพลาย", "กระดาษ A4 และหมึกพิมพ์", 2650, 185.50, 0, "5130", 96, "", "dup"],
+  ["01/10/2569", "ET2569100088", "บจ. อินเทอร์เน็ตไทย", "อินเทอร์เน็ตองค์กร ต.ค.", 1890, 132.30, 0, "5320", 98, "e-Tax Invoice รายเดือนเดิม", ""],
+  ["16/10/2569", "MT-2569-0874", "บจ. เครื่องมือช่างไทย", "เครื่องขัดพื้นอุตสาหกรรม 1 เครื่อง", 25000, 1750, 0, "1250", 79, "ราคาเกิน 10,000 บาทตามนโยบายสินทรัพย์ของลูกค้า ควรตรวจ", "asset"],
+  ["31/10/2569", "RENT-10", "นางสมศรี มีที่ดิน", "ค่าเช่าสำนักงาน ต.ค.", 30000, 0, 1500, "5310", 99, "สัญญาเช่ารายเดือน · หัก ณ ที่จ่าย 5%", ""],
+  ["31/10/2569", "INV-SG-5521", "Cloud Software Asia Pte. Ltd.", "ค่าใช้ซอฟต์แวร์ ต.ค.", 20000, 0, 3000, "5330", 82, "ผู้ให้บริการต่างประเทศ · ภ.พ.36 แยกต่างหาก ควรตรวจ", "pp36"],
+];
+let CLS = CLS0.map(r => r.slice()), clsEdited = new Set(), clsExported = false;
+const coaName = c => (COA.find(x => x[0] === c) || ["", ""])[1];
+const STEPS6 = ["ตรวจเอกสาร", "เช็กซ้ำ", "จัดประเภท + เสนอรหัส", "ส่งออกไฟล์นำเข้า PEAK"];
+function clsSteps(k) { $("#clsSteps").innerHTML = STEPS6.map((s, i) => `<span class="${i < k ? "done" : i === k ? "on" : ""}"><b>${i + 1}</b>${s}</span>`).join(""); }
+function clsRow(r, i, phase) {
+  const dup = r[10] === "dup", low = r[8] < 85 && !clsEdited.has(i);
+  const chk = phase >= 1 ? `<span class="pill g">ผ่าน</span>` : `<span class="pill">…</span>`;
+  const dupc = phase >= 2 ? (dup ? `<span class="pill">ซ้ำกับแถว 1 · ไม่ส่งออก</span>` : `<span class="pill g">ไม่ซ้ำ</span>`) : "";
+  const code = phase >= 3 && !dup ? `<select class="coa" data-i="${i}" aria-label="รหัสบัญชีแถว ${i + 1}">${COA.map(c => `<option value="${c[0]}" ${c[0] === r[7] ? "selected" : ""}>${c[0]} ${c[1]}</option>`).join("")}</select>` : "";
+  const conf = phase >= 3 && !dup ? (clsEdited.has(i) ? `<span class="pill b">แก้โดยผู้ทำบัญชี</span>` : `<span class="conf ${low ? "lo" : ""}"><i style="width:${r[8]}%"></i></span><small class="num">${r[8]}%</small>`) : "";
+  const why = phase >= 3 && !dup ? `<small>${clsEdited.has(i) ? "จำไว้สำหรับผู้ขายรายนี้ครั้งต่อไป" : r[9]}${r[10] === "vatx" ? " · ภาษีซื้อต้องห้าม รวมเข้าค่าใช้จ่าย" : ""}</small>` : "";
+  return `<tr class="${dup && phase >= 2 ? "s-dup" : low && phase >= 3 ? "s-warn" : phase >= 3 ? "s-ok" : ""}"><td>${i + 1}</td><td><b>${r[2]}</b><small>${r[3]} · ${r[1]}</small></td><td class="r">${fmt(r[4] + r[5])}</td><td>${chk} ${dupc}</td><td>${code}${why}</td><td style="white-space:nowrap">${conf}</td></tr>`;
+}
+function clsDraw(phase, upto = CLS.length) {
+  $("#clsT").innerHTML = `<thead><tr class="hdr"><td>#</td><td>เอกสาร</td><td class="r">ยอดรวม</td><td>ตรวจ · ซ้ำ</td><td>รหัสบัญชีที่เสนอ และเหตุผล</td><td>มั่นใจ</td></tr></thead><tbody>${CLS.map((r, i) => clsRow(r, i, i < upto ? phase : phase - 1)).join("")}</tbody>`;
+  $$("#clsT .coa").forEach(s => s.onchange = () => { const i = +s.dataset.i; CLS[i][7] = s.value; clsEdited.add(i); clsDraw(3); clsOut(clsExported); });
+}
+function clsOut(show) {
+  const rows = CLS.filter(r => r[10] !== "dup"), review = CLS.filter((r, i) => r[10] !== "dup" && r[8] < 85 && !clsEdited.has(i)).length;
+  const sum = `<div class="wht-sum"><span class="pill">${CLS.length} ใบ</span><span class="pill g">ส่งออก ${rows.length}</span><span class="pill">ซ้ำ 1</span><span class="pill ${review ? "a" : "g"}">ให้คนตรวจ ${review}</span><span class="pill">ภาษีซื้อต้องห้ามรวมเข้าค่าใช้จ่าย 2</span></div>`;
+  if (!show) { $("#clsOut").innerHTML = sum + `<button class="btn go sm" type="button" id="clsExp" style="margin-top:12px">ส่งออกไฟล์นำเข้า PEAK</button>`; $("#clsExp").onclick = () => { clsExported = true; clsSteps(4); clsOut(true); }; return; }
+  const line = r => { const vx = r[10] === "vatx"; return [r[0], r[1], r[2], r[7], vx ? r[4] + r[5] : r[4], vx ? 0 : r[5], r[6], r[4] + r[5] - r[6]]; };
+  const L = rows.map(line), tot = k => L.reduce((a, x) => a + x[k], 0);
+  $("#clsOut").innerHTML = sum + `<div class="file" style="margin-top:12px"><b>PEAK_นำเข้าค่าใช้จ่าย_สยามคลีนนิ่ง_2569-10.xlsx</b><small>${rows.length} รายการ · เดบิตเท่ากับเครดิต ✓</small><i style="width:100%"></i></div>
+  <div class="scroll-x" style="margin-top:10px"><table class="sheet"><thead><tr class="hdr"><td>วันที่</td><td>เลขที่</td><td>ผู้ขาย</td><td>รหัสบัญชี</td><td class="r">มูลค่า</td><td class="r">ภาษีซื้อ</td><td class="r">หัก ณ ที่จ่าย</td><td class="r">ยอดจ่าย</td></tr></thead><tbody>${L.map(x => `<tr class="fade-in"><td>${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td><td>${x[3]} ${coaName(x[3])}</td><td class="r">${fmt(x[4])}</td><td class="r">${fmt(x[5])}</td><td class="r">${fmt(x[6])}</td><td class="r">${fmt(x[7])}</td></tr>`).join("")}<tr class="hdr"><td colspan="4">รวม</td><td class="r">${fmt(tot(4))}</td><td class="r">${fmt(tot(5))}</td><td class="r">${fmt(tot(6))}</td><td class="r">${fmt(tot(7))}</td></tr></tbody></table></div>
+  <p class="note">ตัวอย่างโครงสร้างไฟล์ คอลัมน์จริงจะตั้งให้ตรงกับแม่แบบนำเข้าของ PEAK ที่สำนักงานใช้ ไฟล์จริงใส่เลขผู้เสียภาษีเต็ม ส่วนบนหน้าจอแสดงแบบปิดบัง</p>`;
+}
+demo($("#demoCls"), () => { CLS = CLS0.map(r => r.slice()); clsEdited = new Set(); clsExported = true; clsSteps(4); clsDraw(3); clsOut(true); }, async w => {
+  CLS = CLS0.map(r => r.slice()); clsEdited = new Set(); clsExported = false; $("#clsOut").innerHTML = "";
+  for (let ph = 1; ph <= 3; ph++) { clsSteps(ph - 1); for (let i = 0; i <= CLS.length; i += (ph === 3 ? 1 : 5)) { clsDraw(ph, Math.min(i, CLS.length)); await w(ph === 3 ? 360 : 300); } clsDraw(ph); }
+  clsSteps(3); clsOut(false); await w(1200); clsExported = true; clsSteps(4); clsOut(true);
+});
+
+/* ---------- Day 7: due dates ---------- */
+const HOL = { "2026-12-05": "วันพ่อแห่งชาติ", "2026-12-10": "วันรัฐธรรมนูญ", "2026-12-31": "วันสิ้นปี", "2027-01-01": "วันขึ้นปีใหม่", "2027-04-06": "วันจักรี", "2027-04-13": "วันสงกรานต์", "2027-04-14": "วันสงกรานต์", "2027-04-15": "วันสงกรานต์" };
+const key = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+const isOff = d => d.getDay() === 0 || d.getDay() === 6 || HOL[key(d)];
+const DUE_RULES = [["ภ.ง.ด.1 · 3 · 53", 7, 15], ["ภ.ง.ด.54 · ภ.พ.36", 7, 15], ["สปส.1-10 ประกันสังคม", 15, 15], ["ภ.พ.30", 15, 23]];
+const dm = $("#dueMonth");
+const MONTHS = [[2026, 9], [2026, 10], [2026, 11], [2027, 0], [2027, 1], [2027, 2]];
+dm.innerHTML = MONTHS.map(([y, m], i) => `<option value="${i}">${TH_MF[m]} ${y + 543}</option>`).join("");
+let ch = "e";
+function dueCompute() {
+  const [y, m] = MONTHS[+dm.value], fy = m === 11 ? y + 1 : y, fm = (m + 1) % 12;
+  return DUE_RULES.map(([n, p, e]) => {
+    const day = ch === "e" ? e : p; let d = new Date(fy, fm, day), why = [];
+    while (isOff(d)) { why.push(HOL[key(d)] || TH_DF[d.getDay()]); d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1); }
+    return { n, base: day, d, why };
+  });
+}
+function dueRender(anim) {
+  const [y, m] = MONTHS[+dm.value], fy = m === 11 ? y + 1 : y, fm = (m + 1) % 12;
+  const rows = dueCompute(), dues = new Set(rows.map(r => key(r.d)));
+  $("#calTitle").textContent = `ยื่นในเดือน ${TH_MF[fm]} ${fy + 543}`;
+  const first = new Date(fy, fm, 1).getDay(), days = new Date(fy, fm + 1, 0).getDate();
+  let h = TH_D.map(x => `<div class="h">${x}</div>`).join("") + "<div></div>".repeat(first);
+  for (let i = 1; i <= days; i++) {
+    const d = new Date(fy, fm, i), k = key(d), cls = dues.has(k) ? "due" + (anim && !REDUCE ? " drop" : "") : HOL[k] ? "hol" : (d.getDay() % 6 === 0 ? "we" : "");
+    h += `<div class="c ${cls}" title="${HOL[k] || ""}" style="${anim ? `animation-delay:${i * 15}ms` : ""}">${i}</div>`;
+  }
+  $("#cal").innerHTML = h;
+  $("#dueList").innerHTML = rows.map(r => `<div class="due-row${anim && !REDUCE ? " fade-in" : ""}"><span>${r.n}</span><b>${TH_DF[r.d.getDay()].replace("วัน", "")} ${thDate(r.d)}</b>${r.why.length ? `<small>เลื่อนจากวันที่ ${r.base} เพราะตรง${r.why.join(" และ ")}</small>` : ""}</div>`).join("");
+}
+dm.addEventListener("change", () => dueRender(true));
+$$("#demoDue .seg button").forEach(b => b.addEventListener("click", () => { ch = b.dataset.ch; $$("#demoDue .seg button").forEach(x => x.setAttribute("aria-pressed", x === b)); dueRender(true); }));
+demo($("#demoDue"), () => dueRender(false), async w => { dm.value = "0"; dueRender(true); await w(2200); dm.value = "1"; dueRender(true); await w(2200); dm.value = "0"; dueRender(true); });
+
+/* ---------- Day 10: PP30 ---------- */
+const PPS = [
+  { tab: "สยามคลีนนิ่ง · ต้องชำระ", head: "บจ. สยามคลีนนิ่ง · สำนักงานใหญ่ · ต.ค. 2569",
+    rows: [["1", "ยอดขายในเดือนนี้", 1284560], ["2", "หัก ยอดขายที่เสียภาษีในอัตราร้อยละ 0", 0], ["3", "หัก ยอดขายที่ได้รับยกเว้น", 12000], ["4", "ยอดขายที่ต้องเสียภาษี", 1272560], ["5", "ภาษีขายเดือนนี้", 89079.20, "out"], ["6", "ยอดซื้อที่มีสิทธินำภาษีซื้อมาหัก", 262007.14], ["7", "ภาษีซื้อเดือนนี้", 18340.50, "in"], ["8", "ภาษีที่ต้องชำระเดือนนี้", 70738.70, "total"]],
+    guard: [["ภาษีซื้อต้องห้ามที่กันไว้", "฿770.00", "ค่ารับรอง 1 ใบ · รถยนต์นั่ง 1 ใบ"], ["ใบกำกับภาษีอย่างย่อ", "6 ใบ", "ลงค่าใช้จ่าย ไม่นำมาหัก"], ["ไม่ผ่านกฎตรวจ", "3 ใบ", "ขาดเลขผู้ซื้อ · ส่งซ้ำ · ผู้ขายไม่จด VAT"]],
+    tr: { in: ["ภาษีซื้อเดือนนี้ ฿18,340.50 มาจากใบกำกับภาษี 47 ใบ", [["28 ต.ค.", "บจ. ออฟฟิศเมท ซัพพลาย · IV6910-0457", 185.50], ["25 ต.ค.", "บจ. น้ำยาสะอาดไทย · INV-25691025", 4320.00], ["21 ต.ค.", "บจ. ทองดีโลจิสติกส์ · TL-10-2569-88", 1295.00], ["15 ต.ค.", "บมจ. ไฟฟ้าและพลังงาน · 69101500213", 2016.70], ["…", "อีก 43 ใบ", 10523.30]], "รวม 47 ใบ = ฿18,340.50 ตรงกับรายงานภาษีซื้อ ✓"],
+          out: ["ภาษีขายเดือนนี้ ฿89,079.20 มาจากใบกำกับภาษีขาย 212 ใบ", [["31 ต.ค.", "คอนโด เดอะพาร์ค · SC-2569-1288", 8400.00], ["30 ต.ค.", "บจ. เมกะมอลล์ · SC-2569-1287", 15750.00], ["28 ต.ค.", "โรงพยาบาลสุขใจ · SC-2569-1281", 6930.00], ["…", "อีก 209 ใบ", 57999.20]], "รวม 212 ใบ = ฿89,079.20 ตรงกับรายงานภาษีขาย ✓"] } },
+  { tab: "ไทยเฟรช เอ็กซ์ปอร์ต · ขอคืน", head: "บจ. ไทยเฟรช เอ็กซ์ปอร์ต · สำนักงานใหญ่ · ต.ค. 2569",
+    rows: [["1", "ยอดขายในเดือนนี้", 4850000], ["2", "หัก ยอดขายที่เสียภาษีในอัตราร้อยละ 0 (ส่งออก)", 4620000], ["3", "หัก ยอดขายที่ได้รับยกเว้น", 0], ["4", "ยอดขายที่ต้องเสียภาษี", 230000], ["5", "ภาษีขายเดือนนี้", 16100.00, "out"], ["6", "ยอดซื้อที่มีสิทธินำภาษีซื้อมาหัก", 2915000], ["7", "ภาษีซื้อเดือนนี้", 204050.00, "in"], ["9", "ภาษีที่ชำระเกินเดือนนี้", 187950.00, "refund"]],
+    guard: [["ยอดขายส่งออก อัตรา 0", "38 ใบขน", "จับคู่ใบขนสินค้ากับใบกำกับแล้ว"], ["ขอคืนเป็นเงินสด", "฿187,950.00", "เตรียมแฟ้มหลักฐานให้เจ้าหน้าที่ตรวจ"], ["หรือยกไปเครดิต", "พ.ย. 2569", "ลูกค้าเลือกได้ก่อนยื่น"]],
+    tr: { in: ["ภาษีซื้อเดือนนี้ ฿204,050.00 มาจากใบกำกับภาษี 67 ใบ", [["29 ต.ค.", "บจ. กล่องกระดาษไทย · PK-6910-221", 48720.00], ["24 ต.ค.", "บจ. ห้องเย็นแหลมฉบัง · CS-2569-10", 35910.00], ["18 ต.ค.", "บจ. ทองดีโลจิสติกส์ · TL-10-2569-91", 21490.00], ["…", "อีก 64 ใบ", 97930.00]], "รวม 67 ใบ = ฿204,050.00 ตรงกับรายงานภาษีซื้อ ✓"],
+          out: ["ภาษีขายเดือนนี้ ฿16,100.00 มาจากการขายในประเทศ 13 ใบ", [["28 ต.ค.", "บจ. ห้างค้าปลีกสด · TF-2569-0412", 5250.00], ["…", "อีก 12 ใบ", 10850.00]], "รวม 13 ใบ = ฿16,100.00 · ยอดส่งออก 4,620,000.00 ไม่มีภาษีขาย ✓"] } },
+  { tab: "ครัวคุณยาย · มีเครดิตยกมา", head: "ร้านครัวคุณยาย (บุคคลธรรมดา) · ต.ค. 2569",
+    rows: [["1", "ยอดขายในเดือนนี้", 612400], ["2", "หัก ยอดขายที่เสียภาษีในอัตราร้อยละ 0", 0], ["3", "หัก ยอดขายที่ได้รับยกเว้น", 0], ["4", "ยอดขายที่ต้องเสียภาษี", 612400], ["5", "ภาษีขายเดือนนี้", 42868.00, "out"], ["6", "ยอดซื้อที่มีสิทธินำภาษีซื้อมาหัก", 318500], ["7", "ภาษีซื้อเดือนนี้", 22295.00, "in"], ["10", "หัก ภาษีที่ชำระเกินยกมา", 5120.00], ["11", "ภาษีที่ต้องชำระเดือนนี้", 15453.00, "total"]],
+    guard: [["ใบอย่างย่อจากตลาดสด", "41 ใบ", "ลงต้นทุน ไม่นำมาหัก"], ["ขายผ่านแอปเดลิเวอรี", "3 ราย", "จับคู่จากรายงานรายเดือน"], ["ใบอย่างย่อที่ร้านออก", "2,184 ใบ", "รวมยอดจาก POS รายวัน"]],
+    tr: { in: ["ภาษีซื้อเดือนนี้ ฿22,295.00 มาจากใบกำกับภาษี 54 ใบ", [["30 ต.ค.", "ห้างค้าส่งสยาม สาขาบางนา · ใบเต็มรูป", 3120.50], ["26 ต.ค.", "บจ. ก๊าซหุงต้มไทย · GS-2569-77", 1890.00], ["…", "อีก 52 ใบ", 17284.50]], "รวม 54 ใบ = ฿22,295.00 ตรงกับรายงานภาษีซื้อ ✓"],
+          out: ["ภาษีขายเดือนนี้ ฿42,868.00 มาจากยอดขายหน้าร้านและเดลิเวอรี", [["31 ต.ค.", "สรุปยอด POS รายวัน 31 ต.ค.", 1652.30], ["31 ต.ค.", "รายงานแอปเดลิเวอรี A · ต.ค.", 8960.40], ["…", "อีก 32 รายการ", 32255.30]], "รวม 35 รายการ = ฿42,868.00 ตรงกับรายงานภาษีขาย ✓"] } },
+];
+let ppIdx = 0, traceKey = "in";
+const ppT = $("#ppTable");
+function ppTabs() { $("#ppTabs").innerHTML = PPS.map((p, i) => `<button type="button" data-i="${i}" aria-pressed="${i === ppIdx}">${p.tab}</button>`).join(""); $$("#ppTabs button").forEach(b => b.onclick = () => { ppIdx = +b.dataset.i; ppDemo.play(); }); }
+function ppDraw(zero) {
+  const P = PPS[ppIdx]; $("#ppHead").textContent = "ภ.พ.30 · " + P.head;
+  ppT.innerHTML = P.rows.map(r => { const k = r[3]; const cls = k === "total" ? "total" : k === "refund" ? "total refund" : k ? "click" + (k === traceKey ? " on" : "") : ""; return `<tr class="${cls}" ${k === "in" || k === "out" ? `data-k="${k}" tabindex="0"` : ""}><td>${r[0]}</td><td>${r[1]}</td><td class="r" data-v="${r[2]}">${zero ? "0.00" : fmt(r[2])}</td></tr>`; }).join("");
+  $$("tr[data-k]", ppT).forEach(tr => { const go = () => { traceKey = tr.dataset.k; ppDraw(false); traceDraw(true); }; tr.addEventListener("click", go); tr.addEventListener("keydown", e => { if (e.key === "Enter") go(); }); });
+  $("#ppGuard").innerHTML = P.guard.map(g => `<div>${g[0]}<b class="num">${g[1]}</b>${g[2]}</div>`).join("");
+}
+function traceDraw(anim) {
+  const t = PPS[ppIdx].tr[traceKey];
+  $("#trace").innerHTML = `<h4>${t[0]}</h4>${t[1].map((r, i) => `<div class="trace-row${anim && !REDUCE ? " fade-in" : ""}" style="animation-delay:${i * 80}ms"><span class="num">${r[0]}</span><span>${r[1]}</span><span class="num">${fmt(r[2])}</span></div>`).join("")}<div class="trace-foot">${t[2]}</div>`;
+}
+const ppDemo = demo($("#demoPP"), () => { ppTabs(); traceKey = "in"; ppDraw(false); traceDraw(false); }, async w => {
+  ppTabs(); traceKey = "in"; ppDraw(true); $("#trace").innerHTML = ""; await w(300);
+  for (const td of $$("td[data-v]", ppT)) { countUp(td, +td.dataset.v, 650); await w(140); }
+  await w(700); traceDraw(true);
+});
+
+/* ---------- Day 12: Owner app ---------- */
+const liff = $("#liff");
+let oStep = 0;
+function ownerDraw(step, anim) {
+  oStep = step;
+  const bars = [["ภ.พ.30", 70738.70], ["ภ.ง.ด.3/53", 4215.00], ["ประกันสังคม", 11850.00]];
+  const max = 70738.70;
+  liff.innerHTML = `
+  <div class="card"><h4>ภาษีเดือน ต.ค. 2569 (ประมาณการ)</h4><div class="bars">${bars.map(b => `<div class="bar"><span>${b[0]}</span><div class="tr"><i data-w="${Math.max(6, b[1] / max * 100)}"></i></div><span class="num">${fmt(b[1])}</span></div>`).join("")}</div></div>
+  <div class="card"><h4>${step === 0 ? "รออนุมัติยอดภาษี" : step === 1 ? "อนุมัติแล้ว · แนบสลิปเมื่อชำระ" : step === 2 ? "กำลังตรวจสลิป…" : "เรียบร้อย"}</h4>
+    <div class="row" style="display:flex;justify-content:space-between"><span>ภ.พ.30 ต้องชำระ</span><b class="num">฿70,738.70</b></div>
+    <div class="steps"><i class="${step >= 0 ? "on" : ""}"></i><i class="${step >= 1 ? "on" : ""}"></i><i class="${step >= 3 ? "on" : ""}"></i></div>
+    ${step === 3 ? `<div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:.74rem;color:var(--ledger)">✓ ยอดตรง · เลขอ้างอิงตรง · KBank 23 พ.ย. 2569</span><span class="stampbig${anim && !REDUCE ? " thump" : ""}">ชำระแล้ว</span></div>` : ""}
+    <div class="act"><button type="button" id="oApprove" ${step !== 0 ? "disabled" : ""}>อนุมัติยอด</button><button type="button" id="oSlip" ${step !== 1 ? "disabled" : ""}>แนบสลิป</button></div>
+  </div>
+  <div class="card"><h4>เดือนนี้คุณได้</h4><div class="row" style="display:flex;justify-content:space-between"><span>ภาษีซื้อที่นำมาหักได้</span><b class="num" style="color:var(--ledger)">฿18,340.50</b></div><div class="row" style="display:flex;justify-content:space-between"><span>50 ทวิ ที่ได้รับ (ใช้ปลายปี)</span><b class="num">฿6,120.00</b></div></div>
+  <div class="card" style="border-color:var(--amber)"><h4 style="color:var(--amber)">เอกสารที่ยังขาด 1 รายการ</h4>Statement KBank ต.ค. 2569</div>`;
+  const fill = () => $$(".bar i", liff).forEach(i => i.style.width = i.dataset.w + "%");
+  if (anim && !REDUCE) requestAnimationFrame(() => requestAnimationFrame(fill)); else fill();
+  $("#oApprove").onclick = () => ownerDraw(1, false);
+  $("#oSlip").onclick = async () => { ownerDraw(2, false); await new Promise(r => setTimeout(r, REDUCE ? 0 : 1100)); ownerDraw(3, true); };
+}
+demo($("#demoOwner"), () => ownerDraw(3, false), async w => {
+  ownerDraw(0, true); await w(2000); ownerDraw(1, false); await w(1500); ownerDraw(2, false); await w(1200); ownerDraw(3, true);
+});
+
+/* ---------- Day 20: Close ---------- */
+const CL = [
+  ["done", "เอกสารครบ", "ใบกำกับภาษีซื้อ 47 · ขาย 212 · หัก ณ ที่จ่าย 18"],
+  ["done", "ยื่นและชำระ ภ.ง.ด.3/53 และ ภ.พ.30", "แนบใบเสร็จกรมสรรพากรแล้ว"],
+  ["done", "ได้รับ Statement ธนาคาร", "KBank บัญชีกระแสรายวัน ต.ค. 2569"],
+  ["warn", "กระทบยอดกับงบทดลอง", "พบผลต่าง 1 บัญชี ดูตารางด้านล่าง"],
+  ["done", "ส่งออกสมุดรายวัน", "128 รายการ"],
+];
+const TIE = [["2140 ภาษีขาย", 89079.20, 89079.20], ["1154 ภาษีซื้อ", 18340.50, 18340.50], ["2132 ภาษีหัก ณ ที่จ่ายค้างจ่าย", 4030.00, 4215.00]];
+function closeDraw(n, anim) {
+  $("#clist").innerHTML = CL.map((c, i) => `<li class="${i < n ? c[0] : ""}${anim && i === n - 1 && !REDUCE ? " fade-in" : ""}"><span class="bx">${i < n ? (c[0] === "warn" ? "!" : "✓") : ""}</span><span>${c[1]}<small>${c[2]}</small></span></li>`).join("");
+  const showTie = n >= 4;
+  $("#tie").innerHTML = showTie ? `<thead><tr><th>บัญชี</th><th>งบทดลอง</th><th>ปิดงวด</th><th>ผลต่าง</th></tr></thead><tbody>${TIE.map(r => { const df = r[2] - r[1]; return `<tr><td>${r[0]}</td><td>${fmt(r[1])}</td><td>${fmt(r[2])}</td><td style="color:${df ? "var(--amber)" : "var(--ledger)"};font-weight:600">${df ? fmt(df) + " !" : "0.00 ✓"}</td></tr>`; }).join("")}<tr><td colspan="4" style="text-align:left;color:var(--amber);font-family:var(--f-body)">ผลต่าง 185.00 มาจาก 50 ทวิ เลขที่ 2569/0041 (ค่าขนส่ง ทองดีโลจิสติกส์) ที่ยังไม่ได้บันทึกในโปรแกรมบัญชี</td></tr></tbody>` : "";
+  $("#exp").innerHTML = n >= 5 ? `<span>ส่งออกไปยัง</span><span class="tag on">Excel ✓</span><span class="tag">Express</span><span class="tag">PEAK</span><span class="tag">FlowAccount</span>` : "";
+}
+demo($("#demoClose"), () => closeDraw(5, false), async w => { closeDraw(0, false); await w(400); for (let i = 1; i <= 5; i++) { closeDraw(i, true); await w(700); } });
+
+/* ---------- Firm cockpit ---------- */
+const FT = ["งานของทีม", "ผู้ตรวจอนุมัติ", "ค่าทำบัญชี", "ถามปิดงวด", "ประวัติการแก้ไข"];
+let fIdx = 0;
+const STAFF0 = [["วีรยา", "เจ้าของ · ผู้ตรวจ", 18, 52, 61], ["ต้น", "ผู้ทำบัญชี", 34, 88, 118], ["แนน", "ผู้ทำบัญชี", 41, 97, 142]];
+const REV = [["ต้น", "บจ. สยามคลีนนิ่ง", "ภ.พ.30", 70738.70, "ok", ""], ["แนน", "บจ. ทองดีโลจิสติกส์", "ภ.ง.ด.53", 12480.00, "ok", ""], ["แนน", "คลินิกทันตกรรมยิ้มใส", "ภ.พ.30", 18205.40, "back", "ยอดขายยกเว้น 12,000 ขอเอกสารประกอบก่อนยื่น"], ["ต้น", "หจก. ช่างเหล็กรุ่งเรือง", "ภ.ง.ด.3", 2140.00, "ok", ""]];
+const FEES = [["บจ. สยามคลีนนิ่ง", 6500, "J", "paid"], ["ร้านกาแฟบ้านสวน", 2500, "P", "paid"], ["หจก. ช่างเหล็กรุ่งเรือง", 4500, "J", "paid"], ["ร้านดอกไม้ลลิตา", 2000, "P", "sent"], ["บจ. ทองดีโลจิสติกส์", 8000, "J", "paid"], ["คลินิกทันตกรรมยิ้มใส", 5500, "J", "sent"], ["บจ. เฮลตี้มีลบ็อกซ์", 4000, "J", "late"]];
+const QA = [
+  ["ลูกค้ารายไหนยังไม่ส่ง Statement เดือนนี้", `<b>4 ราย ยังไม่ส่ง Statement ต.ค. 2569</b><ul class="ans"><li>ร้านดอกไม้ลลิตา <small>เตือนแล้ว 2 ครั้ง · ล่าสุด 7 พ.ย.</small></li><li>คลินิกทันตกรรมยิ้มใส <small>เตือนแล้ว 1 ครั้ง</small></li><li>หจก. ช่างเหล็กรุ่งเรือง <small>ยังไม่เคยเตือน</small></li><li>บจ. เฮลตี้มีลบ็อกซ์ <small>เตือนแล้ว 1 ครั้ง</small></li></ul><span class="pill g">เตือนทาง LINE ทั้ง 4 ราย</span>`],
+  ["สัปดาห์นี้มีอะไรครบกำหนดบ้าง", `<b>16 พ.ย. (จันทร์) · 19 แบบ</b><ul class="ans"><li>ภ.ง.ด.1 · 3 · 53 ของ 7 ลูกค้า <small>ยื่นแล้ว 12 · เหลือ 7</small></li><li>สปส.1-10 ของ 5 ลูกค้า <small>เหลือ 2</small></li></ul><b>23 พ.ย. (จันทร์) · ภ.พ.30 ของ 5 ลูกค้า</b><ul class="ans"><li>รออนุมัติจากลูกค้า 2 ราย</li></ul>`],
+  ["ลูกค้ารายไหนตัวเลขผิดปกติ", `<b>ร้านดอกไม้ลลิตา: ภาษีซื้อ ต.ค. ลดลง 62% จากค่าเฉลี่ย 6 เดือน</b><svg class="spark" viewBox="0 0 160 40" aria-hidden="true"><polyline points="0,14 30,12 60,16 90,11 120,13 150,31" fill="none" stroke="var(--ledger)" stroke-width="2"/><circle cx="150" cy="31" r="3.5" fill="var(--stamp)"/></svg><small>อาจยังส่งใบกำกับภาษีซื้อไม่ครบ เดือนก่อนๆ มีใบจากตลาดดอกไม้ปากคลองตลาดราว 20 ใบต่อเดือน เดือนนี้มี 6 ใบ</small><span class="pill a">ขอเอกสารเพิ่มทาง LINE</span>`],
+];
+let qaIdx = 0;
+const AUDIT = [["31 ต.ค. 18:42", "มาลี · เจ้าของกิจการ", "ส่งเอกสาร 12 ใบทาง LINE"], ["1 พ.ย. 09:15", "ระบบ", "AI อ่านเอกสาร 12 ใบ · พบปัญหา 4 ใบ"], ["1 พ.ย. 10:02", "ต้น · ผู้ทำบัญชี", "ยืนยัน 8 ใบ · ทำเครื่องหมาย VAT ไม่ตรง 1 ใบ รอใบแก้ไข"], ["3 พ.ย. 14:20", "ต้น", "จัดทำ ภ.พ.30 ยอดชำระ ฿70,738.70"], ["4 พ.ย. 09:05", "วีรยา · ผู้ตรวจ", "อนุมัติ ภ.พ.30"], ["4 พ.ย. 11:30", "มาลี", "อนุมัติยอดผ่าน LINE"], ["20 พ.ย. 16:10", "ต้น", "บันทึกการยื่น พร้อมใบรับจากกรมสรรพากร"], ["23 พ.ย. 10:44", "ระบบ", "ตรวจสลิป KBank ยอดตรง · ชำระแล้ว"], ["24 พ.ย. 08:00", "วีรยา", "เปิดดูเลขประจำตัวผู้เสียภาษีเต็ม 1 รายการ · บันทึกตามนโยบาย"]];
+function firmTabs() { $("#firmTabs").innerHTML = FT.map((t, i) => `<button type="button" data-i="${i}" aria-pressed="${i === fIdx}">${t}</button>`).join(""); $$("#firmTabs button").forEach(b => b.onclick = () => { fIdx = +b.dataset.i; firmDemo.play(); }); }
+function firmDraw(step, done) {
+  const B = $("#firmBody");
+  if (fIdx === 0) {
+    const S = STAFF0.map(s => s.slice()); if (done || step >= 2) { S[2][2] = 35; S[1][2] = 40; S[2][4] = 120; S[1][4] = 140; }
+    B.innerHTML = `<div class="staff">${S.map(s => `<div class="sc"><div class="sh"><span class="av2">${s[0][0]}</span><div><b>${s[0]}</b><small>${s[1]}</small></div><b class="num">${s[2]} ราย</b></div><div class="lb"><small>ลูกค้า / เพดาน 100</small><div class="tr"><i style="width:${s[2]}%"></i></div></div><div class="lb"><small>ยื่นแล้วรอบนี้ ${s[3]}/${s[4]}</small><div class="tr"><i class="g" style="width:${s[3] / s[4] * 100}%"></i></div></div></div>`).join("")}</div>
+    <div class="slog">${step >= 1 || done ? logLine("แนะนำ", "แนนมีแบบค้าง 45 แบบ มากกว่าต้น 15 แบบ ย้ายลูกค้า 6 รายให้ต้นเพื่อให้ทันวันที่ 16") : ""}${step >= 2 || done ? logLine("ย้ายแล้ว", "6 ลูกค้าจากแนนไปต้น · ลูกค้าได้รับแจ้งชื่อผู้ดูแลใหม่ทาง LINE") : ""}</div>`;
+  } else if (fIdx === 1) {
+    B.innerHTML = `<div class="revq">${REV.map((r, i) => { const on = done || i < step; return `<div class="rv-row ${on ? "s-" + r[4] : ""}"><div><b>${r[1]}</b><small>${r[2]} · จัดทำโดย ${r[0]}</small>${on && r[5] ? `<div class="cm">ความเห็นผู้ตรวจ: ${r[5]}</div>` : ""}</div><b class="num">${fmt(r[3])}</b><span>${on ? (r[4] === "ok" ? `<span class="pill g">อนุมัติ · วีรยา</span>` : `<span class="pill a">ส่งกลับ</span>`) : `<span class="pill">รอตรวจ</span>`}</span></div>`; }).join("")}</div><p class="note">ผู้จัดทำอนุมัติงานของตัวเองไม่ได้ ทุกการอนุมัติและส่งกลับถูกบันทึก</p>`;
+  } else if (fIdx === 2) {
+    const sent = done || step >= 1, settled = done || step >= 2;
+    const stt = f => !sent ? `<span class="pill">ร่าง</span>` : !settled ? `<span class="pill b">ส่งทาง LINE แล้ว</span>` : f[3] === "paid" ? `<span class="pill g">ชำระแล้ว${f[2] === "J" ? ` · ถูกหัก 3% รอ 50 ทวิ` : ""}</span>` : f[3] === "late" ? `<span class="pill r">ค้าง 15 วัน · เตือนอัตโนมัติ</span>` : `<span class="pill b">ส่งแล้ว รอชำระ</span>`;
+    const recv = FEES.filter(f => f[3] === "paid").reduce((a, f) => a + f[1] * (f[2] === "J" ? .97 : 1), 0), wh = FEES.filter(f => f[3] === "paid" && f[2] === "J").reduce((a, f) => a + f[1] * .03, 0);
+    B.innerHTML = `<div class="scroll-x"><table class="sheet fees"><thead><tr class="hdr"><td>ลูกค้า</td><td class="r">ค่าทำบัญชี พ.ย.</td><td>สถานะ</td></tr></thead><tbody>${FEES.map(f => `<tr><td>${f[0]}</td><td class="r num">${fmt(f[1])}</td><td>${stt(f)}</td></tr>`).join("")}</tbody></table></div>
+    <div class="btot" style="margin-top:10px"><div><small>ค่าทำบัญชีเดือนนี้</small><b class="num">${fmt(FEES.reduce((a, f) => a + f[1], 0))}</b></div><div class="g"><small>รับแล้ว (สุทธิ)</small><b class="num">${settled ? fmt(recv) : "0.00"}</b></div><div><small>ภาษีถูกหัก รอ 50 ทวิ</small><b class="num">${settled ? fmt(wh) : "0.00"}</b></div><div><small>ค้างชำระ</small><b class="num" style="color:var(--stamp)">${settled ? fmt(4000) : "0.00"}</b></div></div>`;
+  } else if (fIdx === 3) {
+    B.innerHTML = `<div class="ask"><div class="qchips">${QA.map((q, i) => `<button type="button" class="tag ${i === qaIdx ? "on" : ""}" data-q="${i}">${q[0]}</button>`).join("")}</div>
+      <div class="qbox"><span class="num">›</span> <span id="qText">${done || step >= 1 ? QA[qaIdx][0] : ""}</span></div><div class="abox" id="aBox">${done || step >= 2 ? QA[qaIdx][1] : step === 1 ? `<span class="typing"><i></i><i></i><i></i></span>` : ""}</div>
+      <p class="note">ตอบจากข้อมูลในสำนักงานของคุณเท่านั้น และลิงก์กลับไปที่เอกสารจริง</p></div>`;
+    $$("#firmBody .qchips button").forEach(b => b.onclick = () => { qaIdx = +b.dataset.q; firmDemo.play(); });
+  } else {
+    B.innerHTML = `<div class="eyebrow">ภ.พ.30 · บจ. สยามคลีนนิ่ง · ต.ค. 2569</div><div class="tl">${AUDIT.map((a, i) => (done || i < step) ? `<div class="fade-in"><span class="num">${a[0]}</span><b>${a[1]}</b><span>${a[2]}</span></div>` : "").join("")}</div>`;
+  }
+}
+const firmDemo = demo($("#demoFirm"), () => { firmTabs(); firmDraw(0, true); }, async w => {
+  firmTabs(); const N = [2, REV.length, 2, 2, AUDIT.length][fIdx];
+  for (let s = 0; s <= N; s++) { firmDraw(s, false); await w(fIdx === 3 && s === 1 ? 1100 : fIdx === 4 ? 320 : 900); }
+  firmDraw(0, true);
+});
+
+/* ---------- Compare ---------- */
+const CMP_H = ["วิธีเดิม<small>Excel + LINE + โปรแกรมบนเครื่อง</small>", "โปรแกรมบัญชีออนไลน์<small>สำหรับเจ้าของ SME</small>", "แอปเก็บใบเสร็จ AI<small>รับบิลทาง LINE</small>", "ปิดงวด<small>สำหรับสำนักงานบัญชี</small>"];
+const CMP = [
+  ["ดูแลลูกค้าทุกราย ไม่ว่าลูกค้าใช้โปรแกรมไหน", "p", "p", "p", "y"],
+  ["ไม่ต้องย้ายโปรแกรมบัญชีของลูกค้า", "y", "n", "y", "y"],
+  ["รับเอกสารจากลูกค้าผ่าน LINE", "p", "p", "y", "y"],
+  ["AI อ่านใบเสร็จและใบกำกับภาษี", "n", "p", "y", "y"],
+  ["ตรวจใบกำกับภาษีตามมาตรา 86/4 ใบซ้ำ เกิน 6 เดือน และภาษีซื้อต้องห้าม ก่อนยื่น", "n", "p", "p", "y"],
+  ["กระดานกำหนดยื่นของทุกลูกค้า ทุกแบบ ในหน้าเดียว", "n", "p", "n", "y"],
+  ["เตรียม ภ.พ.30 ภ.ง.ด.3 ภ.ง.ด.53 และออก 50 ทวิ", "p", "y", "n", "y"],
+  ["เจ้าของกิจการอนุมัติยอดและส่งสลิปใน LINE ระบบตรวจสลิปให้", "n", "n", "n", "y"],
+  ["ซิงค์ Google Sheets อีเมล Drive Statement ธนาคาร และ POS", "p", "p", "p", "y"],
+  ["งานของทีม ผู้ตรวจอนุมัติ และเก็บค่าทำบัญชี", "n", "p", "p", "y"],
+  ["ทุกตัวเลขย้อนดูเอกสารต้นทางได้ ปิดบังเลขบัตรประชาชนตาม PDPA", "n", "p", "p", "y"],
+];
+const CM = { y: ["✓", "cy"], p: ["◐", "cp"], n: ["—", "cn"] };
+function cmpDraw(col) {
+  $("#cmpT").innerHTML = `<thead><tr><th></th>${CMP_H.map((h, i) => `<th class="${i === 3 ? "us" : ""}">${h}</th>`).join("")}</tr></thead><tbody>${CMP.map(r => `<tr><td>${r[0]}</td>${r.slice(1).map((v, i) => `<td class="${i === 3 ? "us" : ""}">${i < col ? `<span class="cmk ${CM[v][1]}">${CM[v][0]}</span>` : ""}</td>`).join("")}</tr>`).join("")}</tbody><tfoot><tr><td>รวม ✓</td>${[0, 1, 2, 3].map(i => `<td class="${i === 3 ? "us" : ""}">${i < col ? `<b class="num">${CMP.filter(r => r[i + 1] === "y").length}/${CMP.length}</b>` : ""}</td>`).join("")}</tr></tfoot>`;
+}
+demo($("#demoCmp"), () => cmpDraw(4), async w => { for (let c = 0; c <= 4; c++) { cmpDraw(c); await w(c === 3 ? 900 : 600); } });
+
+/* ---------- Calculator ---------- */
+const cC = $("#cClients"), cM = $("#cMin"), cX = $("#cCut");
+function calc() {
+  const n = +cC.value, m = +cM.value, cut = +cX.value / 100;
+  $("#vClients").textContent = n + " ราย"; $("#vMin").textContent = m + " นาที"; $("#vCut").textContent = Math.round(cut * 100) + "%";
+  const hrs = n * m * cut / 60, after = m * (1 - cut);
+  $("#rHours").textContent = Math.round(hrs).toLocaleString("en-US");
+  $("#rYear").textContent = Math.round(hrs * 12).toLocaleString("en-US");
+  const more = Math.floor(n * m / after) - n;
+  $("#rMore").textContent = "+" + more;
+}
+[cC, cM, cX].forEach(x => x.addEventListener("input", calc)); calc();
+
+
+/* ---------- v2: hero pipeline ---------- */
+const cv = $("#pipeCanvas"), cx = cv.getContext("2d");
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+let C = {};
+const readColors = () => { C = { ink: css("--ink"), muted: css("--muted"), rule: css("--rule"), sheet: css("--sheet"), sheet2: css("--sheet-2"), ledger: css("--ledger"), ledgerSoft: css("--ledger-soft"), stamp: css("--stamp"), stampSoft: css("--stamp-soft"), blue: css("--blue"), blueSoft: css("--blue-soft"), line: css("--line"), amber: css("--amber") }; };
+readColors();
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { readColors(); pDraw(); });
+new MutationObserver(() => { readColors(); pDraw(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+const SRC = [{ l: "LINE", c: "line" }, { l: "อีเมล", c: "blue" }, { l: "e-Tax XML", c: "blue" }, { l: "สแกน / อัปโหลด", c: "muted" }];
+const TRAY = [{ l: "ภ.พ.30", w: 46 }, { l: "ภ.ง.ด.53", w: 16 }, { l: "ภ.ง.ด.3", w: 12 }, { l: "50 ทวิ", w: 12 }, { l: "ส่งกลับลูกค้า", s: "ส่งกลับ", w: 14, bad: true }];
+let PW = 0, PH = 0, vert = false, G = {}, docs = [], spawnT = 0, stats = { docs: 0, ok: 0, vat: 0, bad: 0 }, gateFlash = 0, beamY = 0;
+TRAY.forEach(t => { t.n = 0; t.p = 0; });
+function pLayout() {
+  const r = cv.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1);
+  PW = r.width; PH = r.height; cv.width = PW * dpr; cv.height = PH * dpr; cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  vert = PW < 560;
+  if (!vert) {
+    SRC.forEach((s, i) => { s.x = 70; s.y = PH * (0.17 + i * 0.22); });
+    G = { x: PW * 0.47, y: PH / 2, w: 92, h: PH * 0.62 };
+    TRAY.forEach((t, i) => { t.x = PW - 66; t.y = PH * (0.12 + i * 0.19); });
+  } else {
+    SRC.forEach((s, i) => { s.x = PW * (0.14 + i * 0.24); s.y = 34; });
+    G = { x: PW / 2, y: PH * 0.47, w: PW * 0.74, h: 74 };
+    TRAY.forEach((t, i) => { t.x = PW * (0.1 + i * 0.2); t.y = PH - 46; });
+  }
+}
+const qb = (a, c, b, t) => { const u = 1 - t; return { x: u * u * a.x + 2 * u * t * c.x + t * t * b.x, y: u * u * a.y + 2 * u * t * c.y + t * t * b.y }; };
+const gateIn = () => vert ? { x: G.x, y: G.y - G.h / 2 + 8 } : { x: G.x - G.w / 2 + 6, y: G.y };
+const gateOut = () => vert ? { x: G.x, y: G.y + G.h / 2 - 8 } : { x: G.x + G.w / 2 - 6, y: G.y };
+const ctrl1 = s => vert ? { x: s.x, y: (s.y + gateIn().y) / 2 + 20 } : { x: (s.x + gateIn().x) / 2 + 10, y: s.y };
+const ctrl2 = t => vert ? { x: t.x, y: (gateOut().y + t.y) / 2 - 10 } : { x: (gateOut().x + t.x) / 2 - 10, y: t.y };
+const pickTray = () => { let r = Math.random() * 100; for (const t of TRAY) { if ((r -= t.w) < 0) return t; } return TRAY[0]; };
+function pStep(dt) {
+  spawnT -= dt;
+  if (spawnT <= 0) { spawnT = 260 + Math.random() * 260; const s = SRC[Math.random() < .55 ? 0 : 1 + Math.floor(Math.random() * 3)], t = pickTray(); docs.push({ s, t, leg: 0, k: 0, rot: (Math.random() - .5) * .5, ok: !t.bad, jit: (Math.random() - .5) * (vert ? 40 : 30) }); }
+  gateFlash = Math.max(0, gateFlash - dt / 400); beamY = (beamY + dt / 900) % 2;
+  TRAY.forEach(t => t.p = Math.max(0, t.p - dt / 600));
+  for (const d of docs) {
+    if (d.leg === 0) { d.k += dt / 1300; if (d.k >= 1) { d.leg = 1; d.k = 0; gateFlash = 1; } }
+    else if (d.leg === 1) { d.k += dt / 420; if (d.k >= 1) { d.leg = 2; d.k = 0; } }
+    else { d.k += dt / 1250; if (d.k >= 1) { d.done = true; d.t.n++; d.t.p = 1; stats.docs++; if (d.ok) { stats.ok++; if (d.t === TRAY[0]) stats.vat += Math.round(Math.random() * 380000) / 100 + 20; } else stats.bad++; } }
+  }
+  docs = docs.filter(d => !d.done);
+}
+function rr(x, y, w, h, r) { cx.beginPath(); cx.moveTo(x + r, y); cx.arcTo(x + w, y, x + w, y + h, r); cx.arcTo(x + w, y + h, x, y + h, r); cx.arcTo(x, y + h, x, y, r); cx.arcTo(x, y, x + w, y, r); cx.closePath(); }
+function pDraw() {
+  if (!PW) return;
+  cx.clearRect(0, 0, PW, PH);
+  cx.fillStyle = C.rule; for (let x = 12; x < PW; x += 22) for (let y = 12; y < PH; y += 22) { cx.globalAlpha = .45; cx.fillRect(x, y, 1.5, 1.5); }
+  cx.globalAlpha = 1;
+  cx.setLineDash([3, 5]); cx.lineWidth = 1.2; cx.strokeStyle = C.rule;
+  SRC.forEach(s => { const a = gateIn(), c = ctrl1(s); cx.beginPath(); cx.moveTo(s.x, s.y); cx.quadraticCurveTo(c.x, c.y, a.x, a.y); cx.stroke(); });
+  TRAY.forEach(t => { const a = gateOut(), c = ctrl2(t); cx.beginPath(); cx.moveTo(a.x, a.y); cx.quadraticCurveTo(c.x, c.y, t.x, t.y); cx.stroke(); });
+  cx.setLineDash([]);
+  // gate
+  const gx = G.x - G.w / 2, gy = G.y - G.h / 2;
+  cx.save(); cx.shadowColor = C.ledger; cx.shadowBlur = 24 * gateFlash;
+  rr(gx, gy, G.w, G.h, 14); cx.fillStyle = C.ink; cx.fill(); cx.restore();
+  cx.save(); rr(gx, gy, G.w, G.h, 14); cx.clip();
+  const bp = beamY < 1 ? beamY : 2 - beamY;
+  const grad = vert ? cx.createLinearGradient(gx + bp * G.w - 30, 0, gx + bp * G.w + 30, 0) : cx.createLinearGradient(0, gy + bp * G.h - 30, 0, gy + bp * G.h + 30);
+  grad.addColorStop(0, "transparent"); grad.addColorStop(.5, C.ledger); grad.addColorStop(1, "transparent");
+  cx.globalAlpha = .55; cx.fillStyle = grad; cx.fillRect(gx, gy, G.w, G.h); cx.globalAlpha = 1; cx.restore();
+  cx.fillStyle = C.sheet; cx.textAlign = "center"; cx.textBaseline = "middle";
+  cx.font = '700 15px "IBM Plex Sans Thai", sans-serif';
+  if (vert) { cx.fillText("AI อ่านเอกสาร + กฎตรวจ 14 ข้อ", G.x, G.y - 9); cx.font = '500 11px "IBM Plex Sans Thai", sans-serif'; cx.globalAlpha = .7; cx.fillText("คนยืนยันก่อนเข้าแบบ", G.x, G.y + 14); }
+  else { cx.fillText("AI", G.x, G.y - 34); cx.font = '600 12px "IBM Plex Sans Thai", sans-serif'; cx.fillText("อ่าน +", G.x, G.y - 10); cx.fillText("กฎตรวจ", G.x, G.y + 8); cx.fillText("14 ข้อ", G.x, G.y + 26); }
+  cx.globalAlpha = 1;
+  // sources
+  SRC.forEach(s => {
+    cx.font = '600 12px "IBM Plex Sans Thai", sans-serif';
+    const label = vert && s.l.length > 8 ? s.l.split(" ")[0] : s.l, w = Math.max(56, cx.measureText(label).width + 30);
+    rr(s.x - w / 2, s.y - 15, w, 30, 15); cx.fillStyle = C.sheet; cx.fill(); cx.strokeStyle = s.c === "line" ? C.line : C.rule; cx.lineWidth = 1.5; cx.stroke();
+    cx.fillStyle = s.c === "line" ? C.line : C[s.c]; cx.beginPath(); cx.arc(s.x - w / 2 + 13, s.y, 4, 0, 7); cx.fill();
+    cx.fillStyle = C.ink; cx.textAlign = "left"; cx.fillText(label, s.x - w / 2 + 22, s.y + 1);
+  });
+  // trays
+  TRAY.forEach(t => {
+    const w = vert ? Math.min(66, PW * .18) : 108, h = vert ? 54 : 46;
+    cx.save(); if (t.p) { cx.shadowColor = t.bad ? C.stamp : C.ledger; cx.shadowBlur = 18 * t.p; }
+    rr(t.x - w / 2, t.y - h / 2, w, h, 10); cx.fillStyle = t.bad ? C.stampSoft : C.sheet; cx.fill(); cx.restore();
+    rr(t.x - w / 2, t.y - h / 2, w, h, 10); cx.strokeStyle = t.bad ? C.stamp : C.rule; cx.lineWidth = 1.5; cx.stroke();
+    cx.textAlign = "center"; cx.fillStyle = t.bad ? C.stamp : C.muted; cx.font = '600 11px "IBM Plex Sans Thai", sans-serif';
+    cx.fillText(vert && t.s ? t.s : t.l, t.x, t.y - (vert ? 11 : 9));
+    cx.fillStyle = t.bad ? C.stamp : C.ink; cx.font = `600 ${15 + 4 * t.p}px "IBM Plex Mono", monospace`;
+    cx.fillText(t.n.toLocaleString("en-US"), t.x, t.y + (vert ? 10 : 10));
+  });
+  // docs (docs inside the gate are hidden: they are being read)
+  for (const d of docs) {
+    if (d.leg === 1) continue;
+    let p, scanned = d.leg >= 1;
+    if (d.leg === 0) { const a = { x: d.s.x, y: d.s.y }, b = gateIn(); p = qb(a, ctrl1(d.s), b, d.k); }
+    else if (d.leg === 1) { const a = gateIn(), b = gateOut(); p = { x: a.x + (b.x - a.x) * d.k, y: a.y + (b.y - a.y) * d.k }; if (vert) p.x += d.jit; else p.y += d.jit; }
+    else { const a = gateOut(); p = qb(a, ctrl2(d.t), { x: d.t.x, y: d.t.y }, d.k); }
+    const sc = d.leg === 2 ? 1 - d.k * .35 : 1;
+    cx.save(); cx.translate(p.x, p.y); cx.rotate(d.rot * (d.leg === 1 ? 0 : 1)); cx.scale(sc, sc);
+    cx.shadowColor = "rgba(0,0,0,.18)"; cx.shadowBlur = 6; cx.shadowOffsetY = 2;
+    cx.fillStyle = "#FFFEF9"; cx.fillRect(-11, -14, 22, 28); cx.shadowColor = "transparent";
+    cx.fillStyle = "#C9C6BA"; for (let i = 0; i < 4; i++) cx.fillRect(-7, -9 + i * 5, i === 3 ? 8 : 14, 2);
+    if (scanned && (d.leg === 2 || d.k > .5)) {
+      cx.fillStyle = d.ok ? C.ledger : C.stamp; cx.beginPath(); cx.arc(9, -12, 7, 0, 7); cx.fill();
+      cx.strokeStyle = "#fff"; cx.lineWidth = 2; cx.beginPath();
+      if (d.ok) { cx.moveTo(5.5, -12); cx.lineTo(8, -9.5); cx.lineTo(12.5, -14.5); } else { cx.moveTo(6.5, -14.5); cx.lineTo(11.5, -9.5); cx.moveTo(11.5, -14.5); cx.lineTo(6.5, -9.5); }
+      cx.stroke();
+    }
+    cx.restore();
+  }
+  $("#psDocs").textContent = stats.docs.toLocaleString("en-US");
+  $("#psOk").textContent = stats.ok.toLocaleString("en-US");
+  $("#psVat").textContent = "฿" + Math.round(stats.vat).toLocaleString("en-US");
+  $("#psBad").textContent = stats.bad.toLocaleString("en-US");
+}
+let pipeOn = true, pLast = 0;
+new IntersectionObserver(es => { pipeOn = es[0].isIntersecting; }).observe(cv);
+function pLoop(t) { const dt = Math.min(50, t - (pLast || t)); pLast = t; if (pipeOn && !document.hidden) { pStep(dt); pDraw(); } requestAnimationFrame(pLoop); }
+function pBoot() { pLayout(); for (let i = 0; i < 260; i++) pStep(16); pDraw(); if (!REDUCE) requestAnimationFrame(pLoop); }
+addEventListener("resize", () => { pLayout(); pDraw(); });
+(document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(pBoot);
+pLayout(); pDraw();
+
+/* ---------- v2: race ---------- */
+let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const N = 40, OLD = [], NEW = [];
+for (let i = 0; i < N; i++) {
+  const o = 4 + rnd() * 21.5; OLD.push({ s: Math.max(1, o - 2.2 - rnd() * 2), f: o });
+  const n = 2.2 + rnd() * 7.5; NEW.push({ s: Math.max(1, n - 1.1), f: n });
+}
+OLD.sort((a, b) => a.f - b.f); NEW.sort((a, b) => a.f - b.f);
+const HRS_OLD = 120 / 60, HRS_NEW = 60 / 60;
+$$("#race .dots").forEach(d => d.innerHTML = "<i></i>".repeat(N));
+function raceDraw(day) {
+  [["#raceOld", OLD, HRS_OLD], ["#raceNew", NEW, HRS_NEW]].forEach(([id, arr, hp]) => {
+    const el = $(id), cells = $$(".dots i", el); let done = 0, late = 0, hrs = 0;
+    arr.forEach((c, i) => {
+      const cl = day >= c.f && c.f <= 23 ? "d" : (day >= 23 && c.f > 23) ? "l" : day >= c.s ? "w" : "";
+      cells[i].className = cl; if (cl === "d") done++; if (cl === "l") late++;
+      hrs += hp * Math.max(0, Math.min(1, (Math.min(day, 23) - c.s) / (c.f - c.s)));
+    });
+    $(".race-day span", el).textContent = Math.max(1, Math.floor(day));
+    $(".r-done", el).textContent = `${done}/${N}`; $(".r-hrs", el).textContent = Math.round(hrs); $(".r-late", el).textContent = late;
+  });
+  $("#raceFill").style.width = Math.min(100, day / 23 * 100) + "%";
+}
+let raceRun = 0;
+async function raceStart() {
+  const id = ++raceRun; if (REDUCE) { raceDraw(23); return; }
+  const T = 9000, t0 = performance.now();
+  await new Promise(res => { const f = t => { if (id !== raceRun) return res(); const k = Math.min(1, (t - t0) / T); raceDraw(1 + k * 22.01); k < 1 ? requestAnimationFrame(f) : res(); }; requestAnimationFrame(f); });
+}
+raceDraw(23.01);
+$("#raceGo").addEventListener("click", raceStart);
+let racePlayed = false;
+new IntersectionObserver(es => { if (es[0].isIntersecting && !racePlayed) { racePlayed = true; raceStart(); } }, { threshold: .45 }).observe($("#race .race"));
+
+/* ---------- v2: pitch mode ---------- */
+const STEPS = [
+  ["top", "ปิดงวด: ทุกลูกค้า ทุกแบบภาษี บนกระดานเดียว", 8000],
+  ["crunch", "ปัญหา: งานยื่นภาษีอัดแน่นในวันที่ 1 ถึง 23", 7000],
+  ["race", "วิธีเดิม กับ ปิดงวด ในเดือนเดียวกัน", 11000],
+  ["overview", "กระดานเดียว เห็นทุกลูกค้า ทุกสถานะ", 7000],
+  ["day0", "รับลูกค้าใหม่ · ปฏิทินภาษีทั้งปีในสองนาที", 10000],
+  ["day1", "วันที่ 1 · ลูกค้าส่งเอกสารทาง LINE", 9500],
+  ["day2", "วันที่ 2 · 12 แบบเอกสาร AI อ่าน กฎตรวจ คนยืนยัน", 16000],
+  ["day3", "วันที่ 3 · ซิงค์จาก Google Sheets Excel อีเมล ธนาคาร POS", 13000],
+  ["day4", "วันที่ 4 · เงินเดือนเป็น ภ.ง.ด.1 และประกันสังคม", 8000],
+  ["day5", "วันที่ 5 · จัดประเภทการจ่ายทั้งเดือน และ 50 ทวิ", 11000],
+  ["day6", "วันที่ 6 · AI จัดประเภท เสนอรหัสบัญชี ส่งไฟล์นำเข้า PEAK", 13000],
+  ["day7", "วันที่ 7 · กำหนดยื่นคำนวณให้อัตโนมัติ", 8000],
+  ["day10", "วันที่ 10 · ภ.พ.30 ต้องชำระ ขอคืน หรือมีเครดิตยกมา", 9000],
+  ["day12", "วันที่ 12 · เจ้าของกิจการอนุมัติและส่งสลิป", 9500],
+  ["day20", "วันที่ 20 · ปิดงวดและส่งออกรายการบัญชี", 8000],
+  ["firm", "บริหารสำนักงาน · ทีม ผู้ตรวจ ค่าทำบัญชี ถาม AI", 10000],
+  ["calc", "ได้เวลาคืนเท่าไรต่อเดือน", 7000],
+  ["compare", "เทียบกับทางเลือกอื่น", 8000],
+  ["pricing", "ราคา: จ่ายตามลูกค้าที่ใช้งาน", 6500],
+  ["trust", "ความปลอดภัยและความรับผิดชอบ", 6500],
+  ["pilot", "รับสำนักงานนำร่อง 10 แห่ง", 9000],
+];
+let pi = -1, pPlaying = true, pTimer = 0, pActive = false;
+const pb = $("#pitchbar");
+function pitchGo(i) {
+  pi = Math.max(0, Math.min(STEPS.length - 1, i)); clearTimeout(pTimer);
+  const [id, cap, ms] = STEPS[pi], el = id === "top" ? document.body : document.getElementById(id);
+  const y = id === "top" ? 0 : el.getBoundingClientRect().top + scrollY - $(".top").offsetHeight + 1;
+  scrollTo({ top: y, behavior: REDUCE ? "auto" : "smooth" });
+  $("#pbNum").textContent = `${pi + 1} / ${STEPS.length}`; $("#pbCap").textContent = cap;
+  $$(".spot").forEach(x => x.classList.remove("spot"));
+  setTimeout(() => {
+    if (!pActive) return;
+    const dm = id === "top" ? null : demos.find(d => el.contains(d.el));
+    if (dm) { dm.played = true; dm.play(); dm.el.classList.add("spot"); }
+    if (id === "race") { racePlayed = true; raceStart(); }
+  }, REDUCE ? 0 : 750);
+  const bar = $("#pbProg"); bar.style.transition = "none"; bar.style.width = "0";
+  if (pPlaying) { void bar.offsetWidth; bar.style.transition = `width ${ms}ms linear`; bar.style.width = "100%"; pTimer = setTimeout(() => pi < STEPS.length - 1 ? pitchGo(pi + 1) : pitchPause(true), ms); }
+}
+function pitchPause(force) {
+  pPlaying = force === true ? false : !pPlaying; $("#pbPlay").textContent = pPlaying ? "❚❚" : "▶"; $("#pbPlay").setAttribute("aria-label", pPlaying ? "หยุดชั่วคราว" : "เล่นต่อ");
+  if (pPlaying) pitchGo(pi); else { clearTimeout(pTimer); const bar = $("#pbProg"); const w = getComputedStyle(bar).width; bar.style.transition = "none"; bar.style.width = w; }
+}
+function pitchStart() { pActive = true; pPlaying = true; pb.hidden = false; document.body.classList.add("pitching"); $("#pbPlay").textContent = "❚❚"; try { document.documentElement.requestFullscreen && document.documentElement.requestFullscreen().catch(() => {}); } catch (e) {} pitchGo(0); }
+function pitchStop() { pActive = false; clearTimeout(pTimer); pb.hidden = true; document.body.classList.remove("pitching"); $$(".spot").forEach(x => x.classList.remove("spot")); try { document.fullscreenElement && document.exitFullscreen(); } catch (e) {} }
+$("#pitchStart").addEventListener("click", pitchStart);
+$("#pbNext").addEventListener("click", () => pitchGo(pi + 1));
+$("#pbPrev").addEventListener("click", () => pitchGo(pi - 1));
+$("#pbPlay").addEventListener("click", () => pitchPause());
+$("#pbExit").addEventListener("click", pitchStop);
+addEventListener("keydown", e => {
+  if (!pActive || /INPUT|SELECT|TEXTAREA/.test(e.target.tagName)) return;
+  if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); pitchGo(pi + 1); }
+  else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); pitchGo(pi - 1); }
+  else if (e.key === " ") { e.preventDefault(); pitchPause(); }
+  else if (e.key === "Escape") pitchStop();
+});
+
+/* start observers */
+demos.forEach(d => io.observe(d.el));
+})();
+</script>

@@ -1,0 +1,10 @@
+{
+  "name": "hero-reel",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "npx --yes hyperframes@0.9.41 check",
+    "snapshot": "npx --yes hyperframes@0.9.41 snapshot --at 1,4,7,10,13",
+    "render": "npx --yes hyperframes@0.9.41 render -o renders/hero-reel.mp4 --fps 30 --quality high"
+  }
+}

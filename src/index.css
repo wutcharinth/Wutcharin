@@ -356,6 +356,24 @@ body.cursor-enhanced select {
     cursor: auto !important;
   }
 }
+/* Hero reel (video/hero-reel): drawn on midnight, the dark page colour. The light theme recolours it. */
+.hero-reel {
+  /* Lets the Atmosphere glow behind the hero show through the film's flat background. */
+  mix-blend-mode: lighten;
+}
+html.light .hero-reel {
+  /* Invert keeping hue, then #hero-reel-paper (HeroReel.tsx) lands the background exactly on the page colour. */
+  filter: invert(1) hue-rotate(180deg) url(#hero-reel-paper);
+  mix-blend-mode: multiply;
+}
+@media (min-width: 768px) {
+  /* Beside the name: the lead-in of the line fades in instead of meeting the type. */
+  .hero-reel {
+    -webkit-mask-image: linear-gradient(to right, transparent 9%, #000 18%);
+    mask-image: linear-gradient(to right, transparent 9%, #000 18%);
+  }
+}
+
 /* Rise: headings whose words lift out of the baseline (home/Rise.tsx).
    The mask is a clip-path, not overflow, so an inline-block word keeps its
    text baseline and mixed faces stay aligned on one line. */
