@@ -51,6 +51,6 @@ To check frames before rendering, run `npx hyperframes snapshot --at 2.2,8.2,11.
 
 ## On the site
 
-`src/components/home/HeroReel.tsx` plays the stage cut beside the name on desktop and above it on phones. It is opt-in for now: add `?hero=reel` to the URL. That also turns off the live particle field, so only one motion layer runs. Visitors who prefer reduced motion never get the video.
+`src/components/home/HeroReel.tsx` plays the stage cut beside the name on desktop and above it on phones. It is the default hero. It replaces the live particle field, so only one motion layer runs; add `?hero=field` to the URL to get the field back. Visitors who prefer reduced motion never get the video.
 
 The film is drawn on the dark page colour, so on the dark theme it needs no blending. On the light theme it is inverted with its hue kept, and a small SVG filter (`#hero-reel-paper` in `HeroReel.tsx`) lands its background exactly on the light page colour. If either page colour changes, re-render (dark) or retune the filter slopes (light).
