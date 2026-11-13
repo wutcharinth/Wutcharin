@@ -356,11 +356,15 @@ body.cursor-enhanced select {
     cursor: auto !important;
   }
 }
-/* Hero reel (video/hero-reel): drawn on midnight. Blend it into whichever page it sits on. */
-.hero-reel {
-  mix-blend-mode: lighten;
-}
+/* Hero reel (video/hero-reel): drawn on midnight, the dark page colour. The light theme recolours it. */
 html.light .hero-reel {
-  filter: invert(1) hue-rotate(180deg);
-  mix-blend-mode: multiply;
+  /* Invert keeping hue, then #hero-reel-paper (HeroReel.tsx) lands the background exactly on the page colour. */
+  filter: invert(1) hue-rotate(180deg) url(#hero-reel-paper);
+}
+@media (min-width: 768px) {
+  /* Beside the name: the lead-in of the line fades in instead of meeting the type. */
+  .hero-reel {
+    -webkit-mask-image: linear-gradient(to right, transparent 9%, #000 18%);
+    mask-image: linear-gradient(to right, transparent 9%, #000 18%);
+  }
 }

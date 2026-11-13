@@ -7,8 +7,9 @@ A 15-second seamless loop for the home hero.
 1. **Noise.** One line, then "too many manual steps / spreadsheets" and a cloud of finance-ops fragments.
 2. **Cut.** A flash clears it.
 3. **One signal.** A violet point draws a line.
-4. **Agents.** The line branches into labelled agents: reconciliation, collections, payout checks, month-end close, risk flags. One branch is "the exception", which goes to a person.
-5. **Shipped.** Everything gathers into a glossy ring, then closes back to the opening line, so the last frame is the first.
+4. **Code.** The line opens a code window, `month_end.py`. Each pattern gets a check; one line, `review(unusual)`, is held: "needs a person".
+5. **Agents.** The line branches into labelled agents: reconciliation, collections, payout checks, month-end close, risk flags. One branch is "the exception", which goes to a person.
+6. **Shipped.** Everything gathers into a glossy ring, then closes back to the opening line, so the last frame is the first.
 
 ## How it is made
 
@@ -41,14 +42,15 @@ FRAMES=/tmp/ring ./build.sh ring
 
 `build.sh web` writes to `public/video/`:
 
-- `hero-reel.webm`, `hero-reel.mp4`: 1920×1080
-- `hero-reel-mobile.mp4`: the stage only, for phones
-- posters for both
+- `hero-reel.mp4`: the full 1920×1080 frame, for use outside the site
+- `hero-reel-stage.mp4`: the stage only (1240×1080), which the site plays on desktop
+- `hero-reel-mobile.mp4`: the stage at 828 px wide, for phones
+- `hero-reel-stage-poster.jpg`: the poster frame
 
 To check frames before rendering, run `npx hyperframes snapshot --at 2.2,8.2,11.8` inside `hyperframes/`.
 
 ## On the site
 
-`src/components/home/HeroReel.tsx` plays the reel behind the hero. It is opt-in for now: add `?hero=reel` to the URL. That also turns off the live particle field, so only one motion layer runs. Visitors who prefer reduced motion never get the video.
+`src/components/home/HeroReel.tsx` plays the stage cut beside the name on desktop and above it on phones. It is opt-in for now: add `?hero=reel` to the URL. That also turns off the live particle field, so only one motion layer runs. Visitors who prefer reduced motion never get the video.
 
-On the light theme the video is inverted with its hue kept, and blended into the page (`.hero-reel` in `src/index.css`).
+The film is drawn on the dark page colour, so on the dark theme it needs no blending. On the light theme it is inverted with its hue kept, and a small SVG filter (`#hero-reel-paper` in `HeroReel.tsx`) lands its background exactly on the light page colour. If either page colour changes, re-render (dark) or retune the filter slopes (light).

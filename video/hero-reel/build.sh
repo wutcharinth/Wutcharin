@@ -13,8 +13,10 @@ M=hyperframes/renders/hero-reel-master.mp4
 
 case "${1:-}" in
   ring)
-    ffmpeg -v error -y -framerate 30 -i "$FRAMES/ring_%04d.png" -vf "scale=out_color_matrix=bt709,format=yuv420p" \
-      -c:v libx264 -crf 12 -preset slow $BT709 hyperframes/assets/ring.mp4
+    # Lift the render's black to the page's midnight so the ring sits on the composition without a seam.
+    ffmpeg -v error -y -framerate 30 -i "$FRAMES/ring_%04d.png" -f lavfi -i "color=0x020617:s=640x640:r=30" \
+      -filter_complex "[0]format=gbrp[a];[1]format=gbrp[b];[a][b]blend=all_mode=lighten:shortest=1,scale=out_color_matrix=bt709,format=yuv444p" \
+      -c:v libx264 -crf 8 -preset slow -pix_fmt yuv420p $BT709 hyperframes/assets/ring.mp4
     ;;
   render)
     (cd hyperframes && npx --yes hyperframes@0.9.41 render -o renders/hero-reel-master.mp4 --fps 30 --quality high --crf 10)
@@ -22,13 +24,13 @@ case "${1:-}" in
   web)
     mkdir -p "$PUB"
     X264="-c:v libx264 -preset slower -profile:v high -g 60 $BT709 -movflags +faststart"
+    # Full frame (1920x1080): the stage sits right of centre, the left is empty midnight.
     ffmpeg -v error -y -i "$M" -an -vf "format=yuv420p" $X264 -crf 24 "$PUB/hero-reel.mp4"
-    ffmpeg -v error -y -i "$M" -an -vf "format=yuv420p" -c:v libvpx-vp9 -crf 34 -b:v 0 -row-mt 1 -cpu-used 2 -g 60 $BT709 "$PUB/hero-reel.webm"
-    # Phones: the stage only (everything lives between x=620 and x=1860), no empty left half.
+    # Stage only (everything lives between x=620 and x=1860). This is what the site's hero plays.
+    ffmpeg -v error -y -i "$M" -an -vf "crop=1240:1080:620:0,format=yuv420p" $X264 -crf 24 "$PUB/hero-reel-stage.mp4"
     ffmpeg -v error -y -i "$M" -an -vf "crop=1240:1080:620:0,scale=828:-2:flags=lanczos,format=yuv420p" $X264 -crf 25 "$PUB/hero-reel-mobile.mp4"
-    # Posters: the branching moment.
-    ffmpeg -v error -y -ss 8.2 -i "$M" -frames:v 1 -q:v 3 "$PUB/hero-reel-poster.jpg"
-    ffmpeg -v error -y -ss 8.2 -i "$PUB/hero-reel-mobile.mp4" -frames:v 1 -q:v 3 "$PUB/hero-reel-mobile-poster.jpg"
+    # Poster: the branching moment.
+    ffmpeg -v error -y -ss 9.6 -i "$PUB/hero-reel-stage.mp4" -frames:v 1 -q:v 3 "$PUB/hero-reel-stage-poster.jpg"
     ls -la "$PUB"
     ;;
   *) echo "usage: [FRAMES=dir] $0 ring|render|web"; exit 1 ;;
