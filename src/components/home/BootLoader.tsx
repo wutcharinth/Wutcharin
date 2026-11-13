@@ -59,7 +59,7 @@ export default function BootLoader() {
                     exit={{ clipPath: 'inset(0 0 100% 0)' }}
                     transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
                 >
-                    <div className="mx-auto flex w-full max-w-6xl items-end justify-between font-mono text-[10px] uppercase tracking-[0.28em] text-text-mute">
+                    <div className="mx-auto flex w-full max-w-6xl items-end justify-between font-mono text-[11px] uppercase tracking-[0.28em] text-text-mute">
                         <span>
                             Resolving signal<span className="animate-pulse">…</span>
                         </span>

@@ -14,7 +14,7 @@ export default function HeroReel() {
     return (
         <div
             aria-hidden="true"
-            className="hero-reel pointer-events-none absolute inset-x-0 top-14 z-10 h-[44svh] md:inset-x-auto md:right-0 md:top-1/2 md:h-auto md:w-[50vw] md:max-w-[980px] md:-translate-y-1/2"
+            className="hero-reel pointer-events-none absolute inset-x-0 top-14 z-10 h-[36svh] md:inset-x-auto md:right-0 md:top-1/2 md:h-auto md:w-[50vw] md:max-w-[980px] md:-translate-y-1/2"
         >
             <svg width="0" height="0" className="absolute">
                 <filter id="hero-reel-paper" colorInterpolationFilters="sRGB">

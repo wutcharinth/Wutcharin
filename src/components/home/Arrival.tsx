@@ -10,6 +10,7 @@ import { portraitScene } from './scenes';
 import { useBangkokTime } from './useBangkokTime';
 import { openConsole, isMac } from '../console/consoleBus';
 import { RESUME } from './contact';
+import { useScrollTo } from './useScrollTo';
 
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -20,11 +21,14 @@ const ease = [0.16, 1, 0.3, 1] as const;
  * full claim: who, what level, where, and how he thinks.
  */
 export default function Arrival() {
-    const sceneOff = useMemo(() => detectTier() === null, []);
+    const tier = useMemo(() => detectTier(), []);
+    const sceneOff = tier === null;
     const reel = useMemo(() => heroReelRequested(), []);
     const time = useBangkokTime();
     const [mac] = useState(isMac);
     const [touch] = useState(() => window.matchMedia('(hover: none)').matches);
+
+    const scrollTo = useScrollTo();
 
     const { scrollY } = useScroll();
     const lift = useTransform(scrollY, [0, 600], [0, -80]);
@@ -78,7 +82,7 @@ export default function Arrival() {
                             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-violet-400 opacity-60 [animation-duration:2.4s]" />
                             <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-violet-400" />
                         </span>
-                        <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-text">
+                        <span className="font-mono text-[11px] uppercase tracking-[0.28em] text-text">
                             Now · Agoda, Bangkok
                         </span>
                     </motion.div>
@@ -120,6 +124,10 @@ export default function Arrival() {
                         <MagneticButton
                             as="a"
                             href="#work"
+                            onClick={(e: { preventDefault: () => void }) => {
+                                e.preventDefault();
+                                scrollTo('#work');
+                            }}
                             className="group rounded-full bg-text-strong px-7 py-3 text-sm font-medium tracking-wide text-bg transition-colors hover:bg-signal"
                             data-cursor="view"
                         >
@@ -129,12 +137,23 @@ export default function Arrival() {
                             </span>
                         </MagneticButton>
                         <a
+                            href="#contact"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                scrollTo('#contact');
+                            }}
+                            className="rounded-full border border-signal/30 px-7 py-3 text-sm font-medium tracking-wide text-signal transition-colors hover:bg-signal/10 hover:text-text-strong"
+                        >
+                            Get in touch
+                        </a>
+                        <a
                             href={RESUME}
                             download="Wutcharin_Thatan_Resume.pdf"
-                            className="group ml-1 inline-flex items-center gap-1.5 px-2 py-3 font-mono text-[10px] uppercase tracking-[0.28em] text-text-mute transition-colors hover:text-text-strong"
+                            className="group inline-flex items-center gap-1.5 px-3 py-3 text-sm font-medium text-text transition-colors hover:text-text-strong"
                         >
-                            Résumé PDF
-                            <ArrowDown className="h-3 w-3 transition-transform group-hover:translate-y-0.5" aria-hidden="true" />
+                            Résumé
+                            <ArrowDown className="h-3.5 w-3.5 transition-transform group-hover:translate-y-0.5" aria-hidden="true" />
+                            <span className="sr-only">(PDF download)</span>
                         </a>
                     </motion.div>
                 </div>
@@ -163,6 +182,35 @@ export default function Arrival() {
                 )}
             </motion.div>
 
+            {/* Figure caption on the right margin, mirroring the chapter rail on
+                the left: it says what the field is, and that it answers back. */}
+            {tier && (
+                <motion.div
+                    aria-hidden="true"
+                    style={{ opacity: fade }}
+                    className="pointer-events-none absolute right-5 top-1/2 z-30 hidden -translate-y-1/2 lg:block [@media(max-height:739px)]:hidden"
+                >
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 2.4, duration: 1.2 }}
+                        className="flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.24em] text-text-mute [writing-mode:vertical-rl]"
+                    >
+                        <span className="text-text">Fig. 00 · Portrait</span>
+                        <span className="h-8 w-px bg-hairline-strong" />
+                        <span>
+                            <span className="tabular-nums">{(tier.texSize * tier.texSize).toLocaleString('en-US')}</span> live particles
+                        </span>
+                        {!touch && (
+                            <>
+                                <span className="h-8 w-px bg-hairline-strong" />
+                                <span>Move your cursor</span>
+                            </>
+                        )}
+                    </motion.p>
+                </motion.div>
+            )}
+
             {/* Live rail: a real person, right now. */}
             <motion.div
                 initial={{ opacity: 0 }}
@@ -170,7 +218,7 @@ export default function Arrival() {
                 transition={{ delay: 2, duration: 1 }}
                 className="absolute inset-x-0 bottom-0 z-30 border-t border-hairline px-6 md:px-10"
             >
-                <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-6 font-mono text-[10px] uppercase tracking-[0.24em] text-text-mute">
+                <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-6 font-mono text-[11px] uppercase tracking-[0.24em] text-text-mute">
                     <span className="flex items-center gap-2 tabular-nums">
                         <span className="h-1 w-1 rounded-full bg-violet-400" aria-hidden="true" />
                         Bangkok <span className="text-text-strong">{time}</span> ICT
@@ -187,7 +235,7 @@ export default function Arrival() {
                         data-cursor="open"
                     >
                         {!touch && (
-                            <kbd className="rounded border border-hairline px-1.5 py-0.5 font-mono text-[10px] tracking-normal text-text">
+                            <kbd className="rounded border border-hairline px-1.5 py-0.5 font-mono text-[11px] tracking-normal text-text">
                                 {mac ? '⌘K' : 'Ctrl K'}
                             </kbd>
                         )}

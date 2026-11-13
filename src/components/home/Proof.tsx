@@ -4,6 +4,8 @@ import { sceneBus } from '../../scene/sceneBus';
 import { detectTier } from '../../scene/tier';
 import ChapterLabel from './ChapterLabel';
 import { numeralScene } from './scenes';
+import { useScrollTo } from './useScrollTo';
+import Rise from './Rise';
 
 /**
  * Chapter 01: Proof. A pinned stage where the particles themselves become
@@ -15,6 +17,8 @@ type Beat = {
     glyph: string;
     value: string;
     unit: string;
+    /** Two or three words for the stage rail. */
+    short: string;
     claim: string;
     detail: string;
     mix?: Array<[string, number]>;
@@ -25,48 +29,58 @@ const BEATS: Beat[] = [
         glyph: '15,000',
         value: '15,000+',
         unit: 'Hours automated per year',
-        claim: 'Time given back to finance teams, every year.',
-        detail: 'Machine learning, RPA and AI agents. All in daily use. No pilots.',
+        short: 'Hours a year',
+        claim: 'Manual finance work that no person does any more.',
+        detail: 'Done by machine learning, RPA and AI agents. All of it runs every day. None of it is a pilot.',
         mix: [['Collections ML', 40], ['RPA', 28], ['AI agents', 22], ['Dashboards', 10]],
     },
     {
         glyph: '20+',
         value: '20+',
         unit: 'AI agents in production',
-        claim: 'Built, live and owned. In four functions.',
-        detail: 'Agents for audit, finance, sales and operations. Each one has guardrails and tests.',
+        short: 'Agents live',
+        claim: 'Agents my team built, runs and answers for.',
+        detail: 'They work in audit, finance, sales and operations. Each one ships with guardrails and tests.',
         mix: [['Audit & risk', 30], ['Finance', 30], ['Operations', 25], ['Sales', 15]],
     },
     {
         glyph: '12',
         value: '12',
         unit: 'Analytics engineers on the team',
-        claim: 'FinTech Data & Automation at Agoda, today.',
-        detail: '50+ data professionals led over 20 years. From the first hire to teams of teams.',
+        short: 'Engineers',
+        claim: 'The team I lead at Agoda today.',
+        detail: 'Over 20 years I have led 50+ data professionals, from a first hire to teams of teams.',
     },
     {
         glyph: '20 yrs',
         value: '20',
         unit: 'Years across three industries',
+        short: 'Years',
         claim: 'Aviation, travel tech and media.',
-        detail: 'Airline planning. Travel analytics at scale. Media strategy. Now, FinTech automation.',
+        detail: 'Airline planning, travel analytics at scale, then media strategy. Now, finance automation.',
         mix: [['Travel tech', 50], ['Aviation', 30], ['Media', 10], ['Other', 10]],
     },
 ];
 
-function Mix({ mix }: { mix: NonNullable<Beat['mix']> }) {
+function Mix({ mix, active }: { mix: NonNullable<Beat['mix']>; active: boolean }) {
     return (
         <div className="mt-8 max-w-md">
             <div className="flex h-1 w-full gap-[3px] overflow-hidden rounded-full" aria-hidden="true">
                 {mix.map(([name, pct], i) => (
                     <span
                         key={name}
-                        className={i === 0 ? 'bg-signal' : 'bg-text-strong'}
-                        style={{ width: `${pct}%`, opacity: i === 0 ? 0.9 : 0.5 - i * 0.12 }}
+                        className={`origin-left transition-transform duration-[900ms] [transition-timing-function:var(--ease-out-expo)] ${i === 0 ? 'bg-signal' : 'bg-text-strong'}`}
+                        style={{
+                            width: `${pct}%`,
+                            opacity: i === 0 ? 0.9 : 0.5 - i * 0.12,
+                            // Each share draws in after the one before it.
+                            transform: `scaleX(${active ? 1 : 0})`,
+                            transitionDelay: active ? `${250 + i * 110}ms` : '0ms',
+                        }}
                     />
                 ))}
             </div>
-            <p className="mt-3 font-mono text-[10px] uppercase leading-relaxed tracking-[0.2em] text-text-mute">
+            <p className="mt-3 font-mono text-[11px] uppercase leading-relaxed tracking-[0.2em] text-text-mute">
                 {mix.map(([name, pct], i) => (
                     <span key={name}>
                         {i > 0 && <span aria-hidden="true"> · </span>}
@@ -78,11 +92,11 @@ function Mix({ mix }: { mix: NonNullable<Beat['mix']> }) {
     );
 }
 
-function BeatCopy({ beat, index, showNumeral }: { beat: Beat; index: number; showNumeral: boolean }) {
+function BeatCopy({ beat, index, showNumeral, active = true }: { beat: Beat; index: number; showNumeral: boolean; active?: boolean }) {
     return (
         <>
-            <div className="mb-4 flex items-baseline gap-3 font-mono text-[10px] uppercase tracking-[0.28em]">
-                <span className="tabular-nums text-text-mute">0{index + 1} / 0{BEATS.length}</span>
+            <div className="mb-4 flex items-baseline gap-3 font-mono text-[11px] uppercase tracking-[0.28em]">
+                <span className="shrink-0 whitespace-nowrap tabular-nums text-text-mute">0{index + 1} / 0{BEATS.length}</span>
                 <span className="text-signal">{beat.unit}</span>
             </div>
             <div
@@ -99,7 +113,7 @@ function BeatCopy({ beat, index, showNumeral }: { beat: Beat; index: number; sho
                 {beat.claim}
             </p>
             <p className="mt-4 max-w-md text-sm font-light leading-relaxed text-text-mute md:text-base">{beat.detail}</p>
-            {beat.mix && <Mix mix={beat.mix} />}
+            {beat.mix && <Mix mix={beat.mix} active={active} />}
         </>
     );
 }
@@ -109,6 +123,16 @@ export default function Proof() {
     const sceneOff = useMemo(() => detectTier() === null, []);
     const sectionRef = useRef<HTMLElement>(null);
     const [active, setActive] = useState(0);
+    const fillRefs = useRef<Array<HTMLSpanElement | null>>([]);
+    const scrollTo = useScrollTo();
+
+    // Jump to the middle of a beat's share of the pin.
+    const goTo = (i: number) => {
+        const section = sectionRef.current;
+        if (!section) return;
+        const top = section.getBoundingClientRect().top + window.scrollY;
+        scrollTo(top + (section.offsetHeight - window.innerHeight) * ((i + 0.5) / BEATS.length));
+    };
 
     useEffect(() => {
         if (reduced) return;
@@ -142,7 +166,15 @@ export default function Proof() {
                 trigger: section,
                 start: 'top top',
                 end: 'bottom bottom',
-                onUpdate: (self) => show(Math.min(BEATS.length - 1, Math.floor(self.progress * BEATS.length))),
+                onUpdate: (self) => {
+                    const at = self.progress * BEATS.length;
+                    show(Math.min(BEATS.length - 1, Math.floor(at)));
+                    // The rail fills with the scroll: past beats full, the
+                    // current one as far as you are through it.
+                    fillRefs.current.forEach((el, i) => {
+                        if (el) el.style.transform = `scaleX(${Math.min(1, Math.max(0, at - i))})`;
+                    });
+                },
             });
         }, section);
         return () => ctx.revert();
@@ -151,9 +183,10 @@ export default function Proof() {
     const heading = (
         <div className="mb-10 md:mb-14">
             <ChapterLabel index="01" name="Proof" className="mb-6" />
-            <h2 className="max-w-xl text-3xl leading-[0.98] tracking-[-0.02em] text-text-strong md:text-5xl">
-                Measured, <span className="font-serif font-normal italic text-signal">not claimed</span>.
-            </h2>
+            <Rise
+                className="max-w-xl text-3xl leading-[0.98] tracking-[-0.02em] text-text-strong md:text-5xl"
+                parts={['Measured,', { text: 'not claimed', accent: true }, { text: '.', glue: true }]}
+            />
         </div>
     );
 
@@ -175,8 +208,8 @@ export default function Proof() {
     }
 
     return (
-        <section ref={sectionRef} id="proof" aria-label="Proof" className="relative h-[380vh]">
-            <div className="sticky top-0 flex h-[100svh] flex-col justify-end overflow-hidden px-6 pb-16 md:justify-center md:px-10 md:pb-0">
+        <section ref={sectionRef} id="proof" aria-label="Proof" className="relative h-[320vh]">
+            <div className="sticky top-0 flex h-[100svh] flex-col justify-end overflow-hidden px-6 pb-28 md:justify-center md:px-10 md:pb-0">
                 <div className="mx-auto grid w-full max-w-6xl md:grid-cols-12">
                     <div className="md:col-span-6">
                         {heading}
@@ -192,22 +225,53 @@ export default function Proof() {
                                         visibility: i === active ? 'visible' : 'hidden',
                                     }}
                                 >
-                                    <BeatCopy beat={b} index={i} showNumeral={sceneOff} />
+                                    <BeatCopy beat={b} index={i} showNumeral={sceneOff} active={i === active} />
                                 </div>
                             ))}
                         </div>
                     </div>
                 </div>
 
-                {/* Scrub rail */}
-                <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 items-center gap-2 md:bottom-12" aria-hidden="true">
-                    {BEATS.map((b, i) => (
-                        <span
-                            key={b.unit}
-                            className="h-[2px] w-8 transition-colors duration-500 md:w-10"
-                            style={{ backgroundColor: i <= active ? 'var(--color-signal)' : 'var(--color-hairline-strong)' }}
-                        />
-                    ))}
+                {/* Stage rail: all four figures at a glance. It fills with the
+                    scroll, names where you are, and jumps on click. */}
+                <div className="absolute inset-x-0 bottom-0 px-6 pb-5 md:px-10 md:pb-8">
+                    <ol className="mx-auto flex max-w-6xl gap-3 md:gap-6">
+                        {BEATS.map((b, i) => (
+                            <li key={b.unit} className="min-w-0 flex-1">
+                                <button
+                                    type="button"
+                                    onClick={() => goTo(i)}
+                                    aria-label={`${b.value} ${b.unit}`}
+                                    aria-current={i === active ? 'step' : undefined}
+                                    className="group block w-full pt-3 text-left"
+                                >
+                                    <span className="relative block h-px w-full bg-hairline-strong">
+                                        <span
+                                            ref={(el) => {
+                                                fillRefs.current[i] = el;
+                                            }}
+                                            className="absolute inset-0 origin-left bg-signal"
+                                            style={{ transform: `scaleX(${i === 0 ? 0.02 : 0})` }}
+                                        />
+                                    </span>
+                                    <span
+                                        className={`mt-3 block font-display text-base font-semibold leading-none tracking-[-0.02em] tabular-nums transition-colors duration-500 md:text-xl ${
+                                            i === active ? 'text-text-strong' : 'text-text-mute group-hover:text-text'
+                                        }`}
+                                    >
+                                        {b.value}
+                                    </span>
+                                    <span
+                                        className={`mt-1.5 hidden truncate font-mono text-[11px] uppercase tracking-[0.2em] transition-colors duration-500 sm:block ${
+                                            i === active ? 'text-text' : 'text-text-mute/70 group-hover:text-text-mute'
+                                        }`}
+                                    >
+                                        {b.short}
+                                    </span>
+                                </button>
+                            </li>
+                        ))}
+                    </ol>
                 </div>
             </div>
         </section>

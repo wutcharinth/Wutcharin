@@ -49,7 +49,7 @@ typography:
     letterSpacing: "normal"
   label:
     fontFamily: "'JetBrains Mono', ui-monospace, monospace"
-    fontSize: "0.625rem"
+    fontSize: "0.6875rem"
     fontWeight: 500
     lineHeight: 1
     letterSpacing: "0.28em"
@@ -164,7 +164,7 @@ A dim operator's room with one signal color, two cool accents reserved for ident
 - **Serif Accent** (Instrument Serif italic 400, inherits size): One or two words inside a display/headline lockup, or a standalone pull quote. The only italic in the system.
 - **Title** (Clash 500, `1.25rem`, line-height 1.3): Card titles, project names. Sentence case.
 - **Body** (400, `1rem`, line-height 1.6): Default reading text. Cap line length at 65–75ch.
-- **Label** (JetBrains Mono 500, `0.625rem`, line-height 1, tracking `0.28em`, UPPERCASE): Meta-labels (`AI / DATA / OPS`), section eyebrows, status pings. Always violet-300 (`#c4b5fd`) at 70% opacity.
+- **Label** (JetBrains Mono 500, `0.6875rem`, line-height 1, tracking `0.28em`, UPPERCASE): Meta-labels (`AI / DATA / OPS`), section eyebrows, status pings. Always violet-300 (`#c4b5fd`) at 70% opacity.
 
 ### Named Rules
 
@@ -221,6 +221,18 @@ The system is **flat by default** with one signature treatment: violet aurora gl
 
 - **Top nav:** Fixed pill-shaped scroll-aware container, dark glass over Midnight Deep with `~12% opacity` and minimal blur. Active section pill fills with `rgba(167, 139, 250, 0.10)` background and Violet Signal border. Scroll progress bar at top — 1px tall, Violet Signal fill.
 - **Mobile:** Full-screen overlay opens from a hamburger; same pill treatment for items.
+
+### Home Atmosphere
+
+One fixed layer between the particle field and the page (`home/Atmosphere.tsx`). A violet aurora travels to where each chapter's subject sits (behind the portrait, behind the numeral, under the address), a faint lamp follows the cursor on pointer devices, and a fine grain gives the midnight a surface. Transform and opacity only. The aurora is a feeling, not a foreground: it stays outside the 10% Rule's count only while it stays this dim.
+
+### Rise Headings
+
+Chapter headings on the home page lift word by word out of their baseline the first time they enter view (`home/Rise.tsx`). The mask is a `clip-path`, so Clash and the serif accent keep one baseline. Under reduced motion they render in place.
+
+### Type Interlude
+
+One band of oversized Clash between the project index and the career path (`home/Interlude.tsx`): two rows, lit and ghost words alternating, moved only by the scroll. Ghost words are a low-alpha fill, never an outline. One per page.
 
 ### Signature Component: The Cinematic Reel Frame
 

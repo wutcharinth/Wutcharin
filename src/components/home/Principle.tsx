@@ -5,6 +5,7 @@ import { useOverlayLoop } from './useOverlayLoop';
 import ChapterLabel from './ChapterLabel';
 import { SIGNAL } from './scenes';
 import { useChapterScene } from './useChapterScene';
+import Rise from './Rise';
 
 /**
  * Chapter 02: Principle. The field becomes a triage: one dense stream
@@ -33,10 +34,10 @@ function Lane({ x, y, title, note, accent }: { x: number; y: number; title: stri
     });
     return (
         <div ref={ref} className="absolute hidden -translate-x-1/2 md:block" aria-hidden="true">
-            <div className={`font-mono text-[10px] uppercase tracking-[0.28em] ${accent ? 'text-signal' : 'text-text-strong'}`}>
+            <div className={`font-mono text-[11px] uppercase tracking-[0.28em] ${accent ? 'text-signal' : 'text-text-strong'}`}>
                 {title}
             </div>
-            <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-text-mute">{note}</div>
+            <div className="mt-1 font-mono text-[11px] uppercase tracking-[0.2em] text-text-mute">{note}</div>
         </div>
     );
 }
@@ -66,29 +67,29 @@ export default function Principle() {
                     <div data-reveal-child>
                         <ChapterLabel index="02" name="Principle" className="mb-6" />
                     </div>
-                    <h2 data-reveal-child className="text-4xl leading-[0.98] tracking-[-0.02em] text-text-strong md:text-6xl">
-                        Most work repeats. The skill is to see{' '}
-                        <span className="font-serif font-normal italic text-signal">what does not</span>.
-                    </h2>
+                    <Rise
+                        className="text-4xl leading-[0.98] tracking-[-0.02em] text-text-strong md:text-6xl"
+                        parts={['Most work repeats. The skill is to see', { text: 'what does not', accent: true }, { text: '.', glue: true }]}
+                    />
                     <p data-reveal-child className="mt-8 text-base font-light leading-relaxed text-text-mute md:text-lg">
-                        20 years of data work for C-level leaders. I build AI, automation and analytics teams, in fast-growth tech
-                        and in aviation.
+                        For 20 years I have turned data into decisions for C-level leaders, in aviation, media and travel tech. Today
+                        I build the teams and the AI that do it at scale.
                     </p>
                     <p data-reveal-child className="mt-4 text-base font-light leading-relaxed text-text-mute md:text-lg">
-                        An agent is only one part. The <span className="text-text-strong">system around it</span> matters more: orchestration,
-                        memory, tools, guardrails and tests. That system keeps the agent reliable in production, not only in a demo. 20
-                        reusable Claude Skills now share this practice with the team.
+                        An agent is the small part. The <span className="text-text-strong">system around it</span> is the work: orchestration,
+                        memory, tools, guardrails and tests. That is what keeps an agent reliable in production, not only in a demo. My
+                        team now shares the practice as 20 reusable Claude Skills.
                     </p>
                 </RevealOnScroll>
 
                 {/* Mobile and no-WebGL legend: the same idea, in type. */}
                 <dl className={`mt-14 grid max-w-xl grid-cols-2 gap-6 border-t border-hairline pt-6 ${sceneOff ? '' : 'md:hidden'}`}>
                     <div>
-                        <dt className="font-mono text-[10px] uppercase tracking-[0.28em] text-text-strong">Patterns → code</dt>
+                        <dt className="font-mono text-[11px] uppercase tracking-[0.28em] text-text-strong">Patterns → code</dt>
                         <dd className="mt-2 text-sm text-text-mute">The volume, automated end to end.</dd>
                     </div>
                     <div>
-                        <dt className="font-mono text-[10px] uppercase tracking-[0.28em] text-signal">Exceptions → people</dt>
+                        <dt className="font-mono text-[11px] uppercase tracking-[0.28em] text-signal">Exceptions → people</dt>
                         <dd className="mt-2 text-sm text-text-mute">The edge cases go to a person.</dd>
                     </div>
                 </dl>

@@ -34,12 +34,10 @@ After deployment, test if the environment variable is accessible:
 ### Verifying AI Functionality
 
 After deployment, test:
-- **Chatbot**: Go to `/thai-election` and click "Ask AI Analyst"
 - **Resume Builder**: Go to `/resume-builder` and paste resume text
 
 ### API Endpoints
 
-- `/api/chat` - Election chatbot
 - `/api/resume/parse` - Parse resume text
 - `/api/resume/improve` - Improve resume text
 - `/api/analyze` - OCR analysis

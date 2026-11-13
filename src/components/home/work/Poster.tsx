@@ -97,7 +97,7 @@ export default function Poster({ project, index, compact = false }: { project: P
                         decoding="async"
                         className="absolute inset-0 h-full w-full object-cover object-top"
                     />
-                    <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,transparent_55%,rgba(1,1,9,0.85)_100%)]" />
+                    <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,transparent_48%,rgba(1,1,9,0.72)_78%,rgba(1,1,9,0.96)_100%)]" />
                 </>
             ) : (
                 <>
