@@ -356,3 +356,11 @@ body.cursor-enhanced select {
     cursor: auto !important;
   }
 }
+/* Hero reel (video/hero-reel): drawn on midnight. Blend it into whichever page it sits on. */
+.hero-reel {
+  mix-blend-mode: lighten;
+}
+html.light .hero-reel {
+  filter: invert(1) hue-rotate(180deg);
+  mix-blend-mode: multiply;
+}

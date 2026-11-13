@@ -2,9 +2,10 @@ import { useEffect, useMemo, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, ArrowDown } from 'lucide-react';
 import { MagneticButton } from '../../lib/motion';
-import { detectTier } from '../../scene/tier';
+import { detectTier, heroReelRequested } from '../../scene/tier';
 import { sceneBus } from '../../scene/sceneBus';
 import KineticWord from './KineticWord';
+import HeroReel from './HeroReel';
 import { portraitScene } from './scenes';
 import { useBangkokTime } from './useBangkokTime';
 import { openConsole, isMac } from '../console/consoleBus';
@@ -20,6 +21,7 @@ const ease = [0.16, 1, 0.3, 1] as const;
  */
 export default function Arrival() {
     const sceneOff = useMemo(() => detectTier() === null, []);
+    const reel = useMemo(() => heroReelRequested(), []);
     const time = useBangkokTime();
     const [mac] = useState(isMac);
     const [touch] = useState(() => window.matchMedia('(hover: none)').matches);
@@ -52,6 +54,8 @@ export default function Arrival() {
             aria-label="Introduction"
             className="relative flex min-h-[100svh] flex-col overflow-hidden px-6 md:px-10"
         >
+            {reel && <HeroReel />}
+
             {/* Reading floor: the text side of the stage sits on a soft ramp of
                 midnight so the type never fights the live field. */}
             <div
@@ -136,7 +140,7 @@ export default function Arrival() {
                 </div>
 
                 {/* Without the live field, the portrait is a duotone plate. */}
-                {sceneOff && (
+                {sceneOff && !reel && (
                     <motion.figure
                         initial={{ opacity: 0, scale: 0.98 }}
                         animate={{ opacity: 1, scale: 1 }}
