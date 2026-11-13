@@ -31,14 +31,14 @@ function webgl2Available(): boolean {
 }
 
 /**
- * The home hero plays the pre-rendered reel (video/hero-reel) in place of the
- * live particle field. `?hero=field` brings the field back. Reduced-motion
+ * `?hero=reel` swaps the live particle field for the pre-rendered hero reel
+ * (video/hero-reel). Opt-in while the reel is under review. Reduced-motion
  * visitors never get autoplaying video.
  */
 export function heroReelRequested(): boolean {
     if (typeof window === 'undefined') return false;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
-    return new URLSearchParams(window.location.search).get('hero') !== 'field';
+    return new URLSearchParams(window.location.search).get('hero') === 'reel';
 }
 
 export function detectTier(): Tier | null {
