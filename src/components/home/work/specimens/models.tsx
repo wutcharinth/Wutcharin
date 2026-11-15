@@ -84,7 +84,7 @@ export function RiskGuard() {
                 <meshBasicMaterial color={p.ink} toneMapped={false} />
             </mesh>
             {Array.from({ length: N }, (_, i) => (
-                <Block key={i} ref={(m) => (refs.current[i] = m)} size={[0.22, 0.2, 0.22]} tone={i % 3 === 1 ? 'paper' : 'fill'} />
+                <Block key={i} ref={(m) => { refs.current[i] = m; }} size={[0.22, 0.2, 0.22]} tone={i % 3 === 1 ? 'paper' : 'fill'} />
             ))}
         </group>
     );
@@ -165,7 +165,7 @@ export function ReviewFlow() {
                 <Block key={x} size={[0.8, 0.14, 0.7]} position={[x, 0.07, 0.1]} edge={0.6} />
             ))}
             {Array.from({ length: 6 }, (_, i) => (
-                <Block key={i} ref={(m) => (refs.current[i] = m)} size={[0.42, 0.025, 0.28]} tone={i % 2 ? 'mid' : 'paper'} edge={0.6} />
+                <Block key={i} ref={(m) => { refs.current[i] = m; }} size={[0.42, 0.025, 0.28]} tone={i % 2 ? 'mid' : 'paper'} edge={0.6} />
             ))}
         </group>
     );
@@ -204,7 +204,7 @@ export function QueryFlow() {
             {Array.from({ length: 12 }, (_, i) => (
                 <Block
                     key={i}
-                    ref={(m) => (cells.current[i] = m)}
+                    ref={(m) => { cells.current[i] = m; }}
                     size={[0.36, 0.2, 0.04]}
                     position={[0.45 + (i % 3) * 0.4, 1.25 - Math.floor(i / 3) * 0.24, 0]}
                     tone={i < 3 ? 'paper' : 'fill'}
@@ -238,13 +238,13 @@ export function Collections() {
                 <Block size={[0.22, 0.02, 0.16]} position={[-0.35, 0.03, -0.12]} tone="mid" edge={0} />
             </Block>
             {[0.75, 0.95, 1.15].map((r, k) => (
-                <mesh key={r} ref={(m) => (rings.current[k] = m)} position={[-0.1, 0.05, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+                <mesh key={r} ref={(m) => { rings.current[k] = m; }} position={[-0.1, 0.05, 0]} rotation={[-Math.PI / 2, 0, 0]}>
                     <ringGeometry args={[r, r + 0.025, 64]} />
                     <meshBasicMaterial color={p.ink} transparent opacity={0.15} toneMapped={false} />
                 </mesh>
             ))}
             {Array.from({ length: 5 }, (_, i) => (
-                <mesh key={i} ref={(m) => (coins.current[i] = m)}>
+                <mesh key={i} ref={(m) => { coins.current[i] = m; }}>
                     <cylinderGeometry args={[0.16, 0.16, 0.06, 24]} />
                     <meshStandardMaterial color={p.soft} />
                     <Edges color={p.ink} threshold={30} />
@@ -277,7 +277,7 @@ export function SlipVerify() {
             <Block size={[0.04, 0.5, 0.04]} position={[0, 0.3, -0.5]} edge={0.6} />
             <Block size={[0.04, 0.5, 0.04]} position={[0, 0.3, 0.5]} edge={0.6} />
             {Array.from({ length: N }, (_, i) => (
-                <group key={i} ref={(g) => (slips.current[i] = g)}>
+                <group key={i} ref={(g) => { slips.current[i] = g; }}>
                     <Block size={[0.42, 0.02, 0.62]} tone="paper" edge={0.7}>
                         <Block size={[0.12, 0.01, 0.12]} position={[0.1, 0.015, -0.18]} tone="mid" edge={0} />
                     </Block>
@@ -344,7 +344,7 @@ export function HumanEdge() {
     return (
         <group>
             {cells.map((_, i) => (
-                <Block key={i} ref={(m) => (refs.current[i] = m)} size={[0.18, 0.18, 0.18]} edge={0.5} />
+                <Block key={i} ref={(m) => { refs.current[i] = m; }} size={[0.18, 0.18, 0.18]} edge={0.5} />
             ))}
             <mesh position={[0, 0.42, 0]}>
                 <capsuleGeometry args={[0.13, 0.42, 6, 16]} />
@@ -383,7 +383,7 @@ export function AgenticLoop() {
             {[0, 1, 2].map((k) => {
                 const na = (k / 3) * Math.PI * 2;
                 return (
-                    <mesh key={k} ref={(m) => (nodes.current[k] = m)} position={[Math.cos(na) * R, 0.75, Math.sin(na) * R * 0.55]}>
+                    <mesh key={k} ref={(m) => { nodes.current[k] = m; }} position={[Math.cos(na) * R, 0.75, Math.sin(na) * R * 0.55]}>
                         <sphereGeometry args={[0.16, 24, 24]} />
                         <meshStandardMaterial color={p.fill} />
                         <Edges color={p.ink} threshold={20} />
@@ -413,7 +413,7 @@ export function AIEvolution() {
     return (
         <group>
             {H.map((_, i) => (
-                <Block key={i} ref={(m) => (refs.current[i] = m)} size={[0.3, 1, 0.3]} position={[-1.5 + i * 0.5, 0.5, 0]} tone={i === H.length - 1 ? 'paper' : 'fill'} edge={0.8} />
+                <Block key={i} ref={(m) => { refs.current[i] = m; }} size={[0.3, 1, 0.3]} position={[-1.5 + i * 0.5, 0.5, 0]} tone={i === H.length - 1 ? 'paper' : 'fill'} edge={0.8} />
             ))}
         </group>
     );
@@ -446,12 +446,12 @@ export function FutureOfWork() {
         <group>
             {grid.map((g, i) => (
                 <group key={i} position={[g.x, 0, g.z]}>
-                    <mesh ref={(m) => (people.current[i] = m)} position={[0, 0.2, 0]} scale={g.kind === 2 ? 0.001 : 1}>
+                    <mesh ref={(m) => { people.current[i] = m; }} position={[0, 0.2, 0]} scale={g.kind === 2 ? 0.001 : 1}>
                         <capsuleGeometry args={[0.07, 0.18, 4, 10]} />
                         <meshStandardMaterial color={p.mid} />
                     </mesh>
                     {g.kind !== 0 && (
-                        <mesh ref={(m) => (changed.current[i] = m)} position={[0, 0.16, 0]} scale={0.001}>
+                        <mesh ref={(m) => { changed.current[i] = m; }} position={[0, 0.16, 0]} scale={0.001}>
                             <boxGeometry args={[0.2, 0.32, 0.2]} />
                             <meshStandardMaterial color={g.kind === 2 ? p.paper : p.fill} emissive={p.ink} emissiveIntensity={g.kind === 2 ? 0.4 : 0} />
                             <Edges color={p.ink} />
@@ -494,10 +494,10 @@ export function FlowAIOS() {
                 <Edges color={p.ink} threshold={30} />
             </mesh>
             {tiles.map((_, k) => (
-                <Spark key={k} ref={(m) => (dots.current[k] = m)} r={0.045} />
+                <Spark key={k} ref={(m) => { dots.current[k] = m; }} r={0.045} />
             ))}
             {[0, 1, 2].map((k) => (
-                <mesh key={k} ref={(m) => (agents.current[k] = m)}>
+                <mesh key={k} ref={(m) => { agents.current[k] = m; }}>
                     <sphereGeometry args={[0.13, 20, 20]} />
                     <meshStandardMaterial color={p.paper} emissive={p.ink} emissiveIntensity={0.4} />
                 </mesh>
@@ -537,7 +537,7 @@ export function ResumeBuilder() {
             <Block size={[1.3, 1.7, 0.03]} position={[-0.05, 0.9, 0]} tone="paper" edge={0.8} />
             <Block size={[0.5, 0.08, 0.01]} position={[-0.25, 1.6, 0.02]} tone="ink" edge={0} />
             {W.map((w, i) => (
-                <Block key={i} ref={(m) => (lines.current[i] = m)} size={[w, 0.05, 0.01]} position={[-0.5, 1.42 - i * 0.17, 0.02]} tone="mid" edge={0} />
+                <Block key={i} ref={(m) => { lines.current[i] = m; }} size={[w, 0.05, 0.01]} position={[-0.5, 1.42 - i * 0.17, 0.02]} tone="mid" edge={0} />
             ))}
             <Block ref={caret} size={[0.03, 0.09, 0.01]} tone="ink" edge={0} />
             <mesh ref={ai}>
@@ -575,7 +575,7 @@ export function GeminiOCR() {
             <Block ref={beam} size={[1.3, 0.025, 0.02]} tone="ink" edge={0} />
             <Block size={[1.0, 1.2, 0.02]} position={[0.75, 0.88, -0.05]} edge={0.6} />
             {Array.from({ length: 6 }, (_, i) => (
-                <Block key={i} ref={(m) => (fields.current[i] = m)} size={[0.8, 0.12, 0.03]} tone={i === 0 ? 'paper' : 'mid'} edge={0.5} />
+                <Block key={i} ref={(m) => { fields.current[i] = m; }} size={[0.8, 0.12, 0.03]} tone={i === 0 ? 'paper' : 'mid'} edge={0.5} />
             ))}
         </group>
     );
