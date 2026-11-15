@@ -42,7 +42,6 @@ export const projects: Project[] = [
     // --- Interactive lecture insights & data stories ---
     {
         id: 'karpathy-deep-dive',
-        featured: 4,
         formation: 'wave',
         title: 'Karpathy LLM Guide',
         role: 'Interactive Article',
@@ -112,7 +111,6 @@ export const projects: Project[] = [
     // --- AI agents & agentic simulations ---
     {
         id: 'risk-guard',
-        featured: 2,
         formation: 'helix',
         title: 'RiskGuard AI',
         role: 'AI Engineer',
@@ -205,7 +203,6 @@ export const projects: Project[] = [
     },
     {
         id: 'flowaios',
-        featured: 3,
         formation: 'terminus',
         title: 'FlowAIOS',
         role: 'Founder & Builder',
@@ -219,6 +216,7 @@ export const projects: Project[] = [
     },
     {
         id: 'jongtoh',
+        featured: 3,
         title: 'Jongtoh',
         role: 'Founder & Builder',
         desc: "An AI host for Thai restaurants, bars, cafés and live venues. It takes bookings and answers questions on LINE OA. Messenger and IG come next.",
@@ -231,6 +229,7 @@ export const projects: Project[] = [
     },
     {
         id: 'klikr',
+        featured: 4,
         title: 'Klikr',
         role: 'Full Stack Developer',
         desc: "Live quizzes and interactive slides for any audience, scored in real time.",
@@ -243,6 +242,7 @@ export const projects: Project[] = [
     },
     {
         id: 'splitbill-ai',
+        featured: 2,
         title: 'SplitBill AI',
         role: 'Creator & Developer',
         desc: "Photograph a receipt. Gemini reads each item and the app splits the bill.",
