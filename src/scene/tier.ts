@@ -41,6 +41,18 @@ export function heroReelRequested(): boolean {
     return new URLSearchParams(window.location.search).get('hero') === 'reel';
 }
 
+/**
+ * Whether the Work chapter's product simulations may run: WebGL 2 without a
+ * major performance caveat, and no reduced-motion preference. Independent of
+ * the particle tier, so the opt-in hero reel does not switch them off.
+ */
+export function simsAllowed(): boolean {
+    if (typeof window === 'undefined') return false;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
+    if (new URLSearchParams(window.location.search).get('tier') === 'off') return false;
+    return webgl2Available();
+}
+
 export function detectTier(): Tier | null {
     if (typeof window === 'undefined') return null;
     // One layer of motion at a time: the reel retires the particle field.

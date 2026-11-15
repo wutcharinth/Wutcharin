@@ -2,21 +2,24 @@ import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNod
 import { AnimatePresence, motion, useMotionValue, useSpring } from 'framer-motion';
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { gsap, ScrollTrigger, ScrambleText, TiltCard, usePrefersReducedMotion, RevealOnScroll } from '../../lib/motion';
+import { gsap, ScrollTrigger, ScrambleText, usePrefersReducedMotion, RevealOnScroll } from '../../lib/motion';
 import { projects, type Project } from '../../data/projects';
 import { sceneBus } from '../../scene/sceneBus';
-import { detectTier } from '../../scene/tier';
+import { detectTier, simsAllowed } from '../../scene/tier';
 import ChapterLabel from './ChapterLabel';
 import Poster from './work/Poster';
+import SimStage from './work/sims';
+import { hasSim } from './work/sims/ids';
 import { SIGNAL } from './scenes';
 import { useScrollTo } from './useScrollTo';
 import Rise from './Rise';
 
 /**
  * Chapter 03: Work.
- *   Theatre: the five case studies as a horizontal, scroll-driven gallery of
- *            full-height plates. As each plate centres, the field behind it
- *            becomes that project's formation and accent.
+ *   Theatre: four products, each with a live 3D simulation of what it does.
+ *            The section pins; scrolling (or the arrows) moves between them,
+ *            and the simulation in front can be played. The particle field
+ *            rests while this chapter holds the screen.
  *   Index:   everything else, filterable, with a cursor-following reel
  *            preview on pointer devices.
  */
@@ -68,108 +71,101 @@ function Heading() {
     );
 }
 
-function Plate({ project, index, total }: { project: Project; index: number; total: number }) {
+/** The words of a case study. The simulation sits beside it, outside the link. */
+function PlateCopy({ project, index }: { project: Project; index: number }) {
     return (
-        <ProjectLink
-            project={project}
-            className={`group grid h-full w-full grid-cols-1 items-center gap-8 rounded-xl md:grid-cols-12 md:gap-10 ${focusRing}`}
-            aria-label={`${project.title}: ${project.tagline ?? project.role}. Case study ${index + 1} of ${total}.`}
-        >
-            <div className="order-2 md:order-1 md:col-span-5">
-                <div className="flex items-baseline gap-3 font-mono text-[11px] uppercase tracking-[0.28em]">
-                    <span className="tabular-nums text-text-mute">{String(index + 1).padStart(2, '0')}</span>
-                    <span style={{ color: project.accent }}>{project.badge ?? project.role}</span>
-                </div>
-                {/* Long titles step down a size so the plate never outgrows its stage. */}
-                <h3
-                    className={`mt-4 text-4xl leading-[0.92] tracking-[-0.02em] text-text-strong transition-transform duration-500 [transition-timing-function:var(--ease-out-expo)] group-hover:translate-x-2 ${
-                        project.title.length > 20 ? 'md:text-5xl lg:text-[3.5rem]' : 'md:text-6xl lg:text-7xl'
-                    }`}
+        <div>
+            <div className="flex items-baseline gap-3 font-mono text-[11px] uppercase tracking-[0.28em]">
+                <span className="tabular-nums text-text-mute">{String(index + 1).padStart(2, '0')}</span>
+                <span className="text-signal">{project.badge ?? (isExternal(project) ? new URL(project.link).hostname.replace(/^www\./, '') : project.role)}</span>
+            </div>
+            <h3 className="mt-4 text-4xl leading-[0.92] tracking-[-0.02em] text-text-strong md:text-5xl xl:text-6xl">{project.title}</h3>
+            {project.tagline && <p className="mt-4 font-serif text-xl italic text-text md:text-2xl">{project.tagline}</p>}
+            <p className="mt-4 max-w-md text-sm font-light leading-relaxed text-text-mute md:text-base">{project.desc}</p>
+            <div className="mt-7 flex flex-wrap items-center gap-3">
+                <ProjectLink
+                    project={project}
+                    className={`group inline-flex items-center gap-2 rounded-full border border-hairline-strong px-5 py-2.5 text-sm text-text-strong transition-colors hover:bg-text-strong hover:text-bg ${focusRing}`}
                 >
-                    {project.title}
-                </h3>
-                {project.tagline && <p className="mt-4 font-serif text-xl italic text-text md:text-2xl">{project.tagline}</p>}
-                <p className="mt-4 line-clamp-3 max-w-md text-sm font-light leading-relaxed text-text-mute md:text-base">{project.desc}</p>
-                <div className="mt-8 flex items-center gap-3">
-                    <span className="inline-flex items-center gap-2 rounded-full border border-hairline-strong px-5 py-2.5 text-sm text-text-strong transition-colors group-hover:bg-text-strong group-hover:text-bg">
-                        {isExternal(project) ? 'Visit live' : 'Open case study'}
-                        <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
-                    </span>
-                    <span className="hidden font-mono text-[11px] uppercase tracking-[0.2em] text-text-mute lg:inline">{project.role}</span>
-                </div>
+                    {isExternal(project) ? 'Visit live' : 'Open case study'}
+                    <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
+                </ProjectLink>
+                <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-text-mute">{project.role}</span>
             </div>
-            <div className="order-1 md:order-2 md:col-span-7">
-                {/* The frame leans toward the cursor and catches a little light. */}
-                <TiltCard max={5} lift={6} parallax={false} className="rounded-lg">
-                    <Poster project={project} index={index} />
-                </TiltCard>
+        </div>
+    );
+}
+
+/** A product's live simulation, or its poster where 3D cannot run. */
+function Stage({ project, index, running, compact }: { project: Project; index: number; running: boolean; compact: boolean }) {
+    const allowed = useMemo(() => simsAllowed(), []);
+    const poster = (
+        <div className="flex h-full w-full items-center">
+            <div className="w-full">
+                <Poster project={project} index={index} />
             </div>
-        </ProjectLink>
+        </div>
+    );
+    if (!allowed || !hasSim(project.id)) return poster;
+    return <SimStage id={project.id} running={running} compact={compact} fallback={<StageLoading />} />;
+}
+
+function StageLoading() {
+    return (
+        <div className="flex h-full w-full items-center justify-center rounded-lg border border-hairline">
+            <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-text-mute">Loading simulation</span>
+        </div>
+    );
+}
+
+/** On phones: mount a simulation only while its plate is on screen. */
+function StageSlot({ project, index }: { project: Project; index: number }) {
+    const ref = useRef<HTMLDivElement>(null);
+    const [visible, setVisible] = useState(false);
+    useEffect(() => {
+        const el = ref.current;
+        if (!el) return;
+        const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), { threshold: 0.35 });
+        io.observe(el);
+        return () => io.disconnect();
+    }, []);
+    return (
+        <div ref={ref} className="h-[480px] w-full">
+            {visible ? <Stage project={project} index={index} running compact /> : <StageLoading />}
+        </div>
     );
 }
 
 function Theatre() {
     const sectionRef = useRef<HTMLElement>(null);
-    const trackRef = useRef<HTMLDivElement>(null);
     const [active, setActive] = useState(0);
+    const [inView, setInView] = useState(false);
     const sceneOff = useMemo(() => detectTier() === null, []);
     const scrollTo = useScrollTo();
     const n = featured.length;
 
     useEffect(() => {
         const section = sectionRef.current;
-        const track = trackRef.current;
-        if (!section || !track) return;
-        let current = -1;
-        const take = (i: number) => {
-            if (i === current) return;
-            current = i;
-            setActive(i);
-            const p = featured[i];
-            if (!sceneOff) sceneBus.apply({ formation: p.formation ?? 'network', accent: p.accent, chaos: 0.12, mode: 'full', repel: 1 });
-        };
-        // The track is scroll-driven but dwells on each plate: scroll moves
-        // it only through the middle of each step, so wherever the visitor
-        // stops, a whole case study is in frame rather than two halves.
-        const dwell = (p: number) => {
-            const s = p * (n - 1);
-            const i = Math.min(n - 2, Math.floor(s));
-            const f = Math.min(1, Math.max(0, (s - i - 0.28) / 0.44));
-            return (i + f * f * (3 - 2 * f)) / (n - 1);
+        if (!section) return;
+        // The simulations are the motion here: the field rests while this
+        // chapter holds the screen, so only one canvas is drawing.
+        const rest = () => {
+            if (!sceneOff) sceneBus.apply({ mode: 'hidden' });
         };
         const ctx = gsap.context(() => {
-            gsap.to(track, {
-                // First plate to last plate, exactly: every plate rests on the
-                // same left edge at any viewport width.
-                x: () => {
-                    const first = track.firstElementChild as HTMLElement | null;
-                    const last = track.lastElementChild as HTMLElement | null;
-                    return first && last ? -(last.offsetLeft - first.offsetLeft) : 0;
-                },
-                ease: dwell,
-                scrollTrigger: {
-                    trigger: section,
-                    start: 'top top',
-                    end: 'bottom bottom',
-                    scrub: 0.6,
-                    invalidateOnRefresh: true,
-                    onUpdate: (self) => take(Math.min(n - 1, Math.round(self.progress * (n - 1)))),
-                },
+            ScrollTrigger.create({
+                trigger: section,
+                start: 'top top',
+                end: 'bottom bottom',
+                onUpdate: (self) => setActive(Math.min(n - 1, Math.round(self.progress * (n - 1)))),
             });
             ScrollTrigger.create({
                 trigger: section,
                 start: 'top 55%',
                 end: 'bottom 45%',
-                onEnter: () => {
-                    const i = Math.max(0, current);
-                    current = -1;
-                    take(i);
-                },
-                onEnterBack: () => {
-                    const i = Math.max(0, current);
-                    current = -1;
-                    take(i);
-                },
+                onToggle: (self) => setInView(self.isActive),
+                onEnter: rest,
+                onEnterBack: rest,
             });
         }, section);
         return () => ctx.revert();
@@ -183,6 +179,7 @@ function Theatre() {
     };
 
     const onKey = (e: KeyboardEvent) => {
+        if ((e.target as HTMLElement).closest('button, a, input')) return;
         if (e.key === 'ArrowRight') {
             e.preventDefault();
             goTo(Math.min(n - 1, active + 1));
@@ -192,6 +189,8 @@ function Theatre() {
         }
     };
 
+    const project = featured[active];
+
     return (
         <section
             ref={sectionRef}
@@ -199,45 +198,59 @@ function Theatre() {
             aria-label="Selected work"
             aria-roledescription="carousel"
             className="relative"
-            style={{ height: `${n * 90 + 40}vh` }}
+            style={{ height: `${n * 100 + 20}vh` }}
             onKeyDown={onKey}
         >
             <div className="sticky top-0 flex h-[100svh] flex-col overflow-hidden">
-                {/* Reading floor: the active plate's copy sits left, so the
-                    left of the stage settles the field without hiding it. */}
-                <div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,var(--color-bg)_0%,color-mix(in_srgb,var(--color-bg)_70%,transparent)_42%,transparent_68%)]"
-                />
                 <div className="relative mx-auto flex w-full max-w-6xl items-end justify-between gap-6 px-10 pt-24">
                     <Heading />
                     <p className="hidden max-w-xs pb-2 text-right text-sm font-light leading-relaxed text-text-mute lg:block">
-                        {COUNT_WORD[n] ?? n} case studies. Scroll, or use the arrows.
+                        {COUNT_WORD[n] ?? n} products, each running live.
                         <br />
-                        The background changes with each one.
+                        Scroll or use the arrows, then try the one in front of you.
                     </p>
                 </div>
 
-                <div className="relative flex flex-1 items-center">
-                    <div ref={trackRef} className="flex h-[62vh] items-center gap-[8vw] pl-[max(2.5rem,calc((100vw-72rem)/2+2.5rem))] pr-[10vw] will-change-transform">
+                <div className="relative mx-auto grid min-h-0 w-full max-w-6xl flex-1 grid-cols-12 items-center gap-10 px-10 py-6">
+                    {/* The copy changes in place as the stage changes. */}
+                    <div className="relative col-span-4 h-full">
                         {featured.map((p, i) => (
                             <div
                                 key={p.id}
                                 role="group"
                                 aria-roledescription="slide"
                                 aria-label={`${i + 1} of ${n}`}
-                                className="h-full w-[min(82vw,1120px)] shrink-0 transition-[opacity,transform] duration-700 [transition-timing-function:var(--ease-out-expo)]"
-                                // Plates off stage sit back: smaller and dimmer.
-                                style={{ opacity: i === active ? 1 : 0.22, transform: `scale(${i === active ? 1 : 0.9})` }}
+                                aria-hidden={i !== active}
+                                className="absolute inset-0 flex flex-col justify-center transition-[opacity,transform] duration-700 [transition-timing-function:var(--ease-out-expo)]"
+                                style={{
+                                    opacity: i === active ? 1 : 0,
+                                    transform: `translateY(${(i - active) * 28}px)`,
+                                    pointerEvents: i === active ? 'auto' : 'none',
+                                    visibility: Math.abs(i - active) > 1 ? 'hidden' : 'visible',
+                                }}
                             >
-                                <Plate project={p} index={i} total={n} />
+                                <PlateCopy project={p} index={i} />
                             </div>
                         ))}
+                    </div>
+                    <div className="col-span-8 h-full max-h-[620px] min-h-[380px]">
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={project.id}
+                                className="h-full w-full"
+                                initial={{ opacity: 0, scale: 0.985 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.985 }}
+                                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                            >
+                                <Stage project={project} index={active} running={inView} compact={false} />
+                            </motion.div>
+                        </AnimatePresence>
                     </div>
                 </div>
 
                 {/* Counter + progress: always know where you are. */}
-                <div className="relative mx-auto flex w-full max-w-6xl items-center gap-6 px-10 pb-10 font-mono text-[11px] uppercase tracking-[0.28em] text-text-mute">
+                <div className="relative mx-auto flex w-full max-w-6xl items-center gap-6 px-10 pb-8 font-mono text-[11px] uppercase tracking-[0.28em] text-text-mute">
                     <span className="tabular-nums text-text-strong">
                         {String(active + 1).padStart(2, '0')} <span className="text-text-mute">/ {String(n).padStart(2, '0')}</span>
                     </span>
@@ -259,7 +272,7 @@ function Theatre() {
                             </button>
                         ))}
                     </div>
-                    <span className="hidden max-w-[16rem] truncate md:inline">{featured[active].title}</span>
+                    <span className="hidden max-w-[16rem] truncate md:inline">{project.title}</span>
                     <div className="flex items-center gap-2">
                         {(
                             [
@@ -285,14 +298,15 @@ function Theatre() {
     );
 }
 
-/** Phones and reduced motion: the same plates, stacked. */
+/** Phones and reduced motion: the same products, stacked, each simulation live only on screen. */
 function Stack() {
     const ref = useRef<HTMLElement>(null);
     const reduced = usePrefersReducedMotion();
     useEffect(() => {
         const el = ref.current;
         if (!el || reduced || detectTier() === null) return;
-        const apply = () => sceneBus.apply({ formation: 'network', mode: 'ambient', chaos: 0.16, accent: SIGNAL, repel: 1 });
+        // One canvas at a time on a phone: the field rests while the simulations play.
+        const apply = () => sceneBus.apply({ mode: 'hidden' });
         const st = ScrollTrigger.create({ trigger: el, start: 'top 55%', end: 'bottom 45%', onEnter: apply, onEnterBack: apply });
         return () => st.kill();
     }, [reduced]);
@@ -303,8 +317,9 @@ function Stack() {
                 <div className="mt-14 space-y-20">
                     {featured.map((p, i) => (
                         <RevealOnScroll key={p.id}>
-                            <div data-reveal-child>
-                                <Plate project={p} index={i} total={featured.length} />
+                            <div data-reveal-child className="space-y-6">
+                                <PlateCopy project={p} index={i} />
+                                <StageSlot project={p} index={i} />
                             </div>
                         </RevealOnScroll>
                     ))}
