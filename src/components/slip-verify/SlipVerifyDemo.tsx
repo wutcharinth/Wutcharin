@@ -223,7 +223,7 @@ const SlipVerifyDemo = () => {
     };
 
     return (
-        <div className="flex flex-col lg:flex-row h-[800px] bg-[#020617] border border-slate-800 rounded-3xl overflow-hidden shadow-2xl">
+        <div className="flex flex-col lg:flex-row h-[800px] bg-[#0e0e10] border border-slate-800 rounded-3xl overflow-hidden shadow-2xl">
             {/* Left: Phone UI */}
             <section className="w-full lg:w-[350px] border-r border-slate-800 bg-[#050B14] relative flex flex-col items-center pt-8 z-10 shadow-2xl shrink-0">
                 <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6 flex items-center">
@@ -342,7 +342,7 @@ const SlipVerifyDemo = () => {
             </section>
 
             {/* Center: Graph */}
-            <section className="flex-1 bg-[#020617] relative flex flex-col overflow-hidden">
+            <section className="flex-1 bg-[#0e0e10] relative flex flex-col overflow-hidden">
                 {/* Modern Grid Background */}
                 <div className="absolute inset-0 opacity-20"
                     style={{
@@ -350,7 +350,7 @@ const SlipVerifyDemo = () => {
                         backgroundSize: '40px 40px'
                     }}>
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-[#020617]/50"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0e0e10] via-transparent to-[#0e0e10]/50"></div>
 
                 {/* Animated SVG Lines - Straight & Aligned */}
                 <svg className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible" preserveAspectRatio="none" viewBox="0 0 100 100">
@@ -548,8 +548,8 @@ const SlipVerifyDemo = () => {
                             exit={{ opacity: 0, scale: 0.9 }}
                             className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#1e293b] border border-slate-600 p-6 rounded-2xl shadow-2xl z-50 w-96 text-center"
                         >
-                            <div className="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center mx-auto -mt-12 border-4 border-[#020617] mb-4">
-                                <Hand className="text-[#020617] w-6 h-6" />
+                            <div className="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center mx-auto -mt-12 border-4 border-[#0e0e10] mb-4">
+                                <Hand className="text-[#0e0e10] w-6 h-6" />
                             </div>
                             <h3 className="text-white font-bold text-lg mb-1">Human Intervention Required</h3>
                             <p className="text-slate-400 text-xs mb-4">{modalReason}</p>
@@ -579,7 +579,7 @@ const SlipVerifyDemo = () => {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="absolute inset-0 bg-[#020617]/95 backdrop-blur-sm z-40 flex items-center justify-center p-10"
+                            className="absolute inset-0 bg-[#0e0e10]/95 backdrop-blur-sm z-40 flex items-center justify-center p-10"
                         >
                             <div className="w-full max-w-4xl bg-[#1e1e1e] rounded-xl border border-slate-700 shadow-2xl overflow-hidden font-mono text-xs md:text-sm">
                                 <div className="bg-[#2d2d2d] px-4 py-2 flex justify-between items-center border-b border-black">

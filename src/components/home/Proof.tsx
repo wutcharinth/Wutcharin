@@ -6,6 +6,7 @@ import ChapterLabel from './ChapterLabel';
 import { numeralScene } from './scenes';
 import { useScrollTo } from './useScrollTo';
 import Rise from './Rise';
+import { AUTOMATION_MIX } from './automation';
 
 /**
  * Chapter 01: Proof. A pinned stage where the particles themselves become
@@ -32,7 +33,7 @@ const BEATS: Beat[] = [
         short: 'Hours a year',
         claim: 'Manual finance work that no person does any more.',
         detail: 'Done by machine learning, RPA and AI agents. All of it runs every day. None of it is a pilot.',
-        mix: [['Collections ML', 40], ['RPA', 28], ['AI agents', 22], ['Dashboards', 10]],
+        mix: AUTOMATION_MIX,
     },
     {
         glyph: '20+',

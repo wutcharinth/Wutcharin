@@ -87,11 +87,11 @@ const KarpathyDeepDivePage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#020617] text-slate-300 font-sans selection:bg-purple-500/30 overflow-x-hidden">
+        <div className="min-h-screen bg-[#0e0e10] text-slate-300 font-sans selection:bg-purple-500/30 overflow-x-hidden">
             <Tooltip content={tooltip.content} visible={tooltip.visible} position={tooltip.position} />
 
             {/* Navigation */}
-            <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-6 flex justify-between items-center bg-[#020617]/80 backdrop-blur border-b border-slate-800 transition-all duration-300">
+            <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-6 flex justify-between items-center bg-[#0e0e10]/80 backdrop-blur border-b border-slate-800 transition-all duration-300">
                 <Link to="/" className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-slate-400 hover:text-white transition-colors group">
                     <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                     Back to Portfolio
@@ -512,7 +512,7 @@ const KarpathyDeepDivePage = () => {
 
             <ProjectNavigation currentId="karpathy-deep-dive" />
 
-            <footer className="py-12 border-t border-slate-800 bg-[#020617] text-center">
+            <footer className="py-12 border-t border-slate-800 bg-[#0e0e10] text-center">
                 <div className="max-w-4xl mx-auto">
                     <div className="mb-8">
                         <span className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">AK // DEEP DIVE</span>

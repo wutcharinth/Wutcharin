@@ -24,7 +24,7 @@ export interface SceneTargets {
 
 const DEFAULTS: SceneTargets = {
     formation: 'noise',
-    accent: '#a78bfa',
+    accent: '#e4e4e7',
     mode: 'hidden',
     chaos: 1,
     progress: 0,

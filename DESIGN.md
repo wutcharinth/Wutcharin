@@ -1,20 +1,20 @@
 ---
 name: Wutcharin Portfolio
-description: Kinetic executive portfolio for an AI/data leader — dark midnight surface, violet-led accents, motion as medium.
+description: Kinetic executive portfolio for an AI/data leader — sparkled graphite surface, silver glints, motion as medium.
 colors:
-  midnight-deep: "#020617"
-  ink: "#050505"
-  void: "#010109"
-  veil: "#020617c7"
-  veil-soft: "#0206178c"
-  violet-signal: "#a78bfa"
-  violet-deep: "#7c3aed"
-  violet-glow: "#4c1d95"
+  graphite: "#0e0e10"
+  graphite-deep: "#0a0a0b"
+  void: "#08080a"
+  veil: "#0e0e10cc"
+  veil-soft: "#0e0e108c"
+  silver-signal: "#e6e6ea"
+  silver-deep: "#a3a3ab"
+  silver-glow: "#3a3a41"
   cyan-pulse: "#22d3ee"
   fuchsia-flare: "#e879f9"
-  slate-body: "#cbd5e1"
-  slate-mute: "#94a3b8"
-  white-pure: "#ffffff"
+  pewter-body: "#cfcfd4"
+  pewter-mute: "#8e8e96"
+  chalk: "#fafafa"
   border-faint: "#ffffff0d"
 typography:
   display:
@@ -69,29 +69,34 @@ spacing:
   section: "8rem"
 components:
   button-primary:
-    backgroundColor: "{colors.white-pure}"
-    textColor: "{colors.midnight-deep}"
-    rounded: "{rounded.pill}"
+    backgroundColor: "{colors.chalk}"
+    textColor: "{colors.graphite}"
+    rounded: "{rounded.sm}"
     padding: "12px 28px"
   button-primary-hover:
-    backgroundColor: "{colors.violet-signal}"
-    textColor: "{colors.midnight-deep}"
+    backgroundColor: "{colors.silver-signal}"
+    textColor: "{colors.graphite}"
   button-ghost:
     backgroundColor: "transparent"
-    textColor: "{colors.violet-signal}"
-    rounded: "{rounded.pill}"
+    textColor: "{colors.silver-signal}"
+    rounded: "{rounded.sm}"
     padding: "12px 28px"
   button-ghost-hover:
-    backgroundColor: "{colors.violet-deep}"
-    textColor: "{colors.white-pure}"
+    backgroundColor: "{colors.silver-glow}"
+    textColor: "{colors.chalk}"
   chip-meta:
-    backgroundColor: "{colors.violet-glow}"
-    textColor: "{colors.violet-signal}"
+    backgroundColor: "{colors.silver-glow}"
+    textColor: "{colors.silver-signal}"
     rounded: "{rounded.pill}"
     padding: "6px 16px"
+  instrument:
+    backgroundColor: "{colors.veil}"
+    textColor: "{colors.chalk}"
+    rounded: "{rounded.sm}"
+    padding: "20px"
   card-section:
-    backgroundColor: "{colors.midnight-deep}"
-    textColor: "{colors.slate-body}"
+    backgroundColor: "{colors.graphite}"
+    textColor: "{colors.pewter-body}"
     rounded: "{rounded.lg}"
     padding: "32px"
 ---
@@ -100,53 +105,59 @@ components:
 
 ## 1. Overview
 
-**Creative North Star: "The Midnight Console"**
+**Creative North Star: "Sparkled Graphite"**
 
-A late-night operations room running fintech at scale. The surface is dim by design — visitors arrive into a near-black room where motion is the only ambient signal, and every glowing element is doing real work. Violet is the operator's accent: a single hue that carries focus, status, and intent. Cyan and fuchsia appear sparingly, only on artifacts that already earned their own identity (specific projects, specific lectures). The interface is technical without being cyberpunk, kinetic without being maximalist, confident without bragging — it shows the work of an Associate Director who has spent twenty years inside data-and-automation org charts.
+A sheet of graphite under a single lamp. The surface is dark and mineral: a fine grain of glitter runs through it, faint in the shadows and bright where a long, soft sweep of light falls, and it glints as the cursor moves over it. The live particles are the same material: silver points that gather into a portrait, a number, a flight path. Color is the exception, not the language. The site speaks in graphite, pewter and chalk, and lets a project's own hue appear only on that project. The interface is technical without being cyberpunk, kinetic without being maximalist, confident without bragging — it shows the work of an Associate Director who has spent twenty years inside data-and-automation org charts.
 
-The system explicitly rejects four neighbors: the LinkedIn-blue corporate-resume default; the SaaS landing-page hero-metric template; the AI-slop dev-portfolio palette of glassmorphism and rainbow-gradient text; and the crypto/web3 neon-on-black maximalism. Each of those is what a generic AI tool would produce given the same brief. The Midnight Console is what an executive who builds AI tools produces instead.
+The system explicitly rejects four neighbors: the LinkedIn-blue corporate-resume default; the SaaS landing-page hero-metric template; the AI-slop dev-portfolio palette of glassmorphism and rainbow-gradient text; and the crypto/web3 neon-on-black maximalism. Each of those is what a generic AI tool would produce given the same brief. Sparkled Graphite is what an executive who builds AI tools produces instead.
 
 Density is variable, never uniform: hero sections breathe, body sections compress, a single project card gets twice the screen real estate of its neighbors. Every motion layer is intentional — adding one means retiring another (Principle 3).
 
 **Key Characteristics:**
-- Near-black `#020617` surface with violet `#a78bfa` as the single signal color
+- Graphite `#0e0e10` surface with a glitter grain; silver `#e6e6ea` as the only signal
+- Light falls on the surface: a soft diagonal sheen per chapter, and a small lamp on the cursor
 - Variable section rhythm (96px → 8rem → custom) — never uniform padding everywhere
 - Mono-cased labels at `0.28em` letter-spacing carrying state, status, and meta-context
+- Crisp 4px corners on buttons and instruments; pills only for chips and nav
 - Type breaks letter-by-letter on hero, lands solid in body — kinetic at entry, settled in content
-- Pre-rendered Remotion video replaces runtime particle systems where it wins on perf
 
-## 2. Colors: The Midnight Console Palette
+## 2. Colors: The Sparkled Graphite Palette
 
-A dim operator's room with one signal color, two cool accents reserved for identity, and three cool neutrals for hierarchy.
+A dark mineral surface, one silver signal, two cool accents reserved for identity, and three neutral greys for hierarchy. No hue on the home page.
 
 ### Primary
 
-- **Midnight Deep** (`#020617`): The room itself. The default surface for every section, every page, every modal. Never `#000` — `#000` reads dead; this carries a 0.005-chroma blue tint that holds depth.
-- **Violet Signal** (`#a78bfa`): The single accent that carries focus, status pings, link hover, and meta-label color. Rare by rule (see The 10% Rule below). When you see it, something is alive.
-- **Violet Deep** (`#7c3aed`): The pressed/active state of Violet Signal. Also used for ambient blur-glow auroras (`bg-violet-600/20 blur-[120px]`) where the color is a feeling, not a foreground.
+- **Graphite** (`#0e0e10`): The surface itself. The default for every section, every page, every modal. Never `#000` — `#000` reads dead; graphite carries a trace of cool that holds depth under the grain.
+- **Silver Signal** (`#e6e6ea`): The glint. Carries focus, status pings, link hover and accent text (the serif italic). It differs from body text by brightness and face, never by hue.
+- **Silver Deep** (`#a3a3ab`) / **Silver Glow** (`#3a3a41`): Pressed states, tints, the scrollbar.
 
 ### Secondary
 
 - **Cyan Pulse** (`#22d3ee`): Reserved for projects in the *Lecture Insight* and *Data Story* identity bands (per-card accent). Never used as a global accent.
 - **Fuchsia Flare** (`#e879f9`): Reserved for specific projects flagged as bold/experimental (AI Evolution Stats, etc.). Never paired with Cyan Pulse on the same surface.
+- **Project hues**: each project page keeps its own accent (its particle tint and reading-progress line). The home page stays graphite.
 
 ### Neutral
 
-- **Ink** (`#050505`): Section breaks darker than Midnight Deep. Used to mark a tonal step between sections without introducing a border.
-- **Void** (`#010109`): Deeper than midnight — the floor under full-WebGL chapters so the particle glow has true black headroom. Never a section background on its own.
-- **Veil** (`rgba(2,6,23,0.78)`) / **Veil Soft** (`rgba(2,6,23,0.55)`): The glass-panel tokens that sit between the live particle field and reading text. Veil guarantees ≥4.5:1 body contrast over the worst-case particle frame; Veil Soft is for secondary panels. Solid rgba, not backdrop-blur, by default.
-- **Slate Body** (`#cbd5e1`): The default body-text color against Midnight Deep. Hits 9.4:1 contrast — well above WCAG AA.
-- **Slate Mute** (`#94a3b8`): Secondary text, captions, deprecated meta. Hits 5.7:1 contrast.
-- **White Pure** (`#ffffff`): Reserved for the most important typographic weight on a surface. Never the default text color.
-- **Border Faint** (`rgba(255,255,255,0.05)`): The only horizontal divider in the system. No 1px gray borders — only this near-invisible white wash.
+- **Graphite Deep** (`#0a0a0b`): Section breaks darker than Graphite, a tonal step without a border.
+- **Void** (`#08080a`): The floor under full-WebGL chapters so the particle glow has true black headroom. Never a section background on its own.
+- **Veil** (`rgba(14,14,16,0.80)`) / **Veil Soft** (`rgba(14,14,16,0.55)`): Panels that sit over the live field and the grain: the hero instrument, text panels. Solid rgba, not backdrop-blur.
+- **Pewter Body** (`#cfcfd4`): Default body text on Graphite.
+- **Pewter Mute** (`#8e8e96`): Secondary text, captions, meta. About 5.9:1 on Graphite.
+- **Chalk** (`#fafafa`): The most important typographic weight on a surface, and the primary button.
+- **Border Faint** (`rgba(255,255,255,0.05)`): The only horizontal divider in the system.
+
+### Light theme: Graphite on Paper
+
+The same grain, inverted: dark specks on a pale aluminium surface (`#ececee`), body `#36363c`, mute `#66666e`, and the signal becomes graphite itself (`#1c1c20`).
 
 ### Named Rules
 
-**The 10% Rule.** Violet Signal is used on no more than 10% of any given screen by visual area. Its rarity is the point — when it appears, it carries meaning. A page full of violet is a page full of nothing.
+**The Glint Rule.** Silver Signal is a glint, not a fill. It marks one live thing at a time (a status dot, the active step, a focused control). Large areas stay graphite.
 
-**The Identity Lane Rule.** Cyan Pulse and Fuchsia Flare belong to *specific named artifacts* — they are project identities, not global colors. A new section may not adopt them as accents; only a new project with a defined identity may.
+**The Identity Lane Rule.** Cyan Pulse, Fuchsia Flare and project hues belong to *specific named artifacts* — they are project identities, not global colors. A new section may not adopt them as accents; only a new project with a defined identity may.
 
-**The No-Black Rule.** `#000` and `#fff` are forbidden as raw values. Use Midnight Deep (`#020617`) and White Pure (`#ffffff`) — the latter is the literal hex but only by deliberate role assignment. Tinted neutrals only for everything else.
+**The No-Black Rule.** `#000` and `#fff` are forbidden as surface or text values. The one exception is the grain's light map in `home/Atmosphere.tsx`, which is a mask, not a surface.
 
 ## 3. Typography
 
@@ -164,7 +175,7 @@ A dim operator's room with one signal color, two cool accents reserved for ident
 - **Serif Accent** (Instrument Serif italic 400, inherits size): One or two words inside a display/headline lockup, or a standalone pull quote. The only italic in the system.
 - **Title** (Clash 500, `1.25rem`, line-height 1.3): Card titles, project names. Sentence case.
 - **Body** (400, `1rem`, line-height 1.6): Default reading text. Cap line length at 65–75ch.
-- **Label** (JetBrains Mono 500, `0.6875rem`, line-height 1, tracking `0.28em`, UPPERCASE): Meta-labels (`AI / DATA / OPS`), section eyebrows, status pings. Always violet-300 (`#c4b5fd`) at 70% opacity.
+- **Label** (JetBrains Mono 500, `0.6875rem`, line-height 1, tracking `0.28em`, UPPERCASE): Meta-labels (`AI / DATA / OPS`), section eyebrows, status pings. In Pewter Mute, or Silver Signal when it carries state.
 
 ### Named Rules
 
@@ -178,53 +189,58 @@ A dim operator's room with one signal color, two cool accents reserved for ident
 
 ## 4. Elevation
 
-The system is **flat by default** with one signature treatment: violet aurora glow as ambient state. There are no rest-state shadows on cards, buttons, or sections — depth is conveyed through tonal stepping (Midnight Deep → Ink) and motion (parallax, scroll-tied opacity), not box-shadow.
+The system is **flat by default**. Depth comes from light on the surface (the sheen and the lamp), tonal stepping (Graphite → Graphite Deep) and motion, not from box-shadow.
 
 ### Shadow Vocabulary
 
-- **Ambient Violet Glow** (`box-shadow: 0 0 18px rgba(139, 92, 246, 0.6)`): Used only on live-status indicators — pulse dots, currently-active nav pills, hover state on the primary CTA. A signal that something is *running*, not a decoration.
+- **Glint** (`box-shadow: 0 0 14px rgba(255,255,255,0.45)`): Only on live-status points: the current career stop, the active step, the flight marker.
 - **Brutalist Hard-Shadow** (`box-shadow: 8px 8px 0px 0px var(--shadow-color)`): Reserved for legacy sections only (kept for the few brutalism-styled elements in `_backup/`). Not for new components.
 
 ### Named Rules
 
 **The Flat-By-Default Rule.** New components ship with no `box-shadow` at rest. Shadows appear only as a response to state — hover, active, focus, or "live."
 
-**The Aurora Is Color, Not Shadow Rule.** The large blurred violet/fuchsia orbs in hero and reel sections are *backgrounds tinted by blur*, not elevation cues. They live behind content, never under it as elevation.
+**The Light Is Surface, Not Shadow Rule.** The sheen and the lamp light the graphite behind the content. They never sit under a component as elevation.
 
 ## 5. Components
 
 ### Buttons
 
-- **Shape:** Pill (`9999px`).
-- **Primary:** White (`#ffffff`) background, Midnight Deep (`#020617`) text, padding `12px 28px`. Hover: background shifts to Violet Signal, text stays Midnight Deep, no transform. Used once or twice per page max.
-- **Ghost:** Transparent background, 1px violet/30 border, Violet Signal text. Hover: violet/10 background fill, Violet Signal → White text. The default action button on dark sections.
+- **Shape:** Crisp rectangle, `4px` radius.
+- **Primary:** Chalk background, Graphite text, padding `12px 28px`. Hover: Silver Signal, no transform. Used once or twice per page max.
+- **Ghost:** Transparent background, 1px Silver Signal/30 border, Silver Signal text. Hover: Silver/10 fill, text to Chalk.
 - **Magnetic behavior:** Primary CTAs bind to cursor proximity within `~80px` and translate up to `~12px` toward the cursor on a spring curve. Disabled under `prefers-reduced-motion`.
 
 ### Chips / Meta-pills
 
-- **Style:** Violet-glow background (`rgba(76, 29, 149, 0.08)`), Violet Signal text, 1px violet/20 border, pill radius. Optional leading 1.5px violet dot with `animate-pulse`.
-- **Use:** Section eyebrows ("AI / DATA / EXEC"), project badges ("Lecture Insight"), status indicators ("LIVE").
+- **Style:** Hairline border, pill radius, mono label in Pewter. Optional leading silver dot (`animate-ping` on the hero's "Now").
+- **Use:** Section eyebrows, project badges, status indicators ("LIVE", "NOW").
+
+### Instruments
+
+- **Style:** Veil background, 1px hairline, `4px` radius, `20px` padding. A title in Clash 500, rows of a name, a mono sub-line, and a reading on the right: ten cells, one per 10%, lit in Chalk.
+- **Use:** The hero's "Automated each year" panel (`home/HeroInstrument.tsx`). Data comes from the same source as the chapter that tells the story in full (`home/automation.ts`). An instrument reads, it never decorates: no invented figures.
 
 ### Cards / Section Containers
 
 - **Corner Style:** `12px` (lg) on cards, `0` on full-bleed sections.
-- **Background:** Midnight Deep with optional Border Faint (`rgba(255,255,255,0.05)`) hairline.
+- **Background:** Graphite with optional Border Faint hairline.
 - **Shadow Strategy:** None at rest. Hover: border lightens to `rgba(255,255,255,0.15)`, no shadow.
 - **Internal Padding:** Variable — `24px` on dense cards, `48px` on hero cards, `32px` default. Identical padding across all cards is forbidden (see The Variation Rule below).
 
 ### Inputs / Fields
 
 - **Style:** Transparent background, 1px Border Faint stroke at rest, pill or `8px` radius depending on context, Slate Body text, Slate Mute placeholder.
-- **Focus:** Outline `2px solid rgba(167, 139, 250, 0.9)` (Violet Signal at 90% alpha), `3px` outline-offset, `4px` outline-radius. The same focus ring used on every interactive element site-wide for consistency.
+- **Focus:** Outline `2px` in Silver Signal at 90% (graphite in the light theme), `3px` outline-offset, `4px` outline-radius. The same focus ring used on every interactive element site-wide for consistency.
 
 ### Navigation
 
-- **Top nav:** Fixed pill-shaped scroll-aware container, dark glass over Midnight Deep with `~12% opacity` and minimal blur. Active section pill fills with `rgba(167, 139, 250, 0.10)` background and Violet Signal border. Scroll progress bar at top — 1px tall, Violet Signal fill.
+- **Top nav:** Fixed pill-shaped scroll-aware container, dark glass over Graphite with `~12% opacity` and minimal blur. Active section pill fills with a faint panel tint. Scroll progress bar at top — 1px tall, Silver Signal fill.
 - **Mobile:** Full-screen overlay opens from a hamburger; same pill treatment for items.
 
 ### Home Atmosphere
 
-One fixed layer between the particle field and the page (`home/Atmosphere.tsx`). A violet aurora travels to where each chapter's subject sits (behind the portrait, behind the numeral, under the address), a faint lamp follows the cursor on pointer devices, and a fine grain gives the midnight a surface. Transform and opacity only. The aurora is a feeling, not a foreground: it stays outside the 10% Rule's count only while it stays this dim.
+The sparkled graphite itself (`home/Atmosphere.tsx`). A long, soft sheen of light lies across the surface and travels to where each chapter's subject sits (the portrait, the numeral, the address). A glitter grain (`public/textures/glitter.webp`, made by `scripts/glitter-texture.py`) is faint everywhere and bright where the sheen falls; a small lamp on the cursor makes the grain glint as it moves. The lit grain is the texture multiplied by a light map and screened onto the page from a body-level layer between the scene canvas and the content, so it reaches the particles too. Transform and opacity only.
 
 ### Rise Headings
 
@@ -241,10 +257,10 @@ A 16:9 letterboxed black frame with 5% inner padding, no border at rest. Plays a
 ## 6. Do's and Don'ts
 
 ### Do:
-- **Do** use Midnight Deep (`#020617`) as the canonical dark surface — never `#000`.
-- **Do** keep Violet Signal under 10% of any screen by visual area. Rarity is the design.
+- **Do** use Graphite (`#0e0e10`) as the canonical dark surface — never `#000`.
+- **Do** keep the home page free of hue. Silver glints carry state; project hues stay on their projects.
 - **Do** vary section padding deliberately (96px / 8rem / custom). Identical padding is monotony.
-- **Do** pair every Violet Signal cue with size or weight contrast, so color blindness doesn't lose the meaning.
+- **Do** pair every Silver Signal cue with size, weight or face contrast; brightness alone is a weak cue.
 - **Do** retire one motion layer when adding another. The site already has Three.js + GSAP + Framer Motion + neural canvas; adding Remotion means subtracting one of those, not stacking.
 - **Do** respect `prefers-reduced-motion` on every animation: instant reveals, paused marquees, no autoplay video, restored native cursor.
 

@@ -275,9 +275,9 @@ const FutureOfWorkPage = () => {
     );
 
     return (
-        <div className="min-h-screen bg-[#020617] text-slate-200 font-sans selection:bg-cyan-500/30">
+        <div className="min-h-screen bg-[#0e0e10] text-slate-200 font-sans selection:bg-cyan-500/30">
             {/* Navigation */}
-            <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-6 flex justify-between items-center bg-[#020617]/80 backdrop-blur border-b border-slate-800 transition-all duration-300">
+            <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-6 flex justify-between items-center bg-[#0e0e10]/80 backdrop-blur border-b border-slate-800 transition-all duration-300">
                 <Link to="/" className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-slate-400 hover:text-white transition-colors group">
                     <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                     Back to Portfolio
@@ -523,7 +523,7 @@ const FutureOfWorkPage = () => {
 
             <ProjectNavigation currentId="future-of-work" />
 
-            <footer className="py-12 border-t border-slate-800 bg-[#020617] text-center">
+            <footer className="py-12 border-t border-slate-800 bg-[#0e0e10] text-center">
                 <p className="text-slate-500 text-sm font-bold uppercase tracking-widest">
                     &copy; {new Date().getFullYear()} Wutcharin Thatan. All rights reserved.
                 </p>

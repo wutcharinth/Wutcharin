@@ -6,6 +6,7 @@ import { detectTier, heroReelRequested } from '../../scene/tier';
 import { sceneBus } from '../../scene/sceneBus';
 import KineticWord from './KineticWord';
 import HeroReel from './HeroReel';
+import HeroInstrument from './HeroInstrument';
 import { portraitScene } from './scenes';
 import { useBangkokTime } from './useBangkokTime';
 import { openConsole, isMac } from '../console/consoleBus';
@@ -79,8 +80,8 @@ export default function Arrival() {
                         className="mb-8 hidden items-center gap-2 rounded-full border border-hairline px-3.5 py-1.5 sm:inline-flex"
                     >
                         <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
-                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-violet-400 opacity-60 [animation-duration:2.4s]" />
-                            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-violet-400" />
+                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal opacity-60 [animation-duration:2.4s]" />
+                            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-signal" />
                         </span>
                         <span className="font-mono text-[11px] uppercase tracking-[0.28em] text-text">
                             Now · Agoda, Bangkok
@@ -128,7 +129,7 @@ export default function Arrival() {
                                 e.preventDefault();
                                 scrollTo('#work');
                             }}
-                            className="group rounded-full bg-text-strong px-7 py-3 text-sm font-medium tracking-wide text-bg transition-colors hover:bg-signal"
+                            className="group rounded-[4px] bg-text-strong px-7 py-3 text-sm font-medium tracking-wide text-bg transition-colors hover:bg-signal"
                             data-cursor="view"
                         >
                             <span className="flex items-center gap-2">
@@ -142,7 +143,7 @@ export default function Arrival() {
                                 e.preventDefault();
                                 scrollTo('#contact');
                             }}
-                            className="rounded-full border border-signal/30 px-7 py-3 text-sm font-medium tracking-wide text-signal transition-colors hover:bg-signal/10 hover:text-text-strong"
+                            className="rounded-[4px] border border-signal/30 px-7 py-3 text-sm font-medium tracking-wide text-signal transition-colors hover:bg-signal/10 hover:text-text-strong"
                         >
                             Get in touch
                         </a>
@@ -158,13 +159,13 @@ export default function Arrival() {
                     </motion.div>
                 </div>
 
-                {/* Without the live field, the portrait is a duotone plate. */}
+                {/* Without the live field, the portrait is a graphite plate. */}
                 {sceneOff && !reel && (
                     <motion.figure
                         initial={{ opacity: 0, scale: 0.98 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.6, duration: 1.2, ease }}
-                        className="relative order-first mx-auto w-48 md:order-none md:col-span-5 md:w-full md:max-w-md"
+                        className="relative order-first mx-auto w-48 md:order-none md:col-span-5 md:col-start-8 md:row-start-1 md:w-full md:max-w-md"
                     >
                         <div className="relative aspect-square overflow-hidden [mask-image:radial-gradient(closest-side,#000_62%,transparent)]">
                             <img
@@ -175,11 +176,14 @@ export default function Arrival() {
                                 fetchPriority="high"
                                 className="block h-full w-full object-cover [filter:grayscale(1)_contrast(1.08)_brightness(0.92)]"
                             />
-                            <div aria-hidden="true" className="absolute inset-0 bg-violet-400/30 mix-blend-color" />
                             <div aria-hidden="true" className="absolute inset-0 bg-bg/25 mix-blend-multiply" />
                         </div>
                     </motion.figure>
                 )}
+
+                {/* The instrument: what the hours are made of, read off a panel.
+                    Only beside the live field; the photo plate and the reel fill this corner. */}
+                {!sceneOff && <HeroInstrument className="hidden lg:col-span-5 lg:col-start-8 lg:row-start-1 lg:block lg:self-end lg:justify-self-end [@media(max-height:739px)]:!hidden" />}
             </motion.div>
 
             {/* Figure caption on the right margin, mirroring the chapter rail on
@@ -220,7 +224,7 @@ export default function Arrival() {
             >
                 <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-6 font-mono text-[11px] uppercase tracking-[0.24em] text-text-mute">
                     <span className="flex items-center gap-2 tabular-nums">
-                        <span className="h-1 w-1 rounded-full bg-violet-400" aria-hidden="true" />
+                        <span className="h-1 w-1 rounded-full bg-signal" aria-hidden="true" />
                         Bangkok <span className="text-text-strong">{time}</span> ICT
                     </span>
                     <span className="hidden items-center gap-6 lg:flex">
