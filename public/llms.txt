@@ -1,0 +1,29 @@
+# Wutcharin Thatan
+
+> Associate Director, FinTech Data & Automation at Agoda (Bangkok). Leads a 12-person Analytics Engineering team. Has automated 15,000+ hours a year and ships AI agents (RAG, Auto-SQL) in production. Earlier: Head of Commercial at Really Cool Airlines, Head of Strategic Foresight at Thairath Group, Planning Director at Nok Air.
+
+## Key pages
+- [Home: profile, work and career](https://wutcharin.com/): Overview, selected work and flight log of roles.
+- [Résumé (PDF)](https://wutcharin.com/Wutcharin_CV_2026.pdf): Full CV, 2026.
+- [Pidngod](https://wutcharin.com/pidngod): Proof of concept for Thai month-end close; runs a real check engine on 18 sample documents.
+- [Karpathy LLM Guide](https://wutcharin.com/karpathy-deep-dive): Interactive guide to Andrej Karpathy's lecture on using LLMs.
+- [Agentic AI Deep Dive](https://wutcharin.com/agentic-ai): Interactive guide to the Stanford CS230 agentic AI lecture.
+- [The Human Edge](https://wutcharin.com/human-edge): Skills that matter in the AI era.
+- [AI Evolution Stats](https://wutcharin.com/ai-evolution): Model size and context length over time.
+- [Future of Work](https://wutcharin.com/future-of-work): Which jobs AI will change and create.
+
+## Agent demos
+- [RiskGuard AI](https://wutcharin.com/risk-guard): Transaction audit agent.
+- [ProjectFlow AI](https://wutcharin.com/project-flow): Scrum on Jira.
+- [ReviewFlow AI](https://wutcharin.com/review-flow): Reviews to action.
+- [QueryFlow AI](https://wutcharin.com/query-flow): Plain-language data questions to SQL.
+- [Enterprise Collections AI](https://wutcharin.com/collections): Virtual card overcharge disputes.
+- [SlipVerify AI](https://wutcharin.com/slip-verify): Bank transfer slip checks.
+
+## Tools
+- [AI Resume Builder](https://wutcharin.com/resume-builder)
+- [Gemini OCR](https://wutcharin.com/gemini-ocr)
+
+## Contact
+- LinkedIn: https://www.linkedin.com/in/Wutcharin
+- GitHub: https://github.com/wutcharinth
