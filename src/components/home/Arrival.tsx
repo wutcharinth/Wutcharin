@@ -1,13 +1,16 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, ArrowDown } from 'lucide-react';
 import { MagneticButton } from '../../lib/motion';
-import { detectTier, heroReelRequested } from '../../scene/tier';
+import { detectTier, heroReelRequested, heroVariant, simsAllowed } from '../../scene/tier';
 import { sceneBus } from '../../scene/sceneBus';
 import { useTheme } from '../../lib/theme';
 import KineticWord from './KineticWord';
 import HeroReel from './HeroReel';
-import { portraitScene } from './scenes';
+import { heroScene } from './scenes';
+import { AGENT_COUNT, DOMAINS } from './agents';
+
+const Constellation = lazy(() => import('./constellation/Constellation'));
 import { useBangkokTime } from './useBangkokTime';
 import { openConsole, isMac } from '../console/consoleBus';
 import { RESUME } from './contact';
@@ -25,6 +28,17 @@ export default function Arrival() {
     const tier = useMemo(() => detectTier(), []);
     const sceneOff = tier === null;
     const reel = useMemo(() => heroReelRequested(), []);
+    // The default hero: the team's agents as a constellation (needs WebGL and motion).
+    const agents = useMemo(() => heroVariant() === 'agents' && simsAllowed(), []);
+    const stageRef = useRef<HTMLDivElement>(null);
+    const [stageOn, setStageOn] = useState(false);
+    useEffect(() => {
+        const el = stageRef.current;
+        if (!agents || !el) return;
+        const io = new IntersectionObserver(([e]) => setStageOn(e.isIntersecting), { threshold: 0.05 });
+        io.observe(el);
+        return () => io.disconnect();
+    }, [agents]);
     const time = useBangkokTime();
     const [mac] = useState(isMac);
     const [touch] = useState(() => window.matchMedia('(hover: none)').matches);
@@ -35,7 +49,7 @@ export default function Arrival() {
     const lift = useTransform(scrollY, [0, 600], [0, -80]);
     const fade = useTransform(scrollY, [0, 420], [1, 0]);
 
-    // The portrait has a map per theme: re-form it when the theme changes.
+    // The portrait (?hero=portrait) has a map per theme: re-form it when the theme changes.
     // Only on a change: the first appearance waits for the wordmark (below).
     const theme = useTheme();
     const firstTheme = useRef(theme);
@@ -43,18 +57,18 @@ export default function Arrival() {
         if (theme === firstTheme.current) return;
         firstTheme.current = theme;
         if (sceneOff || window.scrollY >= window.innerHeight * 0.5) return;
-        sceneBus.apply(portraitScene());
+        sceneBus.apply(heroScene());
     }, [theme, sceneOff]);
 
     useEffect(() => {
         if (sceneOff) return;
         const atTop = () => window.scrollY < window.innerHeight * 0.5;
         // Hold the noise until the wordmark has landed, then resolve.
-        const t = window.setTimeout(() => atTop() && sceneBus.apply(portraitScene()), 1300);
+        const t = window.setTimeout(() => atTop() && sceneBus.apply(heroScene()), 1300);
         let r = 0;
         const onResize = () => {
             window.clearTimeout(r);
-            r = window.setTimeout(() => atTop() && sceneBus.apply(portraitScene()), 220);
+            r = window.setTimeout(() => atTop() && sceneBus.apply(heroScene()), 220);
         };
         window.addEventListener('resize', onResize);
         return () => {
@@ -71,6 +85,24 @@ export default function Arrival() {
             className="relative flex min-h-[100svh] flex-col overflow-hidden px-6 md:px-10"
         >
             {reel && <HeroReel />}
+
+            {/* Fig. 00: the agents, beside the name on desktop and above it on phones. */}
+            {agents && (
+                <motion.div
+                    ref={stageRef}
+                    style={{ opacity: fade }}
+                    className="absolute inset-x-0 top-16 z-10 h-[40svh] [mask-image:linear-gradient(to_bottom,#000_58%,transparent_96%)] md:inset-x-auto md:[mask-image:none] md:right-[6vw] md:top-1/2 md:h-[78svh] md:w-[44vw] md:max-w-[820px] md:-translate-y-1/2"
+                >
+                    <motion.div className="h-full w-full" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.1, duration: 1.6 }}>
+                        <Suspense fallback={null}>
+                            <Constellation running={stageOn} />
+                        </Suspense>
+                    </motion.div>
+                    <p className="sr-only">
+                        A constellation of {AGENT_COUNT} AI agents across {DOMAINS.map((d) => d.name).join(', ')}.
+                    </p>
+                </motion.div>
+            )}
 
             {/* Reading floor: the text side of the stage sits on a soft ramp of
                 midnight so the type never fights the live field. */}
@@ -207,15 +239,33 @@ export default function Arrival() {
                         transition={{ delay: 2.4, duration: 1.2 }}
                         className="flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.24em] text-text-mute [writing-mode:vertical-rl]"
                     >
-                        <span className="text-text">Fig. 00 · Portrait</span>
-                        <span className="h-8 w-px bg-hairline-strong" />
-                        <span>
-                            <span className="tabular-nums">{(tier.texSize * tier.texSize).toLocaleString('en-US')}</span> live particles
-                        </span>
-                        {!touch && (
+                        {agents ? (
                             <>
+                                <span className="text-text">Fig. 00 · Agents</span>
                                 <span className="h-8 w-px bg-hairline-strong" />
-                                <span>Move your cursor</span>
+                                <span>
+                                    <span className="tabular-nums">{AGENT_COUNT}+</span> agents live · {DOMAINS.length} domains
+                                </span>
+                                {!touch && (
+                                    <>
+                                        <span className="h-8 w-px bg-hairline-strong" />
+                                        <span>Point at a node</span>
+                                    </>
+                                )}
+                            </>
+                        ) : (
+                            <>
+                                <span className="text-text">Fig. 00 · Portrait</span>
+                                <span className="h-8 w-px bg-hairline-strong" />
+                                <span>
+                                    <span className="tabular-nums">{(tier.texSize * tier.texSize).toLocaleString('en-US')}</span> live particles
+                                </span>
+                                {!touch && (
+                                    <>
+                                        <span className="h-8 w-px bg-hairline-strong" />
+                                        <span>Move your cursor</span>
+                                    </>
+                                )}
                             </>
                         )}
                     </motion.p>

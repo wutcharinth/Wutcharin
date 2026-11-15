@@ -1,5 +1,6 @@
 import type { SceneTargets } from '../../scene/sceneBus';
 import { getTheme } from '../../lib/theme';
+import { heroVariant } from '../../scene/tier';
 import { ensureImageFormation, ensureTextFormation, worldExtents } from '../../scene/sampled';
 
 /**
@@ -69,4 +70,14 @@ export function addressScene(text: string): Partial<SceneTargets> {
         dust: wide ? 0.12 : 0.08,
     });
     return { formation: key, mode: 'full', chaos: 0.02, accent: SIGNAL, repel: 0.9 };
+}
+
+/**
+ * 00 with the agent constellation (the default hero): the field rests, so the
+ * constellation is the only motion behind the name. It gathers as noise, ready
+ * to become the Proof numeral below. `?hero=portrait` keeps the portrait.
+ */
+export function heroScene(): Partial<SceneTargets> {
+    if (heroVariant() === 'portrait') return portraitScene();
+    return { formation: 'noise', mode: 'hidden', chaos: 1, accent: SIGNAL, repel: 0.6 };
 }
