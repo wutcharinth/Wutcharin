@@ -14,7 +14,7 @@ const MORPH_SECONDS = 1.15;
 // Field brightness multiplier (additive). Baked default plus a live override:
 // append ?glow=1.8 to any URL to tune it in real time, then tell me the value
 // to bake in. Clamped to a sane range.
-/** Point size on narrow (phone) viewports, relative to the tier size. */
+/** Low-tier point size on narrow viewports, relative to the tier size. */
 const COMPACT_SIZE = 0.55;
 
 const GLOW_DEFAULT = 2.5;
@@ -32,7 +32,7 @@ function makeTexture(data: Float32Array, size: number) {
     return tex;
 }
 
-export default function ParticleField({ texSize, light = false }: { texSize: number; light?: boolean }) {
+export default function ParticleField({ texSize, pointSize, light = false }: { texSize: number; pointSize: number; light?: boolean }) {
     const { camera } = useThree();
     const material = useRef<THREE.ShaderMaterial>(null);
 
@@ -80,13 +80,9 @@ export default function ParticleField({ texSize, light = false }: { texSize: num
             uMorph: { value: initial === noise ? 1 : 0 },
             uChaos: { value: sceneBus.targets.chaos },
             uTime: { value: 0 },
-            // Phones draw at DPR 1 into a small viewport, so the desktop point
-            // size reads as blobs there: points shrink to a fine grain instead.
-            uSize: {
-                value:
-                    (texSize >= 160 ? 0.9 : texSize >= 112 ? 1.15 : 1.7) *
-                    (window.matchMedia('(max-width: 767px)').matches ? COMPACT_SIZE : 1),
-            },
+            // The low tier draws at DPR 1, where its points read large on a
+            // narrow screen; they shrink there. Other tiers set their own size.
+            uSize: { value: pointSize * (texSize < 112 && window.matchMedia('(max-width: 767px)').matches ? COMPACT_SIZE : 1) },
             uDensity: { value: 1 },
             uPointerWorld: { value: new THREE.Vector3(0, 0, -50) },
             uRepel: { value: 0 },
@@ -98,7 +94,7 @@ export default function ParticleField({ texSize, light = false }: { texSize: num
         };
         return { geometry, uniforms };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [texSize]);
+    }, [texSize, pointSize]);
 
     const local = useRef({
         revision: sceneBus.revision,

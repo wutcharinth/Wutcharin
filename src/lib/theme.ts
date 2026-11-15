@@ -42,6 +42,11 @@ export function toggleTheme() {
     setTheme(current === 'dark' ? 'light' : 'dark');
 }
 
+/** The current theme, for code outside React (scene presets). */
+export function getTheme(): Theme {
+    return current;
+}
+
 export function useTheme(): Theme {
     return useSyncExternalStore(
         (fn) => {

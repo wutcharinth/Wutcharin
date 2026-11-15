@@ -74,11 +74,27 @@ function sampleDensity(map: DensityMap, place: Placement, count: number, seed: n
     const dust = place.dust ?? 0.04;
     const depth = place.depth ?? 0.6;
 
-    for (let i = 0; i < count; i++) {
+    // Stratified along the density: the k-th point takes the k-th equal share
+    // of the total, plus a little jitter. Pure random draws clump and leave
+    // holes about the size of an eye; even shares keep small features legible.
+    const nDust = total <= 0 ? count : Math.round(count * dust);
+    const nShape = count - nDust;
+    // Points are written in a shuffled order so a particle's index (which
+    // drives its morph stagger) says nothing about where it lands.
+    const order = new Uint32Array(count);
+    for (let i = 0; i < count; i++) order[i] = i;
+    for (let i = count - 1; i > 0; i--) {
+        const j = Math.floor(rand() * (i + 1));
+        const t = order[i];
+        order[i] = order[j];
+        order[j] = t;
+    }
+
+    for (let k = 0; k < count; k++) {
         let x: number;
         let y: number;
         let z: number;
-        if (total <= 0 || rand() < dust) {
+        if (k >= nShape) {
             // Ambient dust: a loose halo so the shape sits inside a field,
             // not on an empty stage.
             const g = () => (rand() + rand() + rand() + rand() - 2) / 2;
@@ -86,7 +102,7 @@ function sampleDensity(map: DensityMap, place: Placement, count: number, seed: n
             y = place.cy + g() * place.height * 0.6;
             z = g() * 2.4;
         } else {
-            const target = rand() * total;
+            const target = ((k + rand()) / nShape) * total;
             let lo = 0;
             let hi = cdf.length - 1;
             while (lo < hi) {
@@ -100,7 +116,7 @@ function sampleDensity(map: DensityMap, place: Placement, count: number, seed: n
             y = place.cy + (height / 2 - py) * scale;
             z = (data[lo] - 0.5) * depth + (rand() - 0.5) * 0.12;
         }
-        const o = i * 4;
+        const o = order[k] * 4;
         out[o] = x;
         out[o + 1] = y;
         out[o + 2] = z;

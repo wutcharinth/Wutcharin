@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, ArrowDown } from 'lucide-react';
 import { MagneticButton } from '../../lib/motion';
 import { detectTier, heroReelRequested } from '../../scene/tier';
 import { sceneBus } from '../../scene/sceneBus';
+import { useTheme } from '../../lib/theme';
 import KineticWord from './KineticWord';
 import HeroReel from './HeroReel';
 import { portraitScene } from './scenes';
@@ -33,6 +34,17 @@ export default function Arrival() {
     const { scrollY } = useScroll();
     const lift = useTransform(scrollY, [0, 600], [0, -80]);
     const fade = useTransform(scrollY, [0, 420], [1, 0]);
+
+    // The portrait has a map per theme: re-form it when the theme changes.
+    // Only on a change: the first appearance waits for the wordmark (below).
+    const theme = useTheme();
+    const firstTheme = useRef(theme);
+    useEffect(() => {
+        if (theme === firstTheme.current) return;
+        firstTheme.current = theme;
+        if (sceneOff || window.scrollY >= window.innerHeight * 0.5) return;
+        sceneBus.apply(portraitScene());
+    }, [theme, sceneOff]);
 
     useEffect(() => {
         if (sceneOff) return;

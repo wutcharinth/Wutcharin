@@ -1,4 +1,5 @@
 import type { SceneTargets } from '../../scene/sceneBus';
+import { getTheme } from '../../lib/theme';
 import { ensureImageFormation, ensureTextFormation, worldExtents } from '../../scene/sampled';
 
 /**
@@ -13,10 +14,15 @@ export const SIGNAL = '#e5e5e5';
 
 const bucket = (aspect: number) => (aspect >= 1 ? 'w' : 'n') + Math.round(aspect * 10);
 
-/** 00: the field resolves into the portrait (right on desktop, top on mobile). */
+/**
+ * 00: the field resolves into the portrait (right on desktop, top on mobile).
+ * Two maps from the same photo (scripts/build_portrait_density.py): light on a
+ * dark stage for the dark theme, ink on paper for the light theme.
+ */
 export function portraitScene(): Partial<SceneTargets> {
     const { halfW, halfH, aspect } = worldExtents();
-    const key = `~portrait:${bucket(aspect)}` as const;
+    const ink = getTheme() === 'light';
+    const key = `~portrait:${ink ? 'ink' : 'light'}:${bucket(aspect)}` as const;
     let place;
     if (aspect >= 1) {
         const cx = halfW * 0.48;
@@ -24,10 +30,11 @@ export function portraitScene(): Partial<SceneTargets> {
         place = { cx, cy: -halfH * 0.06, height, depth: 1.4, dust: 0.05 };
     } else {
         const height = Math.min(halfH * 0.72, halfW * 1.7);
-        place = { cx: 0, cy: halfH * 0.56, height, depth: 1.2, dust: 0.04 };
+        // Less relief and less drift at phone size: both blur small features.
+        place = { cx: 0, cy: halfH * 0.56, height, depth: 0.7, dust: 0.03 };
     }
-    void ensureImageFormation(key, '/scene/portrait-density.png', place);
-    return { formation: key, mode: 'full', chaos: 0.03, accent: SIGNAL, repel: 0.55 };
+    void ensureImageFormation(key, ink ? '/scene/portrait-ink.png' : '/scene/portrait-density.png', place);
+    return { formation: key, mode: 'full', chaos: aspect >= 1 ? 0.03 : 0.012, accent: SIGNAL, repel: 0.55 };
 }
 
 /** 01: a proof numeral set in particles (right on desktop, top on mobile). */

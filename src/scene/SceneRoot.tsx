@@ -80,7 +80,7 @@ export default function SceneRoot() {
                 camera={{ fov: 50, near: 0.1, far: 60, position: [0, 0, 14] }}
             >
                 <PerformanceMonitor onDecline={() => setDegraded(true)}>
-                    <ParticleField texSize={tier.texSize} light={light} />
+                    <ParticleField texSize={tier.texSize} pointSize={tier.pointSize} light={light} />
                     <CameraRig />
                 </PerformanceMonitor>
             </Canvas>
