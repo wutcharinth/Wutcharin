@@ -24,10 +24,11 @@ export function portraitScene(): Partial<SceneTargets> {
         place = { cx, cy: -halfH * 0.06, height, depth: 1.4, dust: 0.05 };
     } else {
         const height = Math.min(halfH * 0.72, halfW * 1.7);
-        place = { cx: 0, cy: halfH * 0.56, height, depth: 1.2, dust: 0.04 };
+        // Less relief and less drift at phone size: both blur small features.
+        place = { cx: 0, cy: halfH * 0.56, height, depth: 0.7, dust: 0.03 };
     }
     void ensureImageFormation(key, '/scene/portrait-density.png', place);
-    return { formation: key, mode: 'full', chaos: 0.03, accent: SIGNAL, repel: 0.55 };
+    return { formation: key, mode: 'full', chaos: aspect >= 1 ? 0.03 : 0.012, accent: SIGNAL, repel: 0.55 };
 }
 
 /** 01: a proof numeral set in particles (right on desktop, top on mobile). */

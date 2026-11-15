@@ -1,23 +1,28 @@
 /**
  * Quality tiers for the particle scene. Detected once at mount; the URL
- * override (?tier=high|mid|low|off) exists for QA and art direction review.
+ * override (?tier=high|mid|touch|low|off) exists for QA and art direction review.
  *
  * off: no canvas at all — the DOM fallback (aurora + gradient) is the design.
  */
 
-export type TierId = 'high' | 'mid' | 'low' | 'off';
+export type TierId = 'high' | 'mid' | 'touch' | 'low' | 'off';
 
 export interface Tier {
     id: TierId;
     /** Formation texture side — particle count is texSize². */
     texSize: number;
     dprMax: number;
+    /** Point size in drawing-buffer pixels (scaled by depth in the shader). */
+    pointSize: number;
 }
 
 const TIERS: Record<Exclude<TierId, 'off'>, Tier> = {
-    high: { id: 'high', texSize: 160, dprMax: 1.5 },
-    mid: { id: 'mid', texSize: 112, dprMax: 1.15 },
-    low: { id: 'low', texSize: 64, dprMax: 1 },
+    high: { id: 'high', texSize: 160, dprMax: 1.5, pointSize: 0.9 },
+    mid: { id: 'mid', texSize: 112, dprMax: 1.15, pointSize: 1.15 },
+    // Phones: a small screen at a high pixel ratio. More, finer points drawn
+    // sharper, so a portrait keeps its features at phone size.
+    touch: { id: 'touch', texSize: 160, dprMax: 2, pointSize: 0.85 },
+    low: { id: 'low', texSize: 64, dprMax: 1, pointSize: 1.7 },
 };
 
 function webgl2Available(): boolean {
@@ -70,7 +75,10 @@ export function detectTier(): Tier | null {
     const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory;
     const coarse = window.matchMedia('(pointer: coarse)').matches;
 
-    if (coarse || cores <= 4) return TIERS.low;
+    // Touch screens get their own tier; a reported core count of 2 or fewer
+    // marks a device too slow for it. (iOS does not report its real count.)
+    if (coarse) return cores <= 2 ? TIERS.low : TIERS.touch;
+    if (cores <= 4) return TIERS.low;
     if (memory !== undefined && memory < 8) return TIERS.mid;
     return TIERS.high;
 }
