@@ -10,14 +10,14 @@ import Terminus from '../components/home/Terminus';
 import BootLoader from '../components/home/BootLoader';
 import Atmosphere from '../components/home/Atmosphere';
 import Interlude from '../components/home/Interlude';
-import { portraitScene } from '../components/home/scenes';
+import { heroScene } from '../components/home/scenes';
 import { useChapterScene } from '../components/home/useChapterScene';
 import { useScrollTo } from '../components/home/useScrollTo';
 import { ScrollTrigger } from '../lib/motion';
 
 /**
  * Home: six chapters, one particle world that tells the story.
- *   00 Arrival   the field resolves into the person
+ *   00 Arrival   the team's agents as a constellation; the field rests behind
  *   01 Proof     the field becomes each number
  *   02 Principle the field triages: patterns to code, exceptions to people
  *   03 Work      the field becomes each case study
@@ -27,8 +27,8 @@ import { ScrollTrigger } from '../lib/motion';
  */
 const Home = () => {
     const topRef = useRef<HTMLDivElement>(null);
-    // Scrolling back up to the top re-resolves the portrait.
-    useChapterScene(topRef, portraitScene);
+    // Scrolling back up to the top restores the hero's field.
+    useChapterScene(topRef, heroScene);
     const scrollTo = useScrollTo();
 
     // Deep links (/#work from a project page or the console) land on the

@@ -231,6 +231,10 @@ One fixed layer between the particle field and the page (`home/Atmosphere.tsx`).
 
 The four featured products (Pidngod, SplitBill AI, Jongtoh, Klikr) each have a small, playable 3D simulation of what the product does (`home/work/sims/`). Black and white only: objects are solids in the fill tone with hairline outlines in ink, paper is the lightest surface, and light (an emissive glow, a spotlight cone) marks what just happened. Every simulation is driven by real buttons in its DOM controls, so it works by tap, keyboard and screen reader; the canvas is decoration. Data is honest: Pidngod runs the product's real check engine on its 18 sample documents, and simulations with scripted content say so in their label. Desktop pins the chapter with one stage beside the copy; phones mount each simulation only while it is on screen. The particle field rests while the simulations play (one canvas drawing at a time), and reduced-motion or no-WebGL visitors get the static posters.
 
+### Hero Constellation (Fig. 00)
+
+The hero's figure is the team's agents as a slowly turning 3D constellation (`home/constellation/Constellation.tsx`): four domain hubs, the agents around each (the roster lives in `home/agents.ts`, split like the Proof chapter's agent mix), threads between them, and light travelling the threads like traffic. Pointing at a node names it; left alone, it names one agent after another. Light on the dark stage, ink on paper. The particle field rests in the hero, so the constellation is the only motion behind the name; `?hero=portrait` brings back the particle portrait and `?hero=reel` the film. Phones get a shorter band above the name that fades out behind it, with the active agent named at the top.
+
 ### Rise Headings
 
 Chapter headings on the home page lift word by word out of their baseline the first time they enter view (`home/Rise.tsx`). The mask is a `clip-path`, so Clash and the serif accent keep one baseline. Under reduced motion they render in place.

@@ -58,6 +58,17 @@ export function simsAllowed(): boolean {
     return webgl2Available();
 }
 
+/**
+ * The hero's main visual. Default: the agent constellation. `?hero=portrait`
+ * brings back the particle portrait; `?hero=reel` plays the film.
+ */
+export type HeroVariant = 'agents' | 'portrait' | 'reel';
+export function heroVariant(): HeroVariant {
+    if (heroReelRequested()) return 'reel';
+    if (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('hero') === 'portrait') return 'portrait';
+    return 'agents';
+}
+
 export function detectTier(): Tier | null {
     if (typeof window === 'undefined') return null;
     // One layer of motion at a time: the reel retires the particle field.
