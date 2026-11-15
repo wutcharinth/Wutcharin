@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { AnimatePresence, motion, useMotionValue, useSpring } from 'framer-motion';
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -10,6 +10,10 @@ import ChapterLabel from './ChapterLabel';
 import Poster from './work/Poster';
 import SimStage from './work/sims';
 import { hasSim } from './work/sims/ids';
+import { DOES, kind, opens } from './work/specimens/copy';
+
+const loadSpecimens = () => import('./work/specimens/SpecimenCanvas');
+const SpecimenCanvas = lazy(loadSpecimens);
 import { SIGNAL } from './scenes';
 import { useScrollTo } from './useScrollTo';
 import Rise from './Rise';
@@ -20,8 +24,9 @@ import Rise from './Rise';
  *            The section pins; scrolling (or the arrows) moves between them,
  *            and the simulation in front can be played. The particle field
  *            rests while this chapter holds the screen.
- *   Index:   everything else, filterable, with a cursor-following reel
- *            preview on pointer devices.
+ *   Index:   everything else, filterable. On pointer devices a card follows
+ *            the cursor with a live 3D specimen of what the hovered project
+ *            does, in the same language as the simulations above.
  */
 
 const featured = projects
@@ -338,20 +343,19 @@ function IndexRow({ project, onHover }: { project: Project; onHover: (p: Project
             onMouseLeave={() => onHover(null)}
             className={`group relative grid grid-cols-12 items-center gap-x-4 border-t border-hairline px-2 py-4 -mx-2 rounded-md transition-[background-color,opacity] duration-300 hover:bg-panel group-hover/index:opacity-40 hover:!opacity-100 focus-visible:!opacity-100 ${focusRing}`}
         >
-            {/* The row's own accent draws across its top edge on hover. */}
+            {/* A line of signal draws across the row's top edge on hover. */}
             <span
                 aria-hidden="true"
-                className="absolute inset-x-2 -top-px h-px origin-left scale-x-0 transition-transform duration-500 [transition-timing-function:var(--ease-out-expo)] group-hover:scale-x-100"
-                style={{ backgroundColor: project.accent }}
+                className="absolute inset-x-2 -top-px h-px origin-left scale-x-0 bg-signal transition-transform duration-500 [transition-timing-function:var(--ease-out-expo)] group-hover:scale-x-100"
             />
             <span className="col-span-1 flex justify-center" aria-hidden="true">
                 {agent ? (
                     <span className="relative flex h-1.5 w-1.5">
-                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60 [animation-duration:2.4s]" style={{ backgroundColor: project.accent }} />
-                        <span className="relative inline-flex h-1.5 w-1.5 rounded-full" style={{ backgroundColor: project.accent }} />
+                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal opacity-60 [animation-duration:2.4s]" />
+                        <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-signal" />
                     </span>
                 ) : (
-                    <span className="h-1.5 w-1.5 rounded-full border" style={{ borderColor: project.accent }} />
+                    <span className="h-1.5 w-1.5 rounded-full border border-signal/70" />
                 )}
             </span>
             <span className="col-span-7 min-w-0 transition-transform duration-500 [transition-timing-function:var(--ease-out-expo)] group-hover:translate-x-2 sm:col-span-5">
@@ -388,8 +392,27 @@ function Index() {
         return () => st.kill();
     }, [reduced]);
     const [filter, setFilter] = useState<Filter>('all');
-    const [hovered, setHovered] = useState<Project | null>(null);
+    const [hovered, setHoveredState] = useState<Project | null>(null);
+    const [shown, setShown] = useState<Project | null>(null);
+    const setHovered = (p: Project | null) => {
+        setHoveredState(p);
+        if (p) setShown(p);
+    };
     const [pointerFine] = useState(() => window.matchMedia('(hover: hover) and (pointer: fine)').matches);
+    const [specimens] = useState(() => simsAllowed());
+    // Fetch the 3D card's code as the index comes into view, so the first hover is instant.
+    useEffect(() => {
+        const el = sectionRef.current;
+        if (!el || !pointerFine || !specimens) return;
+        const io = new IntersectionObserver(([e]) => {
+            if (e.isIntersecting) {
+                void loadSpecimens();
+                io.disconnect();
+            }
+        });
+        io.observe(el);
+        return () => io.disconnect();
+    }, [pointerFine, specimens]);
     const x = useMotionValue(0);
     const y = useMotionValue(0);
     const sx = useSpring(x, { stiffness: 260, damping: 28, mass: 0.6 });
@@ -413,8 +436,11 @@ function Index() {
             <div
                 className="mx-auto max-w-6xl"
                 onMouseMove={(e) => {
-                    x.set(e.clientX);
-                    y.set(e.clientY);
+                    // The card sits right of the cursor, or left of it near the edge, and stays on screen.
+                    const W = 320;
+                    x.set(e.clientX + 24 + W > window.innerWidth ? e.clientX - 24 - W : e.clientX + 24);
+                    // Clear of the fixed header (about 64px) at the top.
+                    y.set(Math.min(Math.max(e.clientY, 292), window.innerHeight - 212));
                 }}
             >
                 <div className="flex flex-wrap items-end justify-between gap-6 border-b border-hairline pb-6">
@@ -465,27 +491,46 @@ function Index() {
                 </motion.ul>
             </div>
 
-            {/* Cursor-following reel preview: pointer devices only. */}
+            {/* Cursor-following specimen card: pointer devices only. */}
             {pointerFine && (
-                <motion.div
-                    aria-hidden="true"
-                    className="pointer-events-none fixed left-0 top-0 z-40 w-72"
-                    style={{ x: sx, y: sy, translateX: '24px', translateY: '-50%' }}
-                >
-                    <AnimatePresence>
-                        {hovered && (
-                            <motion.div
-                                key={hovered.id}
-                                initial={{ opacity: 0, scale: 0.92, rotate: -2 }}
-                                animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                                exit={{ opacity: 0, scale: 0.96 }}
-                                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                                className="absolute inset-x-0 top-0 shadow-[0_0_18px_rgba(255,255,255,0.12)]"
-                            >
-                                <Poster project={hovered} index={rest.indexOf(hovered)} compact />
-                            </motion.div>
+                <motion.div aria-hidden="true" className="pointer-events-none fixed left-0 top-0 z-40 w-80" style={{ x: sx, y: sy, translateY: '-50%' }}>
+                    <motion.div
+                        initial={false}
+                        animate={{ opacity: hovered ? 1 : 0, scale: hovered ? 1 : 0.96, y: hovered ? 0 : 6 }}
+                        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                        className="overflow-hidden rounded-lg border border-hairline-strong bg-bg shadow-[0_24px_60px_rgba(0,0,0,0.45)]"
+                    >
+                        {shown && (
+                            <>
+                                <div className="flex items-center justify-between px-4 pb-2 pt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-text-mute">
+                                    <span className="flex items-center gap-2">
+                                        <span className="h-1 w-1 rounded-full bg-signal" />
+                                        {kind(shown)}
+                                    </span>
+                                    <span className="tabular-nums">
+                                        {String(sorted.indexOf(shown) + 1).padStart(2, '0')} / {String(sorted.length).padStart(2, '0')}
+                                    </span>
+                                </div>
+                                {specimens && (
+                                    <div className="h-44 border-y border-hairline">
+                                        <Suspense fallback={null}>
+                                            <SpecimenCanvas id={shown.id} running={hovered !== null} />
+                                        </Suspense>
+                                    </div>
+                                )}
+                                <div className="px-4 pb-3 pt-3">
+                                    <p className="font-display text-lg font-semibold leading-tight tracking-[-0.01em] text-text-strong">{shown.title}</p>
+                                    {shown.tagline && <p className="mt-0.5 font-serif text-sm italic text-text">{shown.tagline}</p>}
+                                    <p className="mt-2 text-xs leading-relaxed text-text-mute">{DOES[shown.id] ?? shown.desc}</p>
+                                    <p className="mt-3 truncate font-mono text-[10px] uppercase tracking-[0.18em] text-text-mute">{shown.tags.slice(0, 3).join(' · ')}</p>
+                                    <p className="mt-3 flex items-center gap-1.5 border-t border-hairline pt-2.5 text-xs text-text-strong">
+                                        {opens(shown)}
+                                        <ArrowUpRight className="h-3.5 w-3.5" />
+                                    </p>
+                                </div>
+                            </>
                         )}
-                    </AnimatePresence>
+                    </motion.div>
                 </motion.div>
             )}
         </section>
