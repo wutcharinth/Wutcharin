@@ -22,7 +22,8 @@ type Beat = {
     short: string;
     claim: string;
     detail: string;
-    mix?: Array<[string, number]>;
+    /** Name, percent, and optionally what it replaces (shown as "from → name"). */
+    mix?: Array<[string, number, string?]>;
 };
 
 const BEATS: Beat[] = [
@@ -32,7 +33,7 @@ const BEATS: Beat[] = [
         unit: 'Hours automated per year',
         short: 'Hours a year',
         claim: 'Manual finance work that no person does any more.',
-        detail: 'Done by machine learning, RPA and AI agents. All of it runs every day. None of it is a pilot.',
+        detail: 'Done by machine learning, AI agents and automation. Traditional automation like RPA is moving to agentic controlled automation. All of it runs every day. None of it is a pilot.',
         mix: AUTOMATION_MIX,
     },
     {
@@ -82,9 +83,15 @@ function Mix({ mix, active }: { mix: NonNullable<Beat['mix']>; active: boolean }
                 ))}
             </div>
             <p className="mt-3 font-mono text-[11px] uppercase leading-relaxed tracking-[0.2em] text-text-mute">
-                {mix.map(([name, pct], i) => (
+                {mix.map(([name, pct, from], i) => (
                     <span key={name}>
                         {i > 0 && <span aria-hidden="true"> · </span>}
+                        {from && (
+                            <>
+                                {from} <span aria-hidden="true" className="text-text">→</span>
+                                <span className="sr-only">moving to</span>{' '}
+                            </>
+                        )}
                         {name} <span className="text-text-strong tabular-nums">{pct}%</span>
                     </span>
                 ))}

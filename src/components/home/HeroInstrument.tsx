@@ -27,19 +27,19 @@ export default function HeroInstrument({ className = '' }: { className?: string 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.9, duration: 0.9, ease }}
-            className={`w-[300px] rounded-[4px] border border-hairline bg-veil p-5 ${className}`}
+            className={`w-[336px] rounded-[4px] border border-hairline bg-veil p-5 ${className}`}
         >
             <div className="flex items-baseline justify-between gap-4">
                 <p className="font-display text-[15px] font-medium tracking-[-0.01em] text-text-strong">Automated each year</p>
                 <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-text-mute">Agoda</p>
             </div>
             <ul className="mt-5 space-y-4">
-                {AUTOMATION_MIX.map(([label, pct]) => (
+                {AUTOMATION_MIX.map(([label, pct, from]) => (
                     <li key={label} className="flex items-start justify-between gap-4">
                         <div>
-                            <p className="text-[13px] font-medium leading-none text-text-strong">{label}</p>
+                            <p className="text-[13px] font-medium leading-tight text-text-strong">{label}</p>
                             <p className="mt-1.5 font-mono text-[10px] tabular-nums tracking-[0.08em] text-text-mute">
-                                ~{Math.round((HOURS_PER_YEAR * pct) / 100).toLocaleString('en-US')} hrs
+                                {from && `from ${from} · `}~{Math.round((HOURS_PER_YEAR * pct) / 100).toLocaleString('en-US')} hrs
                             </p>
                         </div>
                         <div className="flex flex-col items-end gap-1.5">
