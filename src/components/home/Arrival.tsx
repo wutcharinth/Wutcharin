@@ -6,7 +6,6 @@ import { detectTier, heroReelRequested } from '../../scene/tier';
 import { sceneBus } from '../../scene/sceneBus';
 import KineticWord from './KineticWord';
 import HeroReel from './HeroReel';
-import HeroInstrument from './HeroInstrument';
 import { portraitScene } from './scenes';
 import { useBangkokTime } from './useBangkokTime';
 import { openConsole, isMac } from '../console/consoleBus';
@@ -129,7 +128,7 @@ export default function Arrival() {
                                 e.preventDefault();
                                 scrollTo('#work');
                             }}
-                            className="group rounded-[4px] bg-text-strong px-7 py-3 text-sm font-medium tracking-wide text-bg transition-colors hover:bg-signal"
+                            className="group rounded-full bg-text-strong px-7 py-3 text-sm font-medium tracking-wide text-bg transition-colors hover:bg-text"
                             data-cursor="view"
                         >
                             <span className="flex items-center gap-2">
@@ -143,7 +142,7 @@ export default function Arrival() {
                                 e.preventDefault();
                                 scrollTo('#contact');
                             }}
-                            className="rounded-[4px] border border-signal/30 px-7 py-3 text-sm font-medium tracking-wide text-signal transition-colors hover:bg-signal/10 hover:text-text-strong"
+                            className="rounded-full border border-signal/30 px-7 py-3 text-sm font-medium tracking-wide text-signal transition-colors hover:bg-signal/10 hover:text-text-strong"
                         >
                             Get in touch
                         </a>
@@ -159,13 +158,13 @@ export default function Arrival() {
                     </motion.div>
                 </div>
 
-                {/* Without the live field, the portrait is a graphite plate. */}
+                {/* Without the live field, the portrait is a black and white plate. */}
                 {sceneOff && !reel && (
                     <motion.figure
                         initial={{ opacity: 0, scale: 0.98 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.6, duration: 1.2, ease }}
-                        className="relative order-first mx-auto w-48 md:order-none md:col-span-5 md:col-start-8 md:row-start-1 md:w-full md:max-w-md"
+                        className="relative order-first mx-auto w-48 md:order-none md:col-span-5 md:w-full md:max-w-md"
                     >
                         <div className="relative aspect-square overflow-hidden [mask-image:radial-gradient(closest-side,#000_62%,transparent)]">
                             <img
@@ -180,10 +179,6 @@ export default function Arrival() {
                         </div>
                     </motion.figure>
                 )}
-
-                {/* The instrument: what the hours are made of, read off a panel.
-                    Only beside the live field; the photo plate and the reel fill this corner. */}
-                {!sceneOff && <HeroInstrument className="hidden lg:col-span-5 lg:col-start-8 lg:row-start-1 lg:block lg:self-end lg:justify-self-end [@media(max-height:739px)]:!hidden" />}
             </motion.div>
 
             {/* Figure caption on the right margin, mirroring the chapter rail on

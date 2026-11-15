@@ -117,7 +117,7 @@ function Itinerary() {
                     <li key={job.role + job.year} className="relative">
                         <span
                             aria-hidden="true"
-                            className={`absolute -left-[29px] top-6 h-2 w-2 rounded-full ${i === career.length - 1 ? 'bg-signal shadow-[0_0_14px_rgba(255,255,255,0.45)]' : 'bg-hairline-strong'}`}
+                            className={`absolute -left-[29px] top-6 h-2 w-2 rounded-full ${i === career.length - 1 ? 'bg-signal shadow-[0_0_18px_rgba(255,255,255,0.4)]' : 'bg-hairline-strong'}`}
                         />
                         <RevealOnScroll>
                             <div data-reveal-child>
@@ -240,7 +240,7 @@ function RouteStage() {
                         aria-current={i === active ? 'step' : undefined}
                     >
                         <span
-                            className={`block h-2 w-2 rounded-full transition-all duration-500 ${i <= active ? 'bg-signal' : 'bg-text-mute/50'} ${i === active ? 'scale-150 shadow-[0_0_14px_rgba(255,255,255,0.45)]' : ''}`}
+                            className={`block h-2 w-2 rounded-full transition-all duration-500 ${i <= active ? 'bg-signal' : 'bg-text-mute/50'} ${i === active ? 'scale-150 shadow-[0_0_18px_rgba(255,255,255,0.4)]' : ''}`}
                         />
                         <span
                             className={`absolute left-1/2 top-full -translate-x-1/2 whitespace-nowrap text-center font-mono text-[10px] uppercase tracking-[0.24em] transition-colors ${i === active ? 'text-text-strong' : 'text-text-mute group-hover:text-text'}`}
@@ -253,7 +253,7 @@ function RouteStage() {
 
                 {/* The aircraft: a bright point riding the arc. */}
                 <div ref={markerRef} aria-hidden="true" className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2">
-                    <span className="block h-3 w-3 rounded-full border border-signal/80 bg-bg shadow-[0_0_14px_rgba(255,255,255,0.45)]" />
+                    <span className="block h-3 w-3 rounded-full border border-signal/80 bg-bg shadow-[0_0_18px_rgba(255,255,255,0.4)]" />
                 </div>
 
                 <div className="pointer-events-none relative mx-auto flex h-full max-w-6xl flex-col justify-between py-28">

@@ -34,7 +34,7 @@ const derived = Object.fromEntries(
 
 export const ROUTE_SCENES: Record<string, Partial<SceneTargets>> = {
     ...derived,
-    '/': { formation: 'noise', accent: '#e4e4e7', mode: 'full', chaos: 1, repel: 1 },
+    '/': { formation: 'noise', accent: '#e5e5e5', mode: 'full', chaos: 1, repel: 1 },
     '/resume-builder': { mode: 'hidden' },
     '/agentic-ai': { mode: 'hidden' },
     '/human-edge': { mode: 'hidden' },

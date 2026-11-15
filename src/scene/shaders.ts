@@ -165,11 +165,11 @@ void main() {
     if (disc < 0.01) discard;
 
     if (uLight > 0.5) {
-        // Light mode: graphite specks on the light surface, drawn with
+        // Light mode: grey / black specks on the light surface, drawn with
         // normal blending (set on the material). Prominence scales with the
         // ?glow= knob — uGlow * 0.4 == 1.0 at the default (2.5).
-        vec3 lc = mix(vec3(0.24, 0.24, 0.27), vec3(0.05, 0.05, 0.06), smoothstep(0.55, 0.95, vRand));
-        float a = disc * uOpacity * (0.22 + 0.44 * vRand) * (0.4 + 0.6 * vFade) * (uGlow * 0.32);
+        vec3 lc = mix(vec3(0.22, 0.22, 0.22), vec3(0.0, 0.0, 0.0), smoothstep(0.55, 0.95, vRand));
+        float a = disc * uOpacity * (0.28 + 0.44 * vRand) * (0.45 + 0.55 * vFade) * (uGlow * 0.4);
         gl_FragColor = vec4(lc, clamp(a, 0.0, 0.95));
         return;
     }

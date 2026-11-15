@@ -19,9 +19,9 @@ export default function HeroReel() {
             <svg width="0" height="0" className="absolute">
                 <filter id="hero-reel-paper" colorInterpolationFilters="sRGB">
                     <feComponentTransfer>
-                        <feFuncR type="linear" slope="0.963" />
-                        <feFuncG type="linear" slope="0.948" />
-                        <feFuncB type="linear" slope="0.933" />
+                        <feFuncR type="linear" slope="0.986" />
+                        <feFuncG type="linear" slope="0.986" />
+                        <feFuncB type="linear" slope="0.986" />
                     </feComponentTransfer>
                 </filter>
             </svg>

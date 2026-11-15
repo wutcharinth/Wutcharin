@@ -8,8 +8,8 @@ import { ensureImageFormation, ensureTextFormation, worldExtents } from '../../s
  * re-bakes into the new composition instead of stretching the old one.
  */
 
-/** The field's glint colour on the home page: silver, for sparkled graphite. */
-export const SIGNAL = '#e4e4e7';
+/** The field's accent on the home page: white, for the black and white theme. */
+export const SIGNAL = '#e5e5e5';
 
 const bucket = (aspect: number) => (aspect >= 1 ? 'w' : 'n') + Math.round(aspect * 10);
 
