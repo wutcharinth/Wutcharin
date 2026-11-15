@@ -37,20 +37,20 @@
 }
 
 /* Brand tokens — authoritative source of truth.
-   See DESIGN.md ("Sparkled Graphite") for the design system this implements. */
+   See DESIGN.md ("The Black Console") for the design system this implements. */
 @layer base {
   :root {
-    --color-bg: #0e0e10;            /* Graphite — the surface the glitter sits in */
-    --color-bg-step: #0a0a0b;       /* Graphite Deep — section break */
-    --color-void: #08080a;          /* Void — floor for full-WebGL chapters */
-    --color-veil: rgba(14, 14, 16, 0.80);      /* Veil — text panel over live field */
-    --color-veil-soft: rgba(14, 14, 16, 0.55); /* Veil Soft — secondary panels */
-    --color-text: #cfcfd4;          /* Pewter Body */
-    --color-text-mute: #8e8e96;     /* Pewter Mute */
-    --color-text-strong: #fafafa;   /* Chalk */
-    --color-signal: #e6e6ea;        /* Silver Signal — the glint */
-    --color-signal-deep: #a3a3ab;   /* Silver Deep */
-    --color-signal-glow: #3a3a41;   /* Silver Glow — tints and the scrollbar */
+    --color-bg: #050505;            /* Black — the room */
+    --color-bg-step: #000000;       /* Pure Black — section break */
+    --color-void: #000000;          /* Void — floor for full-WebGL chapters */
+    --color-veil: rgba(5, 5, 5, 0.78);      /* Veil — text panel over live field */
+    --color-veil-soft: rgba(5, 5, 5, 0.55); /* Veil Soft — secondary panels */
+    --color-text: #d4d4d4;          /* Grey Body */
+    --color-text-mute: #a3a3a3;     /* Grey Mute */
+    --color-text-strong: #ffffff;   /* White Pure */
+    --color-signal: #fafafa;        /* White Signal */
+    --color-signal-deep: #a3a3a3;   /* Grey Deep — glows, pressed states */
+    --color-signal-glow: #262626;   /* Grey Glow — tints, the scrollbar */
     --color-cyan: #22d3ee;          /* Cyan Pulse — identity-lane only */
     --color-fuchsia: #e879f9;       /* Fuchsia Flare — identity-lane only */
     --color-border-faint: rgba(255, 255, 255, 0.05);
@@ -64,26 +64,26 @@
     --color-panel-strong: rgba(255, 255, 255, 0.06);
   }
 
-  /* Light mode — "Graphite on Paper". The same grain, drawn dark on a pale
-     aluminium surface; the signal becomes graphite itself. */
+  /* Light mode — "Daylight Console". Black and white, inverted: the signal
+     becomes black on a pale neutral surface. */
   html.light {
-    --color-bg: #ececee;
-    --color-bg-step: #e2e2e5;
-    --color-void: #e4e4e7;
-    --color-veil: rgba(236, 236, 238, 0.82);
-    --color-veil-soft: rgba(236, 236, 238, 0.55);
-    --color-text: #36363c;
-    --color-text-mute: #66666e;
-    --color-text-strong: #0d0d0f;
-    --color-signal: #1c1c20;
-    --color-signal-deep: #3f3f46;
-    --color-signal-glow: #cfcfd4;
-    --color-border-faint: rgba(13, 13, 15, 0.06);
-    --color-border-soft: rgba(13, 13, 15, 0.16);
-    --color-hairline: rgba(13, 13, 15, 0.12);
-    --color-hairline-strong: rgba(13, 13, 15, 0.22);
-    --color-panel: rgba(13, 13, 15, 0.035);
-    --color-panel-strong: rgba(13, 13, 15, 0.06);
+    --color-bg: #f5f5f5;
+    --color-bg-step: #ebebeb;
+    --color-void: #e8e8e8;
+    --color-veil: rgba(245, 245, 245, 0.80);
+    --color-veil-soft: rgba(245, 245, 245, 0.55);
+    --color-text: #404040;
+    --color-text-mute: #6b6b6b;
+    --color-text-strong: #0a0a0a;
+    --color-signal: #000000;
+    --color-signal-deep: #262626;
+    --color-signal-glow: #d4d4d4;
+    --color-border-faint: rgba(0, 0, 0, 0.06);
+    --color-border-soft: rgba(0, 0, 0, 0.16);
+    --color-hairline: rgba(0, 0, 0, 0.12);
+    --color-hairline-strong: rgba(0, 0, 0, 0.22);
+    --color-panel: rgba(0, 0, 0, 0.035);
+    --color-panel-strong: rgba(0, 0, 0, 0.06);
     /* Identity-lane accents deepened so they stay legible as text on the
        light surface (they don't otherwise flip with the surface tokens). */
     --color-cyan: #0891b2;
@@ -91,21 +91,21 @@
     color-scheme: light;
   }
 
-  /* Pin a subtree to the dark Sparkled Graphite tokens regardless of the global
+  /* Pin a subtree to the dark Black Console tokens regardless of the global
      light-mode flip. For bespoke dark-only tool pages (e.g. the resume builder)
      whose chrome is tokenized but is hardcoded dark and has no theme toggle. */
   .surface-dark {
-    --color-bg: #0e0e10;
-    --color-bg-step: #0a0a0b;
-    --color-void: #08080a;
-    --color-veil: rgba(14, 14, 16, 0.80);
-    --color-veil-soft: rgba(14, 14, 16, 0.55);
-    --color-text: #cfcfd4;
-    --color-text-mute: #8e8e96;
-    --color-text-strong: #fafafa;
-    --color-signal: #e6e6ea;
-    --color-signal-deep: #a3a3ab;
-    --color-signal-glow: #3a3a41;
+    --color-bg: #050505;
+    --color-bg-step: #000000;
+    --color-void: #000000;
+    --color-veil: rgba(5, 5, 5, 0.78);
+    --color-veil-soft: rgba(5, 5, 5, 0.55);
+    --color-text: #d4d4d4;
+    --color-text-mute: #a3a3a3;
+    --color-text-strong: #ffffff;
+    --color-signal: #fafafa;
+    --color-signal-deep: #a3a3a3;
+    --color-signal-glow: #262626;
     --color-cyan: #22d3ee;
     --color-fuchsia: #e879f9;
     --color-hairline: rgba(255, 255, 255, 0.10);
@@ -272,22 +272,6 @@
   animation: shimmer 2.4s linear infinite;
 }
 
-/* Glitter — the sparkled graphite grain (public/textures/glitter.webp, made by
-   scripts/glitter-texture.py). White specks on black: screened onto the dark
-   surface, and inverted then multiplied onto the light one. */
-.glitter {
-  background: url('/textures/glitter.webp') 0 0 / 384px 384px repeat;
-}
-.glitter-surface {
-  mix-blend-mode: screen;
-}
-html.light .glitter-surface {
-  filter: invert(1);
-  mix-blend-mode: multiply;
-  /* Dark grain on a pale surface reads heavier than light grain on a dark one. */
-  opacity: 0.65;
-}
-
 /* Noise overlay — subtle film grain for dark backgrounds */
 .bg-noise {
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.35 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
@@ -348,7 +332,7 @@ body.cursor-enhanced select {
   clip: auto;
   white-space: normal;
   background: white;
-  color: #0e0e10;
+  color: #050505;
   border-radius: 0 0 0.75rem 0.75rem;
   font-size: 0.75rem;
   font-weight: 500;
@@ -371,14 +355,16 @@ body.cursor-enhanced select {
     cursor: auto !important;
   }
 }
-/* Hero reel (video/hero-reel): drawn on midnight, the dark page colour. The light theme recolours it. */
+/* Hero reel (video/hero-reel): drawn on midnight with a violet point. Shown in
+   greyscale so it sits in the black and white theme; its midnight then lands on black. */
 .hero-reel {
+  filter: grayscale(1);
   /* Lets the Atmosphere glow behind the hero show through the film's flat background. */
   mix-blend-mode: lighten;
 }
 html.light .hero-reel {
-  /* Invert keeping hue, then #hero-reel-paper (HeroReel.tsx) lands the background exactly on the page colour. */
-  filter: invert(1) hue-rotate(180deg) url(#hero-reel-paper);
+  /* Invert, drop the hue, then #hero-reel-paper (HeroReel.tsx) lands the background exactly on the page colour. */
+  filter: invert(1) grayscale(1) url(#hero-reel-paper);
   mix-blend-mode: multiply;
 }
 @media (min-width: 768px) {

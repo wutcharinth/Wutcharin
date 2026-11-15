@@ -1,4 +1,4 @@
-/** Section eyebrow: "01 · Proof". Mono, tracked, a single silver dot. */
+/** Section eyebrow: "01 · Proof". Mono, tracked, a single white dot. */
 export default function ChapterLabel({ index, name, className = '' }: { index: string; name: string; className?: string }) {
     return (
         <div className={`inline-flex items-center gap-2 rounded-full border border-hairline px-3 py-1 ${className}`}>

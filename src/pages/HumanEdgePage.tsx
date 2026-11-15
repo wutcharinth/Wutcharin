@@ -421,10 +421,10 @@ const HumanEdgePage = () => {
     });
 
     return (
-        <div className="min-h-screen bg-[#0e0e10] text-slate-200 font-sans selection:bg-cyan-500/30 pb-20">
+        <div className="min-h-screen bg-[#050505] text-slate-200 font-sans selection:bg-cyan-500/30 pb-20">
 
             {/* Header / Nav */}
-            <header className="bg-[#0e0e10]/80 border-b border-slate-800 sticky top-0 z-50 backdrop-blur-xl">
+            <header className="bg-[#050505]/80 border-b border-slate-800 sticky top-0 z-50 backdrop-blur-xl">
                 <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
                     <Link to="/" className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-slate-400 hover:text-white transition-colors group">
                         <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
@@ -444,7 +444,7 @@ const HumanEdgePage = () => {
 
                 {/* Hero Section */}
                 <div className="relative py-32 text-center overflow-hidden">
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-cyan-900/20 via-[#0e0e10] to-[#0e0e10] z-0"></div>
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-cyan-900/20 via-[#050505] to-[#050505] z-0"></div>
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
 
                     <div className="relative z-10 max-w-4xl mx-auto px-6">
@@ -648,7 +648,7 @@ const HumanEdgePage = () => {
                 </div>
 
                 {/* Footer */}
-                <footer className="border-t border-slate-800 py-16 text-center text-sm text-slate-500 bg-[#0e0e10]">
+                <footer className="border-t border-slate-800 py-16 text-center text-sm text-slate-500 bg-[#050505]">
                     <p className="mb-8 text-base">Based on the lecture <span className="text-slate-300 font-bold">"The Only Trait for Success in the AI Era"</span> by Po-Shen Loh.</p>
                     <div className="flex flex-col sm:flex-row justify-center gap-6 mt-4">
                         <a href="https://poshenloh.com/" target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-slate-900 border border-slate-700 text-cyan-400 font-bold hover:bg-slate-800 hover:text-cyan-300 transition-all hover:-translate-y-1">

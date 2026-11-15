@@ -61,7 +61,7 @@ export default function Terminus() {
                             as="button"
                             type="button"
                             onClick={onCopy}
-                            className="group inline-flex items-center gap-3 rounded-[4px] bg-text-strong px-8 py-4 text-sm font-medium tracking-wide text-bg transition-colors hover:bg-signal"
+                            className="group inline-flex items-center gap-3 rounded-full bg-text-strong px-8 py-4 text-sm font-medium tracking-wide text-bg transition-colors hover:bg-text"
                             data-cursor="copy"
                             aria-label={`Copy email address ${EMAIL}`}
                         >
@@ -77,7 +77,7 @@ export default function Terminus() {
                                 openIntro();
                             }}
                             aria-haspopup="dialog"
-                            className="inline-flex items-center gap-2 rounded-[4px] border border-signal/30 px-7 py-4 text-sm font-medium text-signal transition-colors hover:bg-signal/10 hover:text-text-strong"
+                            className="inline-flex items-center gap-2 rounded-full border border-signal/30 px-7 py-4 text-sm font-medium text-signal transition-colors hover:bg-signal/10 hover:text-text-strong"
                         >
                             Write an intro <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
                         </a>
