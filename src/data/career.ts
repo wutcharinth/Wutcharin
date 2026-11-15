@@ -26,6 +26,7 @@ const newestFirst: Job[] = [
             'Lead a team of 12 Analytics Engineering professionals across analytics, AI and automation.',
             'Set the AI vision and roadmap for the department. Built AI agents (RAG, Auto-SQL) and ran workshops.',
             'Saved 15,000+ hours a year with automation and machine learning for collection risk and cashback liability.',
+            'Moving traditional automation like RPA to agentic controlled automation: AI agents that run with guardrails and tests.',
             'Compared financial statements with operational data to explain revenue and cost changes to leadership.',
             'Guest speaker at Agoda\'s People Team Offsite 2026. Presented the Finance AI Showcase to the People team.',
         ],

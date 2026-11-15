@@ -68,8 +68,13 @@ export default function Principle() {
                         <ChapterLabel index="02" name="Principle" className="mb-6" />
                     </div>
                     <Rise
-                        className="text-4xl leading-[0.98] tracking-[-0.02em] text-text-strong md:text-6xl"
-                        parts={['Most work repeats. The skill is to see', { text: 'what does not', accent: true }, { text: '.', glue: true }]}
+                        className="text-4xl leading-[0.98] tracking-[-0.02em] text-text-strong md:w-[44rem] md:text-6xl"
+                        parts={[
+                            'Code takes the volume.',
+                            { text: 'People take the', line: true },
+                            { text: 'judgment', accent: true },
+                            { text: '.', glue: true },
+                        ]}
                     />
                     <p data-reveal-child className="mt-8 text-base font-light leading-relaxed text-text-mute md:text-lg">
                         For 20 years I have turned data into decisions for C-level leaders, in aviation, media and travel tech. Today

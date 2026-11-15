@@ -66,10 +66,10 @@ const ScrollToTop = () => {
 // Minimal branded loader shown during a chunk fetch. Transparent over the
 // persistent field — the world keeps moving while the chunk arrives.
 const RouteLoader = () => (
-  <div className="fixed inset-0 z-[8000] flex flex-col items-center justify-center gap-4 bg-[#020617]/60">
+  <div className="fixed inset-0 z-[8000] flex flex-col items-center justify-center gap-4 bg-bg/60">
     <div className="relative h-8 w-8">
       <div className="absolute inset-0 rounded-full border border-white/10" />
-      <div className="absolute inset-0 rounded-full border-t border-violet-400 animate-spin [animation-duration:0.9s]" />
+      <div className="absolute inset-0 rounded-full border-t border-signal animate-spin [animation-duration:0.9s]" />
     </div>
     <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/35">
       Resolving / Signal

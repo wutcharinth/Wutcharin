@@ -10,8 +10,8 @@ import CameraRig from './CameraRig';
 import { useTheme } from '../lib/theme';
 
 const SCRIM = {
-    dark: 'linear-gradient(180deg, rgba(2,6,23,0.28) 0%, rgba(2,6,23,0.46) 55%, rgba(2,6,23,0.52) 100%)',
-    light: 'linear-gradient(180deg, rgba(244,245,249,0.30) 0%, rgba(244,245,249,0.48) 55%, rgba(244,245,249,0.55) 100%)',
+    dark: 'linear-gradient(180deg, rgba(14,14,16,0.28) 0%, rgba(14,14,16,0.46) 55%, rgba(14,14,16,0.52) 100%)',
+    light: 'linear-gradient(180deg, rgba(236,236,238,0.36) 0%, rgba(236,236,238,0.52) 55%, rgba(236,236,238,0.6) 100%)',
 } as const;
 
 /**

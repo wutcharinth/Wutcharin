@@ -81,7 +81,7 @@ export default function ParticleField({ texSize, light = false }: { texSize: num
             uDensity: { value: 1 },
             uPointerWorld: { value: new THREE.Vector3(0, 0, -50) },
             uRepel: { value: 0 },
-            uColorBase: { value: new THREE.Color('#8e9bb8').multiplyScalar(0.55) },
+            uColorBase: { value: new THREE.Color('#9d9da6').multiplyScalar(0.5) },
             uAccent: { value: new THREE.Color(sceneBus.targets.accent) },
             uOpacity: { value: 0 },
             uGlow: { value: GLOW },
