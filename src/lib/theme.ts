@@ -18,6 +18,8 @@ function read(): Theme {
 
 let current: Theme = read();
 
+let switchTimer = 0;
+
 function apply(theme: Theme) {
     const html = document.documentElement;
     html.classList.toggle('light', theme === 'light');
@@ -27,13 +29,17 @@ function apply(theme: Theme) {
 export function initTheme() {
     if (typeof window === 'undefined') return;
     apply(current);
-    // Enable transitions only after the initial class is set.
-    requestAnimationFrame(() => document.documentElement.classList.add('theme-ready'));
 }
 
 export function setTheme(theme: Theme) {
     current = theme;
-    if (typeof window !== 'undefined') localStorage.setItem(KEY, theme);
+    if (typeof window !== 'undefined') {
+        localStorage.setItem(KEY, theme);
+        const html = document.documentElement;
+        html.classList.add('theme-switching');
+        window.clearTimeout(switchTimer);
+        switchTimer = window.setTimeout(() => html.classList.remove('theme-switching'), 360);
+    }
     apply(theme);
     listeners.forEach((fn) => fn());
 }

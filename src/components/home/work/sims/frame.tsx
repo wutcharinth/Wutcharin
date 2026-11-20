@@ -38,7 +38,10 @@ export function SimFrame({
     const palette = light ? LIGHT : DARK;
     return (
         <PaletteContext.Provider value={palette}>
-            <div className="relative h-full w-full overflow-hidden rounded-lg border border-hairline bg-bg">
+            <div
+                data-cursor="play"
+                className="frame-ticks relative h-full w-full overflow-hidden rounded-lg border border-hairline bg-bg transition-colors duration-300 hover:border-hairline-strong"
+            >
                 <Canvas
                     frameloop={running ? 'always' : 'never'}
                     dpr={[1, compact ? 1.5 : 1.75]}
@@ -74,6 +77,7 @@ export function HudButton({ children, onClick, primary = false, disabled = false
             type="button"
             onClick={onClick}
             disabled={disabled}
+            data-cursor=""
             className={`pointer-events-auto rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors disabled:opacity-40 ${
                 primary ? 'bg-text-strong text-bg hover:bg-text' : 'border border-hairline-strong bg-veil text-text-strong hover:border-signal'
             } ${className}`}

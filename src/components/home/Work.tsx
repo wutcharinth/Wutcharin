@@ -9,24 +9,23 @@ import { detectTier, simsAllowed } from '../../scene/tier';
 import ChapterLabel from './ChapterLabel';
 import Poster from './work/Poster';
 import SimStage from './work/sims';
+import { preloadSims } from './work/sims/loaders';
 import { hasSim } from './work/sims/ids';
 import { DOES, kind, opens } from './work/specimens/copy';
-
-const loadSpecimens = () => import('./work/specimens/SpecimenCanvas');
-const SpecimenCanvas = lazy(loadSpecimens);
 import { SIGNAL } from './scenes';
 import { useScrollTo } from './useScrollTo';
 import Rise from './Rise';
 
+const loadSpecimens = () => import('./work/specimens/SpecimenCanvas');
+const SpecimenCanvas = lazy(loadSpecimens);
+
 /**
  * Chapter 03: Work.
- *   Theatre: four products, each with a live 3D simulation of what it does.
- *            The section pins; scrolling (or the arrows) moves between them,
- *            and the simulation in front can be played. The particle field
- *            rests while this chapter holds the screen.
- *   Index:   everything else, filterable. On pointer devices a card follows
- *            the cursor with a live 3D specimen of what the hovered project
- *            does, in the same language as the simulations above.
+ *   Theatre: four products, each with a preloaded live 3D simulation. Tighter
+ *            pinning (310vh) paired with named interactive tabs and arrow keys.
+ *   Index:   everything else, filterable, with an editorial column header,
+ *            pointer + keyboard-accessible 3D specimen preview, and enriched
+ *            mobile rows showing one-line summaries and stack tags.
  */
 
 const featured = projects
@@ -67,7 +66,7 @@ const focusRing =
 function Heading() {
     return (
         <div>
-            <ChapterLabel index="03" name="Work" className="mb-6" />
+            <ChapterLabel index="03" name="Work" className="mb-5" />
             <Rise
                 className="text-4xl leading-[0.95] tracking-[-0.02em] text-text-strong md:text-6xl"
                 parts={['Selected', { text: 'work', accent: true }]}
@@ -82,12 +81,29 @@ function PlateCopy({ project, index }: { project: Project; index: number }) {
         <div>
             <div className="flex items-baseline gap-3 font-mono text-[11px] uppercase tracking-[0.28em]">
                 <span className="tabular-nums text-text-mute">{String(index + 1).padStart(2, '0')}</span>
-                <span className="text-signal">{project.badge ?? (isExternal(project) ? new URL(project.link).hostname.replace(/^www\./, '') : project.role)}</span>
+                <span className="text-signal">
+                    {project.badge ?? (isExternal(project) ? new URL(project.link).hostname.replace(/^www\./, '') : project.role)}
+                </span>
             </div>
-            <h3 className="mt-4 text-4xl leading-[0.92] tracking-[-0.02em] text-text-strong md:text-5xl xl:text-6xl">{project.title}</h3>
-            {project.tagline && <p className="mt-4 font-serif text-xl italic text-text md:text-2xl">{project.tagline}</p>}
-            <p className="mt-4 max-w-md text-sm font-light leading-relaxed text-text-mute md:text-base">{project.desc}</p>
-            <div className="mt-7 flex flex-wrap items-center gap-3">
+            <h3 className="mt-3.5 text-4xl leading-[0.92] tracking-[-0.02em] text-text-strong md:text-5xl xl:text-6xl">{project.title}</h3>
+            {project.tagline && <p className="mt-3.5 font-serif text-xl italic text-text md:text-2xl">{project.tagline}</p>}
+            <p className="mt-3.5 max-w-md text-sm font-light leading-relaxed text-text-mute md:text-base">{project.desc}</p>
+
+            {/* Technical stack tags as restrained monochrome hairlines. */}
+            {project.tags.length > 0 && (
+                <ul className="mt-5 flex flex-wrap gap-1.5" aria-label="Technology stack">
+                    {project.tags.slice(0, 3).map((tag) => (
+                        <li
+                            key={tag}
+                            className="rounded-full border border-hairline px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-text-mute"
+                        >
+                            {tag}
+                        </li>
+                    ))}
+                </ul>
+            )}
+
+            <div className="mt-6 flex flex-wrap items-center gap-3">
                 <ProjectLink
                     project={project}
                     className={`group inline-flex items-center gap-2 rounded-full border border-hairline-strong px-5 py-2.5 text-sm text-text-strong transition-colors hover:bg-text-strong hover:text-bg ${focusRing}`}
@@ -117,8 +133,8 @@ function Stage({ project, index, running, compact }: { project: Project; index: 
 
 function StageLoading() {
     return (
-        <div className="flex h-full w-full items-center justify-center rounded-lg border border-hairline">
-            <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-text-mute">Loading simulation</span>
+        <div className="frame-ticks flex h-full w-full items-center justify-center rounded-lg border border-hairline">
+            <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-text-mute">Initializing stage</span>
         </div>
     );
 }
@@ -135,7 +151,7 @@ function StageSlot({ project, index }: { project: Project; index: number }) {
         return () => io.disconnect();
     }, []);
     return (
-        <div ref={ref} className="h-[480px] w-full">
+        <div ref={ref} className="h-[460px] w-full">
             {visible ? <Stage project={project} index={index} running compact /> : <StageLoading />}
         </div>
     );
@@ -149,12 +165,27 @@ function Theatre() {
     const scrollTo = useScrollTo();
     const n = featured.length;
 
+    // Preload all 4 simulation chunks well before the user reaches #work.
+    useEffect(() => {
+        const el = sectionRef.current;
+        if (!el || !simsAllowed()) return;
+        const io = new IntersectionObserver(
+            ([e]) => {
+                if (e.isIntersecting) {
+                    preloadSims();
+                    io.disconnect();
+                }
+            },
+            { rootMargin: '500px 0px' },
+        );
+        io.observe(el);
+        return () => io.disconnect();
+    }, []);
+
     useEffect(() => {
         const section = sectionRef.current;
         if (!section) return;
-        // The simulations are the motion here: the field rests while this
-        // chapter holds the screen, so only one canvas is drawing.
-        const rest = () => {
+        const restField = () => {
             if (!sceneOff) sceneBus.apply({ mode: 'hidden' });
         };
         const ctx = gsap.context(() => {
@@ -169,28 +200,29 @@ function Theatre() {
                 start: 'top 55%',
                 end: 'bottom 45%',
                 onToggle: (self) => setInView(self.isActive),
-                onEnter: rest,
-                onEnterBack: rest,
+                onEnter: restField,
+                onEnterBack: restField,
             });
         }, section);
         return () => ctx.revert();
     }, [sceneOff, n]);
 
     const goTo = (i: number) => {
+        const clamped = Math.max(0, Math.min(n - 1, i));
         const section = sectionRef.current;
         if (!section) return;
         const top = section.getBoundingClientRect().top + window.scrollY;
-        scrollTo(top + (section.offsetHeight - window.innerHeight) * (i / (n - 1)) + 2);
+        scrollTo(top + (section.offsetHeight - window.innerHeight) * (clamped / (n - 1)) + 2);
     };
 
     const onKey = (e: KeyboardEvent) => {
         if ((e.target as HTMLElement).closest('button, a, input')) return;
         if (e.key === 'ArrowRight') {
             e.preventDefault();
-            goTo(Math.min(n - 1, active + 1));
+            goTo(active + 1);
         } else if (e.key === 'ArrowLeft') {
             e.preventDefault();
-            goTo(Math.max(0, active - 1));
+            goTo(active - 1);
         }
     };
 
@@ -203,21 +235,21 @@ function Theatre() {
             aria-label="Selected work"
             aria-roledescription="carousel"
             className="relative"
-            style={{ height: `${n * 100 + 20}vh` }}
+            style={{ height: `${n * 72 + 22}vh` }}
             onKeyDown={onKey}
         >
             <div className="sticky top-0 flex h-[100svh] flex-col overflow-hidden">
-                <div className="relative mx-auto flex w-full max-w-6xl items-end justify-between gap-6 px-10 pt-24">
+                <div className="relative mx-auto flex w-full max-w-6xl items-end justify-between gap-6 px-10 pt-20">
                     <Heading />
                     <p className="hidden max-w-xs pb-2 text-right text-sm font-light leading-relaxed text-text-mute lg:block">
-                        {COUNT_WORD[n] ?? n} products, each running live.
+                        {COUNT_WORD[n] ?? n} flagship builds running live.
                         <br />
-                        Scroll or use the arrows, then try the one in front of you.
+                        Pick any tab below, then interact with the stage.
                     </p>
                 </div>
 
-                <div className="relative mx-auto grid min-h-0 w-full max-w-6xl flex-1 grid-cols-12 items-center gap-10 px-10 py-6">
-                    {/* The copy changes in place as the stage changes. */}
+                <div className="relative mx-auto grid min-h-0 w-full max-w-6xl flex-1 grid-cols-12 items-center gap-10 px-10 py-5">
+                    {/* The copy changes smoothly in place as the stage changes. */}
                     <div className="relative col-span-4 h-full">
                         {featured.map((p, i) => (
                             <div
@@ -229,7 +261,7 @@ function Theatre() {
                                 className="absolute inset-0 flex flex-col justify-center transition-[opacity,transform] duration-700 [transition-timing-function:var(--ease-out-expo)]"
                                 style={{
                                     opacity: i === active ? 1 : 0,
-                                    transform: `translateY(${(i - active) * 28}px)`,
+                                    transform: `translateY(${(i - active) * 24}px)`,
                                     pointerEvents: i === active ? 'auto' : 'none',
                                     visibility: Math.abs(i - active) > 1 ? 'hidden' : 'visible',
                                 }}
@@ -238,15 +270,15 @@ function Theatre() {
                             </div>
                         ))}
                     </div>
-                    <div className="col-span-8 h-full max-h-[620px] min-h-[380px]">
+                    <div className="col-span-8 h-full max-h-[600px] min-h-[360px]">
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={project.id}
                                 className="h-full w-full"
-                                initial={{ opacity: 0, scale: 0.985 }}
+                                initial={{ opacity: 0, scale: 0.99 }}
                                 animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.985 }}
-                                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                                exit={{ opacity: 0, scale: 0.99 }}
+                                transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
                             >
                                 <Stage project={project} index={active} running={inView} compact={false} />
                             </motion.div>
@@ -254,31 +286,45 @@ function Theatre() {
                     </div>
                 </div>
 
-                {/* Counter + progress: always know where you are. */}
-                <div className="relative mx-auto flex w-full max-w-6xl items-center gap-6 px-10 pb-8 font-mono text-[11px] uppercase tracking-[0.28em] text-text-mute">
-                    <span className="tabular-nums text-text-strong">
-                        {String(active + 1).padStart(2, '0')} <span className="text-text-mute">/ {String(n).padStart(2, '0')}</span>
-                    </span>
-                    <div className="flex flex-1 gap-1.5" role="tablist" aria-label="Case studies">
-                        {featured.map((p, i) => (
-                            <button
-                                key={p.id}
-                                type="button"
-                                role="tab"
-                                aria-selected={i === active}
-                                aria-label={p.title}
-                                onClick={() => goTo(i)}
-                                className="group h-6 flex-1"
-                            >
-                                <span
-                                    className="block h-[2px] w-full transition-colors duration-500 group-hover:bg-text-strong/60"
-                                    style={{ backgroundColor: i <= active ? 'var(--color-signal)' : 'var(--color-hairline-strong)' }}
-                                />
-                            </button>
-                        ))}
+                {/* Named product tab bar + arrow steppers: see all four builds at once. */}
+                <div className="relative mx-auto flex w-full max-w-6xl items-end gap-6 px-10 pb-7">
+                    <div className="grid flex-1 grid-cols-4 gap-4" role="tablist" aria-label="Case studies">
+                        {featured.map((p, i) => {
+                            const on = i === active;
+                            return (
+                                <button
+                                    key={p.id}
+                                    type="button"
+                                    role="tab"
+                                    aria-selected={on}
+                                    onClick={() => goTo(i)}
+                                    data-cursor="view"
+                                    className="group text-left"
+                                >
+                                    <span className="relative block h-px w-full bg-hairline-strong">
+                                        <span
+                                            className="absolute inset-0 origin-left bg-signal transition-transform duration-500 [transition-timing-function:var(--ease-out-expo)]"
+                                            style={{ transform: `scaleX(${i <= active ? 1 : 0})` }}
+                                        />
+                                    </span>
+                                    <span className="mt-2.5 flex items-baseline gap-2">
+                                        <span className="font-mono text-[10px] tabular-nums text-text-mute">
+                                            0{i + 1}
+                                        </span>
+                                        <span
+                                            className={`truncate font-display text-sm font-medium tracking-[-0.01em] transition-colors ${
+                                                on ? 'text-text-strong' : 'text-text-mute group-hover:text-text'
+                                            }`}
+                                        >
+                                            {p.title}
+                                        </span>
+                                    </span>
+                                </button>
+                            );
+                        })}
                     </div>
-                    <span className="hidden max-w-[16rem] truncate md:inline">{project.title}</span>
-                    <div className="flex items-center gap-2">
+
+                    <div className="flex shrink-0 items-center gap-2">
                         {(
                             [
                                 ['Previous case study', active - 1, ArrowLeft],
@@ -291,7 +337,8 @@ function Theatre() {
                                 aria-label={label}
                                 disabled={to < 0 || to > n - 1}
                                 onClick={() => goTo(to)}
-                                className="flex h-10 w-10 items-center justify-center rounded-full border border-hairline-strong text-text-strong transition-colors hover:border-signal hover:bg-signal/10 disabled:cursor-default disabled:border-hairline disabled:text-text-mute/40 disabled:hover:bg-transparent"
+                                data-cursor="step"
+                                className="flex h-9 w-9 items-center justify-center rounded-full border border-hairline-strong text-text-strong transition-colors hover:border-signal hover:bg-signal/10 disabled:cursor-default disabled:border-hairline disabled:text-text-mute/40 disabled:hover:bg-transparent"
                             >
                                 <Icon className="h-4 w-4" aria-hidden="true" />
                             </button>
@@ -310,7 +357,6 @@ function Stack() {
     useEffect(() => {
         const el = ref.current;
         if (!el || reduced || detectTier() === null) return;
-        // One canvas at a time on a phone: the field rests while the simulations play.
         const apply = () => sceneBus.apply({ mode: 'hidden' });
         const st = ScrollTrigger.create({ trigger: el, start: 'top 55%', end: 'bottom 45%', onEnter: apply, onEnterBack: apply });
         return () => st.kill();
@@ -334,19 +380,29 @@ function Stack() {
     );
 }
 
-function IndexRow({ project, onHover }: { project: Project; onHover: (p: Project | null) => void }) {
+function IndexRow({
+    project,
+    onHover,
+    onKeyboardFocus,
+}: {
+    project: Project;
+    onHover: (p: Project | null) => void;
+    onKeyboardFocus: (p: Project | null, rect?: DOMRect) => void;
+}) {
     const agent = project.tier === 'agent';
     return (
         <ProjectLink
             project={project}
             onMouseEnter={() => onHover(project)}
             onMouseLeave={() => onHover(null)}
-            className={`group relative grid grid-cols-12 items-center gap-x-4 border-t border-hairline px-2 py-4 -mx-2 rounded-md transition-[background-color,opacity] duration-300 hover:bg-panel group-hover/index:opacity-40 hover:!opacity-100 focus-visible:!opacity-100 ${focusRing}`}
+            onFocus={(e: React.FocusEvent<HTMLElement>) => onKeyboardFocus(project, e.currentTarget.getBoundingClientRect())}
+            onBlur={() => onKeyboardFocus(null)}
+            className={`group relative -mx-2 grid grid-cols-12 items-center gap-x-4 rounded-md border-t border-hairline px-2 py-4 transition-[background-color,opacity] duration-300 hover:bg-panel group-hover/index:opacity-40 hover:!opacity-100 focus-visible:!opacity-100 ${focusRing}`}
         >
             {/* A line of signal draws across the row's top edge on hover. */}
             <span
                 aria-hidden="true"
-                className="absolute inset-x-2 -top-px h-px origin-left scale-x-0 bg-signal transition-transform duration-500 [transition-timing-function:var(--ease-out-expo)] group-hover:scale-x-100"
+                className="absolute inset-x-2 -top-px h-px origin-left scale-x-0 bg-signal transition-transform duration-500 [transition-timing-function:var(--ease-out-expo)] group-hover:scale-x-100 group-focus-visible:scale-x-100"
             />
             <span className="col-span-1 flex justify-center" aria-hidden="true">
                 {agent ? (
@@ -364,8 +420,13 @@ function IndexRow({ project, onHover }: { project: Project; onHover: (p: Project
                     onHover
                     className={`truncate text-base font-medium tracking-tight text-text-strong md:text-lg ${agent ? 'font-mono !text-sm md:!text-base' : ''}`}
                 />
-                {/* Phones have no room for the tagline column: it sits under the name. */}
-                <span className="mt-0.5 block truncate text-xs font-light text-text-mute sm:hidden">{project.tagline ?? project.role}</span>
+                {/* Phones lack the hover specimen card: show the crisp 1-line summary + top 2 tags directly. */}
+                <span className="mt-1 block text-xs font-light leading-snug text-text-mute sm:hidden">
+                    {DOES[project.id] ?? project.tagline ?? project.role}
+                </span>
+                <span className="mt-1.5 block truncate font-mono text-[9px] uppercase tracking-[0.18em] text-text-mute/80 sm:hidden">
+                    {project.tags.slice(0, 2).join(' · ')}
+                </span>
             </span>
             <span className="hidden truncate font-mono text-[11px] uppercase tracking-[0.18em] text-text-mute sm:col-span-4 sm:block">
                 {project.tagline ?? project.role}
@@ -383,7 +444,6 @@ function IndexRow({ project, onHover }: { project: Project; onHover: (p: Project
 function Index() {
     const sectionRef = useRef<HTMLElement>(null);
     const reduced = usePrefersReducedMotion();
-    // The index is for reading: the field steps back to an ambient network.
     useEffect(() => {
         const el = sectionRef.current;
         if (!el || reduced || detectTier() === null) return;
@@ -391,6 +451,7 @@ function Index() {
         const st = ScrollTrigger.create({ trigger: el, start: 'top 60%', end: 'bottom 40%', onEnter: apply, onEnterBack: apply });
         return () => st.kill();
     }, [reduced]);
+
     const [filter, setFilter] = useState<Filter>('all');
     const [hovered, setHoveredState] = useState<Project | null>(null);
     const [shown, setShown] = useState<Project | null>(null);
@@ -400,7 +461,7 @@ function Index() {
     };
     const [pointerFine] = useState(() => window.matchMedia('(hover: hover) and (pointer: fine)').matches);
     const [specimens] = useState(() => simsAllowed());
-    // Fetch the 3D card's code as the index comes into view, so the first hover is instant.
+
     useEffect(() => {
         const el = sectionRef.current;
         if (!el || !pointerFine || !specimens) return;
@@ -413,10 +474,20 @@ function Index() {
         io.observe(el);
         return () => io.disconnect();
     }, [pointerFine, specimens]);
+
     const x = useMotionValue(0);
     const y = useMotionValue(0);
     const sx = useSpring(x, { stiffness: 260, damping: 28, mass: 0.6 });
     const sy = useSpring(y, { stiffness: 260, damping: 28, mass: 0.6 });
+
+    const handleKeyboardFocus = (p: Project | null, rect?: DOMRect) => {
+        setHovered(p);
+        if (p && rect && pointerFine) {
+            const W = 320;
+            x.set(Math.max(24, window.innerWidth - W - 36));
+            y.set(Math.min(Math.max(rect.top + rect.height / 2, 260), window.innerHeight - 220));
+        }
+    };
 
     const counts = useMemo(
         () => ({
@@ -436,10 +507,8 @@ function Index() {
             <div
                 className="mx-auto max-w-6xl"
                 onMouseMove={(e) => {
-                    // The card sits right of the cursor, or left of it near the edge, and stays on screen.
                     const W = 320;
                     x.set(e.clientX + 24 + W > window.innerWidth ? e.clientX - 24 - W : e.clientX + 24);
-                    // Clear of the fixed header (about 64px) at the top.
                     y.set(Math.min(Math.max(e.clientY, 292), window.innerHeight - 212));
                 }}
             >
@@ -473,6 +542,18 @@ function Index() {
                     </div>
                 </div>
 
+                {/* Editorial column header bar on tablet/desktop. */}
+                <div
+                    aria-hidden="true"
+                    className="hidden grid-cols-12 gap-x-4 py-3 font-mono text-[10px] uppercase tracking-[0.24em] text-text-mute/70 sm:grid"
+                >
+                    <span className="col-span-1 text-center">State</span>
+                    <span className="col-span-5">Project</span>
+                    <span className="col-span-4">Summary</span>
+                    <span className="col-span-1 text-right">Kind</span>
+                    <span className="col-span-1" />
+                </div>
+
                 <motion.ul layout className="group/index border-b border-hairline">
                     <AnimatePresence initial={false} mode="popLayout">
                         {sorted.map((p) => (
@@ -484,14 +565,14 @@ function Index() {
                                 exit={{ opacity: 0, y: -8 }}
                                 transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                             >
-                                <IndexRow project={p} onHover={setHovered} />
+                                <IndexRow project={p} onHover={setHovered} onKeyboardFocus={handleKeyboardFocus} />
                             </motion.li>
                         ))}
                     </AnimatePresence>
                 </motion.ul>
             </div>
 
-            {/* Cursor-following specimen card: pointer devices only. */}
+            {/* Cursor-following & keyboard-anchored 3D specimen preview card. */}
             {pointerFine && (
                 <motion.div aria-hidden="true" className="pointer-events-none fixed left-0 top-0 z-40 w-80" style={{ x: sx, y: sy, translateY: '-50%' }}>
                     <motion.div

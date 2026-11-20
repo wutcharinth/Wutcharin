@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { ArrowDown, ArrowUpRight, Check, Copy } from 'lucide-react';
+import { ArrowDown, ArrowUp, ArrowUpRight, Check, Copy } from 'lucide-react';
 import { MagneticButton, RevealOnScroll } from '../../lib/motion';
 import ChapterLabel from './ChapterLabel';
 import { addressScene } from './scenes';
@@ -7,20 +7,22 @@ import { useChapterScene } from './useChapterScene';
 import { useBangkokTime } from './useBangkokTime';
 import { EMAIL, INTRO_MAILTO, LINKEDIN, GITHUB, RESUME, copyEmail } from './contact';
 import { openIntro } from '../intro/introBus';
+import { useScrollTo } from './useScrollTo';
 import Rise from './Rise';
 
 const terminusScene = () => addressScene(EMAIL);
 
 /**
  * Chapter 05: Connect. The field converges one last time, into the address
- * itself. The real controls sit below it: copy is the fast path, mail the
- * considered one.
+ * itself. Clicking directly on the live particle address stage copies it,
+ * paired with primary copy and intro controls below.
  */
 export default function Terminus() {
     const ref = useRef<HTMLElement>(null);
     const { sceneOff } = useChapterScene(ref, terminusScene);
     const [copied, setCopied] = useState(false);
     const time = useBangkokTime();
+    const scrollTo = useScrollTo();
 
     const onCopy = async () => {
         if (await copyEmail()) {
@@ -48,12 +50,42 @@ export default function Terminus() {
                     </p>
                 </RevealOnScroll>
 
-                {/* The stage where the particles spell the address. */}
-                <div className={sceneOff ? 'py-10' : 'min-h-[24vh] flex-1'} aria-hidden={!sceneOff}>
+                {/* Interactive particle-address stage: click directly on the address to copy. */}
+                <button
+                    type="button"
+                    onClick={onCopy}
+                    data-cursor="copy"
+                    aria-label={`Copy email address ${EMAIL}`}
+                    className={`group relative flex w-full max-w-3xl flex-col items-center justify-center rounded-xl transition-colors ${
+                        sceneOff ? 'my-6 py-10 hover:bg-panel' : 'min-h-[24vh] flex-1'
+                    }`}
+                >
                     {sceneOff && (
-                        <p className="whitespace-nowrap font-display text-[clamp(1.25rem,6.6vw,1.875rem)] font-semibold tracking-[-0.02em] text-text-strong md:text-6xl">{EMAIL}</p>
+                        <p className="whitespace-nowrap font-display text-[clamp(1.25rem,6.6vw,1.875rem)] font-semibold tracking-[-0.02em] text-text-strong md:text-6xl">
+                            {EMAIL}
+                        </p>
                     )}
-                </div>
+                    <span
+                        aria-hidden="true"
+                        className={`mt-auto inline-flex items-center gap-1.5 rounded-full border px-3 py-1 font-mono text-[10px] uppercase tracking-[0.24em] transition-all duration-300 ${
+                            copied
+                                ? 'border-signal/60 bg-signal/15 text-text-strong opacity-100'
+                                : 'border-hairline bg-veil text-text-mute opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100'
+                        }`}
+                    >
+                        {copied ? (
+                            <>
+                                <Check className="h-3 w-3 text-signal" />
+                                Copied to clipboard
+                            </>
+                        ) : (
+                            <>
+                                <Copy className="h-3 w-3" />
+                                Click to copy
+                            </>
+                        )}
+                    </span>
+                </button>
 
                 <div className="flex w-full flex-col items-center gap-10">
                     <div className="flex flex-col items-center gap-3 sm:flex-row">
@@ -77,6 +109,7 @@ export default function Terminus() {
                                 openIntro();
                             }}
                             aria-haspopup="dialog"
+                            data-cursor="open"
                             className="inline-flex items-center gap-2 rounded-full border border-signal/30 px-7 py-4 text-sm font-medium text-signal transition-colors hover:bg-signal/10 hover:text-text-strong"
                         >
                             Write an intro <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
@@ -88,17 +121,34 @@ export default function Terminus() {
 
                     <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 font-mono text-[11px] uppercase tracking-[0.28em]">
                         <li>
-                            <a href={LINKEDIN} target="_blank" rel="noopener noreferrer" className="text-text-mute transition-colors hover:text-text-strong">
+                            <a
+                                href={LINKEDIN}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                data-cursor="open"
+                                className="text-text-mute transition-colors hover:text-text-strong"
+                            >
                                 LinkedIn ↗
                             </a>
                         </li>
                         <li>
-                            <a href={GITHUB} target="_blank" rel="noopener noreferrer" className="text-text-mute transition-colors hover:text-text-strong">
+                            <a
+                                href={GITHUB}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                data-cursor="open"
+                                className="text-text-mute transition-colors hover:text-text-strong"
+                            >
                                 GitHub ↗
                             </a>
                         </li>
                         <li>
-                            <a href={RESUME} download="Wutcharin_Thatan_Resume.pdf" className="inline-flex items-center gap-1 text-text-mute transition-colors hover:text-text-strong">
+                            <a
+                                href={RESUME}
+                                download="Wutcharin_Thatan_Resume.pdf"
+                                data-cursor="open"
+                                className="inline-flex items-center gap-1 text-text-mute transition-colors hover:text-text-strong"
+                            >
                                 Résumé <ArrowDown className="h-3 w-3" aria-hidden="true" />
                             </a>
                         </li>
@@ -109,7 +159,15 @@ export default function Terminus() {
                         <span className="tabular-nums">
                             Bangkok <span className="text-text-strong">{time}</span> · ICT (UTC+7)
                         </span>
-                        <span>Signal over noise</span>
+                        <button
+                            type="button"
+                            onClick={() => scrollTo(0)}
+                            data-cursor="view"
+                            className="group inline-flex items-center gap-1.5 transition-colors hover:text-text-strong"
+                        >
+                            Back to top
+                            <ArrowUp className="h-3 w-3 transition-transform duration-300 group-hover:-translate-y-0.5" aria-hidden="true" />
+                        </button>
                     </footer>
                 </div>
             </div>
