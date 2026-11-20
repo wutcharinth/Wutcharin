@@ -1,7 +1,7 @@
 import {
     ShieldCheck, SquareKanban, StarHalf, Database,
     FileText, ScanText, Code, Receipt, TrendingUp, Briefcase, Brain,
-    Sparkles, Heart, Inbox, Bot, BookCheck, type LucideIcon,
+    Sparkles, Heart, Inbox, Bot, BookCheck, Plane, type LucideIcon,
 } from 'lucide-react';
 import type { FormationId } from '../scene/formations';
 
@@ -202,6 +202,21 @@ export const projects: Project[] = [
         tier: 'lab',
     },
     {
+        id: 'nava-airlines',
+        featured: 2,
+        formation: 'route',
+        title: 'NAVA Airlines',
+        role: 'Creator & Architect',
+        badge: 'Aviation · Web',
+        desc: "A Bangkok Suvarnabhumi smart-hybrid airline platform built from a decade in airline planning and AI-driven web engineering. Interactive 3D route network, A320neo and A321LR booking flow, seat maps, PromptPay checkout and Orbit loyalty across 17 live routes.",
+        tagline: "Smart-hybrid airline from BKK SAT-1",
+        tags: ['React', 'Cloudflare Workers', '3D Route Network', 'Aviation'],
+        link: 'https://nava-airlines.wutcharin-th.workers.dev/',
+        icon: Plane,
+        accent: '#38bdf8',
+        tier: 'lab',
+    },
+    {
         id: 'flowaios',
         formation: 'terminus',
         title: 'FlowAIOS',
@@ -216,7 +231,7 @@ export const projects: Project[] = [
     },
     {
         id: 'jongtoh',
-        featured: 3,
+        featured: 4,
         title: 'Jongtoh',
         role: 'Founder & Builder',
         desc: "An AI host for Thai restaurants, bars, cafés and live venues. It takes bookings and answers questions on LINE OA. Messenger and IG come next.",
@@ -229,7 +244,7 @@ export const projects: Project[] = [
     },
     {
         id: 'klikr',
-        featured: 4,
+        featured: 5,
         title: 'Klikr',
         role: 'Full Stack Developer',
         desc: "Live quizzes and interactive slides for any audience, scored in real time.",
@@ -242,7 +257,7 @@ export const projects: Project[] = [
     },
     {
         id: 'splitbill-ai',
-        featured: 2,
+        featured: 3,
         title: 'SplitBill AI',
         role: 'Creator & Developer',
         desc: "Photograph a receipt. Gemini reads each item and the app splits the bill.",

@@ -9,6 +9,7 @@ import { SIM_IDS } from './ids';
 
 export const SIM_LOADERS: Record<(typeof SIM_IDS)[number], () => Promise<{ default: ComponentType<SimProps> }>> = {
     pidngod: () => import('./PidngodSim'),
+    'nava-airlines': () => import('./NavaSim'),
     'splitbill-ai': () => import('./SplitBillSim'),
     jongtoh: () => import('./JongtohSim'),
     klikr: () => import('./KlikrSim'),
@@ -16,6 +17,7 @@ export const SIM_LOADERS: Record<(typeof SIM_IDS)[number], () => Promise<{ defau
 
 export const SIM_COMPONENTS: Record<(typeof SIM_IDS)[number], ComponentType<SimProps>> = {
     pidngod: lazy(SIM_LOADERS.pidngod),
+    'nava-airlines': lazy(SIM_LOADERS['nava-airlines']),
     'splitbill-ai': lazy(SIM_LOADERS['splitbill-ai']),
     jongtoh: lazy(SIM_LOADERS.jongtoh),
     klikr: lazy(SIM_LOADERS.klikr),
@@ -23,7 +25,7 @@ export const SIM_COMPONENTS: Record<(typeof SIM_IDS)[number], ComponentType<SimP
 
 let preloaded = false;
 
-/** Warm all 4 simulation chunks once the visitor approaches Chapter 03. */
+/** Warm all simulation chunks once the visitor approaches Chapter 03. */
 export function preloadSims() {
     if (preloaded) return;
     preloaded = true;

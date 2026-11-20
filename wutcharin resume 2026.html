@@ -102,8 +102,8 @@
 
         /* ---------- Section ---------- */
         section {
-            margin-top: 12px;
-            padding-top: 10px;
+            margin-top: 9px;
+            padding-top: 8px;
             border-top: 1px solid rgba(15, 23, 42, 0.08);
         }
         section:first-of-type {
@@ -118,7 +118,7 @@
             letter-spacing: 0.32em;
             text-transform: uppercase;
             color: var(--accent);
-            margin-bottom: 7px;
+            margin-bottom: 6px;
         }
 
         /* ---------- Profile ---------- */
@@ -162,7 +162,7 @@
 
         /* ---------- Experience ---------- */
         .role + .role {
-            margin-top: 10px;
+            margin-top: 8px;
         }
         .role-head {
             display: flex;
@@ -211,7 +211,7 @@
             margin-top: 2px;
             font-size: 10.78px;
             color: var(--ink-2);
-            line-height: 1.45;
+            line-height: 1.42;
         }
         .role li::before {
             content: "•";
@@ -240,14 +240,14 @@
             display: flex;
             justify-content: space-between;
             gap: 12px;
-            padding: 5px 0;
-            font-size: 10.78px;
+            padding: 3.5px 0;
+            font-size: 10.5px;
         }
-        .role-short + .role-short { padding-top: 5px; }
+        .role-short + .role-short { padding-top: 3.5px; }
         .role-short .lhs { color: var(--ink-2); }
         .role-short .lhs .title { font-weight: 700; color: var(--ink); }
         .role-short .lhs .company { font-weight: 500; color: var(--ink-2); }
-        .role-short .lhs .desc { color: var(--muted); line-height: 1.4; }
+        .role-short .lhs .desc { color: var(--muted); line-height: 1.36; }
         .role-short .dates {
             font-size: 9.9px;
             color: var(--muted-2);
@@ -260,33 +260,33 @@
         .project {
             display: grid;
             grid-template-columns: 1fr auto;
-            gap: 2px 14px;
+            gap: 1px 14px;
             align-items: baseline;
-            padding: 4px 0;
+            padding: 3px 0;
         }
         .project:first-child { padding-top: 0; }
         .project .lhs { min-width: 0; }
         .project .name {
-            font-size: 11px;
+            font-size: 10.8px;
             font-weight: 700;
             color: var(--ink);
         }
         .project .role-label {
-            font-size: 9.9px;
+            font-size: 9.7px;
             color: var(--muted);
             font-weight: 500;
         }
         .project .url {
-            font-size: 9.9px;
+            font-size: 9.7px;
             color: var(--accent);
             text-decoration: none;
             font-variant-numeric: tabular-nums;
             white-space: nowrap;
         }
         .project .desc {
-            font-size: 10.45px;
+            font-size: 10.2px;
             color: var(--ink-2);
-            line-height: 1.4;
+            line-height: 1.34;
         }
         .project .desc .stack {
             color: var(--muted);
@@ -506,6 +506,14 @@
 
             <section>
                 <div class="section-hd">Showcase Personal Projects</div>
+
+                <div class="project">
+                    <div class="lhs">
+                        <div><span class="name">NAVA Airlines</span> <span class="role-label">· Creator &amp; Architect · Aviation &amp; AI Web</span></div>
+                        <div class="desc">BKK SAT-1 smart-hybrid airline concept uniting 10+ years of airline network planning with AI-driven web dev — 17-route platform with 3D route map, A320neo/A321LR booking, seat maps, PromptPay &amp; loyalty. <span class="stack">React, Cloudflare Workers, 3D Web.</span></div>
+                    </div>
+                    <a class="url" href="https://nava-airlines.wutcharin-th.workers.dev" target="_blank">nava-airlines.wutcharin-th.workers.dev</a>
+                </div>
 
                 <div class="project">
                     <div class="lhs">

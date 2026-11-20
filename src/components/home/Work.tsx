@@ -271,24 +271,26 @@ function Theatre() {
                         ))}
                     </div>
                     <div className="col-span-8 h-full max-h-[600px] min-h-[360px]">
-                        <AnimatePresence mode="wait">
-                            <motion.div
-                                key={project.id}
-                                className="h-full w-full"
-                                initial={{ opacity: 0, scale: 0.99 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.99 }}
-                                transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                            >
-                                <Stage project={project} index={active} running={inView} compact={false} />
-                            </motion.div>
-                        </AnimatePresence>
+                        <motion.div
+                            key={project.id}
+                            className="h-full w-full"
+                            initial={{ opacity: 0, scale: 0.99 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                        >
+                            <Stage project={project} index={active} running={inView} compact={false} />
+                        </motion.div>
                     </div>
                 </div>
 
-                {/* Named product tab bar + arrow steppers: see all four builds at once. */}
+                {/* Named product tab bar + arrow steppers: see all flagship builds at once. */}
                 <div className="relative mx-auto flex w-full max-w-6xl items-end gap-6 px-10 pb-7">
-                    <div className="grid flex-1 grid-cols-4 gap-4" role="tablist" aria-label="Case studies">
+                    <div
+                        className="grid flex-1 gap-4"
+                        style={{ gridTemplateColumns: `repeat(${n}, minmax(0, 1fr))` }}
+                        role="tablist"
+                        aria-label="Case studies"
+                    >
                         {featured.map((p, i) => {
                             const on = i === active;
                             return (

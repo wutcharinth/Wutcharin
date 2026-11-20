@@ -6,6 +6,7 @@
 - [Home: profile, work and career](https://wutcharin.com/): Overview, selected work and flight log of roles.
 - [Résumé (PDF)](https://wutcharin.com/Wutcharin_CV_2026.pdf): Full CV, 2026.
 - [Pidngod](https://wutcharin.com/pidngod): Proof of concept for Thai month-end close; runs a real check engine on 18 sample documents.
+- [NAVA Airlines](https://nava-airlines.wutcharin-th.workers.dev/): Smart-hybrid airline concept anchored at Bangkok Suvarnabhumi (BKK SAT-1), featuring an interactive 3D route network, A320neo/A321LR booking funnel, seat maps, PromptPay checkout and loyalty calculator across 17 live routes.
 - [Karpathy LLM Guide](https://wutcharin.com/karpathy-deep-dive): Interactive guide to Andrej Karpathy's lecture on using LLMs.
 - [Agentic AI Deep Dive](https://wutcharin.com/agentic-ai): Interactive guide to the Stanford CS230 agentic AI lecture.
 - [The Human Edge](https://wutcharin.com/human-edge): Skills that matter in the AI era.
