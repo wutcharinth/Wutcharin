@@ -1,233 +1,270 @@
-import { ExternalLink, Terminal, Cpu, Layers, Zap, Database, ScanText, Sparkles } from 'lucide-react';
+import { ExternalLink, Cpu, Zap, Database, ScanText, Sparkles, Upload, FileCode2, ShieldCheck } from 'lucide-react';
 import InteractiveOCR from '../components/ocr/InteractiveOCR';
 import ProjectNavigation from '../components/ProjectNavigation';
 import SubPageShell from '../components/shared/SubPageShell';
 import SubPageHero from '../components/shared/SubPageHero';
-import { RevealOnScroll, TiltCard } from '../lib/motion';
+import {
+    AnimatedMetricBar,
+    DemoStageFrame,
+    InteractiveFlowDiagram,
+    SectionHeader,
+    type FlowNodeSpec,
+} from '../components/shared/ShowcaseBlocks';
+import SEO from '../components/SEO';
+import { RevealOnScroll } from '../lib/motion';
 
 const ACCENT = '#3b82f6';
-const ACCENT2 = '#22d3ee';
+
+const SECTIONS = [
+    { id: 'demo', label: 'Live demo' },
+    { id: 'pipeline', label: 'Pipeline' },
+    { id: 'specs', label: 'Specs' },
+];
+
+const capabilities = [
+    'Multimodal understanding',
+    'Handwriting recognition',
+    'Nested table parsing',
+    'Semantic JSON extraction',
+    'Spatial bounding boxes',
+    'Zero-shot document routing',
+];
+
+const pipelineNodes: FlowNodeSpec[] = [
+    {
+        id: 'ingest',
+        step: '01',
+        title: 'Secure upload',
+        role: 'Node proxy',
+        icon: Upload,
+        detail: 'Uploads receipts, handwritten notes, or diagrams to an Express backend proxy, converting the binary image to an inline base64 buffer with zero client API key exposure.',
+        statePreview: `{
+  "mimeType": "image/jpeg",
+  "sizeKb": 318,
+  "apiKeyExposed": false,
+  "proxy": "server/index.js"
+}`,
+        highlightLines: [1, 4],
+    },
+    {
+        id: 'vision',
+        step: '02',
+        title: 'Gemini 2.5 Flash',
+        role: 'Multimodal infer',
+        icon: Sparkles,
+        detail: 'Feeds the image buffer alongside a schema-enforcing system prompt so the model reasons over layout, tables, and handwriting in a single pass.',
+        statePreview: `{
+  "model": "gemini-2.5-flash",
+  "contextWindow": "1M tokens",
+  "schemaMode": "application/json"
+}`,
+        highlightLines: [6, 12],
+    },
+    {
+        id: 'parse',
+        step: '03',
+        title: 'Schema & spatial',
+        role: 'Structured JSON',
+        icon: FileCode2,
+        detail: 'Validates extracted fields, currency totals, and normalized bounding boxes so downstream UI overlays align cleanly with the source scan.',
+        statePreview: `{
+  "fieldsExtracted": 14,
+  "boundingBoxes": 14,
+  "confidence": 0.992,
+  "latencySec": 1.2
+}`,
+        highlightLines: [14, 18],
+    },
+];
+
+const OCR_CODE = `// Express backend proxy keeps API credentials off the client
+const model = genAI.getGenerativeModel({
+  model: 'gemini-2.5-flash',
+});
+
+// Construct multimodal prompt with inline image buffer
+const result = await model.generateContent([
+  'Extract all text, line items, and normalized bounding boxes as JSON.',
+  {
+    inlineData: { data: buffer.toString('base64'), mimeType },
+  },
+]);
+
+// Parse & validate structured extraction payload
+const response = await result.response;
+const payload = JSON.parse(cleanJsonFence(response.text()));
+return res.json({ ok: true, payload });`;
 
 const GeminiOCRPage = () => {
     return (
-        <SubPageShell statusLabel="System Online" accentColor={ACCENT}>
+        <SubPageShell statusLabel="System Online" accentColor={ACCENT} sections={SECTIONS}>
+            <SEO
+                title="Gemini Vision OCR: Multimodal Document Intelligence"
+                description="Extract structured JSON, tables, and handwriting from complex documents using Google Gemini 2.5 Flash behind a secure Node.js proxy."
+                url="https://wutcharin.com/gemini-ocr"
+            />
             <SubPageHero
                 badgeLabel="AI · Multimodal Vision"
                 BadgeIcon={Sparkles}
                 titleLead="Gemini Vision"
                 titleAccent="OCR."
                 accentColor={ACCENT}
-                accentColor2={ACCENT2}
-                index="02"
                 description={
                     <>
-                        Read complex documents and get structured data back. Built on Google <span className="font-normal text-text-strong">Gemini 2.5 Flash</span>.
+                        Read complex documents, handwritten notes, and receipts into clean structured JSON. Built on Google{' '}
+                        <span className="font-normal text-text-strong">Gemini 2.5 Flash</span>.
                     </>
                 }
                 primaryCta={{ label: 'Live demo', href: '#demo', icon: ScanText }}
                 secondaryCta={{ label: 'Gemini model', href: 'https://deepmind.google/technologies/gemini/', icon: ExternalLink, external: true }}
             />
 
-            {/* Demo */}
-            <section id="demo" className="container mx-auto px-6 mb-32">
-                <RevealOnScroll staggerChildren={0.1} duration={0.9}>
-                    <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-12 pb-12 border-b border-white/5">
-                        <div
-                            data-reveal-child
-                            className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 border"
-                            style={{ backgroundColor: `${ACCENT}15`, borderColor: `${ACCENT}33` }}
-                        >
-                            <ScanText className="w-7 h-7" style={{ color: ACCENT }} />
-                        </div>
-                        <div data-reveal-child>
-                            <h2 className="text-3xl md:text-4xl font-medium text-white tracking-[-0.02em] mb-2">Interactive simulation</h2>
-                            <p className="text-slate-400 max-w-2xl font-light leading-relaxed">
-                                Experience the power of multimodal AI. Upload any image — receipts, handwritten notes, or complex diagrams — and watch Gemini analyze it in real-time.
-                            </p>
-                        </div>
-                    </div>
-                </RevealOnScroll>
-                <InteractiveOCR />
+            {/* 01 · Live OCR Demo */}
+            <section id="demo" className="mx-auto mb-24 max-w-6xl scroll-mt-24 px-6 md:mb-32 md:px-10">
+                <SectionHeader
+                    index="01"
+                    eyebrow="Interactive sandbox"
+                    title="Multimodal scan"
+                    accent="in real time."
+                    accentColor={ACCENT}
+                    lead="Test receipts, handwritten notes, or structured forms and inspect how Gemini Vision extracts semantic fields instead of flat character dumps."
+                />
+                <DemoStageFrame
+                    label="Live Simulation · Gemini 2.5 Flash Vision"
+                    accentColor={ACCENT}
+                    badges={['Semantic JSON', 'Handwriting', 'Table Parsing']}
+                >
+                    <InteractiveOCR />
+                </DemoStageFrame>
             </section>
 
-            {/* Content grid */}
-            <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-12">
-                {/* Left Column */}
-                <div className="md:col-span-8 space-y-24">
-                    {/* Overview */}
-                    <RevealOnScroll staggerChildren={0.08} as="section">
-                        <h2 data-reveal-child className="text-2xl md:text-3xl font-medium text-white tracking-[-0.02em] mb-8 flex items-center gap-3">
-                            <Layers className="w-5 h-5" style={{ color: ACCENT }} />
-                            Project overview
-                        </h2>
-                        <p data-reveal-child className="text-base md:text-lg text-slate-300 font-light leading-relaxed mb-10">
-                            This project demonstrates the integration of <span className="text-white">Large Multimodal Models (LMMs)</span> into web applications. Unlike traditional OCR which simply detects characters, Gemini Vision understands the <span style={{ color: ACCENT }}>context</span> and <span style={{ color: ACCENT }}>structure</span> of the document, enabling semantic extraction and reasoning.
-                        </p>
+            {/* 02 · Interactive Multimodal Pipeline */}
+            <section className="mx-auto mb-24 max-w-6xl px-6 md:mb-32 md:px-10">
+                <SectionHeader
+                    id="pipeline"
+                    index="02"
+                    eyebrow="Technical deep dive"
+                    title="From raw pixels to"
+                    accent="verified JSON."
+                    accentColor={ACCENT}
+                    lead="Unlike legacy OCR pipelines that stitch separate deskew, character detection, and regex passes, one multimodal request preserves layout context."
+                />
+                <InteractiveFlowDiagram
+                    nodes={pipelineNodes}
+                    accentColor={ACCENT}
+                    filename="server/index.js"
+                    code={OCR_CODE}
+                />
+            </section>
 
-                        <div data-reveal-child className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-12">
-                            {['Multimodal Understanding', 'Handwriting Recognition', 'Table Parsing', 'Semantic Extraction', 'Spatial Reasoning', 'Zero-shot Classification'].map((item) => (
+            {/* 03 · Capabilities, Security & Benchmarks */}
+            <section id="specs" className="mx-auto mb-16 max-w-6xl scroll-mt-24 px-6 md:px-10">
+                <SectionHeader
+                    index="03"
+                    eyebrow="Capabilities & specs"
+                    title="Engineered for"
+                    accent="production safety."
+                    accentColor={ACCENT}
+                    lead="Every request routes through a server-side proxy so API keys never touch the browser, paired with deterministic JSON parsing."
+                />
+
+                <div className="mt-12 grid gap-8 lg:grid-cols-12">
+                    <RevealOnScroll staggerChildren={0.05} className="space-y-6 lg:col-span-7">
+                        <div className="grid gap-3 sm:grid-cols-2">
+                            {capabilities.map((item, idx) => (
                                 <div
                                     key={item}
-                                    className="flex items-center gap-3 p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:border-white/20 transition-colors"
+                                    data-reveal-child
+                                    className="flex items-center gap-3 rounded-lg border border-hairline bg-panel/50 px-4 py-3.5 transition-colors hover:border-hairline-strong"
                                 >
-                                    <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: ACCENT }} />
-                                    <span className="text-sm text-slate-200 font-light">{item}</span>
-                                </div>
-                            ))}
-                        </div>
-
-                        <div data-reveal-child className="relative rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.03] p-8 overflow-hidden">
-                            <div className="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-emerald-500/10 blur-3xl" aria-hidden="true" />
-                            <div className="flex items-center gap-3 mb-6">
-                                <Database className="w-4 h-4 text-emerald-400" />
-                                <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-emerald-300">Secure architecture</span>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <div>
-                                    <h4 className="font-medium text-white mb-2">Backend proxy</h4>
-                                    <p className="text-sm text-slate-400 font-light leading-relaxed">
-                                        Requests route through a Node.js/Express server. API keys never reach the client.
-                                    </p>
-                                </div>
-                                <div>
-                                    <h4 className="font-medium text-white mb-2">Railway deployment</h4>
-                                    <p className="text-sm text-slate-400 font-light leading-relaxed">
-                                        Full-stack deployment on Railway ensures scalability and env-var protection.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </RevealOnScroll>
-
-                    {/* Technical deep dive */}
-                    <RevealOnScroll staggerChildren={0.08} as="section">
-                        <h2 data-reveal-child className="text-2xl md:text-3xl font-medium text-white tracking-[-0.02em] mb-8 flex items-center gap-3">
-                            <Terminal className="w-5 h-5" style={{ color: ACCENT }} />
-                            Technical deep dive
-                        </h2>
-                        <p data-reveal-child className="text-base md:text-lg text-slate-300 font-light leading-relaxed mb-10">
-                            The application leverages <span className="text-white">Gemini 2.5 Flash</span> via the Google Generative AI SDK. The pipeline handles image encoding, prompt engineering for structured JSON output, and response parsing.
-                        </p>
-
-                        <div data-reveal-child className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
-                            {[
-                                { n: '01', title: 'Input processing', desc: 'Image uploaded and converted to base64 buffer on the backend.' },
-                                { n: '02', title: 'Prompt engineering', desc: 'System prompt instructs the model to extract text and bounding boxes.' },
-                                { n: '03', title: 'Response parsing', desc: 'Raw response cleaned and parsed into structured JSON for the UI.' },
-                            ].map((s) => (
-                                <TiltCard
-                                    key={s.n}
-                                    max={6}
-                                    lift={5}
-                                    className="group relative rounded-2xl border border-white/5 bg-white/[0.02] backdrop-blur-sm p-6 overflow-hidden"
-                                >
-                                    <div className="absolute top-3 right-4 font-mono text-[10px] text-white/20 tracking-widest">{s.n}</div>
-                                    <div className="text-4xl font-medium text-white/10 tracking-tight mb-4 leading-none">{s.n}</div>
-                                    <div className="font-medium text-white mb-2 tracking-tight">{s.title}</div>
-                                    <p className="text-sm text-slate-400 font-light leading-relaxed">{s.desc}</p>
-                                </TiltCard>
-                            ))}
-                        </div>
-
-                        <div data-reveal-child className="rounded-2xl border border-white/5 bg-[#0a0f1c] p-6 font-mono text-xs md:text-sm shadow-2xl overflow-x-auto">
-                            <div className="flex items-center gap-2 mb-5 pb-4 border-b border-white/5">
-                                <div className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
-                                <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
-                                <div className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
-                                <span className="ml-auto text-slate-500 text-[10px]">server/index.js</span>
-                            </div>
-                            <pre className="whitespace-pre-wrap text-slate-300 leading-relaxed">
-{`const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
-
-// Construct multimodal prompt
-const result = await model.generateContent([
-  "Extract all text and return as JSON with bounding boxes...",
-  { inlineData: { data: buffer, mimeType: mimetype } }
-]);
-
-const response = await result.response;
-const text = response.text();`}
-                            </pre>
-                        </div>
-                    </RevealOnScroll>
-                </div>
-
-                {/* Right Column — sticky sidebar */}
-                <div className="md:col-span-4 space-y-6">
-                    <div className="sticky top-28 space-y-6">
-                        <SidebarCard title="Tech stack" icon={Cpu} accent={ACCENT}>
-                            <div className="flex flex-wrap gap-1.5">
-                                {['Gemini 2.5 Flash', 'Node.js', 'Express', 'React', 'Vite', 'Railway'].map((t) => (
-                                    <span key={t} className="px-2.5 py-1 bg-white/[0.03] border border-white/10 rounded-md text-[11px] text-slate-300 font-light">
-                                        {t}
+                                    <span className="font-mono text-[10px] tabular-nums" style={{ color: ACCENT }}>
+                                        0{idx + 1}
                                     </span>
-                                ))}
+                                    <span className="text-sm text-text-strong">{item}</span>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div
+                            data-reveal-child
+                            className="frame-ticks relative rounded-lg border border-hairline bg-panel/60 p-6 md:p-7"
+                        >
+                            <div className="mb-5 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.26em] text-text-mute">
+                                <ShieldCheck className="h-3.5 w-3.5" style={{ color: ACCENT }} aria-hidden="true" />
+                                <span>Secure proxy architecture</span>
                             </div>
-                        </SidebarCard>
+                            <div className="grid gap-6 sm:grid-cols-2">
+                                <div>
+                                    <h3 className="text-base font-medium text-text-strong">Backend proxy</h3>
+                                    <p className="mt-1.5 text-sm font-light leading-relaxed text-text-mute">
+                                        Requests route through a Node.js/Express server. API credentials never reach the client bundle.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h3 className="text-base font-medium text-text-strong">Cloud deployment</h3>
+                                    <p className="mt-1.5 text-sm font-light leading-relaxed text-text-mute">
+                                        Containerized deployment with isolated environment secrets, rate limits, and clean JSON error handling.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </RevealOnScroll>
 
-                        <SidebarCard title="Performance" icon={Zap} accent="#fbbf24">
-                            <MetricBar label="Semantic accuracy" value="99.2%" pct={99.2} color={ACCENT} />
-                            <MetricBar label="Handwriting rec." value="95.5%" pct={95.5} color={ACCENT} />
-                            <MetricBar label="Latency" value="~1.2s" pct={85} color="#10b981" />
-                        </SidebarCard>
+                    <div className="space-y-5 lg:col-span-5">
+                        <div className="rounded-lg border border-hairline bg-panel/50 p-6">
+                            <div className="mb-5 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-text-mute">
+                                <Zap className="h-3.5 w-3.5" style={{ color: ACCENT }} aria-hidden="true" />
+                                <span>Benchmark telemetry</span>
+                            </div>
+                            <AnimatedMetricBar label="Semantic accuracy" value="99.2%" pct={99.2} accentColor={ACCENT} />
+                            <AnimatedMetricBar label="Handwriting recognition" value="95.5%" pct={95.5} accentColor={ACCENT} />
+                            <AnimatedMetricBar label="Median latency" value="~1.2s" pct={86} accentColor="#10b981" />
+                        </div>
 
-                        <SidebarCard title="Model specs" icon={Database} accent="#a855f7">
-                            <dl className="text-[11px] space-y-3">
-                                {[
-                                    ['Model', 'gemini-2.5-flash'],
-                                    ['Context', '1M tokens'],
-                                    ['Input', 'Text + Image'],
-                                ].map(([k, v]) => (
-                                    <div key={k} className="flex justify-between border-b border-white/5 pb-2 last:border-b-0 last:pb-0">
-                                        <dt className="text-slate-500 uppercase tracking-widest">{k}</dt>
-                                        <dd className="font-mono text-white">{v}</dd>
-                                    </div>
-                                ))}
-                            </dl>
-                        </SidebarCard>
+                        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-1">
+                            <div className="rounded-lg border border-hairline bg-panel/50 p-6">
+                                <div className="mb-4 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-text-mute">
+                                    <Database className="h-3.5 w-3.5" style={{ color: ACCENT }} aria-hidden="true" />
+                                    <span>Model specs</span>
+                                </div>
+                                <dl className="divide-y divide-hairline text-xs">
+                                    {[
+                                        ['Model', 'gemini-2.5-flash'],
+                                        ['Context', '1M tokens'],
+                                        ['Modality', 'Text + Image'],
+                                    ].map(([k, v]) => (
+                                        <div key={k} className="flex justify-between py-2.5 first:pt-0 last:pb-0">
+                                            <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-text-mute">{k}</dt>
+                                            <dd className="font-mono text-text-strong">{v}</dd>
+                                        </div>
+                                    ))}
+                                </dl>
+                            </div>
+
+                            <div className="rounded-lg border border-hairline bg-panel/50 p-6">
+                                <div className="mb-4 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-text-mute">
+                                    <Cpu className="h-3.5 w-3.5" style={{ color: ACCENT }} aria-hidden="true" />
+                                    <span>Stack</span>
+                                </div>
+                                <div className="flex flex-wrap gap-1.5">
+                                    {['Gemini 2.5 Flash', 'Node.js', 'Express', 'React', 'Vite', 'Railway'].map((t) => (
+                                        <span
+                                            key={t}
+                                            className="rounded-full border border-hairline px-2.5 py-1 font-mono text-[10px] text-text-strong"
+                                        >
+                                            {t}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
             <ProjectNavigation currentId="gemini-ocr" />
         </SubPageShell>
     );
 };
-
-function SidebarCard({
-    title,
-    icon: Icon,
-    accent,
-    children,
-}: {
-    title: string;
-    icon: typeof Cpu;
-    accent: string;
-    children: React.ReactNode;
-}) {
-    return (
-        <div className="rounded-2xl border border-white/5 bg-white/[0.02] backdrop-blur-sm p-6">
-            <div className="flex items-center gap-2 mb-5">
-                <Icon className="w-3.5 h-3.5" style={{ color: accent }} />
-                <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-white/50">{title}</span>
-            </div>
-            {children}
-        </div>
-    );
-}
-
-function MetricBar({ label, value, pct, color }: { label: string; value: string; pct: number; color: string }) {
-    return (
-        <div className="mb-4 last:mb-0">
-            <div className="flex justify-between text-[11px] mb-1.5 text-slate-300">
-                <span className="font-light">{label}</span>
-                <span className="font-mono text-white">{value}</span>
-            </div>
-            <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
-                <div className="h-full rounded-full" style={{ width: `${pct}%`, background: `linear-gradient(90deg, ${color}80, ${color})` }} />
-            </div>
-        </div>
-    );
-}
 
 export default GeminiOCRPage;

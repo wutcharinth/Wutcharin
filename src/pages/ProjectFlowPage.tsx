@@ -1,208 +1,212 @@
-import { GitFork, Layout, Brain, Bot, Users, Zap, SquareKanban } from 'lucide-react';
+import { GitFork, Layout, Brain, Bot, Users, Zap, SquareKanban, ShieldAlert } from 'lucide-react';
 import ProjectFlowDemo from '../components/project-flow/ProjectFlowDemo';
 import ProjectNavigation from '../components/ProjectNavigation';
 import SubPageShell from '../components/shared/SubPageShell';
 import SubPageHero from '../components/shared/SubPageHero';
-import { RevealOnScroll, TiltCard } from '../lib/motion';
+import {
+    DemoStageFrame,
+    InteractiveFlowDiagram,
+    SectionHeader,
+    TensionLedger,
+    type FlowNodeSpec,
+    type TensionItem,
+} from '../components/shared/ShowcaseBlocks';
+import SEO from '../components/SEO';
 
 const ACCENT = '#2563eb';
-const ACCENT2 = '#38bdf8';
 
-const problems = [
+const SECTIONS = [
+    { id: 'problem', label: 'Friction' },
+    { id: 'architecture', label: 'Pipeline' },
+    { id: 'demo', label: 'Sandbox' },
+];
+
+const problems: TensionItem[] = [
     {
-        Icon: Layout,
-        color: '#3b82f6',
-        title: 'Backlog Chaos',
-        desc: 'Product backlogs often become dumping grounds for vague ideas. ProjectFlow forces clear acceptance criteria before a ticket enters a sprint.',
+        icon: Layout,
+        title: 'Backlog ambiguity',
+        body: 'Product backlogs accumulate vague one-line tickets. ProjectFlow enforces crisp acceptance criteria before a story can enter an active sprint.',
+        metric: 'DoR gated',
+        tag: 'Grooming',
     },
     {
-        Icon: Users,
-        color: '#8b5cf6',
-        title: 'Uneven Workloads',
-        desc: 'Manual assignment leads to burnout. The agent analyzes historical velocity and current capacity to balance the load dynamically.',
+        icon: Users,
+        title: 'Uneven sprint workloads',
+        body: 'Manual ticket routing overloads senior engineers. The agent balances assignments using historical velocity, domain tags, and live capacity.',
+        metric: 'Balanced load',
+        tag: 'Capacity',
     },
     {
-        Icon: Bot,
-        color: '#22d3ee',
-        title: 'Scope Creep',
-        desc: '"Just one small change" can derail a sprint. The agent detects scope creep in real-time and triggers a Human-in-the-Loop review.',
+        icon: ShieldAlert,
+        title: 'Mid-sprint scope creep',
+        body: 'Unplanned changes silently derail delivery dates. ProjectFlow detects mid-sprint scope expansion and triggers a Product Owner approval gate.',
+        metric: 'HITL guard',
+        tag: 'Governance',
     },
 ];
 
-const nodes = [
+const flowNodes: FlowNodeSpec[] = [
     {
-        Icon: Brain,
-        color: '#3b82f6',
-        n: '01',
-        title: 'Context Engine',
-        desc: 'Analyzes ticket descriptions for ambiguity and completeness. Uses RAG to check against existing documentation.',
+        id: 'context',
+        step: '01',
+        title: 'Context engine',
+        role: 'RAG grounding',
+        icon: Brain,
+        detail: 'Reads incoming Jira tickets, checks acceptance criteria completeness, and retrieves linked PRDs and architecture docs via RAG.',
+        statePreview: `{
+  "ticket": "FIN-418",
+  "acceptanceCriteria": "COMPLETE",
+  "estimatedPoints": 5,
+  "domain": "backend-payments"
+}`,
+        highlightLines: [2, 6],
     },
     {
-        Icon: Users,
-        color: '#8b5cf6',
-        n: '02',
-        title: 'Load Balancer',
-        desc: 'Calculates optimal ticket assignment based on developer skill sets (Frontend/Backend) and current sprint load.',
+        id: 'balancer',
+        step: '02',
+        title: 'Load balancer',
+        role: 'Skill & capacity',
+        icon: Users,
+        detail: 'Matches ticket domain against team skill vectors and active sprint utilization so no engineer exceeds target velocity.',
+        statePreview: `{
+  "candidate": "somchai.k",
+  "skillMatch": 0.94,
+  "currentLoad": "62% (8/13 pts)",
+  "status": "OPTIMAL"
+}`,
+        highlightLines: [8, 12],
     },
     {
-        Icon: Bot,
-        color: '#22d3ee',
-        n: '03',
-        title: 'Jira Action Agent',
-        desc: 'Executes the final decision by updating Jira tickets, moving them to sprints, or flagging them for review.',
+        id: 'guard',
+        step: '03',
+        title: 'Scope guard',
+        role: 'Sprint policy',
+        icon: ShieldAlert,
+        detail: 'Verifies whether the ticket alters an active sprint commitment. Scope spikes pause execution for Product Owner sign-off.',
+        statePreview: `{
+  "sprintActive": true,
+  "deltaPoints": "+5 pts",
+  "scopeCreep": false,
+  "gate": "PASS"
+}`,
+        highlightLines: [14, 17],
+    },
+    {
+        id: 'action',
+        step: '04',
+        title: 'Jira action agent',
+        role: 'Tool execution',
+        icon: Bot,
+        detail: 'Commits the decision via Jira & GitHub tool calls: assigns the developer, attaches refined acceptance criteria, and moves the card into sprint.',
+        statePreview: `{
+  "tool": "jira.assign_and_move",
+  "assignee": "somchai.k",
+  "column": "Sprint 24 · Ready",
+  "synced": true
+}`,
+        highlightLines: [18, 22],
     },
 ];
+
+const PIPELINE_CODE = `# Multi-tool Scrum orchestration pipeline
+def groom_and_route(ticket: JiraTicket, sprint: SprintState):
+    # 1. Enrich ticket with PRD context & verify DoR
+    spec = rag_context.analyze(ticket.body, docs=sprint.prds)
+    if not spec.has_acceptance_criteria:
+        return jira.request_clarification(ticket.id, spec.gaps)
+
+    # 2. Compute skill-weighted capacity across engineers
+    owner = load_balancer.select(
+        domain=spec.domain,
+        points=spec.points,
+        roster=sprint.engineers,
+    )
+
+    # 3. Guard active sprint scope before mutating Jira
+    if sprint.is_locked and spec.points > sprint.buffer:
+        return hitl.escalate_scope_creep(ticket.id, owner)
+
+    return jira.assign_ticket(
+        ticket_id=ticket.id,
+        assignee=owner.handle,
+        criteria=spec.checklist,
+    )`;
 
 const ProjectFlowPage = () => {
     return (
-        <SubPageShell statusLabel="System Online" accentColor={ACCENT}>
+        <SubPageShell statusLabel="System Online" accentColor={ACCENT} sections={SECTIONS}>
+            <SEO
+                title="ProjectFlow AI Scrum Master: Autonomous Backlog & Sprint Routing"
+                description="An agent that grooms backlogs, matches tickets to the right developer by capacity and skill, and guards against sprint scope creep."
+                url="https://wutcharin.com/project-flow"
+            />
             <SubPageHero
                 badgeLabel="Interactive Simulation"
                 BadgeIcon={SquareKanban}
                 titleLead="ProjectFlow"
                 titleAccent="AI Scrum Master."
                 accentColor={ACCENT}
-                accentColor2={ACCENT2}
-                index="02"
                 description={
                     <>
-                        An agent that grooms the backlog, gives each ticket to the right developer and checks the definition of done. Built on <span className="font-normal text-text-strong">LangChain</span>.
+                        An agent that grooms the backlog, assigns each ticket to the right developer and protects sprint commitments. Built on{' '}
+                        <span className="font-normal text-text-strong">LangChain</span>.
                     </>
                 }
                 primaryCta={{ label: 'Live simulation', href: '#demo', icon: Zap }}
-                secondaryCta={{ label: 'Architecture', href: 'https://github.com/langchain-ai/langchain', icon: GitFork, external: true }}
+                secondaryCta={{ label: 'Architecture', href: '#architecture', icon: GitFork }}
             />
 
-            {/* Problem cards */}
-            <section className="container mx-auto px-6 mb-32">
-                <RevealOnScroll staggerChildren={0.1} className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                    {problems.map((p) => (
-                        <div key={p.title} data-reveal-child className="h-full">
-                            <TiltCard
-                                max={5}
-                                lift={4}
-                                className="group relative h-full rounded-2xl border border-white/5 bg-white/[0.02] backdrop-blur-sm p-7 overflow-hidden"
-                            >
-                                <div
-                                    className="pointer-events-none absolute -top-20 -right-20 h-40 w-40 rounded-full opacity-20 blur-3xl group-hover:opacity-40 transition-opacity duration-500"
-                                    style={{ backgroundColor: p.color }}
-                                    aria-hidden="true"
-                                />
-                                <p.Icon className="w-8 h-8 mb-6 opacity-90" style={{ color: p.color }} />
-                                <h3 className="text-lg font-medium text-white mb-3 tracking-[-0.01em]">{p.title}</h3>
-                                <p className="text-sm text-slate-400 font-light leading-relaxed">{p.desc}</p>
-                            </TiltCard>
-                        </div>
-                    ))}
-                </RevealOnScroll>
+            {/* 01 · Problem ledger */}
+            <section className="mx-auto mb-24 max-w-6xl px-6 md:mb-32 md:px-10">
+                <SectionHeader
+                    id="problem"
+                    index="01"
+                    eyebrow="Delivery friction"
+                    title="Sprints break before"
+                    accent="code is written."
+                    accentColor={ACCENT}
+                    lead="Unclear requirements, overloaded engineers, and mid-sprint surprises cost teams more velocity than technical debt."
+                />
+                <TensionLedger items={problems} accentColor={ACCENT} />
             </section>
 
-            {/* Architecture */}
-            <section className="container mx-auto px-6 mb-32">
-                <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-                    <RevealOnScroll staggerChildren={0.08}>
-                        <div data-reveal-child className="flex items-center gap-3 mb-6">
-                            <span className="h-1 w-1 rounded-full" style={{ backgroundColor: ACCENT }} />
-                            <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-white/50">Architecture</span>
-                        </div>
-                        <h2 data-reveal-child className="text-3xl md:text-5xl font-medium text-white tracking-[-0.03em] mb-6 leading-[1.05]">
-                            Powered by <span style={{ color: ACCENT }}>LangChain</span>
-                        </h2>
-                        <p data-reveal-child className="text-base md:text-lg text-slate-400 font-light leading-relaxed mb-10">
-                            ProjectFlow orchestrates multiple LLM tools to manage the software development lifecycle. It connects directly to Jira and GitHub APIs to perform actions autonomously.
-                        </p>
-                        <div className="space-y-5">
-                            {nodes.map((n) => (
-                                <div
-                                    key={n.n}
-                                    data-reveal-child
-                                    className="group flex gap-5 p-5 rounded-xl border border-white/5 bg-white/[0.02] hover:border-white/20 transition-colors"
-                                >
-                                    <div
-                                        className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 border"
-                                        style={{ backgroundColor: `${n.color}15`, borderColor: `${n.color}33` }}
-                                    >
-                                        <n.Icon className="w-5 h-5" style={{ color: n.color }} />
-                                    </div>
-                                    <div>
-                                        <div className="flex items-baseline gap-2 mb-1">
-                                            <span className="font-mono text-[10px] text-white/30">{n.n}</span>
-                                            <h4 className="text-white font-medium tracking-[-0.01em]">{n.title}</h4>
-                                        </div>
-                                        <p className="text-sm text-slate-400 font-light leading-relaxed">{n.desc}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </RevealOnScroll>
-
-                    {/* Code block — hidden on mobile to avoid horizontal scroll */}
-                    <div className="hidden lg:block">
-                        <RevealOnScroll staggerChildren={0.1}>
-                            <div data-reveal-child className="relative">
-                                <div
-                                    className="absolute inset-0 rounded-2xl blur-[100px] opacity-30"
-                                    style={{ background: `linear-gradient(135deg, ${ACCENT}, ${ACCENT2})` }}
-                                    aria-hidden="true"
-                                />
-                                <div className="relative rounded-2xl border border-white/10 bg-[#0a0f1c] p-6 font-mono text-xs md:text-sm text-slate-300 shadow-2xl">
-                                    <div className="flex gap-2 mb-5 pb-4 border-b border-white/5">
-                                        <div className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
-                                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
-                                        <div className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
-                                        <span className="ml-auto text-slate-500 text-[10px]">agent_logic.py</span>
-                                    </div>
-                                    <pre className="whitespace-pre-wrap leading-relaxed">
-{`# Initialize the Agent
-tools = [JiraTool(), GitHubTool()]
-agent = initialize_agent(
-    tools,
-    llm=ChatOpenAI(temperature=0),
-    agent=AgentType.STRUCTURED_CHAT_ZERO_SHOT
-)
-
-# Define the Prompt Template
-template = """
-You are an autonomous Scrum Master.
-Current Velocity: {velocity}
-Team Capacity: {capacity}
-
-Rules:
-1. Reject tickets with ambiguity score > 0.7
-2. Assign frontend tasks to Mike, backend to Sarah
-3. Do not exceed individual capacity
-"""
-
-agent.run(template.format(
-    velocity=32,
-    capacity=team_stats
-))`}
-                                    </pre>
-                                </div>
-                            </div>
-                        </RevealOnScroll>
-                    </div>
-                </div>
+            {/* 02 · Interactive orchestration diagram */}
+            <section className="mx-auto mb-24 max-w-6xl px-6 md:mb-32 md:px-10">
+                <SectionHeader
+                    id="architecture"
+                    index="02"
+                    eyebrow="Agent pipeline"
+                    title="Orchestrated with"
+                    accent="LangChain."
+                    accentColor={ACCENT}
+                    lead="ProjectFlow chains document retrieval, developer load balancing, and Jira/GitHub API tools with a human approval gate for scope creep."
+                />
+                <InteractiveFlowDiagram
+                    nodes={flowNodes}
+                    accentColor={ACCENT}
+                    filename="scrum_agent.py"
+                    code={PIPELINE_CODE}
+                    cyclicLabel="Clarification loop returns incomplete tickets"
+                />
             </section>
 
-            {/* Demo */}
-            <section id="demo" className="container mx-auto px-6">
-                <RevealOnScroll staggerChildren={0.1} className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-12 pb-12 border-b border-white/5">
-                    <div
-                        data-reveal-child
-                        className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 border"
-                        style={{ backgroundColor: `${ACCENT}15`, borderColor: `${ACCENT}33` }}
-                    >
-                        <Layout className="w-7 h-7" style={{ color: ACCENT }} />
-                    </div>
-                    <div data-reveal-child>
-                        <h2 className="text-3xl md:text-4xl font-medium text-white tracking-[-0.02em] mb-2">Interactive demo</h2>
-                        <p className="text-slate-400 font-light leading-relaxed max-w-2xl">
-                            Simulate a sprint planning session. Watch the AI groom the backlog, handle scope creep, and auto-close completed tickets.
-                        </p>
-                    </div>
-                </RevealOnScroll>
-                <ProjectFlowDemo />
+            {/* 03 · Interactive sandbox */}
+            <section id="demo" className="mx-auto mb-16 max-w-6xl scroll-mt-24 px-6 md:px-10">
+                <SectionHeader
+                    index="03"
+                    eyebrow="Interactive sandbox"
+                    title="Test the"
+                    accent="sprint desk."
+                    accentColor={ACCENT}
+                    lead="Submit tickets, inspect automated grooming decisions, and watch capacity rebalance across the engineering squad."
+                />
+                <DemoStageFrame
+                    label="Live Simulation · AI Scrum Master"
+                    accentColor={ACCENT}
+                    badges={['RAG Grooming', 'Capacity Balance', 'Scope Guard']}
+                >
+                    <ProjectFlowDemo />
+                </DemoStageFrame>
             </section>
 
             <ProjectNavigation currentId="project-flow" />

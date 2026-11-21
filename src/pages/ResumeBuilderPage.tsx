@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Button, TextArea, Card } from '../components/resume-builder/UI';
+import { Button, TextArea } from '../components/resume-builder/UI';
 import { ResumeEditor } from '../components/resume-builder/ResumeEditor';
 import { ResumePreview } from '../components/resume-builder/ResumePreview';
 import { parseLinkedInProfile } from '../components/resume-builder/geminiService';
@@ -10,6 +10,11 @@ import type { ResumeData, FontFamily } from '../components/resume-builder/types'
 import { ArrowRight, Palette, Wand2, Layout, PanelLeft, PanelRight, RectangleVertical, Type, ZoomIn, ZoomOut, FileText, ArrowLeft, ChevronDown, Download, Code } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
+import ThemeToggle from '../components/ThemeToggle';
+import { openConsole } from '../components/console/consoleBus';
+import { SectionHeader } from '../components/shared/ShowcaseBlocks';
+import ProjectNavigation from '../components/ProjectNavigation';
+import SubPageHero from '../components/shared/SubPageHero';
 import { InlineError, Spinner, Skeleton } from '../components/shared/States';
 
 // Start with empty data
@@ -155,228 +160,198 @@ const ResumeBuilderPage: React.FC = () => {
     };
 
     return (
-        <div className="surface-dark min-h-screen bg-[#050505] pb-20 font-sans text-white print:!min-h-0 print:!h-auto print:!bg-white print:!pb-0 print:!text-black print:!p-0 print:!m-0">
+        <div className="min-h-screen bg-bg pb-20 font-sans text-text print:!m-0 print:!h-auto print:!min-h-0 print:!bg-white print:!p-0 print:!pb-0 print:!text-black">
             <SEO
                 title="AI Resume Builder"
                 description="Create a professional, ATS-optimized resume in seconds using AI. Import from LinkedIn or paste your text to get started."
                 url="https://wutcharin.com/resume-builder"
             />
-            {/* Header */}
-            {/* Navigation */}
-            <nav className={`fixed top-0 left-0 right-0 z-50 p-6 flex justify-between items-center print:hidden transition-all duration-300 ${step === 'upload' ? 'mix-blend-difference' : 'bg-[#050505]/90 backdrop-blur-md border-b border-zinc-800'}`}>
-                <Link to="/" className="flex items-center gap-2 text-blue-500 font-bold uppercase tracking-widest hover:text-white transition-colors">
-                    <ArrowLeft className="w-5 h-5" /> Back to Portfolio
-                </Link>
 
-                {step === 'main' ? (
-                    <div className="flex bg-zinc-900/50 p-1 rounded-lg border border-zinc-800">
+            {/* Floating Console Capsule Header aligned with Home & SubPageShell */}
+            <header className="pointer-events-none fixed inset-x-0 top-0 z-50 px-4 pt-3.5 sm:px-6 print:hidden">
+                <nav
+                    aria-label="Resume Architect"
+                    className="pointer-events-auto mx-auto flex h-12 max-w-5xl items-center justify-between gap-3 rounded-full border border-hairline-strong bg-bg/88 px-4 backdrop-blur-md sm:px-5"
+                >
+                    <Link
+                        to="/#work"
+                        data-cursor="back"
+                        className="group flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.26em] text-text-mute transition-colors hover:text-text-strong"
+                    >
+                        <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-x-1" aria-hidden="true" />
+                        <span>Work</span>
+                    </Link>
+
+                    {step === 'main' ? (
+                        <div className="flex rounded-full border border-hairline bg-panel p-0.5">
+                            <button
+                                type="button"
+                                onClick={() => setActiveTab('editor')}
+                                data-cursor="step"
+                                className={`rounded-full px-3.5 py-1 font-mono text-[10px] uppercase tracking-[0.2em] transition-colors ${
+                                    activeTab === 'editor' ? 'bg-text-strong text-bg' : 'text-text-mute hover:text-text-strong'
+                                }`}
+                            >
+                                Edit
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setActiveTab('preview')}
+                                data-cursor="step"
+                                className={`rounded-full px-3.5 py-1 font-mono text-[10px] uppercase tracking-[0.2em] transition-colors ${
+                                    activeTab === 'preview' ? 'bg-text-strong text-bg' : 'text-text-mute hover:text-text-strong'
+                                }`}
+                            >
+                                Preview
+                            </button>
+                        </div>
+                    ) : (
+                        <span className="hidden items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-text-mute sm:flex">
+                            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-blue-500" aria-hidden="true" />
+                            Gemini Resume Studio
+                        </span>
+                    )}
+
+                    <div className="flex items-center gap-2.5">
                         <button
-                            onClick={() => setActiveTab('editor')}
-                            className={`px-4 py-1.5 text-xs font-bold uppercase tracking-wider rounded-md transition-all ${activeTab === 'editor' ? 'bg-zinc-800 text-white shadow-sm' : 'text-gray-400 hover:text-gray-200'}`}
+                            type="button"
+                            onClick={openConsole}
+                            data-cursor="explore"
+                            className="hidden rounded-full border border-hairline px-3 py-1 font-mono text-[10px] uppercase tracking-[0.22em] text-text-mute transition-colors hover:border-hairline-strong hover:text-text-strong sm:inline-flex"
                         >
-                            Edit
+                            Console
                         </button>
-                        <button
-                            onClick={() => setActiveTab('preview')}
-                            className={`px-4 py-1.5 text-xs font-bold uppercase tracking-wider rounded-md transition-all ${activeTab === 'preview' ? 'bg-zinc-800 text-blue-400 shadow-sm' : 'text-gray-400 hover:text-gray-200'}`}
-                        >
-                            Preview
-                        </button>
+                        <ThemeToggle />
                     </div>
-                ) : (
-                    <div className="text-sm font-mono text-gray-400 hidden sm:block">AI RESUME BUILDER // 2025</div>
-                )}
-            </nav>
+                </nav>
+            </header>
 
-            <main className="w-full print:!p-0 print:!m-0">
+            <main className="w-full pt-20 print:!m-0 print:!p-0">
                 {step === 'upload' ? (
-
                     <>
-                        {/* Hero Section */}
-                        <section className="relative min-h-screen flex flex-col justify-center items-center px-4 overflow-hidden pt-20">
-                            {/* Background Effects */}
-                            <div className="absolute inset-0 z-0 pointer-events-none">
-                                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[120px] opacity-40" />
-                                <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-600/10 rounded-full blur-[120px] opacity-40" />
-                                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay"></div>
-                            </div>
+                        <SubPageHero
+                            badgeLabel="Powered by Gemini AI"
+                            BadgeIcon={Wand2}
+                            titleLead="Intelligent"
+                            titleAccent="Resume Architect."
+                            accentColor="#3b82f6"
+                            description={
+                                <>
+                                    Stop wrestling with fragile margins. Decouple career content from layout and transform raw LinkedIn or CV text
+                                    into clean, <span className="font-normal text-text-strong">ATS-friendly PDF, Word, and HTML</span> documents.
+                                </>
+                            }
+                            primaryCta={{ label: 'Launch builder', href: '#builder', icon: Wand2 }}
+                        />
 
-                            <div className="relative z-20 text-center max-w-5xl mx-auto">
-                                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-                                    <Wand2 className="w-4 h-4 text-blue-500" />
-                                    <span className="text-sm font-medium text-gray-300 uppercase tracking-wider">Powered by Gemini AI</span>
-                                </div>
+                        {/* 01 · Architecture & Process */}
+                        <section className="mx-auto mb-20 max-w-6xl px-6 md:mb-28 md:px-10">
+                            <SectionHeader
+                                index="01"
+                                eyebrow="Structured architecture"
+                                title="Decouple content"
+                                accent="from layout."
+                                accentColor="#3b82f6"
+                                lead="Gemini parses unstructured career text into typed JSON once, letting you switch templates, typography, and export formats without retyping."
+                            />
 
-                                <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter mb-8 leading-[0.9] text-white animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-100">
-                                    Intelligent <br className="hidden md:block" />
-                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500">Resume Architect</span>
-                                </h2>
-
-                                <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto font-light mb-12 leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
-                                    Stop wrestling with formatting. An AI-powered design engine that transforms unstructured career data into ATS-optimized professional documents.
-                                </p>
-                            </div>
-
-                            {/* Scroll Indicator */}
-                            <div className="absolute bottom-10 left-0 right-0 flex justify-center animate-in fade-in duration-1000 delay-500">
-                                <div className="animate-bounce text-white/30 flex flex-col items-center gap-2">
-                                    <span className="text-xs uppercase tracking-widest">Scroll to Explore</span>
-                                    <ArrowRight className="w-6 h-6 rotate-90" />
-                                </div>
+                            <div className="mt-10 grid gap-5 md:grid-cols-3">
+                                {[
+                                    {
+                                        icon: Code,
+                                        step: '01',
+                                        title: 'Intelligent parsing',
+                                        desc: 'Extracts roles, dates, quantified impact bullets, and skill groupings from pasted LinkedIn or CV text.',
+                                    },
+                                    {
+                                        icon: Layout,
+                                        step: '02',
+                                        title: 'Live layout engine',
+                                        desc: 'Switch between Single Column, Sidebar, and Minimalist executive templates with instant typography controls.',
+                                    },
+                                    {
+                                        icon: Download,
+                                        step: '03',
+                                        title: 'Universal export',
+                                        desc: 'Export print-crisp A4 PDFs alongside editable Microsoft Word (.docx) and standalone HTML files.',
+                                    },
+                                ].map((item) => (
+                                    <div
+                                        key={item.step}
+                                        className="rounded-lg border border-hairline bg-panel/50 p-6 transition-colors hover:border-hairline-strong"
+                                    >
+                                        <div className="mb-5 flex items-center justify-between">
+                                            <item.icon className="h-4 w-4 text-blue-500" aria-hidden="true" />
+                                            <span className="font-mono text-[10px] tabular-nums text-text-mute">{item.step}</span>
+                                        </div>
+                                        <h3 className="text-lg font-medium text-text-strong">{item.title}</h3>
+                                        <p className="mt-2 text-sm font-light leading-relaxed text-text-mute">{item.desc}</p>
+                                    </div>
+                                ))}
                             </div>
                         </section>
 
-                        {/* Narrative Section: The Problem */}
-                        <section className="py-32 relative z-10 bg-[#050505]">
-                            <div className="max-w-6xl mx-auto px-6">
-                                <div className="grid md:grid-cols-2 gap-16 items-center">
-                                    <div>
-                                        <h3 className="text-sm font-bold text-blue-500 uppercase tracking-widest mb-4">The Challenge</h3>
-                                        <h4 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
-                                            Resume writing is <span className="text-gray-500">broken.</span>
-                                        </h4>
-                                        <p className="text-lg text-gray-400 leading-relaxed mb-6">
-                                            Job seekers spend hours tweaking margins and font sizes, only to be rejected by automated Applicant Tracking Systems (ATS) that can't read their creative layouts.
-                                        </p>
-                                        <ul className="space-y-4">
-                                            <li className="flex items-start gap-3">
-                                                <div className="mt-1 w-5 h-5 rounded-full bg-red-500/10 flex items-center justify-center text-red-500"><ArrowRight className="w-3 h-3" /></div>
-                                                <span className="text-gray-300">Inconsistent formatting across devices</span>
-                                            </li>
-                                            <li className="flex items-start gap-3">
-                                                <div className="mt-1 w-5 h-5 rounded-full bg-red-500/10 flex items-center justify-center text-red-500"><ArrowRight className="w-3 h-3" /></div>
-                                                <span className="text-gray-300">Poor ATS parsing leading to auto-rejection</span>
-                                            </li>
-                                            <li className="flex items-start gap-3">
-                                                <div className="mt-1 w-5 h-5 rounded-full bg-red-500/10 flex items-center justify-center text-red-500"><ArrowRight className="w-3 h-3" /></div>
-                                                <span className="text-gray-300">Wasted time on design instead of content</span>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div className="relative">
-                                        <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/20 to-violet-600/20 rounded-2xl blur-2xl" />
-                                        <div className="relative bg-zinc-900/50 border border-white/10 rounded-2xl p-8 backdrop-blur-xl">
-                                            <div className="space-y-4 opacity-50 blur-[1px]">
-                                                <div className="h-4 bg-zinc-800 rounded w-3/4" />
-                                                <div className="h-4 bg-zinc-800 rounded w-1/2" />
-                                                <div className="h-32 bg-zinc-800 rounded w-full border-2 border-red-500/30" />
-                                                <div className="h-4 bg-zinc-800 rounded w-5/6" />
-                                            </div>
-                                            <div className="absolute inset-0 flex items-center justify-center">
-                                                <div className="bg-red-500/10 border border-red-500/50 text-red-400 px-6 py-3 rounded-lg font-mono font-bold backdrop-blur-md">
-                                                    ⚠ PARSING ERROR
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                        {/* 02 · Interactive Builder Entry */}
+                        <section id="builder" className="mx-auto mb-20 max-w-4xl scroll-mt-24 px-6">
+                            <div className="frame-ticks relative overflow-hidden rounded-lg border border-hairline bg-panel/60 p-5 md:p-8">
+                                <div className="mb-5 flex flex-wrap items-center justify-between gap-2 border-b border-hairline pb-4">
+                                    <span className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-text-mute">
+                                        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-blue-500" aria-hidden="true" />
+                                        02 · Input Console
+                                    </span>
+                                    <span className="font-mono text-[10px] tabular-nums text-text-mute">
+                                        {rawText.length > 0 ? `${rawText.length} chars` : 'Paste LinkedIn or CV text'}
+                                    </span>
                                 </div>
+
+                                <div className="mb-6">
+                                    <TextArea
+                                        placeholder="Paste your LinkedIn PDF text or current resume content here..."
+                                        className="min-h-[210px] resize-y rounded-md border-hairline bg-bg p-5 font-mono text-sm leading-relaxed text-text-strong focus:border-signal"
+                                        value={rawText}
+                                        onChange={(e) => setRawText(e.target.value)}
+                                    />
+                                </div>
+
+                                <div className="flex flex-col items-center justify-between gap-4 border-t border-hairline pt-5 sm:flex-row">
+                                    <Button
+                                        onClick={handleManualStart}
+                                        variant="ghost"
+                                        className="text-sm text-text-mute hover:text-text-strong"
+                                    >
+                                        Start from scratch
+                                    </Button>
+                                    <Button
+                                        onClick={handleParse}
+                                        isLoading={isParsing}
+                                        disabled={!rawText}
+                                        className="w-full rounded-full border-0 bg-text-strong px-7 py-3 text-sm font-medium !text-bg transition-colors hover:bg-signal disabled:opacity-40 sm:w-auto"
+                                    >
+                                        {isParsing ? 'Analyzing...' : 'Generate Resume'} <ArrowRight className="ml-2 h-4 w-4" />
+                                    </Button>
+                                </div>
+
+                                {isParsing && (
+                                    <div className="mt-6 space-y-3" aria-hidden="true">
+                                        <Skeleton className="h-4 w-1/3" />
+                                        <Skeleton className="h-3 w-full" />
+                                        <Skeleton className="h-3 w-5/6" />
+                                        <Skeleton className="h-3 w-2/3" />
+                                    </div>
+                                )}
+
+                                {errorMsg && (
+                                    <div className="mt-6">
+                                        <InlineError>{errorMsg}</InlineError>
+                                    </div>
+                                )}
                             </div>
                         </section>
 
-                        {/* Narrative Section: The AI Solution */}
-                        <section className="py-32 relative z-10 bg-[#050505]">
-                            <div className="max-w-6xl mx-auto px-6">
-                                <div className="text-center mb-20">
-                                    <h3 className="text-sm font-bold text-indigo-500 uppercase tracking-widest mb-4">The Solution</h3>
-                                    <h4 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                                        Structured Data <span className="text-indigo-500">Architecture</span>
-                                    </h4>
-                                    <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-                                        We decouple content from design. Gemini AI parses your raw text into structured JSON, which is then rendered into pixel-perfect, ATS-friendly templates.
-                                    </p>
-                                </div>
-
-                                <div className="grid md:grid-cols-3 gap-8">
-                                    <Card className="p-8 bg-zinc-900/50 border-zinc-800 hover:border-indigo-500/50 transition-colors group">
-                                        <div className="w-12 h-12 bg-indigo-500/10 rounded-xl flex items-center justify-center text-indigo-400 mb-6 group-hover:scale-110 transition-transform">
-                                            <Code className="w-6 h-6" />
-                                        </div>
-                                        <h5 className="text-xl font-bold text-white mb-3">1. Intelligent Parsing</h5>
-                                        <p className="text-gray-400 leading-relaxed">
-                                            Gemini AI analyzes your LinkedIn PDF or raw text, identifying key entities like skills, dates, and job titles with high accuracy.
-                                        </p>
-                                    </Card>
-                                    <Card className="p-8 bg-zinc-900/50 border-zinc-800 hover:border-blue-500/50 transition-colors group">
-                                        <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-400 mb-6 group-hover:scale-110 transition-transform">
-                                            <Layout className="w-6 h-6" />
-                                        </div>
-                                        <h5 className="text-xl font-bold text-white mb-3">2. Dynamic Rendering</h5>
-                                        <p className="text-gray-400 leading-relaxed">
-                                            A React-based rendering engine instantly maps your data to multiple layouts (Single Column, Sidebar, Minimalist) without retyping.
-                                        </p>
-                                    </Card>
-                                    <Card className="p-8 bg-zinc-900/50 border-zinc-800 hover:border-violet-500/50 transition-colors group">
-                                        <div className="w-12 h-12 bg-violet-500/10 rounded-xl flex items-center justify-center text-violet-400 mb-6 group-hover:scale-110 transition-transform">
-                                            <Download className="w-6 h-6" />
-                                        </div>
-                                        <h5 className="text-xl font-bold text-white mb-3">3. Universal Export</h5>
-                                        <p className="text-gray-400 leading-relaxed">
-                                            Generate high-fidelity PDFs for humans and clean HTML/Word docs for machines. Your resume looks great everywhere.
-                                        </p>
-                                    </Card>
-                                </div>
-                            </div>
-                        </section>
-
-                        {/* Interactive Demo / Builder Entry */}
-                        <section className="py-20 bg-gradient-to-b from-[#050505] to-zinc-900/50">
-                            <div className="max-w-4xl mx-auto px-4">
-                                <div className="text-center mb-12">
-                                    <h3 className="text-3xl font-bold text-white mb-4">Ready to Build?</h3>
-                                    <p className="text-gray-400">Paste your details below to start the transformation.</p>
-                                </div>
-
-                                <Card className="p-1 md:p-8 shadow-2xl border-white/10 bg-[#0A0A0A] ring-1 ring-white/5 relative overflow-hidden">
-                                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500" />
-
-                                    <div className="mb-8">
-                                        <div className="relative">
-                                            <TextArea
-                                                placeholder="Paste your LinkedIn PDF text or current resume content here..."
-                                                className="min-h-[200px] font-mono text-sm leading-relaxed bg-zinc-950 border-zinc-800 focus:border-blue-500/50 focus:ring-blue-500/20 transition-all resize-y p-6 text-gray-300"
-                                                value={rawText}
-                                                onChange={(e) => setRawText(e.target.value)}
-                                            />
-                                            <div className="absolute bottom-4 right-4 text-xs text-gray-500 font-mono">
-                                                {rawText.length > 0 ? `${rawText.length} chars` : 'Waiting for input...'}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4 border-t border-zinc-800">
-                                        <Button onClick={handleManualStart} variant="ghost" className="text-gray-400 hover:text-white text-sm">
-                                            Start from Scratch
-                                        </Button>
-                                        <Button
-                                            onClick={handleParse}
-                                            isLoading={isParsing}
-                                            disabled={!rawText}
-                                            className="w-full sm:w-auto bg-white !text-black hover:bg-gray-200 border-0 shadow-[0_0_20px_rgba(255,255,255,0.2)] font-bold tracking-wide py-3 px-8 text-base disabled:bg-zinc-800 disabled:!text-white disabled:opacity-50 disabled:shadow-none transition-all hover:scale-105"
-                                        >
-                                            {isParsing ? 'Analyzing...' : 'Generate Resume'} <ArrowRight className="ml-2 w-5 h-5" />
-                                        </Button>
-                                    </div>
-
-                                    {isParsing && (
-                                        <div className="mt-6 space-y-3" aria-hidden="true">
-                                            <Skeleton className="h-4 w-1/3" />
-                                            <Skeleton className="h-3 w-full" />
-                                            <Skeleton className="h-3 w-5/6" />
-                                            <Skeleton className="h-3 w-2/3" />
-                                        </div>
-                                    )}
-
-                                    {errorMsg && (
-                                        <div className="mt-6">
-                                            <InlineError>{errorMsg}</InlineError>
-                                        </div>
-                                    )}
-                                </Card>
-                            </div>
-                        </section>
+                        <ProjectNavigation currentId="resume-builder" />
                     </>
                 ) : (
-                    <div className="pt-24 px-4">
+                    <div className="surface-dark px-4 pt-10 text-white">
                         {/* EDITOR TAB */}
                         {activeTab === 'editor' && (
                             <div className="max-w-4xl mx-auto animate-in fade-in zoom-in-95 duration-200">

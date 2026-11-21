@@ -1,205 +1,213 @@
-import { GitFork, MessageSquare, Brain, Store, TrendingUp, Zap, StarHalf } from 'lucide-react';
+import { GitFork, MessageSquare, Brain, Store, TrendingUp, Zap, StarHalf, BellRing } from 'lucide-react';
 import ReviewFlowDemo from '../components/review-flow/ReviewFlowDemo';
 import ProjectNavigation from '../components/ProjectNavigation';
 import SubPageShell from '../components/shared/SubPageShell';
 import SubPageHero from '../components/shared/SubPageHero';
-import { RevealOnScroll, TiltCard } from '../lib/motion';
+import {
+    DemoStageFrame,
+    InteractiveFlowDiagram,
+    SectionHeader,
+    TensionLedger,
+    type FlowNodeSpec,
+    type TensionItem,
+} from '../components/shared/ShowcaseBlocks';
+import SEO from '../components/SEO';
 
 const ACCENT = '#d97706';
-const ACCENT2 = '#fb923c';
 
-const problems = [
+const SECTIONS = [
+    { id: 'problem', label: 'Signal' },
+    { id: 'architecture', label: 'Routing' },
+    { id: 'demo', label: 'Sandbox' },
+];
+
+const problems: TensionItem[] = [
     {
-        Icon: MessageSquare,
-        color: '#d97706',
-        title: 'Feedback Overload',
-        desc: 'Restaurants receive hundreds of reviews across platforms. Manually tracking them is impossible, leading to missed opportunities and risks.',
+        icon: MessageSquare,
+        title: 'Cross-channel feedback overload',
+        body: 'Hospitality venues receive hundreds of reviews across Google, Wongnai, and delivery apps. Manual reading leaves operational patterns invisible.',
+        metric: 'Multi-channel',
+        tag: 'Volume',
     },
     {
-        Icon: Store,
-        color: '#f97316',
-        title: 'Operational Disconnect',
-        desc: 'Reviews often contain critical operational data (e.g., "salty soup") that never reaches the kitchen team in time to fix the issue.',
+        icon: Store,
+        title: 'Kitchen & floor disconnect',
+        body: 'Actionable remarks like "tom yum arrived lukewarm" sit in a marketing dashboard instead of reaching the kitchen line during service.',
+        metric: '< 60s alert',
+        tag: 'Operations',
     },
     {
-        Icon: TrendingUp,
-        color: '#ef4444',
-        title: 'Brand Risk',
-        desc: 'A single unanswered food safety complaint can go viral. ReviewFlow detects critical risks instantly and escalates them to management.',
+        icon: TrendingUp,
+        title: 'Unanswered brand risk',
+        body: 'One food-safety or service failure left unanswered for 24 hours can tank a venue rating. Critical reviews trigger immediate P0 manager escalation.',
+        metric: 'P0 escalation',
+        tag: 'Brand safety',
     },
 ];
 
-const nodes = [
+const flowNodes: FlowNodeSpec[] = [
     {
-        Icon: Brain,
-        color: '#d97706',
-        n: '01',
-        title: 'Sentiment Engine',
-        desc: 'Classifies reviews not just by stars, but by specific topics — Food Quality, Service, Price, Safety — with fine-grained sentiment scores.',
+        id: 'ingest',
+        step: '01',
+        title: 'Review stream',
+        role: 'API webhook',
+        icon: MessageSquare,
+        detail: 'Streams new customer reviews from Google Maps, Wongnai, and booking platforms in Thai or English, normalizing ratings and metadata.',
+        statePreview: `{
+  "source": "Google Maps",
+  "stars": 2,
+  "lang": "en/th",
+  "text": "Pad Thai was great, wait time 45 mins"
+}`,
+        highlightLines: [1, 3],
     },
     {
-        Icon: GitFork,
-        color: '#f97316',
-        n: '02',
-        title: 'Intelligent Routing',
-        desc: 'Directs feedback to the relevant department: "Salty" → Kitchen, "Rude" → Manager, "Expensive" → Marketing.',
+        id: 'sentiment',
+        step: '02',
+        title: 'Aspect sentiment',
+        role: 'LLM classifier',
+        icon: Brain,
+        detail: 'Decomposes each review into fine-grained topics (Food Quality, Service Speed, Pricing, Safety) instead of a blunt star average.',
+        statePreview: `{
+  "topics": [
+    { "area": "food", "score": "+0.9" },
+    { "area": "wait_time", "score": "-0.8" }
+  ],
+  "severity": "OPERATIONAL"
+}`,
+        highlightLines: [4, 9],
     },
     {
-        Icon: Zap,
-        color: '#ef4444',
-        n: '03',
-        title: 'Automated Action',
-        desc: 'Drafts personalized replies for approval, updates staff leaderboards, and triggers SMS alerts for critical safety risks.',
+        id: 'routing',
+        step: '03',
+        title: 'Department router',
+        role: 'Action dispatch',
+        icon: GitFork,
+        detail: 'Sends each insight directly to the accountable team: dish feedback to Kitchen Display, wait times to Floor Manager, praise to staff scores.',
+        statePreview: `{
+  "kitchen": "NONE",
+  "floorManager": "ALERT · Queue delay",
+  "staffPoints": "+10 (Chef Som)"
+}`,
+        highlightLines: [11, 18],
+    },
+    {
+        id: 'reply',
+        step: '04',
+        title: 'Response & loop',
+        role: 'Reply + P0 alert',
+        icon: BellRing,
+        detail: 'Drafts a tailored bilingual reply for one-click manager approval and logs resolution status back to the venue scorecard.',
+        statePreview: `{
+  "draftReply": "Ready for 1-click post",
+  "slackNotified": "#floor-ops",
+  "resolved": "TRACKING"
+}`,
+        highlightLines: [19, 24],
     },
 ];
+
+const ROUTER_CODE = `# Aspect-based sentiment & operational routing
+analysis = llm.analyze_review(
+    text=review.body,
+    taxonomy=["food", "service", "safety", "value"],
+)
+
+if analysis.severity == "CRITICAL":
+    slack.send(channel="#management", msg=f"P0 ALERT: {review.body}")
+    jira.create_ticket(priority="P0", owner="gm")
+
+elif "food" in analysis.negative_topics:
+    kds.push_alert(
+        dish=analysis.entity,
+        issue=analysis.summary,
+    )
+
+elif analysis.sentiment == "POSITIVE":
+    staff_db.add_points(employee=analysis.entity, points=10)
+
+# Draft bilingual owner reply for fast approval
+draft = llm.draft_reply(
+    review=review,
+    tone="warm_accountable",
+    requires_approval=True,
+)`;
 
 const ReviewFlowPage = () => {
     return (
-        <SubPageShell statusLabel="System Online" accentColor={ACCENT}>
+        <SubPageShell statusLabel="System Online" accentColor={ACCENT} sections={SECTIONS}>
+            <SEO
+                title="ReviewFlow Reputation Engine: Real-Time Hospitality Feedback AI"
+                description="An NLP reputation agent that decomposes customer reviews by operational topic, alerts the right team, and drafts bilingual replies."
+                url="https://wutcharin.com/review-flow"
+            />
             <SubPageHero
                 badgeLabel="Interactive Simulation"
                 BadgeIcon={StarHalf}
                 titleLead="ReviewFlow"
                 titleAccent="Reputation Engine."
                 accentColor={ACCENT}
-                accentColor2={ACCENT2}
-                index="05"
                 description={
                     <>
-                        An agent that turns customer reviews into action. It reads each review, finds the sentiment and alerts the right team at once.
+                        An agent that turns customer reviews into operational action. It parses topic-level sentiment, alerts the right department, and drafts
+                        tailored replies in seconds.
                     </>
                 }
                 primaryCta={{ label: 'Live simulation', href: '#demo', icon: Zap }}
-                secondaryCta={{ label: 'Architecture', href: '#', icon: GitFork }}
+                secondaryCta={{ label: 'Architecture', href: '#architecture', icon: GitFork }}
             />
 
-            {/* Problem cards */}
-            <section className="container mx-auto px-6 mb-32">
-                <RevealOnScroll staggerChildren={0.1} className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                    {problems.map((p) => (
-                        <div key={p.title} data-reveal-child className="h-full">
-                            <TiltCard
-                                max={5}
-                                lift={4}
-                                className="group relative h-full rounded-2xl border border-white/5 bg-white/[0.02] backdrop-blur-sm p-7 overflow-hidden"
-                            >
-                                <div
-                                    className="pointer-events-none absolute -top-20 -right-20 h-40 w-40 rounded-full opacity-20 blur-3xl group-hover:opacity-40 transition-opacity duration-500"
-                                    style={{ backgroundColor: p.color }}
-                                    aria-hidden="true"
-                                />
-                                <p.Icon className="w-8 h-8 mb-6 opacity-90" style={{ color: p.color }} />
-                                <h3 className="text-lg font-medium text-white mb-3 tracking-[-0.01em]">{p.title}</h3>
-                                <p className="text-sm text-slate-400 font-light leading-relaxed">{p.desc}</p>
-                            </TiltCard>
-                        </div>
-                    ))}
-                </RevealOnScroll>
+            {/* 01 · Problem ledger */}
+            <section className="mx-auto mb-24 max-w-6xl px-6 md:mb-32 md:px-10">
+                <SectionHeader
+                    id="problem"
+                    index="01"
+                    eyebrow="Reputation signal"
+                    title="Every review hides"
+                    accent="an ops alert."
+                    accentColor={ACCENT}
+                    lead="Star averages hide root causes. ReviewFlow separates kitchen quality, service speed, and safety incidents so every issue reaches the right person."
+                />
+                <TensionLedger items={problems} accentColor={ACCENT} />
             </section>
 
-            {/* Architecture */}
-            <section className="container mx-auto px-6 mb-32">
-                <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-                    <RevealOnScroll staggerChildren={0.08}>
-                        <div data-reveal-child className="flex items-center gap-3 mb-6">
-                            <span className="h-1 w-1 rounded-full" style={{ backgroundColor: ACCENT }} />
-                            <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-white/50">Architecture</span>
-                        </div>
-                        <h2 data-reveal-child className="text-3xl md:text-5xl font-medium text-white tracking-[-0.03em] mb-6 leading-[1.05]">
-                            Powered by <span style={{ color: ACCENT }}>NLP & Automation</span>
-                        </h2>
-                        <p data-reveal-child className="text-base md:text-lg text-slate-400 font-light leading-relaxed mb-10">
-                            ReviewFlow connects to Google/Yelp APIs, uses LLMs for sentiment analysis, and routes actions to the right team members — automatically.
-                        </p>
-                        <div className="space-y-5">
-                            {nodes.map((n) => (
-                                <div
-                                    key={n.n}
-                                    data-reveal-child
-                                    className="group flex gap-5 p-5 rounded-xl border border-white/5 bg-white/[0.02] hover:border-white/20 transition-colors"
-                                >
-                                    <div
-                                        className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 border"
-                                        style={{ backgroundColor: `${n.color}15`, borderColor: `${n.color}33` }}
-                                    >
-                                        <n.Icon className="w-5 h-5" style={{ color: n.color }} />
-                                    </div>
-                                    <div>
-                                        <div className="flex items-baseline gap-2 mb-1">
-                                            <span className="font-mono text-[10px] text-white/30">{n.n}</span>
-                                            <h4 className="text-white font-medium tracking-[-0.01em]">{n.title}</h4>
-                                        </div>
-                                        <p className="text-sm text-slate-400 font-light leading-relaxed">{n.desc}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </RevealOnScroll>
-
-                    {/* Code block — hidden on mobile to avoid horizontal scroll */}
-                    <div className="hidden lg:block">
-                        <RevealOnScroll staggerChildren={0.1}>
-                            <div data-reveal-child className="relative">
-                                <div
-                                    className="absolute inset-0 rounded-2xl blur-[100px] opacity-30"
-                                    style={{ background: `linear-gradient(135deg, ${ACCENT}, ${ACCENT2})` }}
-                                    aria-hidden="true"
-                                />
-                                <div className="relative rounded-2xl border border-white/10 bg-[#0a0f1c] p-6 font-mono text-xs md:text-sm text-slate-300 shadow-2xl">
-                                    <div className="flex gap-2 mb-5 pb-4 border-b border-white/5">
-                                        <div className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
-                                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
-                                        <div className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
-                                        <span className="ml-auto text-slate-500 text-[10px]">router_logic.py</span>
-                                    </div>
-                                    <pre className="whitespace-pre-wrap leading-relaxed">
-{`# Analyze Sentiment
-analysis = llm.analyze(review.text)
-
-if analysis.sentiment == "CRITICAL":
-    slack.send(
-        channel="#management",
-        msg=f"ALERT: {review.text}"
-    )
-    jira.create_ticket(priority="P0")
-
-elif "food" in analysis.topics:
-    kds.push_alert(
-        dish=analysis.entity,
-        issue=analysis.summary
-    )
-
-elif analysis.sentiment == "POSITIVE":
-    staff_db.add_points(
-        employee=analysis.entity,
-        points=10
-    )`}
-                                    </pre>
-                                </div>
-                            </div>
-                        </RevealOnScroll>
-                    </div>
-                </div>
+            {/* 02 · Interactive routing diagram */}
+            <section className="mx-auto mb-24 max-w-6xl px-6 md:mb-32 md:px-10">
+                <SectionHeader
+                    id="architecture"
+                    index="02"
+                    eyebrow="NLP & automation"
+                    title="From raw review"
+                    accent="to routed action."
+                    accentColor={ACCENT}
+                    lead="Click any node to see how incoming reviews are parsed into topic scores, dispatched to kitchen or management channels, and closed with a drafted reply."
+                />
+                <InteractiveFlowDiagram
+                    nodes={flowNodes}
+                    accentColor={ACCENT}
+                    filename="router_logic.py"
+                    code={ROUTER_CODE}
+                    cyclicLabel="Resolution metrics feed back into venue score"
+                />
             </section>
 
-            {/* Demo */}
-            <section id="demo" className="container mx-auto px-6">
-                <RevealOnScroll staggerChildren={0.1} className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-12 pb-12 border-b border-white/5">
-                    <div
-                        data-reveal-child
-                        className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 border"
-                        style={{ backgroundColor: `${ACCENT}15`, borderColor: `${ACCENT}33` }}
-                    >
-                        <Zap className="w-7 h-7" style={{ color: ACCENT }} />
-                    </div>
-                    <div data-reveal-child>
-                        <h2 className="text-3xl md:text-4xl font-medium text-white tracking-[-0.02em] mb-2">Interactive demo</h2>
-                        <p className="text-slate-400 font-light leading-relaxed max-w-2xl">
-                            Simulate the agent processing live reviews. Watch how it handles compliments, food safety risks, and competitor intelligence.
-                        </p>
-                    </div>
-                </RevealOnScroll>
-                <ReviewFlowDemo />
+            {/* 03 · Interactive sandbox */}
+            <section id="demo" className="mx-auto mb-16 max-w-6xl scroll-mt-24 px-6 md:px-10">
+                <SectionHeader
+                    index="03"
+                    eyebrow="Interactive sandbox"
+                    title="Run a live"
+                    accent="review triage."
+                    accentColor={ACCENT}
+                    lead="Test praise, kitchen issues, and urgent safety incidents to watch the sentiment engine classify topics and dispatch team alerts."
+                />
+                <DemoStageFrame
+                    label="Live Simulation · Reputation Triage"
+                    accentColor={ACCENT}
+                    badges={['Topic Sentiment', 'Dept Routing', 'Draft Replies']}
+                >
+                    <ReviewFlowDemo />
+                </DemoStageFrame>
             </section>
 
             <ProjectNavigation currentId="review-flow" />

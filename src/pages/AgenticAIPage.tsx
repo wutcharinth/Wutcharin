@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-    ArrowLeft, ArrowDown, Brain, TrendingUp, CheckCircle2, AlertTriangle,
+    Brain, TrendingUp, CheckCircle2, AlertTriangle,
     User, FileText,
     Search, Bot, Play, Hammer, Eye, MessageSquare, Youtube, BookOpen,
     Layers, Target, Zap, Terminal, Database,
@@ -10,6 +9,19 @@ import {
     X
 } from 'lucide-react';
 import ProjectNavigation from '../components/ProjectNavigation';
+import SubPageShell from '../components/shared/SubPageShell';
+import SubPageHero from '../components/shared/SubPageHero';
+import SEO from '../components/SEO';
+
+const AGENTIC_ACCENT = '#3b82f6';
+const AGENTIC_SECTIONS = [
+    { id: 'sec-shift', label: 'Spectrum' },
+    { id: 'sec-frontier', label: 'Frontier' },
+    { id: 'sec-loop', label: 'Agent Loop' },
+    { id: 'sec-evals', label: 'Evals' },
+    { id: 'sec-multi', label: 'Multi-Agent' },
+    { id: 'sec-rag', label: 'RAG' },
+];
 
 // ==========================================
 // VISUALIZATION 1: THE AUTONOMY SPECTRUM
@@ -700,108 +712,40 @@ const EvalMatrixViz = () => {
 
 // --- MAIN PAGE COMPONENT ---
 const AgenticAIPage = () => {
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
-
     return (
-        <div className="min-h-screen bg-[#050505] text-slate-200 font-sans selection:bg-blue-500/30">
+        <SubPageShell statusLabel="Stanford CS230 · Lec 7" accentColor={AGENTIC_ACCENT} sections={AGENTIC_SECTIONS}>
+            <SEO
+                title="Beyond the Model: Agentic AI Systems (Stanford CS230)"
+                description="Interactive synthesis of Stanford CS230 Lecture 7: Autonomy Spectrum, Jagged Frontier, ReAct loops, Evals, Multi-Agent orchestration, and RAG."
+                url="https://wutcharin.com/agentic-ai"
+            />
+            <SubPageHero
+                badgeLabel="Stanford CS230 · Kian Katanforoosh"
+                BadgeIcon={BookOpen}
+                titleLead="Beyond the"
+                titleAccent="Model."
+                accentColor={AGENTIC_ACCENT}
+                description={
+                    <>
+                        We spent a decade building bigger brains. Now we engineer the{' '}
+                        <span className="font-normal text-text-strong">hands, eyes, memory, and guardrails</span> that make them reliable in
+                        production.
+                    </>
+                }
+                primaryCta={{ label: 'Explore interactive modules', href: '#sec-shift', icon: Zap }}
+                secondaryCta={{
+                    label: 'Watch lecture',
+                    href: 'https://www.youtube.com/watch?v=k1njvbBmfsw',
+                    icon: Youtube,
+                    external: true,
+                }}
+            />
 
-            {/* Navigation */}
-            <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-6 flex justify-between items-center bg-[#050505]/80 backdrop-blur border-b border-slate-800">
-                <Link to="/" className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-slate-400 hover:text-white transition-colors group">
-                    <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                    Back to Portfolio
-                </Link>
-                <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
-                    <span className="text-xs font-mono text-blue-500 uppercase">Stanford CS230 • Lecture 7 • Nov 21, 2025</span>
-                </div>
-            </nav>
-
-            <main className="pt-32 pb-20">
-
-                {/* --- Hero Section --- */}
-                <section className="container mx-auto px-6 mb-32 relative max-w-7xl">
-                    <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[120px] -z-10"></div>
-
-                    <div className="flex flex-col lg:flex-row items-center gap-16">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8 }}
-                            className="flex-1"
-                        >
-                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-widest mb-8">
-                                <BookOpen className="w-3 h-3" />
-                                Lecturer: Kian Katanforoosh • Nov 21, 2025
-                            </div>
-
-                            <h1 className="text-6xl md:text-8xl font-black text-white mb-8 tracking-tight leading-[0.9]">
-                                Beyond the <br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-emerald-400">
-                                    Model
-                                </span>
-                            </h1>
-
-                            <p className="text-xl md:text-2xl text-slate-400 max-w-xl font-light leading-relaxed mb-10 border-l-4 border-blue-500 pl-6">
-                                We've spent a decade building bigger brains. Now, we're building the <span className="text-white font-bold">hands, eyes, and memory</span> to make them useful.
-                            </p>
-
-                            <div className="flex flex-wrap gap-4">
-                                <a href="#article" className="px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition-all shadow-[0_0_30px_rgba(37,99,235,0.3)] hover:shadow-[0_0_40px_rgba(37,99,235,0.5)] flex items-center gap-2">
-                                    <Zap className="w-5 h-5" /> Start Reading
-                                </a>
-                                <a href="https://www.youtube.com/watch?v=k1njvbBmfsw" target="_blank" rel="noopener noreferrer" className="px-8 py-4 bg-red-600 hover:bg-red-500 text-white font-bold rounded-xl transition-all shadow-[0_0_30px_rgba(220,38,38,0.3)] hover:shadow-[0_0_40px_rgba(220,38,38,0.5)] flex items-center gap-2">
-                                    <Youtube className="w-5 h-5" /> Watch Lecture
-                                </a>
-                            </div>
-                        </motion.div>
-
-                        <motion.div 
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.2, duration: 0.8 }}
-                            className="flex-1 w-full"
-                        >
-                            <div className="relative aspect-video rounded-3xl overflow-hidden border border-slate-800 bg-slate-900 shadow-2xl">
-                                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10"></div>
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="grid grid-cols-2 gap-6 p-10 w-full h-full">
-                                        {[
-                                            { icon: Brain, title: "Reasoning", color: "blue" },
-                                            { icon: Hammer, title: "Tools", color: "purple" },
-                                            { icon: Target, title: "Planning", color: "emerald" },
-                                            { icon: Database, title: "Memory", color: "orange" }
-                                        ].map((item, i) => (
-                                            <div key={i} className="bg-slate-950/50 rounded-2xl border border-slate-800 p-8 flex flex-col justify-between hover:border-blue-500/50 transition-all group hover:-translate-y-1">
-                                                <item.icon className="w-10 h-10 text-slate-500 group-hover:text-blue-400 transition-colors" />
-                                                <div className="text-lg font-bold text-slate-400 group-hover:text-white">{item.title}</div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </motion.div>
-                    </div>
-
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 1, duration: 1 }}
-                        className="absolute bottom-0 left-1/2 -translate-x-1/2 hidden lg:block"
-                    >
-                        <div className="text-slate-600 font-mono text-xs flex flex-col items-center gap-2 animate-bounce">
-                            SCROLL TO EXPLORE <ArrowDown className="w-4 h-4" />
-                        </div>
-                    </motion.div>
-                </section>
-
-                {/* --- Article Content --- */}
-                <div id="article" className="container mx-auto px-6 max-w-6xl">
-                    
+            {/* Interactive Deep-Dive Console Plates (scoped dark studio plates preserve viz contrast in both themes) */}
+            <div id="article" className="mx-auto max-w-6xl px-4 sm:px-6 md:px-10">
+                <div className="surface-dark frame-ticks rounded-2xl border border-hairline bg-[#08090c] px-5 py-12 text-slate-200 sm:px-8 md:px-12 md:py-16">
                     {/* SECTION 1: THE SHIFT */}
-                    <section className="mb-40">
+                    <section id="sec-shift" className="mb-32 scroll-mt-28">
                         <div className="flex items-end gap-6 mb-12 border-b border-slate-800 pb-6">
                             <div className="text-8xl font-black text-slate-800 leading-[0.8]">01</div>
                             <div>
@@ -849,7 +793,7 @@ const AgenticAIPage = () => {
                     </section>
 
                     {/* SECTION 2: THE JAGGED FRONTIER */}
-                    <section className="mb-40">
+                    <section id="sec-frontier" className="mb-32 scroll-mt-28">
                         <div className="flex items-end gap-6 mb-12 border-b border-slate-800 pb-6">
                             <div className="text-8xl font-black text-slate-800 leading-[0.8]">02</div>
                             <div>
@@ -999,7 +943,7 @@ const AgenticAIPage = () => {
                     </section>
 
                     {/* SECTION 4: AGENTIC WORKFLOWS */}
-                    <section className="mb-40">
+                    <section id="sec-loop" className="mb-32 scroll-mt-28">
                         <div className="flex items-end gap-6 mb-12 border-b border-slate-800 pb-6">
                             <div className="text-8xl font-black text-slate-800 leading-[0.8]">04</div>
                             <div>
@@ -1054,7 +998,7 @@ const AgenticAIPage = () => {
                     </section>
 
                     {/* SECTION 5: EVALS */}
-                    <section className="mb-40">
+                    <section id="sec-evals" className="mb-32 scroll-mt-28">
                         <div className="flex items-end gap-6 mb-12 border-b border-slate-800 pb-6">
                             <div className="text-8xl font-black text-slate-800 leading-[0.8]">05</div>
                             <div>
@@ -1125,7 +1069,7 @@ const AgenticAIPage = () => {
                     </section>
 
                     {/* SECTION 6: MULTI-AGENT */}
-                    <section className="mb-40">
+                    <section id="sec-multi" className="mb-32 scroll-mt-28">
                         <div className="flex items-end gap-6 mb-12 border-b border-slate-800 pb-6">
                             <div className="text-8xl font-black text-slate-800 leading-[0.8]">06</div>
                             <div>
@@ -1188,7 +1132,7 @@ const AgenticAIPage = () => {
                     </section>
 
                     {/* SECTION 7: RAG */}
-                    <section className="mb-40">
+                    <section id="sec-rag" className="mb-32 scroll-mt-28">
                         <div className="flex items-end gap-6 mb-12 border-b border-slate-800 pb-6">
                             <div className="text-8xl font-black text-slate-800 leading-[0.8]">07</div>
                             <div>
@@ -1439,18 +1383,11 @@ const AgenticAIPage = () => {
                             </div>
                         </div>
                     </section>
-
                 </div>
-            </main>
+            </div>
 
             <ProjectNavigation currentId="agentic-ai" />
-
-            <footer className="py-12 border-t border-slate-800 bg-[#050505] text-center">
-                <p className="text-slate-500 text-sm font-bold uppercase tracking-widest">
-                    &copy; {new Date().getFullYear()} Wutcharin Thatan. All rights reserved.
-                </p>
-            </footer>
-        </div>
+        </SubPageShell>
     );
 };
 

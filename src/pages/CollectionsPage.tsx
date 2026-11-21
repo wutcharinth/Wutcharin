@@ -1,142 +1,117 @@
-import { Brain, Shield, Zap, Scale, Building2, Gavel, Play } from 'lucide-react';
+import { Brain, Shield, Zap, Scale, Building2, Gavel, Play, Webhook, RefreshCw } from 'lucide-react';
 import CollectionsDemo from '../components/collections/CollectionsDemo';
 import ProjectNavigation from '../components/ProjectNavigation';
 import SubPageShell from '../components/shared/SubPageShell';
 import SubPageHero from '../components/shared/SubPageHero';
+import {
+    DemoStageFrame,
+    InteractiveFlowDiagram,
+    SectionHeader,
+    TensionLedger,
+    type FlowNodeSpec,
+    type TensionItem,
+} from '../components/shared/ShowcaseBlocks';
+import SEO from '../components/SEO';
 
 const ACCENT = '#10b981';
 
-export default function CollectionsPage() {
-    return (
-        <SubPageShell statusLabel="System Online" accentColor={ACCENT}>
-            <SubPageHero
-                badgeLabel="Autonomous Dispute Resolution Agent"
-                BadgeIcon={Brain}
-                titleLead="Enterprise"
-                titleAccent="Collections AI"
-                description={
-                    <>
-                        An agent that gets back money lost to <span className="font-normal text-text-strong">virtual card (VCC)</span> overcharges. It checks the cancellation policy, talks to the hotel and files the chargeback. At scale.
-                    </>
-                }
-                accentColor={ACCENT}
-                primaryCta={{ label: 'Run the simulation', href: '#demo', icon: Play }}
-            />
+const SECTIONS = [
+    { id: 'problem', label: 'Leakage' },
+    { id: 'architecture', label: 'Strategy' },
+    { id: 'demo', label: 'Sandbox' },
+];
 
-            {/* Capability chips */}
-            <section className="container mx-auto px-6 mb-32">
-                <div className="flex flex-wrap justify-center gap-4">
-                    <span className="px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm font-bold text-slate-300 flex items-center gap-2">
-                        <Shield className="w-4 h-4 text-violet-400" /> VCC Fraud Protection
-                    </span>
-                    <span className="px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm font-bold text-slate-300 flex items-center gap-2">
-                        <Zap className="w-4 h-4 text-yellow-400" /> Instant Recovery
-                    </span>
-                    <span className="px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm font-bold text-slate-300 flex items-center gap-2">
-                        <Scale className="w-4 h-4 text-blue-400" /> Policy Compliance
-                    </span>
-                </div>
-            </section>
+const problems: TensionItem[] = [
+    {
+        icon: Building2,
+        title: 'Erroneous VCC charges',
+        body: 'Hotels frequently charge Virtual Credit Cards in full on free-cancellation bookings or overlook approved no-show waivers.',
+        metric: 'Multi-$M risk',
+        tag: 'VCC leakage',
+    },
+    {
+        icon: Scale,
+        title: '20-minute manual recovery',
+        body: 'Human specialists spend 20+ minutes per dispute crossing time zones, language barriers, and multi-tier cancellation clauses.',
+        metric: '20m / case',
+        tag: 'Ops drag',
+    },
+    {
+        icon: Gavel,
+        title: 'Autonomous end-to-end recovery',
+        body: 'The agent connects directly to PMS records and payment gateways to detect overcharges, draft partner-aware outreach, and file compliant chargebacks.',
+        metric: 'Auto-recover',
+        tag: 'Closed loop',
+    },
+];
 
-            {/* Context & Problem Grid */}
-            <section className="container mx-auto px-6 mb-32">
-                <div className="text-center mb-16">
-                    <h2 className="text-3xl text-white mb-4 tracking-tight">The <span className="text-red-400">multi-million dollar</span> leakage</h2>
-                    <p className="text-slate-400 max-w-2xl mx-auto">
-                        Online Travel Agencies (OTAs) pay hotels using temporary Virtual Credit Cards. When bookings are cancelled, hotels often charge these cards incorrectly, leading to massive financial losses.
-                    </p>
-                </div>
+const flowNodes: FlowNodeSpec[] = [
+    {
+        id: 'trigger',
+        step: '01',
+        title: 'Webhook detect',
+        role: 'Gateway audit',
+        icon: Webhook,
+        detail: 'Listens to virtual card settlement webhooks, compares billed amounts against booking cancellation windows, and isolates true overcharges.',
+        statePreview: `{
+  "bookingId": "OTA-992104",
+  "vccCharged": "$640.00",
+  "entitledAmount": "$0.00 (Free Cancel)",
+  "leakage": "$640.00"
+}`,
+        highlightLines: [1, 4],
+    },
+    {
+        id: 'strategy',
+        step: '02',
+        title: 'Strategy engine',
+        role: 'Partner tier',
+        icon: Brain,
+        detail: 'Selects tone and escalation path dynamically based on hotel VIP tier, historical win rate, and regional compliance rules.',
+        statePreview: `{
+  "hotelTier": "VIP_PARTNER",
+  "winRate": 0.94,
+  "tone": "POLITE_REMINDER",
+  "template": "vip_inquiry.txt"
+}`,
+        highlightLines: [6, 13],
+    },
+    {
+        id: 'rebuttal',
+        step: '03',
+        title: 'Rebuttal loop',
+        role: 'Evidence fetch',
+        icon: RefreshCw,
+        detail: 'If a property contests the claim, the agent automatically pulls timestamped cancellation receipts and waiver logs to argue back.',
+        statePreview: `{
+  "hotelReply": "DENIED (No-Show)",
+  "counterEvidence": "cancel_ts < cutoff - 14h",
+  "action": "SEND_REBUTTAL_V2"
+}`,
+        highlightLines: [15, 19],
+    },
+    {
+        id: 'chargeback',
+        step: '04',
+        title: 'Recover or file',
+        role: 'Settlement',
+        icon: Shield,
+        detail: 'Verifies refunded settlement on the virtual card ledger, or escalates unresolved breaches straight into card-network chargeback filing.',
+        statePreview: `{
+  "outcome": "REFUND_CONFIRMED",
+  "recovered": "$640.00",
+  "cycleTime": "3.2 mins"
+}`,
+        highlightLines: [18, 22],
+    },
+];
 
-                <div className="grid md:grid-cols-3 gap-8">
-                    <div className="p-8 rounded-2xl bg-slate-900/50 border border-slate-800 hover:border-violet-500/30 transition-colors group relative overflow-hidden">
-                        <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                            <Building2 className="w-24 h-24 text-red-500" />
-                        </div>
-                        <div className="w-12 h-12 bg-red-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-red-500/20 transition-colors relative z-10">
-                            <Building2 className="w-6 h-6 text-red-400" />
-                        </div>
-                        <h3 className="text-xl font-bold text-white mb-3 relative z-10">Erroneous Charges</h3>
-                        <p className="text-slate-400 leading-relaxed relative z-10 text-sm">
-                            Hotels frequently charge the full VCC amount even for free-cancellation bookings, or fail to process refunds for "No-Show" waivers.
-                        </p>
-                    </div>
-                    <div className="p-8 rounded-2xl bg-slate-900/50 border border-slate-800 hover:border-violet-500/30 transition-colors group relative overflow-hidden">
-                        <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                            <Scale className="w-24 h-24 text-blue-500" />
-                        </div>
-                        <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-500/20 transition-colors relative z-10">
-                            <Scale className="w-6 h-6 text-blue-400" />
-                        </div>
-                        <h3 className="text-xl font-bold text-white mb-3 relative z-10">Operational Bottleneck</h3>
-                        <p className="text-slate-400 leading-relaxed relative z-10 text-sm">
-                            Recovery is manual and slow. Agents spend 20+ minutes per case navigating language barriers, time zones, and complex cancellation policies.
-                        </p>
-                    </div>
-                    <div className="p-8 rounded-2xl bg-slate-900/50 border border-slate-800 hover:border-violet-500/30 transition-colors group relative overflow-hidden">
-                        <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                            <Gavel className="w-24 h-24 text-green-500" />
-                        </div>
-                        <div className="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-green-500/20 transition-colors relative z-10">
-                            <Gavel className="w-6 h-6 text-green-400" />
-                        </div>
-                        <h3 className="text-xl font-bold text-white mb-3 relative z-10">Autonomous Recovery</h3>
-                        <p className="text-slate-400 leading-relaxed relative z-10 text-sm">
-                            Our AI agent integrates directly with the PMS and Payment Gateway. It detects the error, validates the policy, and recovers the funds instantly.
-                        </p>
-                    </div>
-                </div>
-            </section>
-
-            {/* Cognitive Flow Explanation */}
-            <section className="container mx-auto px-6 mb-32">
-                <div className="flex flex-col lg:flex-row items-center gap-16">
-                    <div className="lg:w-1/2">
-                        <h2 className="text-4xl md:text-5xl tracking-tight mb-8 text-white">
-                            Cognitive <span className="font-serif italic font-normal text-violet-400">flow</span>
-                        </h2>
-                        <p className="text-lg text-slate-400 mb-8 leading-relaxed">
-                            The agent doesn't just follow a script. It uses a <strong>Strategy Engine</strong> to determine the best approach based on the hotel's history and tier.
-                        </p>
-
-                        <ul className="space-y-6">
-                            <li className="flex gap-4">
-                                <div className="w-8 h-8 rounded-full bg-violet-500/20 flex items-center justify-center text-violet-400 font-bold shrink-0">1</div>
-                                <div>
-                                    <h4 className="text-white font-bold text-lg">Trigger & Analyze</h4>
-                                    <p className="text-slate-500 text-sm">Detects overcharge via webhook. Validates against cancellation policy.</p>
-                                </div>
-                            </li>
-                            <li className="flex gap-4">
-                                <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold shrink-0">2</div>
-                                <div>
-                                    <h4 className="text-white font-bold text-lg">Strategize</h4>
-                                    <p className="text-slate-500 text-sm">Decides tone (Firm vs. Polite) based on partner relationship.</p>
-                                </div>
-                            </li>
-                            <li className="flex gap-4">
-                                <div className="w-8 h-8 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400 font-bold shrink-0">3</div>
-                                <div>
-                                    <h4 className="text-white font-bold text-lg">Rebuttal Loop</h4>
-                                    <p className="text-slate-500 text-sm">If the hotel denies, the agent fetches new evidence (e.g., flight data) and argues back.</p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div className="lg:w-1/2 relative">
-                        <div className="absolute inset-0 bg-gradient-to-r from-violet-600 to-indigo-600 blur-[100px] opacity-20"></div>
-                        <div className="relative bg-slate-900 border border-slate-800 rounded-2xl p-8 font-mono text-xs md:text-sm text-slate-300 shadow-2xl">
-                            <div className="flex gap-2 mb-4 border-b border-slate-800 pb-4">
-                                <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                                <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                                <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                                <span className="ml-auto text-slate-500">strategy_engine.py</span>
-                            </div>
-                            <pre className="language-python">
-                                {`def strategy_node(state: AgentState):
+const STRATEGY_CODE = `# Partner-aware VCC dispute strategy engine
+def strategy_node(state: AgentState):
     hotel_tier = state["hotel_tier"]
     history = state["dispute_history"]
 
+    # Adapt outreach tone to partner value & compliance history
     if hotel_tier == "VIP" and history["win_rate"] > 0.9:
         tone = "POLITE_REMINDER"
         template = "templates/vip_inquiry.txt"
@@ -144,32 +119,92 @@ export default function CollectionsPage() {
         tone = "FIRM_DEMAND"
         template = "templates/legal_notice.txt"
 
+    # Rebuttal loop attaches fresh policy evidence if contested
+    if state["status"] == "CONTESTED":
+        evidence = pms.fetch_cancellation_proof(state["booking_id"])
+        return { "tone": "EVIDENCE_REBUTTAL", "evidence": evidence }
+
     return {
         "tone": tone,
         "email_template": template,
-        "next_step": "draft_email"
-    }`}
-                            </pre>
-                        </div>
-                    </div>
-                </div>
+        "next_step": "draft_and_dispatch",
+    }`;
+
+export default function CollectionsPage() {
+    return (
+        <SubPageShell statusLabel="System Online" accentColor={ACCENT} sections={SECTIONS}>
+            <SEO
+                title="Enterprise Collections AI: Autonomous VCC Dispute Resolution"
+                description="An autonomous agent that recovers virtual credit card (VCC) overcharges by validating cancellation policies, negotiating with hotels, and filing compliant chargebacks."
+                url="https://wutcharin.com/collections"
+            />
+            <SubPageHero
+                badgeLabel="Autonomous Dispute Resolution"
+                BadgeIcon={Brain}
+                titleLead="Enterprise"
+                titleAccent="Collections AI."
+                description={
+                    <>
+                        An agent that recovers revenue lost to <span className="font-normal text-text-strong">virtual card (VCC)</span> overcharges. It
+                        audits cancellation policies, negotiates with properties, and escalates chargebacks at scale.
+                    </>
+                }
+                accentColor={ACCENT}
+                primaryCta={{ label: 'Run the simulation', href: '#demo', icon: Play }}
+                secondaryCta={{ label: 'Strategy graph', href: '#architecture', icon: Zap }}
+            />
+
+            {/* 01 · Leakage ledger */}
+            <section className="mx-auto mb-24 max-w-6xl px-6 md:mb-32 md:px-10">
+                <SectionHeader
+                    id="problem"
+                    index="01"
+                    eyebrow="Revenue leakage"
+                    title="The multi-million dollar"
+                    accent="VCC gap."
+                    accentColor={ACCENT}
+                    lead="Online travel agencies settle hotel bookings with temporary Virtual Credit Cards. When cancellations occur, unmonitored charges bleed margin silently."
+                />
+                <TensionLedger items={problems} accentColor={ACCENT} />
             </section>
 
-            {/* Interactive Demo */}
-            <section id="demo" className="container mx-auto px-6">
-                <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-12 border-b border-slate-800 pb-12">
-                    <div className="w-16 h-16 bg-violet-600 rounded-2xl flex items-center justify-center shadow-lg shadow-violet-500/20 shrink-0">
-                        <Brain className="text-white w-8 h-8" />
-                    </div>
-                    <div>
-                        <h2 className="text-3xl tracking-tight text-white mb-2">Interactive simulation</h2>
-                        <p className="text-slate-400 max-w-2xl">
-                            Watch the agent handle a live dispute. Select a scenario to see how it adapts its strategy when the hotel pushes back.
-                        </p>
-                    </div>
-                </div>
+            {/* 02 · Interactive Strategy Engine motion graphic */}
+            <section className="mx-auto mb-24 max-w-6xl px-6 md:mb-32 md:px-10">
+                <SectionHeader
+                    id="architecture"
+                    index="02"
+                    eyebrow="Cognitive flow"
+                    title="Adaptive dispute"
+                    accent="strategy."
+                    accentColor={ACCENT}
+                    lead="Rather than firing rigid scripts, the Strategy Engine tailors tone to hotel tier and enters an evidence-gathering rebuttal loop whenever a partner pushes back."
+                />
+                <InteractiveFlowDiagram
+                    nodes={flowNodes}
+                    accentColor={ACCENT}
+                    filename="strategy_engine.py"
+                    code={STRATEGY_CODE}
+                    cyclicLabel="Denied claims trigger automated evidence rebuttal"
+                />
+            </section>
 
-                <CollectionsDemo />
+            {/* 03 · Interactive sandbox */}
+            <section id="demo" className="mx-auto mb-16 max-w-6xl scroll-mt-24 px-6 md:px-10">
+                <SectionHeader
+                    index="03"
+                    eyebrow="Interactive sandbox"
+                    title="Watch the agent"
+                    accent="recover funds."
+                    accentColor={ACCENT}
+                    lead="Choose a dispute scenario to observe live policy verification, tone selection, and automated counter-arguments."
+                />
+                <DemoStageFrame
+                    label="Live Simulation · Autonomous Collections"
+                    accentColor={ACCENT}
+                    badges={['VCC Audit', 'Partner Tone', 'Rebuttal Loop']}
+                >
+                    <CollectionsDemo />
+                </DemoStageFrame>
             </section>
 
             <ProjectNavigation currentId="collections" />

@@ -19,6 +19,7 @@ const CURSOR_LABELS: Record<string, string> = {
     explore: 'EXPLORE',
     toggle: 'THEME',
     step: 'STEP',
+    back: '← WORK',
 };
 
 const INTERACTIVE = '[data-cursor], .cursor-hover, a, button, [role="button"]';
