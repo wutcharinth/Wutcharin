@@ -351,12 +351,12 @@ const ResumeBuilderPage: React.FC = () => {
                         <ProjectNavigation currentId="resume-builder" />
                     </>
                 ) : (
-                    <div className="surface-dark px-4 pt-10 text-white">
+                    <div className="px-4 pt-10 text-text">
                         {/* EDITOR TAB */}
                         {activeTab === 'editor' && (
                             <div className="max-w-4xl mx-auto animate-in fade-in zoom-in-95 duration-200">
                                 <div className="flex justify-between items-center mb-6">
-                                    <h2 className="text-2xl font-bold text-white">Edit Your Details</h2>
+                                    <h2 className="font-display text-2xl font-medium text-text-strong">Edit Your Details</h2>
                                     <Button onClick={() => setActiveTab('preview')}>
                                         Preview Resume <ArrowRight className="ml-2 w-4 h-4" />
                                     </Button>
@@ -378,7 +378,7 @@ const ResumeBuilderPage: React.FC = () => {
                                 )}
 
                                 {/* TOOLBAR */}
-                                <div className="w-full max-w-5xl mb-6 bg-zinc-900 rounded-xl p-4 border border-zinc-800 shadow-sm flex flex-col xl:flex-row gap-6 items-start xl:items-center justify-between print:hidden sticky top-20 z-30">
+                                <div className="w-full max-w-5xl mb-6 bg-panel rounded-xl p-4 border border-hairline flex flex-col xl:flex-row gap-6 items-start xl:items-center justify-between print:hidden sticky top-20 z-30">
 
                                     {/* Style Controls Group */}
                                     <div className="flex flex-wrap gap-x-6 gap-y-4 w-full xl:w-auto">
@@ -387,27 +387,27 @@ const ResumeBuilderPage: React.FC = () => {
                                         <div className="flex gap-6">
                                             {/* Layout Selector */}
                                             <div className="flex flex-col gap-1.5">
-                                                <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-1">
+                                                <label className="text-[10px] font-mono text-text-mute uppercase tracking-[0.18em] flex items-center gap-1">
                                                     <Layout className="w-3 h-3" /> Layout
                                                 </label>
-                                                <div className="flex bg-zinc-800 p-1 rounded-lg">
+                                                <div className="flex bg-bg border border-hairline p-1 rounded-lg">
                                                     <button
                                                         onClick={() => setLayout(LayoutType.SINGLE_COLUMN)}
-                                                        className={`p-2 rounded hover:bg-zinc-700 hover:shadow-sm transition-all ${layout === LayoutType.SINGLE_COLUMN ? 'bg-zinc-700 shadow-sm text-blue-400' : 'text-gray-400'}`}
+                                                        className={`p-2 rounded transition-colors ${layout === LayoutType.SINGLE_COLUMN ? 'bg-panel-strong text-sky-500' : 'text-text-mute hover:text-text-strong'}`}
                                                         title="Single Column"
                                                     >
                                                         <RectangleVertical size={18} />
                                                     </button>
                                                     <button
                                                         onClick={() => setLayout(LayoutType.TWO_COLUMN_LEFT)}
-                                                        className={`p-2 rounded hover:bg-zinc-700 hover:shadow-sm transition-all ${layout === LayoutType.TWO_COLUMN_LEFT ? 'bg-zinc-700 shadow-sm text-blue-400' : 'text-gray-400'}`}
+                                                        className={`p-2 rounded transition-colors ${layout === LayoutType.TWO_COLUMN_LEFT ? 'bg-panel-strong text-sky-500' : 'text-text-mute hover:text-text-strong'}`}
                                                         title="Left Sidebar"
                                                     >
                                                         <PanelLeft size={18} />
                                                     </button>
                                                     <button
                                                         onClick={() => setLayout(LayoutType.TWO_COLUMN_RIGHT)}
-                                                        className={`p-2 rounded hover:bg-zinc-700 hover:shadow-sm transition-all ${layout === LayoutType.TWO_COLUMN_RIGHT ? 'bg-zinc-700 shadow-sm text-blue-400' : 'text-gray-400'}`}
+                                                        className={`p-2 rounded transition-colors ${layout === LayoutType.TWO_COLUMN_RIGHT ? 'bg-panel-strong text-sky-500' : 'text-text-mute hover:text-text-strong'}`}
                                                         title="Right Sidebar"
                                                     >
                                                         <PanelRight size={18} />
@@ -417,11 +417,11 @@ const ResumeBuilderPage: React.FC = () => {
 
                                             {/* Template Selector */}
                                             <div className="flex flex-col gap-1.5">
-                                                <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-1">
+                                                <label className="text-[10px] font-mono text-text-mute uppercase tracking-[0.18em] flex items-center gap-1">
                                                     <Palette className="w-3 h-3" /> Style
                                                 </label>
                                                 <select
-                                                    className="bg-zinc-800 text-sm font-medium text-white focus:outline-none cursor-pointer border-transparent rounded-lg px-3 py-2 hover:bg-zinc-700 transition-colors w-32"
+                                                    className="bg-bg text-sm font-medium text-text-strong focus:outline-none cursor-pointer border border-hairline rounded-lg px-3 py-2 hover:border-hairline-strong transition-colors w-32"
                                                     value={template}
                                                     onChange={(e) => setTemplate(e.target.value as TemplateType)}
                                                 >
@@ -433,14 +433,14 @@ const ResumeBuilderPage: React.FC = () => {
                                         </div>
 
                                         {/* Middle Group: Typography */}
-                                        <div className="flex gap-6 border-l border-zinc-800 pl-6">
+                                        <div className="flex gap-6 border-l border-hairline pl-6">
                                             {/* Font Family */}
                                             <div className="flex flex-col gap-1.5">
-                                                <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-1">
+                                                <label className="text-[10px] font-mono text-text-mute uppercase tracking-[0.18em] flex items-center gap-1">
                                                     <Type className="w-3 h-3" /> Font
                                                 </label>
                                                 <select
-                                                    className="bg-zinc-800 text-sm font-medium text-white focus:outline-none cursor-pointer border-transparent rounded-lg px-3 py-2 hover:bg-zinc-700 transition-colors w-32"
+                                                    className="bg-bg text-sm font-medium text-text-strong focus:outline-none cursor-pointer border border-hairline rounded-lg px-3 py-2 hover:border-hairline-strong transition-colors w-32"
                                                     value={fontFamily}
                                                     onChange={(e) => setFontFamily(e.target.value as FontFamily)}
                                                 >
@@ -452,24 +452,24 @@ const ResumeBuilderPage: React.FC = () => {
 
                                             {/* Font Size */}
                                             <div className="flex flex-col gap-1.5">
-                                                <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-1">
+                                                <label className="text-[10px] font-mono text-text-mute uppercase tracking-[0.18em] flex items-center gap-1">
                                                     Size
                                                 </label>
-                                                <div className="flex items-center bg-zinc-800 p-1 rounded-lg">
+                                                <div className="flex items-center bg-bg border border-hairline p-1 rounded-lg">
                                                     <button
                                                         onClick={() => cycleFontSize('down')}
                                                         disabled={fontSize === FontSize.SMALL}
-                                                        className="p-2 rounded hover:bg-zinc-700 hover:shadow-sm disabled:opacity-30 transition-all text-gray-400"
+                                                        className="p-2 rounded hover:bg-panel-strong disabled:opacity-30 transition-all text-text-mute hover:text-text-strong"
                                                     >
                                                         <ZoomOut size={16} />
                                                     </button>
-                                                    <span className="text-xs font-medium text-gray-300 w-16 text-center select-none">
+                                                    <span className="text-xs font-mono text-text-strong w-16 text-center select-none">
                                                         {fontSize.charAt(0) + fontSize.slice(1).toLowerCase()}
                                                     </span>
                                                     <button
                                                         onClick={() => cycleFontSize('up')}
                                                         disabled={fontSize === FontSize.LARGE}
-                                                        className="p-2 rounded hover:bg-zinc-700 hover:shadow-sm disabled:opacity-30 transition-all text-gray-400"
+                                                        className="p-2 rounded hover:bg-panel-strong disabled:opacity-30 transition-all text-text-mute hover:text-text-strong"
                                                     >
                                                         <ZoomIn size={16} />
                                                     </button>
@@ -478,14 +478,14 @@ const ResumeBuilderPage: React.FC = () => {
                                         </div>
 
                                         {/* Color Selector */}
-                                        <div className="flex flex-col gap-1.5 border-l border-zinc-800 pl-6">
-                                            <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Accent</label>
+                                        <div className="flex flex-col gap-1.5 border-l border-hairline pl-6">
+                                            <label className="text-[10px] font-mono text-text-mute uppercase tracking-[0.18em]">Accent</label>
                                             <div className="flex gap-1.5">
                                                 {COLORS.map(c => (
                                                     <button
                                                         key={c}
                                                         onClick={() => setAccentColor(c)}
-                                                        className={`w-6 h-6 rounded-full transition-transform hover:scale-110 ${accentColor === c ? 'ring-2 ring-offset-2 ring-gray-400 scale-110' : ''}`}
+                                                        className={`w-6 h-6 rounded-full border border-hairline transition-transform hover:scale-110 ${accentColor === c ? 'ring-2 ring-offset-2 ring-text-strong scale-110' : ''}`}
                                                         style={{ backgroundColor: c }}
                                                         aria-label={`Select color ${c}`}
                                                     />
@@ -499,7 +499,7 @@ const ResumeBuilderPage: React.FC = () => {
                                         <Button
                                             onClick={() => setShowExportMenu(!showExportMenu)}
                                             variant="primary"
-                                            className="w-full xl:w-auto text-sm py-2.5 px-6 shadow-md font-bold tracking-wide whitespace-nowrap"
+                                            className="w-full xl:w-auto text-sm py-2.5 px-6 font-medium whitespace-nowrap"
                                             disabled={isExporting}
                                         >
                                             {isExporting ? (
@@ -516,38 +516,36 @@ const ResumeBuilderPage: React.FC = () => {
 
                                         {showExportMenu && (
                                             <>
-                                                {/* Backdrop to close menu */}
                                                 <div
                                                     className="fixed inset-0 z-40"
                                                     onClick={() => setShowExportMenu(false)}
                                                 />
 
-                                                {/* Dropdown menu */}
-                                                <div className="absolute right-0 mt-2 w-56 rounded-lg shadow-xl bg-zinc-800 border border-zinc-700 z-50 overflow-hidden">
+                                                <div className="absolute right-0 mt-2 w-56 rounded-xl bg-bg border border-hairline-strong z-50 overflow-hidden">
                                                     <div className="py-1">
                                                         <button
                                                             onClick={handleHTMLExport}
-                                                            className="w-full px-4 py-3 text-left text-sm hover:bg-zinc-700 transition-colors flex items-center gap-3 group"
+                                                            className="w-full px-4 py-3 text-left text-sm hover:bg-panel transition-colors flex items-center gap-3 group"
                                                         >
-                                                            <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors">
-                                                                <Code size={16} className="text-blue-400" />
+                                                            <div className="w-8 h-8 rounded-lg bg-sky-500/10 flex items-center justify-center group-hover:bg-sky-500/20 transition-colors">
+                                                                <Code size={16} className="text-sky-500" />
                                                             </div>
                                                             <div>
-                                                                <div className="font-semibold text-white">HTML</div>
-                                                                <div className="text-xs text-gray-400">View in browser, print to PDF</div>
+                                                                <div className="font-medium text-text-strong">HTML</div>
+                                                                <div className="text-xs text-text-mute">View in browser, print to PDF</div>
                                                             </div>
                                                         </button>
 
                                                         <button
                                                             onClick={handleWordExport}
-                                                            className="w-full px-4 py-3 text-left text-sm hover:bg-zinc-700 transition-colors flex items-center gap-3 group"
+                                                            className="w-full px-4 py-3 text-left text-sm hover:bg-panel transition-colors flex items-center gap-3 group"
                                                         >
                                                             <div className="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center group-hover:bg-indigo-500/20 transition-colors">
-                                                                <FileText size={16} className="text-indigo-400" />
+                                                                <FileText size={16} className="text-indigo-500" />
                                                             </div>
                                                             <div>
-                                                                <div className="font-semibold text-white">Word (.docx)</div>
-                                                                <div className="text-xs text-gray-400">Fully editable document</div>
+                                                                <div className="font-medium text-text-strong">Word (.docx)</div>
+                                                                <div className="text-xs text-text-mute">Fully editable document</div>
                                                             </div>
                                                         </button>
                                                     </div>
@@ -557,12 +555,11 @@ const ResumeBuilderPage: React.FC = () => {
                                     </div>
                                 </div>
 
-                                {/* Resume Page Container - Print styles ensure full page width and no transform */}
+                                {/* Resume Page Container */}
                                 <div className="w-full flex justify-center pb-20 overflow-x-auto print:!p-0 print:!m-0 print:!block print:!w-full print:!overflow-visible print:!bg-white">
                                     <div ref={printRef} className="origin-top transition-transform duration-300 print:!transform-none print:!w-full print:!m-0 print:!p-0">
-                                        {/* Note: ResumePreview now handles the container style (white pages + gray gaps) */}
                                         <ResumePreview
-                                            key={fontSize} // Force re-render on font size change
+                                            key={fontSize}
                                             data={resumeData}
                                             template={template}
                                             layout={layout}
@@ -570,9 +567,8 @@ const ResumeBuilderPage: React.FC = () => {
                                             fontFamily={fontFamily}
                                             fontSize={fontSize}
                                         />
-                                        {/* Helper text for user */}
-                                        <p className="text-center text-xs text-gray-400 mt-4 print:hidden max-w-lg mx-auto leading-relaxed">
-                                            The preview above mimics A4 pages. If your content crosses the gray gap, it will be split across pages when printing.
+                                        <p className="text-center text-xs text-text-mute mt-4 print:hidden max-w-lg mx-auto leading-relaxed">
+                                            The preview above mimics A4 pages. If your content crosses the page gap, it will split across pages when printing.
                                             Adjust spacing or text length for best results.
                                         </p>
                                     </div>

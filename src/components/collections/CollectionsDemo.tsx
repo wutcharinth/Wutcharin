@@ -1,11 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, type ComponentType } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-    ArrowLeft,
     Brain,
     Cpu,
     FolderOpen,
-    Zap,
     Bell,
     Scale,
     BrainCircuit,
@@ -19,482 +17,478 @@ import {
     Mail,
     Reply,
     Plane,
-    AlertTriangle
+    AlertTriangle,
+    Play,
 } from 'lucide-react';
+import { usePrefersReducedMotion } from '../../lib/motion/usePrefersReducedMotion';
 
-// Types
 type ScenarioType = 'success' | 'rebuttal' | 'fail';
 
-type LogItem = {
+interface LogItem {
     id: string;
     title: string;
     desc: string;
-    colorClass: string;
-};
+    tone: 'neutral' | 'ok' | 'warn' | 'err' | 'accent';
+}
 
-type EvidenceItem = {
+interface EvidenceItem {
     id: string;
-    icon: any;
+    icon: ComponentType<{ className?: string }>;
     name: string;
     tag: string;
-};
+}
+
+const ACCENT = '#8b5cf6';
 
 export default function CollectionsDemo() {
+    const reduced = usePrefersReducedMotion();
     const [activeNode, setActiveNode] = useState<string | null>(null);
+    const [selectedScenario, setSelectedScenario] = useState<ScenarioType | null>(null);
     const [logs, setLogs] = useState<LogItem[]>([]);
     const [evidence, setEvidence] = useState<EvidenceItem[]>([]);
     const [confidence, setConfidence] = useState<string>('--');
     const [isRunning, setIsRunning] = useState(false);
-    const [packetState, setPacketState] = useState<{ target: string | null, visible: boolean }>({ target: null, visible: false });
     const [outcome, setOutcome] = useState<'success' | 'fail' | null>(null);
     const [showRebuttal, setShowRebuttal] = useState(false);
 
-    const logsEndRef = useRef<HTMLDivElement>(null);
+    const logsContainerRef = useRef<HTMLDivElement>(null);
+    const runIdRef = useRef(0);
 
-    // Auto-scroll logs within container only (prevent page jump)
     useEffect(() => {
-        logsEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        if (logsContainerRef.current) {
+            logsContainerRef.current.scrollTop = logsContainerRef.current.scrollHeight;
+        }
     }, [logs]);
 
-    const addLog = (title: string, desc: string, colorClass: string = "text-slate-300") => {
-        setLogs(prev => [...prev, { id: Math.random().toString(), title, desc, colorClass }]);
+    const addLog = (title: string, desc: string, tone: LogItem['tone'] = 'neutral') => {
+        setLogs((prev) => [...prev, { id: `${Date.now()}-${Math.random()}`, title, desc, tone }]);
     };
 
-    const addEvidence = (icon: any, name: string, tag: string) => {
-        setEvidence(prev => [...prev, { id: Math.random().toString(), icon, name, tag }]);
+    const addEvidence = (icon: ComponentType<{ className?: string }>, name: string, tag: string) => {
+        setEvidence((prev) => [...prev, { id: `${Date.now()}-${Math.random()}`, icon, name, tag }]);
     };
 
     const runScenario = async (type: ScenarioType) => {
-        if (isRunning) return;
+        const myRun = runIdRef.current + 1;
+        runIdRef.current = myRun;
+        const cancelled = () => runIdRef.current !== myRun;
+        const wait = (ms: number) => new Promise((r) => setTimeout(r, reduced ? Math.min(ms, 100) : ms));
+
         setIsRunning(true);
+        setSelectedScenario(type);
         setLogs([]);
         setEvidence([]);
         setConfidence('--');
         setActiveNode(null);
         setOutcome(null);
         setShowRebuttal(false);
-        setPacketState({ target: null, visible: false });
 
         // 1. Trigger
-        addLog("TRIGGER", "Webhook detected VCC Transaction #882190 charged by 'Grand Hotel Plaza'.");
-        addEvidence(FileText, "VCC_Statement.csv", "SOURCE");
+        addLog('TRIGGER', "Webhook detected VCC Transaction #882190 charged by 'Grand Hotel Plaza'.");
+        addEvidence(FileText, 'VCC_Statement.csv', 'SOURCE');
         setActiveNode('trigger');
-        await new Promise(r => setTimeout(r, 800));
+        await wait(650);
+        if (cancelled()) return;
 
         // 2. Analyst
-        setPacketState({ target: 'analyst', visible: true });
-        await new Promise(r => setTimeout(r, 800)); // Travel time
         setActiveNode('analyst');
-
-        addLog("POLICY CHECK", "Booking #BK-99201 was cancelled on Oct 20 (24h before check-in).", "text-white");
-        addLog("LOGIC RESULT", "Cancellation Policy: 'Free cancellation until Oct 21'. Charge is INVALID.", "text-green-400");
-        setConfidence("99.8%");
-        addEvidence(CalendarX, "Booking_Log.json", "PMS");
-        await new Promise(r => setTimeout(r, 1200));
+        addLog('POLICY CHECK', 'Booking #BK-99201 cancelled Oct 20 (24h prior to check-in).', 'accent');
+        addLog('VERDICT', "Policy allows free cancellation until Oct 21. Charge is INVALID.", 'ok');
+        setConfidence('99.8%');
+        addEvidence(CalendarX, 'Booking_Log.json', 'PMS');
+        await wait(950);
+        if (cancelled()) return;
 
         // 3. Strategist
-        setPacketState({ target: 'strategy', visible: true });
-        await new Promise(r => setTimeout(r, 800));
         setActiveNode('strategy');
-
-        addLog("RELATIONSHIP CHECK", "Partner Tier: Silver. Dispute History: 2 previous cases (100% Win Rate).");
-        addLog("STRATEGY", "Selected Tone: FIRM_PROFESSIONAL. Using 'Template_B_Overcharge_Notice'.", "text-violet-300");
-        await new Promise(r => setTimeout(r, 1200));
+        addLog('PARTNER TIER', 'Silver Partner. 2 prior disputes (100% win rate).');
+        addLog('STRATEGY', "Tone: FIRM_PROFESSIONAL · Template_B_Overcharge_Notice.", 'accent');
+        await wait(950);
+        if (cancelled()) return;
 
         // 4. Action
-        setPacketState({ target: 'action', visible: true });
-        await new Promise(r => setTimeout(r, 800));
         setActiveNode('action');
-
-        addLog("GENERATION", "Drafting email to reservations@grandhotelplaza.com...");
-        addEvidence(Mail, "Dispute_Email_Draft.eml", "OUTBOX");
-        await new Promise(r => setTimeout(r, 1000));
+        addLog('DISPATCH', 'Sending dispute dossier to reservations@grandhotelplaza.com...');
+        addEvidence(Mail, 'Dispute_Email_Draft.eml', 'OUTBOX');
+        await wait(800);
+        if (cancelled()) return;
 
         // 5. Hotel
-        setPacketState({ target: 'hotel', visible: true });
-        await new Promise(r => setTimeout(r, 800));
         setActiveNode('hotel');
-        addLog("WAITING", "Email sent. Listening for reply via IMAP...", "text-slate-500 italic");
-        await new Promise(r => setTimeout(r, 2000));
+        addLog('AWAITING REPLY', 'Monitoring IMAP thread for partner response...');
+        await wait(1200);
+        if (cancelled()) return;
 
-        // Branching
         if (type === 'success') {
-            addLog("REPLY RECEIVED", "Sender: reservations@grandhotelplaza.com <br/>'Apologies, this was an accounting error. Refund processed.'", "text-green-400");
-            addEvidence(Reply, "Hotel_Reply.eml", "INBOX");
-
-            setPacketState({ target: 'outcome-success', visible: true });
-            await new Promise(r => setTimeout(r, 800));
+            addLog('REPLY RECEIVED', "Grand Hotel Plaza: 'Apologies, accounting error. Refund processed.'", 'ok');
+            addEvidence(Reply, 'Hotel_Reply.eml', 'INBOX');
             setActiveNode('outcome-success');
             setOutcome('success');
-            addLog("CONCLUSION", "Refund verified in VCC ledger. Case Closed. Recovered $450.", "text-green-400 font-bold");
-
+            addLog('CLOSED', 'Refund verified in VCC ledger. Recovered $450.00.', 'ok');
         } else if (type === 'rebuttal') {
-            setActiveNode('hotel-error'); // Visual state for negative reply
-            addLog("REPLY RECEIVED", "Sender: reservations@grandhotelplaza.com <br/>'Guest did not arrive. No-Show fee applies.'", "text-red-400");
+            setActiveNode('hotel-error');
+            addLog('REPLY RECEIVED', "Grand Hotel Plaza: 'Guest did not arrive. No-Show fee applies.'", 'err');
+            await wait(600);
+            if (cancelled()) return;
 
-            // Rebuttal Loop
             setShowRebuttal(true);
-            setPacketState({ target: 'rebuttal', visible: true });
-            await new Promise(r => setTimeout(r, 800));
             setActiveNode('rebuttal');
+            addLog('AI REBUTTAL', "Checking Force Majeure & flight disruption APIs...", 'warn');
+            await wait(850);
+            if (cancelled()) return;
 
-            addLog("AI REBUTTAL", "Claim: 'No Show'. Checking 'Force Majeure' conditions...", "text-yellow-400");
-            await new Promise(r => setTimeout(r, 1000));
+            addEvidence(Plane, 'Flight_Status_UA882.json', 'EXT API');
+            addLog('EVIDENCE FOUND', 'Flight UA882 (SFO -> JFK) cancelled due to severe weather.', 'accent');
+            addLog('COUNTER-EMAIL', 'Citing contract clause 4.2 weather waiver with flight record.');
+            await wait(800);
+            if (cancelled()) return;
 
-            addEvidence(Plane, "Flight_Status_Api.json", "EXTERNAL");
-            addLog("EVIDENCE FOUND", "Flight UA882 (SFO->JFK) was cancelled due to weather.", "text-white");
-            addLog("AUTO-REPLY", "Drafting Rebuttal: 'Guest unable to arrive due to flight cancellation. Waiver applies per contract clause 4.2.'");
-
-            // Loop back
-            setPacketState({ target: 'hotel-return', visible: true }); // Special target for return trip
-            await new Promise(r => setTimeout(r, 800));
             setActiveNode('hotel');
+            addLog('PARTNER WAIVER', "'Understood. Fee waived and credit issued.'", 'ok');
+            await wait(700);
+            if (cancelled()) return;
 
-            addLog("HOTEL RESPONSE", "'Understood. We have waived the fee.'", "text-green-400");
-            await new Promise(r => setTimeout(r, 1000));
-
-            setPacketState({ target: 'outcome-success', visible: true });
-            await new Promise(r => setTimeout(r, 800));
             setActiveNode('outcome-success');
             setOutcome('success');
-            addLog("CONCLUSION", "Waiver confirmed. Case Closed.", "text-green-400 font-bold");
-
-        } else { // Fail
-            addLog("TIMEOUT", "No response received for 48 hours. Escalation required.", "text-red-400");
-            setPacketState({ target: 'outcome-fail', visible: true });
-            await new Promise(r => setTimeout(r, 800));
+            addLog('CLOSED', 'Waiver confirmed in VCC ledger. Recovered $450.00.', 'ok');
+        } else {
+            addLog('SLA TIMEOUT', 'No reply received within 48h window. Escalating.', 'err');
+            await wait(550);
+            if (cancelled()) return;
             setActiveNode('outcome-fail');
             setOutcome('fail');
-            addLog("ESCALATION", "Initiating VCC Chargeback (Reason Code 4837 - No Credit Processed).", "text-red-400 font-bold");
+            addLog('CHARGEBACK FILED', 'Initiated VCC Chargeback (Reason Code 4837 - No Credit Processed).', 'err');
         }
 
         setIsRunning(false);
     };
 
-    // Animation Variants
-    const packetVariants = {
-        initial: { opacity: 0, top: '10%', left: '50%', x: '-50%' },
-        trigger: { opacity: 1, top: '10%', left: '50%', x: '-50%' },
-        analyst: { opacity: 1, top: '22%', left: '50%', x: '-50%' },
-        strategy: { opacity: 1, top: '34%', left: '50%', x: '-50%' },
-        action: { opacity: 1, top: '46%', left: '50%', x: '-50%' },
-        hotel: { opacity: 1, top: '58%', left: '50%', x: '-50%' },
-        rebuttal: { opacity: 1, top: '70%', left: '70%', x: '-50%' }, // Offset for rebuttal
-        'hotel-return': { opacity: 1, top: '58%', left: '50%', x: '-50%' },
-        'outcome-success': { opacity: 1, top: '85%', left: '35%', x: '-50%' },
-        'outcome-fail': { opacity: 1, top: '85%', left: '65%', x: '-50%' }
-    };
+    const nodes = [
+        { id: 'trigger', icon: Bell, title: 'VCC Overcharge Detected', subtitle: 'Charge: $450 · Status: Cancelled', badge: null },
+        { id: 'analyst', icon: Scale, title: 'Policy Validation', subtitle: 'Matching timestamp vs. contract rules', badge: 'AI ANALYST' },
+        { id: 'strategy', icon: BrainCircuit, title: 'Strategy Engine', subtitle: 'Selecting negotiation tone & tier', badge: 'STRATEGIST' },
+        { id: 'action', icon: Send, title: 'Execute Action', subtitle: 'Dispatching evidence dossier', badge: null },
+        { id: 'hotel', icon: Building2, title: 'External Hotel', subtitle: 'Monitoring partner inbox thread', badge: null, dashed: true },
+    ];
 
     return (
-        <div className="w-full h-[800px] bg-[#0F172A] rounded-xl overflow-hidden flex border border-slate-700 shadow-2xl font-sans relative">
-
-            {/* Header Overlay */}
-            <div className="absolute top-0 left-0 w-full h-16 bg-slate-900/90 border-b border-slate-700 flex items-center justify-between px-6 z-50 backdrop-blur-sm">
+        <div className="min-h-[680px] lg:h-[740px] flex flex-col font-sans bg-bg text-text overflow-hidden">
+            {/* Header */}
+            <header className="border-b border-hairline bg-panel px-4 py-3 flex flex-wrap items-center justify-between gap-3 shrink-0">
                 <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-violet-500/20">
-                        <Brain className="w-5 h-5" />
+                    <div
+                        className="w-8 h-8 rounded-lg border flex items-center justify-center shrink-0"
+                        style={{ borderColor: `${ACCENT}44`, backgroundColor: `${ACCENT}14`, color: ACCENT }}
+                    >
+                        <Brain className="w-4 h-4" />
                     </div>
                     <div>
-                        <h1 className="font-bold text-white tracking-tight text-sm">Cognitive Collections <span className="text-violet-400">AI</span></h1>
-                        <div className="text-[10px] text-slate-400 font-mono tracking-widest">AUTONOMOUS DISPUTE AGENT v3.0</div>
-                    </div>
-                </div>
-                <div className="flex gap-8 text-xs font-mono hidden md:flex">
-                    <div className="flex flex-col items-end">
-                        <span className="text-slate-500">CASE ID</span>
-                        <span className="text-white font-bold">#BK-99201</span>
-                    </div>
-                    <div className="flex flex-col items-end">
-                        <span className="text-slate-500">DISPUTE AMOUNT</span>
-                        <span className="text-white font-bold">$450.00</span>
-                    </div>
-                    <div className="flex flex-col items-end">
-                        <span className="text-slate-500">AI CONFIDENCE</span>
-                        <span className={`font-bold ${confidence !== '--' ? 'text-green-400' : 'text-slate-500'}`}>{confidence}</span>
-                    </div>
-                </div>
-            </div>
-
-            {/* LEFT: AI Brain */}
-            <aside className="w-[350px] bg-[#0B1120] border-r border-slate-700 flex flex-col z-20 pt-16">
-                <div className="p-4 border-b border-slate-700 bg-slate-900 flex justify-between items-center">
-                    <h2 className="text-xs font-bold text-violet-400 uppercase tracking-wider flex items-center gap-2">
-                        <Cpu className="w-3 h-3" /> AI Reasoning Log
-                    </h2>
-                    <div className="flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-                        <span className="text-[10px] text-slate-400">ACTIVE</span>
+                        <div className="font-display font-medium text-sm leading-tight text-text-strong flex items-center gap-1.5">
+                            Cognitive Collections <span className="font-serif italic" style={{ color: ACCENT }}>AI</span>
+                        </div>
+                        <div className="text-[10px] text-text-mute font-mono tracking-[0.18em] uppercase">
+                            Autonomous Dispute Agent v3.0
+                        </div>
                     </div>
                 </div>
 
-                <div className="flex-1 p-4 space-y-4 overflow-y-auto custom-scrollbar">
-                    {logs.length === 0 && (
-                        <div className="text-slate-600 text-xs italic text-center mt-10">Waiting for trigger event...</div>
-                    )}
-                    <AnimatePresence>
-                        {logs.map((log) => (
-                            <motion.div
-                                key={log.id}
-                                initial={{ opacity: 0, x: -10 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                className="border-l-2 border-violet-500 pl-2 mb-2"
-                            >
-                                <div className="text-xs font-bold text-violet-400 uppercase mb-1">{log.title}</div>
-                                <div className={`text-sm ${log.colorClass}`} dangerouslySetInnerHTML={{ __html: log.desc }}></div>
-                            </motion.div>
-                        ))}
-                    </AnimatePresence>
-                    <div ref={logsEndRef} />
-                </div>
-
-                {/* Evidence Drawer */}
-                <div className="h-1/3 border-t border-slate-700 bg-slate-900/50 flex flex-col">
-                    <div className="p-3 border-b border-slate-800 text-[10px] font-bold text-slate-400 uppercase flex items-center gap-2">
-                        <FolderOpen className="w-3 h-3" /> Gathered Evidence
+                <div className="hidden md:flex items-center gap-6 text-[11px] font-mono">
+                    <div className="flex flex-col items-end">
+                        <span className="text-[9px] text-text-mute uppercase tracking-[0.16em]">Case ID</span>
+                        <span className="text-text-strong font-medium">#BK-99201</span>
                     </div>
-                    <div className="flex-1 p-3 overflow-y-auto space-y-2 custom-scrollbar">
-                        <AnimatePresence>
-                            {evidence.map((item) => (
+                    <div className="flex flex-col items-end">
+                        <span className="text-[9px] text-text-mute uppercase tracking-[0.16em]">Dispute</span>
+                        <span className="text-text-strong font-medium">$450.00</span>
+                    </div>
+                    <div className="flex flex-col items-end">
+                        <span className="text-[9px] text-text-mute uppercase tracking-[0.16em]">Confidence</span>
+                        <span className={confidence !== '--' ? 'text-emerald-500 font-semibold' : 'text-text-mute'}>
+                            {confidence}
+                        </span>
+                    </div>
+                </div>
+            </header>
+
+            <main className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+                {/* LEFT: AI Reasoning Log + Evidence */}
+                <aside className="w-full lg:w-[320px] border-b lg:border-b-0 lg:border-r border-hairline bg-panel/40 flex flex-col shrink-0 max-h-[340px] lg:max-h-none">
+                    <div className="px-4 py-3 border-b border-hairline flex justify-between items-center shrink-0">
+                        <h3 className="text-[10px] font-mono uppercase tracking-[0.2em] text-text-strong flex items-center gap-2">
+                            <Cpu className="w-3.5 h-3.5" style={{ color: ACCENT }} />
+                            Reasoning Trace
+                        </h3>
+                        <span className="text-[9px] font-mono text-emerald-500 flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                            {isRunning ? 'RUNNING' : 'READY'}
+                        </span>
+                    </div>
+
+                    <div ref={logsContainerRef} className="flex-1 p-4 space-y-3 overflow-y-auto">
+                        {logs.length === 0 && (
+                            <div className="text-text-mute text-xs font-mono text-center mt-8">
+                                Select a dispute scenario to watch the autonomous recovery loop.
+                            </div>
+                        )}
+                        <AnimatePresence initial={false}>
+                            {logs.map((log) => (
                                 <motion.div
-                                    key={item.id}
-                                    initial={{ opacity: 0, y: 5 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    className="flex items-center gap-2 bg-slate-800 p-2 rounded border border-slate-700"
+                                    key={log.id}
+                                    initial={{ opacity: 0, x: -6 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    className="border-l border-violet-500/50 pl-2.5"
                                 >
-                                    <item.icon className="text-slate-400 w-3 h-3" />
-                                    <div className="flex-1 min-w-0">
-                                        <div className="text-xs text-white truncate">{item.name}</div>
+                                    <div className="text-[10px] font-mono uppercase tracking-[0.14em] text-violet-500 mb-0.5">
+                                        {log.title}
                                     </div>
-                                    <span className="text-[10px] bg-slate-700 px-1 rounded text-slate-300">{item.tag}</span>
+                                    <div
+                                        className={`text-xs leading-relaxed ${
+                                            log.tone === 'ok'
+                                                ? 'text-emerald-500'
+                                                : log.tone === 'err'
+                                                  ? 'text-rose-500'
+                                                  : log.tone === 'warn'
+                                                    ? 'text-amber-500'
+                                                    : log.tone === 'accent'
+                                                      ? 'text-text-strong'
+                                                      : 'text-text'
+                                        }`}
+                                    >
+                                        {log.desc}
+                                    </div>
                                 </motion.div>
                             ))}
                         </AnimatePresence>
                     </div>
-                </div>
-            </aside>
 
-            {/* CENTER: Flow */}
-            <section className="flex-1 bg-[#0F172A] relative overflow-hidden pt-24 pb-10 flex flex-col items-center">
+                    <div className="h-[150px] border-t border-hairline bg-panel flex flex-col shrink-0">
+                        <div className="px-4 py-2 border-b border-hairline text-[10px] font-mono uppercase tracking-[0.18em] text-text-mute flex items-center gap-2">
+                            <FolderOpen className="w-3 h-3" /> Gathered Evidence ({evidence.length})
+                        </div>
+                        <div className="flex-1 p-3 overflow-y-auto space-y-1.5">
+                            <AnimatePresence initial={false}>
+                                {evidence.map((item) => {
+                                    const Icon = item.icon;
+                                    return (
+                                        <motion.div
+                                            key={item.id}
+                                            initial={{ opacity: 0, y: 4 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            className="flex items-center gap-2 bg-bg px-2.5 py-1.5 rounded-lg border border-hairline"
+                                        >
+                                            <Icon className="text-text-mute w-3.5 h-3.5 shrink-0" />
+                                            <span className="text-xs font-mono text-text-strong truncate flex-1">{item.name}</span>
+                                            <span className="text-[9px] font-mono px-1.5 py-0.5 rounded border border-hairline text-text-mute">
+                                                {item.tag}
+                                            </span>
+                                        </motion.div>
+                                    );
+                                })}
+                            </AnimatePresence>
+                        </div>
+                    </div>
+                </aside>
 
-                {/* Connection Line */}
-                <div className="absolute top-0 left-1/2 w-0.5 h-full bg-slate-800 transform -translate-x-1/2 z-0"></div>
-
-                {/* Data Packet */}
-                <motion.div
-                    className="absolute w-8 h-8 bg-white rounded-full shadow-[0_0_20px_white] z-30 flex items-center justify-center text-violet-900"
-                    variants={packetVariants}
-                    initial="initial"
-                    animate={packetState.target || "initial"}
-                    transition={{ duration: 0.8, ease: "easeInOut" }}
-                    style={{ opacity: packetState.visible ? 1 : 0 }}
-                >
-                    <Zap className="w-4 h-4 fill-current" />
-                </motion.div>
-
-                {/* Nodes */}
-                <div className="flex flex-col items-center w-full h-full justify-between py-4 z-10">
-
-                    {/* 1. Trigger */}
-                    <Node
-                        active={activeNode === 'trigger'}
-                        icon={Bell}
-                        color="red"
-                        title="VCC Overcharge Detected"
-                        subtitle="Charge: $450 | Status: Cancelled"
+                {/* CENTER: Live State Graph */}
+                <section className="flex-1 bg-bg relative overflow-y-auto p-5 flex flex-col items-center justify-between">
+                    <div
+                        className="absolute inset-0 opacity-[0.12] pointer-events-none"
+                        style={{
+                            backgroundImage: 'radial-gradient(circle at 1px 1px, var(--color-text-mute) 1px, transparent 0)',
+                            backgroundSize: '26px 26px',
+                        }}
                     />
 
-                    {/* 2. Analyst */}
-                    <Node
-                        active={activeNode === 'analyst'}
-                        icon={Scale}
-                        color="violet"
-                        title="Policy Validation"
-                        subtitle="Matching Timestamp vs. Rules"
-                        badge="AI ANALYST"
-                    />
+                    <div className="relative z-10 w-full max-w-md flex flex-col items-center gap-3 my-auto">
+                        {nodes.map((node, idx) => {
+                            const Icon = node.icon;
+                            const isActive = activeNode === node.id;
+                            const isHotelError = node.id === 'hotel' && activeNode === 'hotel-error';
+                            return (
+                                <div key={node.id} className="w-full flex flex-col items-center">
+                                    {idx > 0 && <div className="w-[2px] h-3 bg-hairline-strong" />}
+                                    <motion.div
+                                        animate={isActive && !reduced ? { scale: 1.02 } : { scale: 1 }}
+                                        className={`relative w-full rounded-xl border p-3 flex items-center gap-3 transition-colors ${
+                                            node.dashed ? 'border-dashed' : ''
+                                        } ${
+                                            isHotelError
+                                                ? 'border-rose-500/60 bg-rose-500/[0.08]'
+                                                : isActive
+                                                  ? 'border-violet-500/60 bg-violet-500/[0.08]'
+                                                  : 'border-hairline bg-panel/70'
+                                        }`}
+                                    >
+                                        {node.badge && (
+                                            <span
+                                                className={`absolute -top-2 right-3 text-[9px] font-mono uppercase tracking-[0.14em] px-2 py-0.5 rounded border ${
+                                                    isActive
+                                                        ? 'bg-text-strong text-bg border-text-strong'
+                                                        : 'bg-bg text-text-mute border-hairline'
+                                                }`}
+                                            >
+                                                {node.badge}
+                                            </span>
+                                        )}
+                                        <div
+                                            className={`w-9 h-9 rounded-lg border flex items-center justify-center shrink-0 ${
+                                                isHotelError
+                                                    ? 'border-rose-500 text-rose-500 bg-rose-500/15'
+                                                    : isActive
+                                                      ? 'border-violet-500 text-violet-500 bg-violet-500/15'
+                                                      : 'border-hairline bg-bg text-text-mute'
+                                            }`}
+                                        >
+                                            <Icon className="w-4 h-4" />
+                                        </div>
+                                        <div className="min-w-0 flex-1">
+                                            <div className="text-xs font-medium text-text-strong truncate">{node.title}</div>
+                                            <div className="text-[11px] font-mono text-text-mute truncate">{node.subtitle}</div>
+                                        </div>
+                                    </motion.div>
+                                </div>
+                            );
+                        })}
 
-                    {/* 3. Strategist */}
-                    <Node
-                        active={activeNode === 'strategy'}
-                        icon={BrainCircuit}
-                        color="blue"
-                        title="Strategy Engine"
-                        subtitle="Determine Tone & Urgency"
-                        badge="AI STRATEGIST"
-                    />
+                        {/* Conditional AI Rebuttal Branch */}
+                        <AnimatePresence>
+                            {showRebuttal && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -6 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -6 }}
+                                    className="w-full rounded-xl border border-amber-500/50 bg-amber-500/[0.08] p-3 flex items-center gap-3"
+                                >
+                                    <div className="w-9 h-9 rounded-lg border border-amber-500/50 bg-amber-500/15 text-amber-500 flex items-center justify-center shrink-0">
+                                        <RotateCcw className="w-4 h-4" />
+                                    </div>
+                                    <div className="min-w-0 flex-1">
+                                        <div className="text-xs font-medium text-text-strong">AI Rebuttal Loop</div>
+                                        <div className="text-[11px] font-mono text-amber-500 truncate">
+                                            Attached Flight UA882 Weather Waiver -&gt; Re-sent to Hotel
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
 
-                    {/* 4. Action */}
-                    <Node
-                        active={activeNode === 'action'}
-                        icon={Send}
-                        color="slate"
-                        title="Execute Action"
-                        subtitle="Send Dispute Email"
-                    />
-
-                    {/* 5. Hotel */}
-                    <Node
-                        active={activeNode === 'hotel'}
-                        error={activeNode === 'hotel-error'}
-                        icon={Building2}
-                        color="slate"
-                        title="External Hotel"
-                        subtitle="Waiting for reply..."
-                        dashed
-                    />
-
-                    {/* 6. Rebuttal (Conditional) */}
-                    <AnimatePresence>
-                        {showRebuttal && (
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.8 }}
-                                className="absolute top-[70%] left-[65%] transform -translate-x-1/2 w-[260px]"
+                        {/* Outcome Pair */}
+                        <div className="grid grid-cols-2 gap-3 w-full pt-2">
+                            <div
+                                className={`rounded-xl border p-3 flex items-center gap-2.5 transition-all ${
+                                    outcome === 'success'
+                                        ? 'border-emerald-500/60 bg-emerald-500/10 opacity-100'
+                                        : 'border-hairline bg-panel/40 opacity-45'
+                                }`}
                             >
-                                <Node
-                                    active={activeNode === 'rebuttal'}
-                                    icon={RotateCcw}
-                                    color="yellow"
-                                    title="Counter-Argument"
-                                    subtitle="Fetching New Evidence..."
-                                    badge="AI REBUTTAL"
-                                />
-                                {/* Loop Line */}
-                                <svg className="absolute top-1/2 right-full w-12 h-24 -translate-y-1/2 pointer-events-none overflow-visible">
-                                    <path d="M 0 0 C -20 0, -20 -100, 0 -100" fill="none" stroke="#EAB308" strokeWidth="2" strokeDasharray="4 4" className="opacity-50" />
-                                </svg>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-
-                    {/* 7. Outcome */}
-                    <div className="flex gap-8 mt-auto">
-                        <div className={`transition-all duration-500 ${outcome === 'success' ? 'opacity-100 scale-105' : 'opacity-40'}`}>
-                            <div className={`w-40 p-3 rounded-xl border ${outcome === 'success' ? 'bg-green-900/20 border-green-500' : 'bg-slate-800 border-slate-700'} flex flex-col items-center gap-2`}>
-                                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${outcome === 'success' ? 'bg-green-500 text-white' : 'bg-slate-700 text-slate-500'}`}>
-                                    <Check className="w-4 h-4" />
+                                <div
+                                    className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 ${
+                                        outcome === 'success'
+                                            ? 'bg-emerald-500 text-white'
+                                            : 'bg-bg border border-hairline text-text-mute'
+                                    }`}
+                                >
+                                    <Check className="w-3.5 h-3.5" />
                                 </div>
-                                <div className={`text-xs font-bold ${outcome === 'success' ? 'text-green-400' : 'text-slate-500'}`}>Refunded</div>
+                                <div>
+                                    <div className="text-xs font-medium text-text-strong">Refunded</div>
+                                    <div className="text-[10px] font-mono text-text-mute">$450 Recovered</div>
+                                </div>
                             </div>
-                        </div>
-                        <div className={`transition-all duration-500 ${outcome === 'fail' ? 'opacity-100 scale-105' : 'opacity-40'}`}>
-                            <div className={`w-40 p-3 rounded-xl border ${outcome === 'fail' ? 'bg-red-900/20 border-red-500' : 'bg-slate-800 border-slate-700'} flex flex-col items-center gap-2`}>
-                                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${outcome === 'fail' ? 'bg-red-500 text-white' : 'bg-slate-700 text-slate-500'}`}>
-                                    <Gavel className="w-4 h-4" />
+
+                            <div
+                                className={`rounded-xl border p-3 flex items-center gap-2.5 transition-all ${
+                                    outcome === 'fail'
+                                        ? 'border-rose-500/60 bg-rose-500/10 opacity-100'
+                                        : 'border-hairline bg-panel/40 opacity-45'
+                                }`}
+                            >
+                                <div
+                                    className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 ${
+                                        outcome === 'fail'
+                                            ? 'bg-rose-500 text-white'
+                                            : 'bg-bg border border-hairline text-text-mute'
+                                    }`}
+                                >
+                                    <Gavel className="w-3.5 h-3.5" />
                                 </div>
-                                <div className={`text-xs font-bold ${outcome === 'fail' ? 'text-red-400' : 'text-slate-500'}`}>Chargeback</div>
+                                <div>
+                                    <div className="text-xs font-medium text-text-strong">Chargeback</div>
+                                    <div className="text-[10px] font-mono text-text-mute">Code 4837 Filed</div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </section>
 
-                </div>
-            </section>
-
-            {/* RIGHT: Controls */}
-            <aside className="w-[280px] bg-[#0B1120] border-l border-slate-700 p-6 flex flex-col justify-center z-20 pt-16 relative">
-
-                {/* CTA Overlay */}
-                {!isRunning && (
-                    <motion.div
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        className="absolute top-24 left-0 w-full flex justify-center pointer-events-none z-30"
-                    >
-                        <div className="bg-violet-600 text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-lg shadow-violet-500/50 animate-bounce flex items-center gap-2">
-                            <span>Start Here</span>
-                            <ArrowLeft className="w-3 h-3 rotate-180" />
+                {/* RIGHT: Scenario Launcher */}
+                <aside className="w-full lg:w-[260px] border-t lg:border-t-0 lg:border-l border-hairline bg-panel/40 p-4 flex flex-col justify-between shrink-0">
+                    <div>
+                        <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-text-mute mb-3">
+                            Simulate Outcome
                         </div>
-                    </motion.div>
-                )}
-
-                <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6 text-center">Run Simulation</h3>
-
-                <div className="space-y-4">
-                    <button
-                        onClick={() => runScenario('success')}
-                        disabled={isRunning}
-                        className={`w-full py-4 bg-slate-800 border border-slate-700 rounded-xl transition-all group disabled:opacity-50 disabled:cursor-not-allowed text-left px-4 relative overflow-hidden ${!isRunning ? 'hover:bg-green-900/20 hover:border-green-500 hover:scale-[1.02] shadow-lg' : ''}`}
-                    >
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-                        <div className="flex justify-between items-start mb-1">
-                            <div className="text-[10px] text-slate-400 group-hover:text-green-400 font-bold">SCENARIO A</div>
-                            {!isRunning && <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>}
+                        <div className="space-y-2.5">
+                            {(
+                                [
+                                    {
+                                        id: 'success',
+                                        code: 'SCENARIO A',
+                                        title: 'Hotel Agrees',
+                                        sub: 'Full refund processed',
+                                        accent: '#10b981',
+                                        Icon: Play,
+                                    },
+                                    {
+                                        id: 'rebuttal',
+                                        code: 'SCENARIO B',
+                                        title: 'Hotel Denies (No-Show)',
+                                        sub: 'Triggers AI Rebuttal loop',
+                                        accent: '#f59e0b',
+                                        Icon: RotateCcw,
+                                    },
+                                    {
+                                        id: 'fail',
+                                        code: 'SCENARIO C',
+                                        title: 'Hotel Ignores (48h)',
+                                        sub: 'Auto-files VCC chargeback',
+                                        accent: '#f43f5e',
+                                        Icon: AlertTriangle,
+                                    },
+                                ] as const
+                            ).map(({ id, code, title, sub, accent, Icon }) => {
+                                const active = selectedScenario === id;
+                                return (
+                                    <button
+                                        key={id}
+                                        type="button"
+                                        onClick={() => runScenario(id)}
+                                        disabled={isRunning}
+                                        data-cursor="play"
+                                        className={`w-full p-3.5 rounded-xl border text-left transition-all disabled:opacity-50 ${
+                                            active
+                                                ? 'border-hairline-strong bg-panel-strong'
+                                                : 'border-hairline bg-bg hover:border-hairline-strong'
+                                        }`}
+                                    >
+                                        <div className="flex items-center justify-between mb-1">
+                                            <span className="text-[10px] font-mono uppercase tracking-[0.16em]" style={{ color: accent }}>
+                                                {code}
+                                            </span>
+                                            <Icon className="w-3.5 h-3.5" style={{ color: accent }} />
+                                        </div>
+                                        <div className="text-xs font-medium text-text-strong">{title}</div>
+                                        <div className="text-[11px] text-text-mute mt-0.5">{sub}</div>
+                                    </button>
+                                );
+                            })}
                         </div>
-                        <div className="text-xs font-bold text-white">Hotel Agrees</div>
-                        <div className="text-[9px] text-slate-500 mt-1">Full Refund Processed</div>
-                    </button>
-
-                    <button
-                        onClick={() => runScenario('rebuttal')}
-                        disabled={isRunning}
-                        className={`w-full py-4 bg-slate-800 border border-slate-700 rounded-xl transition-all group disabled:opacity-50 disabled:cursor-not-allowed text-left px-4 relative overflow-hidden ${!isRunning ? 'hover:bg-yellow-900/20 hover:border-yellow-500 hover:scale-[1.02] shadow-lg' : ''}`}
-                    >
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-                        <div className="flex justify-between items-start mb-1">
-                            <div className="text-[10px] text-slate-400 group-hover:text-yellow-400 font-bold">SCENARIO B</div>
-                        </div>
-                        <div className="text-xs font-bold text-white">Hotel Denies (No Show)</div>
-                        <div className="text-[9px] text-violet-400 mt-1 flex items-center gap-1"><RotateCcw className="w-3 h-3" /> Triggers AI Rebuttal</div>
-                    </button>
-
-                    <button
-                        onClick={() => runScenario('fail')}
-                        disabled={isRunning}
-                        className={`w-full py-4 bg-slate-800 border border-slate-700 rounded-xl transition-all group disabled:opacity-50 disabled:cursor-not-allowed text-left px-4 relative overflow-hidden ${!isRunning ? 'hover:bg-red-900/20 hover:border-red-500 hover:scale-[1.02] shadow-lg' : ''}`}
-                    >
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-                        <div className="flex justify-between items-start mb-1">
-                            <div className="text-[10px] text-slate-400 group-hover:text-red-400 font-bold">SCENARIO C</div>
-                        </div>
-                        <div className="text-xs font-bold text-white">Hotel Ignores</div>
-                        <div className="text-[9px] text-red-400 mt-1 flex items-center gap-1"><AlertTriangle className="w-3 h-3" /> Auto-Chargeback</div>
-                    </button>
-                </div>
-
-                <div className="mt-auto pt-8 border-t border-slate-800">
-                    <div className="text-[9px] text-slate-500 text-center font-mono">
-                        POWERED BY LANGGRAPH<br />GPT-4o & CLAUDE 3.5
                     </div>
-                </div>
-            </aside>
-        </div>
-    );
-}
 
-// Sub-component for Node
-function Node({ active, error, icon: Icon, color, title, subtitle, badge, dashed }: any) {
-    const colorMap: any = {
-        red: { bg: 'bg-red-900/10', border: 'border-red-500/30', iconBg: 'bg-red-500/20', iconText: 'text-red-400', glow: 'shadow-[0_0_25px_rgba(239,68,68,0.3)]' },
-        violet: { bg: 'bg-violet-900/10', border: 'border-violet-500/30', iconBg: 'bg-violet-500/20', iconText: 'text-violet-400', glow: 'shadow-[0_0_25px_rgba(139,92,246,0.3)]' },
-        blue: { bg: 'bg-blue-900/10', border: 'border-blue-500/30', iconBg: 'bg-blue-500/20', iconText: 'text-blue-400', glow: 'shadow-[0_0_25px_rgba(59,130,246,0.3)]' },
-        yellow: { bg: 'bg-yellow-900/10', border: 'border-yellow-500/30', iconBg: 'bg-yellow-500/20', iconText: 'text-yellow-400', glow: 'shadow-[0_0_25px_rgba(234,179,8,0.3)]' },
-        slate: { bg: 'bg-[#1E293B]', border: 'border-slate-700', iconBg: 'bg-slate-700', iconText: 'text-slate-300', glow: 'shadow-[0_0_25px_rgba(148,163,184,0.3)]' },
-    };
-
-    const style = colorMap[color] || colorMap.slate;
-    const isActive = active;
-    const isError = error;
-
-    return (
-        <div className={`
-            relative w-[260px] min-h-[70px] rounded-xl border flex items-center p-3 gap-3 transition-all duration-500
-            ${dashed ? 'border-dashed' : 'border-solid'}
-            ${isActive ? `${style.bg} ${style.border} scale-105 ${style.glow}` : 'bg-[#1E293B] border-slate-700'}
-            ${isError ? 'bg-red-900/10 border-red-500 shadow-[0_0_25px_rgba(239,68,68,0.3)]' : ''}
-        `}>
-            {badge && (
-                <div className={`absolute -top-2 right-2 text-[9px] font-bold px-2 py-0.5 rounded text-white shadow-sm ${isActive ? 'bg-violet-500' : 'bg-slate-600'}`}>
-                    {badge}
-                </div>
-            )}
-            <div className={`w-10 h-10 rounded-lg flex items-center justify-center border ${isActive ? `${style.iconBg} ${style.iconText} ${style.border}` : 'bg-slate-800 text-slate-500 border-slate-700'}`}>
-                <Icon className="w-5 h-5" />
-            </div>
-            <div className="flex-1 min-w-0">
-                <div className={`text-xs font-bold truncate ${isActive ? 'text-white' : 'text-slate-400'}`}>{title}</div>
-                <div className="text-[10px] text-slate-500 truncate">{subtitle}</div>
-            </div>
+                    <div className="mt-6 pt-4 border-t border-hairline text-[10px] font-mono text-text-mute text-center tracking-[0.14em] uppercase">
+                        LangGraph · Stateful Recovery
+                    </div>
+                </aside>
+            </main>
         </div>
     );
 }

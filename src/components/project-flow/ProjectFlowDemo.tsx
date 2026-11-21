@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useRef, type ComponentType } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
     SquareKanban,
     Network,
@@ -8,6 +9,7 @@ import {
     Scale,
     Bot,
     Play,
+    RotateCcw,
     Ghost,
     CheckCheck,
     AlertTriangle,
@@ -22,561 +24,665 @@ import {
     Database,
     Key,
     Globe,
-    FileText
+    FileText,
 } from 'lucide-react';
-import './ProjectFlowDemo.css';
+import { usePrefersReducedMotion } from '../../lib/motion/usePrefersReducedMotion';
 
 type Role = 'product' | 'devops' | 'team';
 type Scenario = 'groom' | 'creep' | 'close';
-type CardType = 'normal' | 'creep';
+type StepState = 'idle' | 'active' | 'warning' | 'hitl';
 
-interface Card {
+interface KanbanCard {
     id: string;
     title: string;
     tag: string;
-    icon: any;
-    border: string;
-    user?: string;
+    icon: ComponentType<{ className?: string }>;
+    accent: string;
+    user: string;
     pts?: string;
-    type?: CardType;
+    type?: 'normal' | 'creep';
     action?: 'close' | 'block';
-    reason?: string;
     skill?: string;
     name?: string;
-    color?: string;
+}
+
+interface LogLine {
+    id: string;
+    text: string;
+    tone: 'neutral' | 'ok' | 'warn' | 'err' | 'accent';
+}
+
+const ACCENT = '#3b82f6';
+
+const RAW_CARDS: Record<string, KanbanCard> = {
+    '102': { id: '102', title: 'API: Optimize Rate Limiting', tag: 'backend', icon: Github, accent: '#3b82f6', user: 'S', name: 'Sarah', skill: 'Backend' },
+    '103': { id: '103', title: 'UI: Dark Mode Toggle', tag: 'frontend', icon: Palette, accent: '#10b981', user: 'M', name: 'Mike', skill: 'Frontend' },
+    '104': { id: '104', title: 'Infra: Docker Build Fix', tag: 'devops', icon: Database, accent: '#f59e0b', user: 'A', name: 'Alex', skill: 'DevOps' },
+    '105': { id: '105', title: 'Make it pop', tag: 'design', icon: FileText, accent: '#ef4444', type: 'creep', user: '?', name: 'Unknown', skill: 'Design' },
+    '99': { id: '99', title: 'DB Migration', tag: 'backend', icon: Database, accent: '#8b5cf6', user: 'S', pts: '5 pts', action: 'close' },
+    '100': { id: '100', title: 'Auth: Refresh Token', tag: 'security', icon: Key, accent: '#ef4444', user: 'S', pts: '3 pts', action: 'close' },
+    '101': { id: '101', title: 'Landing Page V2', tag: 'frontend', icon: Globe, accent: '#10b981', user: 'M', pts: '5 pts', action: 'block' },
+};
+
+function initialBoard(s: Scenario) {
+    if (s === 'close') {
+        return {
+            backlog: [] as KanbanCard[],
+            progress: [RAW_CARDS['99'], RAW_CARDS['101'], RAW_CARDS['100']],
+            done: [] as KanbanCard[],
+        };
+    }
+    const cards = [RAW_CARDS['102'], RAW_CARDS['103'], RAW_CARDS['104']];
+    if (s === 'creep') cards.splice(1, 0, RAW_CARDS['105']);
+    return {
+        backlog: cards,
+        progress: [{ ...RAW_CARDS['99'], pts: '5 pts' }],
+        done: [] as KanbanCard[],
+    };
 }
 
 const ProjectFlowDemo = () => {
+    const reduced = usePrefersReducedMotion();
     const [role, setRole] = useState<Role>('product');
     const [scenario, setScenario] = useState<Scenario>('groom');
     const [isRunning, setIsRunning] = useState(false);
-    const [stepStatus, setStepStatus] = useState<('idle' | 'active' | 'warning' | 'hitl')[]>(['idle', 'idle', 'idle', 'idle', 'idle']);
-    const [mobileTab, setMobileTab] = useState<'flow' | 'board' | 'data'>('flow');
+    const [stepStatus, setStepStatus] = useState<StepState[]>(['idle', 'idle', 'idle', 'idle', 'idle']);
+    const [mobileTab, setMobileTab] = useState<'flow' | 'board' | 'data'>('board');
 
-    // Board State
-    const [backlog, setBacklog] = useState<Card[]>([]);
-    const [progress, setProgress] = useState<Card[]>([]);
-    const [done, setDone] = useState<Card[]>([]);
+    const init = initialBoard('groom');
+    const [backlog, setBacklog] = useState<KanbanCard[]>(init.backlog);
+    const [progress, setProgress] = useState<KanbanCard[]>(init.progress);
+    const [done, setDone] = useState<KanbanCard[]>(init.done);
 
-    // Data State
-    const [logs, setLogs] = useState<React.ReactNode[]>([]);
-    const [velocity] = useState(32);
-    const [jsonPayload, setJsonPayload] = useState<React.ReactNode>(<div className="opacity-50">Waiting for action...</div>);
+    const [logs, setLogs] = useState<LogLine[]>([]);
+    const [velocity, setVelocity] = useState(32);
+    const [jsonPayload, setJsonPayload] = useState<Record<string, unknown>>({ status: 'IDLE' });
     const [showHitl, setShowHitl] = useState(false);
 
-    // Raw Data
-    const rawCards: Record<string, Card> = {
-        '102': { id: '102', title: "API: Optimize Rate Limiting", tag: "backend", icon: Github, border: "border-l-blue-500", color: 'bg-purple-500', user: 'S', name: 'Sarah', skill: 'Backend' },
-        '103': { id: '103', title: "UI: Dark Mode Toggle", tag: "frontend", icon: Palette, border: "border-l-green-500", color: 'bg-green-500', user: 'M', name: 'Mike', skill: 'Frontend' },
-        '104': { id: '104', title: "Infra: Docker Build Fix", tag: "devops", icon: Database, border: "border-l-yellow-500", color: 'bg-blue-500', user: 'A', name: 'Alex', skill: 'DevOps' },
-        '105': { id: '105', title: "Make it pop", tag: "design", icon: FileText, border: "border-l-red-500", type: 'creep', color: 'bg-slate-600', user: '?', name: 'Unknown', skill: 'Design' },
-        '99': { id: '99', title: "DB Migration", tag: "backend", icon: Database, border: "border-l-purple-500", user: 'S', pts: '5 pts', action: 'close', reason: 'PR Merged & Tests Passed' },
-        '100': { id: '100', title: "Auth: Refresh Token", tag: "security", icon: Key, border: "border-l-red-500", user: 'S', pts: '3 pts', action: 'close', reason: 'PR Merged' },
-        '101': { id: '101', title: "Landing Page V2", tag: "frontend", icon: Globe, border: "border-l-green-500", user: 'M', pts: '5 pts', action: 'block', reason: 'Tests Failed (CI)' }
+    const runIdRef = useRef(0);
+
+    const addLog = (text: string, tone: LogLine['tone'] = 'neutral') => {
+        setLogs((prev) => [{ id: `${Date.now()}-${Math.random()}`, text, tone }, ...prev]);
     };
 
-    const resetUI = () => {
-        setStepStatus(['idle', 'idle', 'idle', 'idle', 'idle']);
-        setLogs([<div key="init" className="text-slate-600 italic">Waiting for analysis...</div>]);
-        setJsonPayload(<div className="opacity-50">Waiting for action...</div>);
-        setShowHitl(false);
-
-        if (scenario === 'close') {
-            setBacklog([]);
-            setProgress([rawCards['99'], rawCards['101'], rawCards['100']]);
-            setDone([]);
-        } else {
-            const cards = [rawCards['102'], rawCards['103'], rawCards['104']];
-            if (scenario === 'creep') cards.splice(1, 0, rawCards['105']);
-            setBacklog(cards);
-            setProgress([{ ...rawCards['99'], user: 'S', pts: '5 pts' }]); // Sample in progress
-            setDone([]);
-        }
-    };
-
-    useEffect(() => {
-        resetUI();
-    }, [scenario]);
-
-    const addLog = (text: string, color: string = "text-slate-400") => {
-        setLogs(prev => [<div key={Date.now() + Math.random()} className={`${color} border-l-2 border-slate-700 pl-2 animate-pulse mb-1`}>{text}</div>, ...prev]);
-    };
-
-    const updateStep = (index: number, status: 'idle' | 'active' | 'warning' | 'hitl') => {
-        setStepStatus(prev => {
+    const setStep = (index: number, status: StepState) => {
+        setStepStatus((prev) => {
             const next = [...prev];
             next[index] = status;
             return next;
         });
     };
 
+    const applyScenario = (nextScenario: Scenario) => {
+        runIdRef.current += 1;
+        setScenario(nextScenario);
+        setIsRunning(false);
+        setStepStatus(['idle', 'idle', 'idle', 'idle', 'idle']);
+        setLogs([]);
+        setVelocity(32);
+        setJsonPayload({ status: 'IDLE', scenario: nextScenario });
+        setShowHitl(false);
+        const board = initialBoard(nextScenario);
+        setBacklog(board.backlog);
+        setProgress(board.progress);
+        setDone(board.done);
+    };
+
     const runSimulation = async () => {
         if (isRunning) return;
+        const myRun = runIdRef.current + 1;
+        runIdRef.current = myRun;
+        const cancelled = () => runIdRef.current !== myRun;
+        const wait = (ms: number) => new Promise((r) => setTimeout(r, reduced ? Math.min(ms, 100) : ms));
+
         setIsRunning(true);
-        resetUI();
+        setStepStatus(['idle', 'idle', 'idle', 'idle', 'idle']);
+        setLogs([]);
+        setShowHitl(false);
+        const board = initialBoard(scenario);
+        setBacklog(board.backlog);
+        setProgress(board.progress);
+        setDone(board.done);
 
-        if (window.innerWidth < 768) setMobileTab('flow');
+        const queue =
+            scenario === 'close'
+                ? [RAW_CARDS['99'], RAW_CARDS['101'], RAW_CARDS['100']]
+                : scenario === 'groom'
+                  ? [RAW_CARDS['102'], RAW_CARDS['103'], RAW_CARDS['104']]
+                  : [RAW_CARDS['102'], RAW_CARDS['105'], RAW_CARDS['103']];
 
-        // Queue setup
-        let queue: Card[] = [];
-        if (scenario === 'close') {
-            queue = [rawCards['99'], rawCards['101'], rawCards['100']];
-        } else if (scenario === 'groom') {
-            queue = [rawCards['102'], rawCards['103'], rawCards['104']];
-        } else {
-            queue = [rawCards['102'], rawCards['105'], rawCards['103']];
-        }
-
-        // STEP 1: SCAN
-        await new Promise(r => setTimeout(r, 500));
-        updateStep(0, 'active');
-        addLog(scenario === 'close' ? "Scanner: Monitoring In-Progress..." : "Scanner: Found unassigned tickets.", "text-white");
+        await wait(350);
+        if (cancelled()) return;
+        setStep(0, 'active');
+        addLog(scenario === 'close' ? 'Scanner: polling In-Progress PRs...' : 'Scanner: found unassigned backlog issues.', 'accent');
 
         for (const item of queue) {
-            // STEP 2: CONTEXT
-            await new Promise(r => setTimeout(r, 800));
-            updateStep(1, 'active');
+            await wait(600);
+            if (cancelled()) return;
+            setStep(1, 'active');
 
             if (scenario === 'close') {
                 if (item.action === 'block') {
-                    addLog(`PROJ-${item.id}: CI Checks FAILED.`, "text-red-400");
-
-                    // Step 3 (DoD)
-                    await new Promise(r => setTimeout(r, 600));
-                    updateStep(3, 'warning');
-
-                    // Step 4 (Action)
-                    await new Promise(r => setTimeout(r, 600));
-                    updateStep(4, 'active');
-
-                    // Update Card Visual
-                    setProgress(prev => prev.map(c => c.id === item.id ? { ...c, border: 'border-l-red-500', action: 'block' } : c));
-                    setJsonPayload(<div><span className="json-key">"key"</span>: "PROJ-{item.id}", <span className="json-num">"block"</span>: true</div>);
+                    addLog(`PROJ-${item.id}: CI checks FAILED.`, 'err');
+                    await wait(450);
+                    if (cancelled()) return;
+                    setStep(3, 'warning');
+                    await wait(450);
+                    if (cancelled()) return;
+                    setStep(4, 'active');
+                    setProgress((prev) => prev.map((c) => (c.id === item.id ? { ...c, accent: '#ef4444', action: 'block' } : c)));
+                    setJsonPayload({ key: `PROJ-${item.id}`, block: true, reason: 'CI_TESTS_FAILED' });
                 } else {
-                    addLog(`PROJ-${item.id}: All Checks Passed.`, "text-green-400");
-
-                    // Step 3 & 4
-                    await new Promise(r => setTimeout(r, 600));
-                    updateStep(3, 'active');
-                    await new Promise(r => setTimeout(r, 600));
-                    updateStep(4, 'active');
-
-                    // Move Card
-                    setProgress(prev => prev.filter(c => c.id !== item.id));
-                    setDone(prev => [...prev, item]);
-                    setJsonPayload(<div><span className="json-key">"key"</span>: "PROJ-{item.id}", <span className="json-str">"status"</span>: "DONE"</div>);
+                    addLog(`PROJ-${item.id}: PR merged & CI passed.`, 'ok');
+                    await wait(450);
+                    if (cancelled()) return;
+                    setStep(3, 'active');
+                    await wait(450);
+                    if (cancelled()) return;
+                    setStep(4, 'active');
+                    setProgress((prev) => prev.filter((c) => c.id !== item.id));
+                    setDone((prev) => [...prev, item]);
+                    setVelocity((v) => v + 4);
+                    setJsonPayload({ key: `PROJ-${item.id}`, status: 'DONE', pr_merged: true });
                 }
                 continue;
             }
 
-            // GROOM / CREEP
             if (item.type === 'creep') {
-                updateStep(1, 'warning');
-                addLog(`PROJ-${item.id}: Ambiguity Detected.`, "text-yellow-400 font-bold");
-
-                updateStep(2, 'hitl');
+                setStep(1, 'warning');
+                addLog(`PROJ-${item.id}: ambiguity score 88% (missing AC).`, 'warn');
+                setStep(2, 'hitl');
                 setShowHitl(true);
-                return; // Pause for interaction
-            } else {
-                addLog(`Analyzing PROJ-${item.id}...`, "text-slate-500");
-
-                await new Promise(r => setTimeout(r, 600));
-                updateStep(3, 'active');
-                addLog(`[${item.name}] Matched ${item.skill}.`, "text-blue-300");
-
-                await new Promise(r => setTimeout(r, 600));
-                updateStep(4, 'active');
-
-                // Move Card
-                setBacklog(prev => prev.filter(c => c.id !== item.id));
-                setProgress(prev => [...prev, { ...item, user: item.user, pts: '3 pts' }]); // Assign pts/user
-                addLog(`Assigned PROJ-${item.id} -> ${item.name}`, "text-green-400");
+                setJsonPayload({ key: `PROJ-${item.id}`, interrupt: 'HUMAN_REVIEW', ambiguity: 0.88 });
+                return;
             }
+
+            addLog(`Analyzing PROJ-${item.id} (${item.tag})...`, 'neutral');
+            await wait(450);
+            if (cancelled()) return;
+            setStep(3, 'active');
+            addLog(`Matched ${item.name} (${item.skill}) within capacity.`, 'accent');
+
+            await wait(450);
+            if (cancelled()) return;
+            setStep(4, 'active');
+            setBacklog((prev) => prev.filter((c) => c.id !== item.id));
+            setProgress((prev) => [...prev, { ...item, pts: '3 pts' }]);
+            setJsonPayload({ key: `PROJ-${item.id}`, assignee: item.name, story_points: 3 });
+            addLog(`Assigned PROJ-${item.id} -> ${item.name}`, 'ok');
         }
 
+        if (cancelled()) return;
         setIsRunning(false);
-        addLog("BATCH COMPLETE", "text-white font-bold bg-slate-700 p-1 rounded text-center mt-4");
+        addLog('BATCH COMPLETE', 'ok');
     };
 
     const resolveHitl = async (action: 'fix' | 'reject') => {
+        const myRun = runIdRef.current;
+        const cancelled = () => runIdRef.current !== myRun;
+        const wait = (ms: number) => new Promise((r) => setTimeout(r, reduced ? Math.min(ms, 100) : ms));
+
         setShowHitl(false);
-        updateStep(2, 'active'); // Reset HITL node
+        setStep(2, 'active');
 
         if (action === 'fix') {
-            addLog("User: Auto-Fix Specs", "text-blue-300");
-            addLog("LLM Generating scenarios...", "text-slate-500");
-
-            updateStep(4, 'active');
-
-            // Fix the creep card
-            const fixedCard = { ...rawCards['105'], title: "Update Landing Hero CSS", user: 'M', name: 'Mike', color: 'bg-green-500' };
-            setBacklog(prev => prev.filter(c => c.id !== '105'));
-            setProgress(prev => [...prev, fixedCard]);
-
-            addLog(`PROJ-105 Assigned -> Mike`, "text-green-400");
+            addLog('PO Action: Auto-generate acceptance criteria.', 'accent');
+            setStep(4, 'active');
+            const fixedCard: KanbanCard = {
+                ...RAW_CARDS['105'],
+                title: 'Update Landing Hero Typography & Spacing',
+                user: 'M',
+                name: 'Mike',
+                accent: '#10b981',
+                pts: '2 pts',
+            };
+            setBacklog((prev) => prev.filter((c) => c.id !== '105'));
+            setProgress((prev) => [...prev, fixedCard]);
+            setJsonPayload({ key: 'PROJ-105', action: 'AUTO_SPEC_FIXED', assignee: 'Mike' });
+            addLog('PROJ-105 rewritten & assigned -> Mike', 'ok');
         } else {
-            addLog("User: REJECT", "text-red-400");
-            setBacklog(prev => prev.map(c => c.id === '105' ? { ...c, border: 'border-l-red-500', action: 'block' } : c)); // Mark as rejected visually
-            addLog("PROJ-105 Rejected.", "text-red-300");
+            addLog('PO Action: Rejected to Backlog.', 'err');
+            setBacklog((prev) => prev.map((c) => (c.id === '105' ? { ...c, action: 'block' } : c)));
+            setJsonPayload({ key: 'PROJ-105', action: 'REJECTED_AMBIGUOUS' });
         }
 
-        addLog("Resuming...", "text-white italic mt-2");
-        setTimeout(() => {
-            // Finish the queue (hardcoded for demo simplicity since we know it's the middle item)
-            const remaining = [rawCards['103']];
-            finishQueue(remaining);
-        }, 1000);
-    };
-
-    const finishQueue = async (queue: Card[]) => {
-        for (const item of queue) {
-            addLog(`Analyzing PROJ-${item.id}...`, "text-slate-500");
-            await new Promise(r => setTimeout(r, 600));
-            updateStep(3, 'active');
-            addLog(`[${item.name}] Matched ${item.skill}.`, "text-blue-300");
-            await new Promise(r => setTimeout(r, 600));
-            updateStep(4, 'active');
-            setBacklog(prev => prev.filter(c => c.id !== item.id));
-            setProgress(prev => [...prev, { ...item, user: item.user, pts: '3 pts' }]);
-            addLog(`Assigned PROJ-${item.id} -> ${item.name}`, "text-green-400");
-        }
+        await wait(600);
+        if (cancelled()) return;
+        const rem = RAW_CARDS['103'];
+        setStep(3, 'active');
+        addLog(`Matched ${rem.name} (${rem.skill}).`, 'accent');
+        await wait(500);
+        if (cancelled()) return;
+        setStep(4, 'active');
+        setBacklog((prev) => prev.filter((c) => c.id !== rem.id));
+        setProgress((prev) => [...prev, { ...rem, pts: '3 pts' }]);
+        addLog(`Assigned PROJ-${rem.id} -> ${rem.name}`, 'ok');
+        addLog('BATCH COMPLETE', 'ok');
         setIsRunning(false);
-        addLog("BATCH COMPLETE", "text-white font-bold bg-slate-700 p-1 rounded text-center mt-4");
     };
+
+    const pipelineNodes = [
+        { title: 'Board Scanner', desc: 'Polling sprint backlog & open PRs.', icon: ListTodo, tag: 'Jira API' },
+        { title: 'Context Engine', desc: 'Scoring acceptance criteria & CI state.', icon: Brain, tag: 'LLM' },
+        { title: 'Human Review', desc: 'Interrupts when ambiguity exceeds threshold.', icon: UserCog, tag: 'HITL' },
+        {
+            title: scenario === 'close' ? 'Definition of Done' : 'Load Balancer',
+            desc: scenario === 'close' ? 'Verifying GitHub merge & CI status.' : 'Matching skill tags to sprint capacity.',
+            icon: Scale,
+            tag: 'Policy',
+        },
+        { title: 'Jira Action', desc: 'Committing assignee, points, and column move.', icon: Bot, tag: 'Write' },
+    ];
 
     return (
-        <div className="h-[800px] flex flex-col font-sans bg-[#0F172A] text-slate-200 overflow-hidden border border-slate-700 rounded-xl shadow-2xl">
-
+        <div className="min-h-[680px] lg:h-[740px] flex flex-col font-sans bg-bg text-text overflow-hidden">
             {/* Header */}
-            <header className="h-14 md:h-16 border-b border-slate-700 bg-slate-900 flex items-center justify-between px-4 md:px-6 z-50 shrink-0 shadow-xl">
+            <header className="border-b border-hairline bg-panel px-4 py-3 flex flex-wrap items-center justify-between gap-3 shrink-0">
                 <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white font-bold shadow-lg shadow-blue-500/20">
-                        <SquareKanban className="w-5 h-5" />
+                    <div
+                        className="w-8 h-8 rounded-lg border flex items-center justify-center shrink-0"
+                        style={{ borderColor: `${ACCENT}44`, backgroundColor: `${ACCENT}14`, color: ACCENT }}
+                    >
+                        <SquareKanban className="w-4 h-4" />
                     </div>
                     <div>
-                        <h1 className="font-display font-bold text-base md:text-lg leading-tight tracking-tight text-white">ProjectFlow <span className="text-blue-400">AI</span></h1>
-                        <div className="hidden md:block text-[10px] text-slate-400 font-mono tracking-widest uppercase">Intelligent Scrum Master</div>
+                        <div className="font-display font-medium text-sm leading-tight text-text-strong flex items-center gap-1.5">
+                            ProjectFlow <span className="font-serif italic" style={{ color: ACCENT }}>AI</span>
+                        </div>
+                        <div className="text-[10px] text-text-mute font-mono tracking-[0.18em] uppercase">
+                            Autonomous Scrum Master
+                        </div>
                     </div>
                 </div>
 
                 {/* Role Switcher */}
-                <div className="hidden md:flex bg-slate-800 rounded-lg p-1 border border-slate-700 gap-1">
-                    {(['product', 'devops', 'team'] as Role[]).map(r => (
-                        <button
-                            key={r}
-                            onClick={() => setRole(r)}
-                            className={`role-btn px-3 py-1.5 rounded-md text-xs font-bold transition-all hover:text-white ${role === r ? 'active' : 'text-slate-400'}`}
-                        >
-                            {r === 'product' ? 'Product Owner' : r === 'devops' ? 'DevOps' : 'Team View'}
-                        </button>
-                    ))}
+                <div className="hidden md:flex items-center bg-bg border border-hairline rounded-full p-0.5">
+                    {(['product', 'devops', 'team'] as Role[]).map((r) => {
+                        const active = role === r;
+                        return (
+                            <button
+                                key={r}
+                                type="button"
+                                onClick={() => setRole(r)}
+                                className={`relative px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-[0.14em] transition-colors ${
+                                    active ? 'text-bg font-medium' : 'text-text-mute hover:text-text-strong'
+                                }`}
+                            >
+                                {active && (
+                                    <motion.span
+                                        layoutId="projectflow-role-pill"
+                                        transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+                                        className="absolute inset-0 rounded-full bg-text-strong"
+                                    />
+                                )}
+                                <span className="relative z-10">{r === 'product' ? 'Product' : r === 'devops' ? 'DevOps' : 'Team'}</span>
+                            </button>
+                        );
+                    })}
                 </div>
 
                 {/* Scenario Selector */}
-                <div className="flex bg-slate-800/50 p-1 rounded-lg border border-slate-700/50 gap-2">
-                    <button
-                        onClick={() => { setScenario('groom'); resetUI(); }}
-                        className={`px-4 py-2 rounded-md text-xs font-bold transition-all flex items-center gap-2 border ${scenario === 'groom' ? 'bg-blue-600 text-white border-blue-500 shadow-[0_0_15px_rgba(37,99,235,0.4)] scale-105' : 'bg-slate-800 text-slate-400 border-slate-700 hover:bg-slate-700 hover:text-white'}`}
-                    >
-                        <ListTodo className="w-3.5 h-3.5" /> Batch Groom
-                    </button>
-                    <button
-                        onClick={() => { setScenario('creep'); resetUI(); }}
-                        className={`px-4 py-2 rounded-md text-xs font-bold transition-all flex items-center gap-2 border ${scenario === 'creep' ? 'bg-red-600 text-white border-red-500 shadow-[0_0_15px_rgba(220,38,38,0.4)] scale-105' : 'bg-slate-800 text-slate-400 border-slate-700 hover:bg-slate-700 hover:text-white'}`}
-                    >
-                        <Ghost className={`w-3.5 h-3.5 ${scenario === 'creep' ? 'animate-bounce' : ''}`} /> Scope Creep
-                    </button>
-                    <button
-                        onClick={() => { setScenario('close'); resetUI(); }}
-                        className={`px-4 py-2 rounded-md text-xs font-bold transition-all flex items-center gap-2 border ${scenario === 'close' ? 'bg-green-600 text-white border-green-500 shadow-[0_0_15px_rgba(22,163,74,0.4)] scale-105' : 'bg-slate-800 text-slate-400 border-slate-700 hover:bg-slate-700 hover:text-white'}`}
-                    >
-                        <CheckCheck className={`w-3.5 h-3.5 ${scenario === 'close' ? 'animate-pulse' : ''}`} /> Auto-Close
-                    </button>
+                <div className="flex flex-wrap items-center bg-bg border border-hairline rounded-full p-0.5 gap-0.5">
+                    {(
+                        [
+                            { id: 'groom', label: 'Batch Groom', Icon: ListTodo },
+                            { id: 'creep', label: 'Scope Creep', Icon: Ghost },
+                            { id: 'close', label: 'Auto-Close', Icon: CheckCheck },
+                        ] as const
+                    ).map(({ id, label, Icon }) => {
+                        const active = scenario === id;
+                        return (
+                            <button
+                                key={id}
+                                type="button"
+                                onClick={() => applyScenario(id)}
+                                className={`relative px-3 py-1.5 rounded-full text-[11px] font-mono uppercase tracking-[0.1em] transition-colors flex items-center gap-1.5 ${
+                                    active ? 'text-text-strong font-medium' : 'text-text-mute hover:text-text-strong'
+                                }`}
+                            >
+                                {active && (
+                                    <motion.span
+                                        layoutId="projectflow-scenario-pill"
+                                        transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+                                        className="absolute inset-0 rounded-full border"
+                                        style={{ backgroundColor: `${ACCENT}18`, borderColor: `${ACCENT}55` }}
+                                    />
+                                )}
+                                <Icon className="w-3.5 h-3.5 relative z-10" style={active ? { color: ACCENT } : undefined} />
+                                <span className="relative z-10">{label}</span>
+                            </button>
+                        );
+                    })}
                 </div>
             </header>
 
-            {/* Main Content */}
+            {/* Main 3-Pane Workspace */}
             <main className="flex-1 flex overflow-hidden relative">
-
-                {/* LEFT: Workflow Visualizer */}
-                <section className={`w-full md:w-[350px] lg:w-[400px] border-r border-slate-700 bg-[#0B1120] flex-col relative z-20 ${mobileTab === 'flow' ? 'flex' : 'hidden md:flex'}`}>
-                    <div className="p-4 border-b border-slate-700 bg-slate-900/50 backdrop-blur shrink-0 flex justify-between items-center">
-                        <h2 className="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-2">
-                            <Network className="w-4 h-4" /> Agent Thought Process
-                        </h2>
-                        <span className="text-[9px] font-mono text-slate-500">{isRunning ? 'RUNNING' : 'IDLE'}</span>
+                {/* LEFT: Agent Graph */}
+                <section
+                    className={`w-full md:w-[290px] lg:w-[310px] border-r border-hairline bg-panel/40 flex-col shrink-0 ${
+                        mobileTab === 'flow' ? 'flex' : 'hidden md:flex'
+                    }`}
+                >
+                    <div className="px-4 py-3 border-b border-hairline flex justify-between items-center shrink-0">
+                        <h3 className="text-[10px] font-mono uppercase tracking-[0.2em] text-text-strong flex items-center gap-2">
+                            <Network className="w-3.5 h-3.5" style={{ color: ACCENT }} />
+                            Agent Graph
+                        </h3>
+                        <span className="text-[10px] font-mono uppercase tracking-[0.16em] text-text-mute">
+                            {isRunning ? 'Running' : 'Idle'}
+                        </span>
                     </div>
 
-                    <div className="flex-1 overflow-y-auto p-6 space-y-2 relative project-flow-scroll">
-                        {/* Node 1 */}
-                        <div className="relative pl-12 group">
-                            <div className={`flow-line ${stepStatus[0] !== 'idle' ? 'active' : ''}`}></div>
-                            <div className="absolute left-0 top-0 w-12 h-full flex justify-center">
-                                <div className={`w-8 h-8 rounded-full border flex items-center justify-center z-10 transition-colors icon-wrapper ${stepStatus[0] !== 'idle' ? 'bg-blue-600 border-blue-400 text-white' : 'bg-slate-800 border-slate-600 text-slate-400'}`}>
-                                    <ListTodo className="w-3 h-3" />
-                                </div>
-                            </div>
-                            <div className={`node-card p-4 rounded-xl ${stepStatus[0] === 'active' ? 'node-active' : ''}`}>
-                                <div className="flex justify-between items-start mb-1">
-                                    <h3 className="text-sm font-bold text-white">Board Scanner</h3>
-                                    <span className="text-[9px] bg-slate-700 px-1.5 py-0.5 rounded text-slate-300 status-badge">Jira API</span>
-                                </div>
-                                <p className="text-[11px] text-slate-400 node-desc">Reading current board state.</p>
-                            </div>
-                        </div>
-
-                        {/* Node 2 */}
-                        <div className="relative pl-12 group mt-6">
-                            <div className={`flow-line ${stepStatus[1] !== 'idle' ? 'active' : ''}`}></div>
-                            <div className="absolute left-0 top-0 w-12 h-full flex justify-center">
-                                <div className={`w-8 h-8 rounded-full border flex items-center justify-center z-10 transition-colors icon-wrapper ${stepStatus[1] !== 'idle' ? (stepStatus[1] === 'warning' ? 'bg-orange-600 border-orange-400 text-white' : 'bg-blue-600 border-blue-400 text-white') : 'bg-slate-800 border-slate-600 text-slate-400'}`}>
-                                    <Brain className="w-3 h-3" />
-                                </div>
-                            </div>
-                            <div className={`node-card p-4 rounded-xl ${stepStatus[1] === 'active' ? 'node-active' : stepStatus[1] === 'warning' ? 'node-warning' : ''}`}>
-                                <h3 className="text-sm font-bold text-white mb-1">Context Engine</h3>
-                                <p className="text-[11px] text-slate-400 node-desc">Analyzing Specs or PR Status.</p>
-                            </div>
-                        </div>
-
-                        {/* Node 2.5 HITL */}
-                        <div className="relative pl-12 group mt-6">
-                            <div className={`flow-line ${stepStatus[2] !== 'idle' ? 'active' : ''}`}></div>
-                            <div className="absolute left-0 top-0 w-12 h-full flex justify-center">
-                                <div className={`w-8 h-8 rounded-full border flex items-center justify-center z-10 transition-colors icon-wrapper ${stepStatus[2] !== 'idle' ? 'bg-orange-600 border-orange-400 text-white' : 'bg-slate-800 border-slate-600 text-slate-400'}`}>
-                                    <UserCog className="w-3 h-3" />
-                                </div>
-                            </div>
-                            <div className={`node-card p-4 rounded-xl ${stepStatus[2] === 'hitl' ? 'node-hitl' : stepStatus[2] === 'active' ? 'node-active' : ''}`}>
-                                <h3 className="text-sm font-bold text-white mb-1">Human Review</h3>
-                                <p className="text-[11px] text-slate-400 node-desc">Waiting for Product Owner decision.</p>
-                                {stepStatus[2] === 'hitl' && (
-                                    <div className="mt-2 flex gap-1">
-                                        <span className="text-[9px] bg-yellow-900/50 text-yellow-300 px-2 py-0.5 rounded border border-yellow-500/30">INTERRUPT</span>
+                    <div className="flex-1 overflow-y-auto p-4 space-y-3">
+                        {pipelineNodes.map((node, i) => {
+                            const status = stepStatus[i];
+                            const Icon = node.icon;
+                            const isWarn = status === 'warning' || status === 'hitl';
+                            const isActive = status === 'active';
+                            return (
+                                <div key={node.title} className="relative pl-10">
+                                    {i < pipelineNodes.length - 1 && (
+                                        <div className="absolute left-[13px] top-7 bottom-[-14px] w-[2px] bg-hairline overflow-hidden">
+                                            <motion.div
+                                                className="w-full h-full origin-top"
+                                                initial={{ scaleY: 0 }}
+                                                animate={{ scaleY: status !== 'idle' ? 1 : 0 }}
+                                                style={{ backgroundColor: isWarn ? '#f59e0b' : ACCENT }}
+                                            />
+                                        </div>
+                                    )}
+                                    <div
+                                        className={`absolute left-0 top-1 w-7 h-7 rounded-full border flex items-center justify-center transition-colors ${
+                                            isWarn
+                                                ? 'border-amber-500 bg-amber-500/15 text-amber-500'
+                                                : isActive
+                                                  ? 'border-sky-500 bg-sky-500/15 text-sky-500'
+                                                  : 'border-hairline bg-bg text-text-mute'
+                                        }`}
+                                    >
+                                        <Icon className="w-3.5 h-3.5" />
                                     </div>
-                                )}
-                            </div>
-                        </div>
-
-                        {/* Node 3 */}
-                        <div className="relative pl-12 group mt-6">
-                            <div className={`flow-line ${stepStatus[3] !== 'idle' ? 'active' : ''}`}></div>
-                            <div className="absolute left-0 top-0 w-12 h-full flex justify-center">
-                                <div className={`w-8 h-8 rounded-full border flex items-center justify-center z-10 transition-colors icon-wrapper ${stepStatus[3] !== 'idle' ? (stepStatus[3] === 'warning' ? 'bg-orange-600 border-orange-400 text-white' : 'bg-blue-600 border-blue-400 text-white') : 'bg-slate-800 border-slate-600 text-slate-400'}`}>
-                                    <Scale className="w-3 h-3" />
+                                    <div
+                                        className={`p-3 rounded-xl border transition-colors ${
+                                            isWarn
+                                                ? 'border-amber-500/50 bg-amber-500/[0.08]'
+                                                : isActive
+                                                  ? 'border-sky-500/45 bg-sky-500/[0.06]'
+                                                  : 'border-hairline bg-bg/60'
+                                        }`}
+                                    >
+                                        <div className="flex items-center justify-between gap-2 mb-0.5">
+                                            <span className="text-xs font-medium text-text-strong">{node.title}</span>
+                                            <span className="text-[9px] font-mono uppercase tracking-[0.14em] px-1.5 py-0.5 rounded border border-hairline text-text-mute">
+                                                {status === 'hitl' ? 'INTERRUPT' : node.tag}
+                                            </span>
+                                        </div>
+                                        <p className="text-[11px] text-text-mute leading-snug">{node.desc}</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className={`node-card p-4 rounded-xl ${stepStatus[3] === 'active' ? 'node-active' : stepStatus[3] === 'warning' ? 'node-warning' : ''}`}>
-                                <h3 className="text-sm font-bold text-white mb-1">{scenario === 'close' ? 'Definition of Done' : 'Load Balancer'}</h3>
-                                <p className="text-[11px] text-slate-400 node-desc">{scenario === 'close' ? 'Verifying GitHub & CI Status.' : 'Calculating Team Capacity.'}</p>
-                            </div>
-                        </div>
-
-                        {/* Node 4 */}
-                        <div className="relative pl-12 group mt-6">
-                            <div className="absolute left-0 top-0 w-12 h-full flex justify-center">
-                                <div className={`w-8 h-8 rounded-full border flex items-center justify-center z-10 transition-colors icon-wrapper ${stepStatus[4] !== 'idle' ? 'bg-blue-600 border-blue-400 text-white' : 'bg-slate-800 border-slate-600 text-slate-400'}`}>
-                                    <Bot className="w-3 h-3" />
-                                </div>
-                            </div>
-                            <div className={`node-card p-4 rounded-xl ${stepStatus[4] === 'active' ? 'node-active' : ''}`}>
-                                <h3 className="text-sm font-bold text-white mb-1">Jira Action</h3>
-                                <p className="text-[11px] text-slate-400 node-desc">Updating Assignee, Points, and Sprint.</p>
-                            </div>
-                        </div>
+                            );
+                        })}
                     </div>
 
-                    <div className="p-4 border-t border-slate-700 bg-slate-900 shrink-0">
+                    <div className="p-4 border-t border-hairline bg-panel flex gap-2 shrink-0">
                         <button
+                            type="button"
                             onClick={runSimulation}
                             disabled={isRunning}
-                            className={`w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg shadow-lg shadow-blue-500/20 transition-all flex items-center justify-center gap-2 ${isRunning ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            data-cursor="play"
+                            className="flex-1 py-2.5 px-4 rounded-lg text-xs font-mono uppercase tracking-[0.16em] bg-text-strong text-bg hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-45"
                         >
-                            <Play className="w-4 h-4" /> Initiate Workflow
+                            <Play className="w-3.5 h-3.5 fill-current" />
+                            {isRunning ? 'Executing...' : 'Run Workflow'}
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => applyScenario(scenario)}
+                            aria-label="Reset sprint board"
+                            className="px-3 py-2.5 rounded-lg border border-hairline text-text-mute hover:text-text-strong hover:border-hairline-strong transition-colors"
+                        >
+                            <RotateCcw className="w-3.5 h-3.5" />
                         </button>
                     </div>
                 </section>
 
-                {/* CENTER: Jira Board */}
-                <section className={`flex-1 bg-slate-900 flex-col relative overflow-hidden ${mobileTab === 'board' ? 'flex' : 'hidden md:flex'}`}>
-                    <div className="h-10 bg-[#1E293B] border-b border-slate-700 flex items-center justify-between px-4 shadow-sm z-10 shrink-0">
+                {/* CENTER: Animated Kanban Board */}
+                <section
+                    className={`flex-1 bg-bg flex-col relative overflow-hidden ${
+                        mobileTab === 'board' ? 'flex' : 'hidden md:flex'
+                    }`}
+                >
+                    <div className="h-10 bg-panel border-b border-hairline flex items-center justify-between px-4 z-10 shrink-0">
                         <div className="flex items-center gap-2">
-                            <span className="text-xs font-bold text-white">SPRINT 24</span>
-                            <span className="text-[10px] bg-slate-700 px-2 rounded text-slate-300">Active</span>
+                            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-text-strong">SPRINT 24</span>
+                            <span className="text-[10px] font-mono px-2 py-0.5 rounded border border-emerald-500/35 bg-emerald-500/10 text-emerald-500">
+                                ACTIVE
+                            </span>
                         </div>
-                        <div className="flex -space-x-1">
-                            <div className="w-6 h-6 rounded-full bg-purple-500 border border-slate-800 flex items-center justify-center text-[10px] font-bold text-white" title="Sarah">S</div>
-                            <div className="w-6 h-6 rounded-full bg-green-500 border border-slate-800 flex items-center justify-center text-[10px] font-bold text-white" title="Mike">M</div>
-                            <div className="w-6 h-6 rounded-full bg-blue-500 border border-slate-800 flex items-center justify-center text-[10px] font-bold text-white" title="Alex">A</div>
+                        <div className="flex items-center gap-1.5 text-[10px] font-mono text-text-mute">
+                            <span className="w-5 h-5 rounded-full border border-hairline bg-panel-strong flex items-center justify-center text-text-strong" title="Sarah">S</span>
+                            <span className="w-5 h-5 rounded-full border border-hairline bg-panel-strong flex items-center justify-center text-text-strong" title="Mike">M</span>
+                            <span className="w-5 h-5 rounded-full border border-hairline bg-panel-strong flex items-center justify-center text-text-strong" title="Alex">A</span>
                         </div>
                     </div>
 
-                    <div className="flex-1 p-4 overflow-x-auto flex gap-4">
-                        {/* Backlog */}
-                        <div className="flex-1 min-w-[200px] flex flex-col">
-                            <div className="text-[10px] font-bold text-slate-400 uppercase mb-2 flex justify-between">
-                                <span>Backlog</span>
-                                <span className="bg-slate-800 px-1.5 rounded">{backlog.length}</span>
+                    <div className="flex-1 p-4 overflow-x-auto grid grid-cols-1 lg:grid-cols-3 gap-3">
+                        {(
+                            [
+                                { label: 'Backlog', items: backlog, dashed: false, faded: false },
+                                { label: 'In Progress', items: progress, dashed: false, faded: false },
+                                { label: 'Done', items: done, dashed: true, faded: true },
+                            ] as const
+                        ).map((col) => (
+                            <div key={col.label} className="flex flex-col min-w-[180px]">
+                                <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-text-mute mb-2 flex justify-between items-center px-1">
+                                    <span>{col.label}</span>
+                                    <span className="px-1.5 py-0.5 rounded border border-hairline bg-panel text-text-strong">
+                                        {col.items.length}
+                                    </span>
+                                </div>
+                                <div
+                                    className={`flex-1 rounded-xl p-2 space-y-2 border ${
+                                        col.dashed ? 'border-dashed border-hairline bg-panel/30' : 'border-hairline bg-panel/50'
+                                    }`}
+                                >
+                                    <AnimatePresence>
+                                        {col.items.map((c) => {
+                                            const CardIcon = c.icon;
+                                            return (
+                                                <motion.div
+                                                    key={c.id}
+                                                    layout={!reduced}
+                                                    initial={{ opacity: 0, y: 8 }}
+                                                    animate={{ opacity: col.faded ? 0.65 : 1, y: 0 }}
+                                                    exit={{ opacity: 0, scale: 0.94 }}
+                                                    transition={{ duration: 0.28 }}
+                                                    className={`relative rounded-lg p-3 border bg-bg transition-colors ${
+                                                        c.action === 'block'
+                                                            ? 'border-rose-500/60 bg-rose-500/[0.07]'
+                                                            : 'border-hairline hover:border-hairline-strong'
+                                                    }`}
+                                                >
+                                                    <div className="flex items-center justify-between gap-2 mb-1">
+                                                        <span className="text-[10px] font-mono" style={{ color: c.accent }}>
+                                                            PROJ-{c.id}
+                                                        </span>
+                                                        {c.action === 'block' && <Ban className="w-3.5 h-3.5 text-rose-500" />}
+                                                    </div>
+                                                    <div className="text-xs font-medium text-text-strong leading-snug">{c.title}</div>
+                                                    <div className="flex justify-between items-center mt-2.5">
+                                                        <div className="flex items-center gap-1.5 text-[10px] font-mono text-text-mute">
+                                                            <CardIcon className="w-3 h-3" />
+                                                            <span>{c.pts || c.tag}</span>
+                                                        </div>
+                                                        <span className="w-5 h-5 rounded-full border border-hairline bg-panel flex items-center justify-center text-[10px] font-mono text-text-strong">
+                                                            {c.user}
+                                                        </span>
+                                                    </div>
+                                                </motion.div>
+                                            );
+                                        })}
+                                    </AnimatePresence>
+                                </div>
                             </div>
-                            <div className="kanban-col p-2 space-y-2">
-                                {backlog.map(c => (
-                                    <div key={c.id} className={`kanban-card ${c.border}`}>
-                                        <div className={`text-[10px] ${c.border.replace('border-l-', 'text-').replace('500', '400')} font-mono mb-1`}>PROJ-{c.id}</div>
-                                        <div className="text-sm text-white font-medium">{c.title}</div>
-                                        <div className="flex justify-between items-center mt-2">
-                                            <div className="flex gap-1 text-[10px] text-slate-400 items-center">
-                                                <c.icon className="w-3 h-3" />
-                                                <span>{c.tag}</span>
-                                            </div>
-                                            <div className="w-5 h-5 rounded-full bg-slate-600 flex items-center justify-center text-[10px] text-white font-bold">{c.user}</div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* In Progress */}
-                        <div className="flex-1 min-w-[200px] flex flex-col">
-                            <div className="text-[10px] font-bold text-slate-400 uppercase mb-2 flex justify-between">
-                                <span>In Progress</span>
-                                <span className="bg-slate-800 px-1.5 rounded">{progress.length}</span>
-                            </div>
-                            <div className="kanban-col p-2 space-y-2">
-                                {progress.map(c => (
-                                    <div key={c.id} className={`kanban-card ${c.border} ${c.action === 'block' ? 'bg-red-500/10 border-red-500' : ''}`}>
-                                        <div className={`text-[10px] ${c.border.replace('border-l-', 'text-').replace('500', '400')} font-mono mb-1`}>PROJ-{c.id}</div>
-                                        <div className="text-sm text-white font-medium">{c.title}</div>
-                                        <div className="flex justify-between items-center mt-2">
-                                            <span className="text-[9px] bg-slate-700 px-1 rounded text-slate-300">{c.pts || '5 pts'}</span>
-                                            <div className={`w-5 h-5 rounded-full ${c.color || 'bg-slate-600'} flex items-center justify-center text-[10px] text-white font-bold`}>{c.user}</div>
-                                        </div>
-                                        {c.action === 'block' && <Ban className="absolute top-2 right-2 w-4 h-4 text-red-500" />}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Done */}
-                        <div className="flex-1 min-w-[200px] flex flex-col">
-                            <div className="text-[10px] font-bold text-slate-400 uppercase mb-2 flex justify-between">
-                                <span>Done</span>
-                                <span className="bg-slate-800 px-1.5 rounded">{done.length}</span>
-                            </div>
-                            <div className="kanban-col p-2 bg-slate-900/50 border border-slate-800 border-dashed space-y-2">
-                                {done.map(c => (
-                                    <div key={c.id} className={`kanban-card ${c.border} opacity-50`}>
-                                        <div className={`text-[10px] ${c.border.replace('border-l-', 'text-').replace('500', '400')} font-mono mb-1`}>PROJ-{c.id}</div>
-                                        <div className="text-sm text-white font-medium">{c.title}</div>
-                                        <div className="flex justify-between items-center mt-2">
-                                            <span className="text-[9px] bg-slate-700 px-1 rounded text-slate-300">{c.pts}</span>
-                                            <div className={`w-5 h-5 rounded-full ${c.color} flex items-center justify-center text-[10px] text-white font-bold`}>{c.user}</div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+                        ))}
                     </div>
 
                     {/* HITL Modal */}
-                    {showHitl && (
-                        <div className="absolute inset-0 bg-slate-900/90 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-                            <div className="bg-[#1E293B] border border-slate-600 w-full max-w-md rounded-xl p-6 shadow-2xl animate-in fade-in zoom-in duration-300">
-                                <div className="flex items-start gap-4 mb-4">
-                                    <div className="w-10 h-10 rounded-full bg-yellow-500/20 text-yellow-500 flex items-center justify-center shrink-0">
-                                        <AlertTriangle className="w-6 h-6" />
+                    <AnimatePresence>
+                        {showHitl && (
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="absolute inset-0 bg-bg/85 backdrop-blur-sm z-40 flex items-center justify-center p-4"
+                            >
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.95, y: 8 }}
+                                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                                    exit={{ opacity: 0, scale: 0.95 }}
+                                    className="bg-panel border border-hairline-strong w-full max-w-md rounded-2xl p-6"
+                                >
+                                    <div className="flex items-start gap-3.5 mb-4">
+                                        <div className="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-500/40 text-amber-500 flex items-center justify-center shrink-0">
+                                            <AlertTriangle className="w-5 h-5" />
+                                        </div>
+                                        <div>
+                                            <h4 className="text-base font-display font-medium text-text-strong">
+                                                Scope Ambiguity Interrupt
+                                            </h4>
+                                            <p className="text-xs font-mono text-text-mute mt-0.5">PROJ-105: &quot;Make it pop&quot;</p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <h3 className="text-lg font-bold text-white">Scope Ambiguity Detected</h3>
-                                        <p className="text-sm text-slate-400">PROJ-105: "Make it pop"</p>
+
+                                    <div className="bg-bg rounded-xl p-3.5 text-[11px] font-mono text-text mb-5 border border-hairline space-y-1">
+                                        <div className="text-amber-500">ANALYSIS_LOG:</div>
+                                        <div>&gt; Ambiguity Score: 88% (HIGH)</div>
+                                        <div>&gt; Missing: Acceptance Criteria</div>
+                                        <div>&gt; State: Paused for Product Owner</div>
                                     </div>
-                                </div>
 
-                                <div className="bg-black/30 rounded p-3 text-xs font-mono text-slate-300 mb-6 border border-slate-700">
-                                    ANALYSIS_LOG:<br />
-                                    &gt; Ambiguity Score: 88% (HIGH)<br />
-                                    &gt; Missing: Acceptance Criteria<br />
-                                    &gt; Recommendation: Human Intervention
-                                </div>
-
-                                <div className="grid grid-cols-2 gap-3">
-                                    <button onClick={() => resolveHitl('reject')} className="py-2.5 rounded-lg border border-red-500/50 text-red-400 hover:bg-red-500/10 font-bold text-xs transition-all">
-                                        Reject to Backlog
-                                    </button>
-                                    <button onClick={() => resolveHitl('fix')} className="py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-lg shadow-blue-500/20 transition-all flex items-center justify-center gap-2">
-                                        <Wand2 className="w-3 h-3" /> Auto-Fix Specs
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <button
+                                            type="button"
+                                            onClick={() => resolveHitl('reject')}
+                                            className="py-2.5 rounded-lg border border-rose-500/45 text-rose-500 hover:bg-rose-500/10 font-mono uppercase tracking-[0.12em] text-[11px] transition-colors"
+                                        >
+                                            Reject Ticket
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => resolveHitl('fix')}
+                                            className="py-2.5 rounded-lg bg-text-strong text-bg hover:opacity-90 font-mono uppercase tracking-[0.12em] text-[11px] transition-opacity flex items-center justify-center gap-1.5"
+                                        >
+                                            <Wand2 className="w-3.5 h-3.5" /> Auto-Fix Spec
+                                        </button>
+                                    </div>
+                                </motion.div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </section>
 
-                {/* RIGHT: Data Dashboard */}
-                <section className={`w-full md:w-[320px] lg:w-[350px] border-l border-slate-700 bg-[#0B1120] flex-col z-20 shadow-2xl ${mobileTab === 'data' ? 'flex' : 'hidden md:flex'}`}>
-                    <div className="p-4 border-b border-slate-700 bg-slate-900/50 backdrop-blur shrink-0">
-                        <h2 className="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center justify-between">
-                            <span>
-                                {role === 'product' && <><TrendingUp className="inline w-4 h-4 mr-2" />AI Rationale</>}
-                                {role === 'devops' && <><Code className="inline w-4 h-4 mr-2" />API Logs</>}
-                                {role === 'team' && <><Users className="inline w-4 h-4 mr-2" />Capacity View</>}
-                            </span>
-                            <span className="text-[9px] bg-slate-700 px-2 py-0.5 rounded text-slate-300">{role.toUpperCase()} VIEW</span>
-                        </h2>
+                {/* RIGHT: Role Telemetry */}
+                <section
+                    className={`w-full md:w-[270px] lg:w-[290px] border-l border-hairline bg-panel/40 flex-col shrink-0 ${
+                        mobileTab === 'data' ? 'flex' : 'hidden md:flex'
+                    }`}
+                >
+                    <div className="px-4 py-3 border-b border-hairline flex justify-between items-center shrink-0">
+                        <h3 className="text-[10px] font-mono uppercase tracking-[0.2em] text-text-strong flex items-center gap-2">
+                            {role === 'product' && <><TrendingUp className="w-3.5 h-3.5" style={{ color: ACCENT }} /> Rationale</>}
+                            {role === 'devops' && <><Code className="w-3.5 h-3.5" style={{ color: ACCENT }} /> Jira Payload</>}
+                            {role === 'team' && <><Users className="w-3.5 h-3.5" style={{ color: ACCENT }} /> Capacity</>}
+                        </h3>
+                        <span className="text-[9px] font-mono uppercase tracking-[0.16em] px-2 py-0.5 rounded border border-hairline text-text-mute">
+                            {role}
+                        </span>
                     </div>
 
-                    <div className="flex-1 p-6 space-y-6 overflow-y-auto project-flow-scroll">
-                        {/* Product Owner View */}
+                    <div className="flex-1 p-4 space-y-4 overflow-y-auto">
                         {role === 'product' && (
-                            <div className="role-view">
-                                <div className="text-[10px] font-bold text-slate-400 uppercase mb-2">Decision Log</div>
-                                <div className="bg-slate-800 rounded-xl p-3 border border-slate-700 h-[300px] overflow-y-auto font-mono text-[10px] space-y-2">
-                                    {logs}
+                            <>
+                                <div>
+                                    <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-text-mute mb-2">
+                                        Decision Stream
+                                    </div>
+                                    <div className="bg-bg rounded-xl p-3 border border-hairline h-[260px] overflow-y-auto font-mono text-[10px] space-y-2">
+                                        {logs.length === 0 ? (
+                                            <div className="text-text-mute opacity-70">Run workflow to trace ticket routing...</div>
+                                        ) : (
+                                            logs.map((l) => (
+                                                <div
+                                                    key={l.id}
+                                                    className={`border-l pl-2 ${
+                                                        l.tone === 'ok'
+                                                            ? 'border-emerald-500 text-emerald-500'
+                                                            : l.tone === 'err'
+                                                              ? 'border-rose-500 text-rose-500'
+                                                              : l.tone === 'warn'
+                                                                ? 'border-amber-500 text-amber-500'
+                                                                : l.tone === 'accent'
+                                                                  ? 'border-sky-500 text-text-strong'
+                                                                  : 'border-hairline-strong text-text-mute'
+                                                    }`}
+                                                >
+                                                    {l.text}
+                                                </div>
+                                            ))
+                                        )}
+                                    </div>
                                 </div>
 
-                                <div className="mt-6 bg-slate-800 rounded-xl p-4 border border-slate-700 relative overflow-hidden">
-                                    <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">Sprint Velocity</div>
-                                    <div className="text-4xl font-mono font-bold text-white flex items-end gap-2">
-                                        <span>{velocity}</span><span className="text-lg text-slate-500 mb-1">pts</span>
+                                <div className="bg-bg rounded-xl p-4 border border-hairline">
+                                    <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-text-mute mb-1">
+                                        Sprint Velocity
                                     </div>
-                                    <div className="text-[10px] text-green-400 mt-2 flex items-center gap-1">
-                                        <TrendingUp className="w-3 h-3" /> +12% Efficiency
+                                    <div className="text-3xl font-mono font-semibold text-text-strong flex items-baseline gap-1.5">
+                                        <span>{velocity}</span>
+                                        <span className="text-xs font-normal text-text-mute">pts</span>
+                                    </div>
+                                    <div className="text-[11px] font-mono text-emerald-500 mt-1.5 flex items-center gap-1">
+                                        <TrendingUp className="w-3 h-3" /> +12% grooming efficiency
                                     </div>
                                 </div>
-                            </div>
+                            </>
                         )}
 
-                        {/* DevOps View */}
                         {role === 'devops' && (
-                            <div className="role-view space-y-4">
-                                <div className="bg-black rounded-lg p-3 border border-slate-700 font-mono text-[10px]">
-                                    <div className="text-green-400 mb-2">// Payload to Jira API</div>
-                                    <div className="space-y-1">
-                                        {jsonPayload}
-                                    </div>
-                                </div>
+                            <div className="bg-bg rounded-xl p-4 border border-hairline font-mono text-[11px]">
+                                <div className="text-emerald-500 mb-2">{'// Last Jira REST Payload'}</div>
+                                <pre className="text-text whitespace-pre-wrap">{JSON.stringify(jsonPayload, null, 2)}</pre>
                             </div>
                         )}
 
-                        {/* Team View */}
                         {role === 'team' && (
-                            <div className="role-view space-y-4">
-                                <div className="bg-slate-800 rounded p-3 border border-slate-700">
-                                    <div className="text-[10px] font-bold text-slate-400 uppercase mb-2">Team Capacity</div>
-                                    <div className="space-y-3">
-                                        <div>
-                                            <div className="flex justify-between text-xs text-slate-300 mb-1"><span>Sarah (Backend)</span> <span>85%</span></div>
-                                            <div className="w-full h-1.5 bg-slate-700 rounded-full"><div className="w-[85%] h-full bg-yellow-500 rounded-full"></div></div>
+                            <div className="bg-bg rounded-xl p-4 border border-hairline space-y-4">
+                                <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-text-mute">
+                                    Active Sprint Capacity
+                                </div>
+                                {[
+                                    { name: 'Sarah (Backend)', pct: 85, color: '#f59e0b' },
+                                    { name: 'Mike (Frontend)', pct: 45, color: '#10b981' },
+                                    { name: 'Alex (DevOps)', pct: 25, color: '#10b981' },
+                                ].map((m) => (
+                                    <div key={m.name}>
+                                        <div className="flex justify-between text-xs mb-1.5">
+                                            <span className="text-text-strong">{m.name}</span>
+                                            <span className="font-mono text-text-mute">{m.pct}%</span>
                                         </div>
-                                        <div>
-                                            <div className="flex justify-between text-xs text-slate-300 mb-1"><span>Mike (Frontend)</span> <span>40%</span></div>
-                                            <div className="w-full h-1.5 bg-slate-700 rounded-full"><div className="w-[40%] h-full bg-green-500 rounded-full"></div></div>
-                                        </div>
-                                        <div>
-                                            <div className="flex justify-between text-xs text-slate-300 mb-1"><span>Alex (DevOps)</span> <span>20%</span></div>
-                                            <div className="w-full h-1.5 bg-slate-700 rounded-full"><div className="w-[20%] h-full bg-green-500 rounded-full"></div></div>
+                                        <div className="w-full h-1.5 bg-panel-strong rounded-full overflow-hidden">
+                                            <motion.div
+                                                initial={{ width: 0 }}
+                                                animate={{ width: `${m.pct}%` }}
+                                                transition={{ duration: reduced ? 0.1 : 0.6 }}
+                                                className="h-full rounded-full"
+                                                style={{ backgroundColor: m.color }}
+                                            />
                                         </div>
                                     </div>
-                                </div>
+                                ))}
                             </div>
                         )}
                     </div>
@@ -584,25 +690,26 @@ const ProjectFlowDemo = () => {
             </main>
 
             {/* Mobile Nav */}
-            <nav className="md:hidden h-14 bg-slate-900 border-t border-slate-800 flex justify-around items-center shrink-0 z-50 relative">
-                <button
-                    onClick={() => setMobileTab('flow')}
-                    className={`mobile-tab flex-1 h-full flex flex-col items-center justify-center text-[10px] ${mobileTab === 'flow' ? 'active' : 'text-slate-400'}`}
-                >
-                    <Network className="w-4 h-4 mb-1" /> Flow
-                </button>
-                <button
-                    onClick={() => setMobileTab('board')}
-                    className={`mobile-tab flex-1 h-full flex flex-col items-center justify-center text-[10px] ${mobileTab === 'board' ? 'active' : 'text-slate-400'}`}
-                >
-                    <Layout className="w-4 h-4 mb-1" /> Board
-                </button>
-                <button
-                    onClick={() => setMobileTab('data')}
-                    className={`mobile-tab flex-1 h-full flex flex-col items-center justify-center text-[10px] ${mobileTab === 'data' ? 'active' : 'text-slate-400'}`}
-                >
-                    <TrendingUp className="w-4 h-4 mb-1" /> Stats
-                </button>
+            <nav className="md:hidden h-12 bg-panel border-t border-hairline flex justify-around items-center shrink-0">
+                {(
+                    [
+                        { id: 'flow', label: 'Flow', Icon: Network },
+                        { id: 'board', label: 'Board', Icon: Layout },
+                        { id: 'data', label: 'Stats', Icon: TrendingUp },
+                    ] as const
+                ).map(({ id, label, Icon }) => (
+                    <button
+                        key={id}
+                        type="button"
+                        onClick={() => setMobileTab(id)}
+                        className={`flex-1 h-full flex flex-col items-center justify-center text-[10px] font-mono uppercase tracking-[0.14em] border-t-2 ${
+                            mobileTab === id ? 'border-sky-500 text-text-strong' : 'border-transparent text-text-mute'
+                        }`}
+                    >
+                        <Icon className="w-3.5 h-3.5 mb-0.5" />
+                        {label}
+                    </button>
+                ))}
             </nav>
         </div>
     );

@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
     StarHalf,
     Trophy,
@@ -12,464 +13,641 @@ import {
     MessageCircle,
     Settings,
     Star,
-    Loader2
+    Loader2,
+    BarChart3,
 } from 'lucide-react';
-import './ReviewFlowDemo.css';
+import { usePrefersReducedMotion } from '../../lib/motion/usePrefersReducedMotion';
 
 type ScenarioType = 'kudos' | 'risk' | 'menu' | 'comp';
 type RoleType = 'store' | 'kitchen' | 'hq';
 
 interface ScenarioData {
     user: string;
-    avatar: string;
     rating: number;
     text: string;
-    sentiment: string;
+    sentiment: 'POSITIVE' | 'CRITICAL' | 'NEGATIVE' | 'NEUTRAL';
     topic: string;
-    entity: string;
     reply: string;
-    opsAction: string;
+    opsAction: 'leaderboard' | 'alert' | 'kitchen_flag' | 'market_intel';
     roleTarget: RoleType;
 }
 
-const scenarios: Record<ScenarioType, ScenarioData> = {
+interface FeedItem extends ScenarioData {
+    id: number;
+}
+
+const ACCENT = '#f59e0b';
+
+const SCENARIOS: Record<ScenarioType, ScenarioData> = {
     kudos: {
-        user: "Emily R.",
-        avatar: "bg-purple-500",
+        user: 'Emily R.',
         rating: 5,
-        text: "Honestly the best dining experience I've had in years! Sarah was our server and she was absolutely amazing. Attentive without being annoying. The steak was perfect too.",
-        sentiment: "POSITIVE",
-        topic: "Staff Performance",
-        entity: "Sarah",
-        reply: "Hi Emily! We're thrilled to hear that! We'll make sure Sarah gets recognized for her excellent service. Hope to see you again soon!",
-        opsAction: "leaderboard",
-        roleTarget: "store"
+        text: "Honestly the best dining experience I've had in years! Sarah was our server and she was absolutely amazing. The steak was perfect too.",
+        sentiment: 'POSITIVE',
+        topic: 'Staff Performance',
+        reply: "Hi Emily! We're thrilled to hear that. We'll make sure Sarah is recognized for her outstanding service. Hope to welcome you back soon!",
+        opsAction: 'leaderboard',
+        roleTarget: 'store',
     },
     risk: {
-        user: "Sarah K.",
-        avatar: "bg-red-500",
+        user: 'Sarah K.',
         rating: 1,
         text: "DANGEROUS. The chicken was completely raw in the middle. The manager didn't seem to care. Reporting this to health inspection.",
-        sentiment: "CRITICAL",
-        topic: "Food Safety",
-        entity: "Raw Chicken",
-        reply: "Sarah, please DM us immediately. This is unacceptable and we are launching an immediate internal investigation. We are extremely sorry.",
-        opsAction: "alert",
-        roleTarget: "store"
+        sentiment: 'CRITICAL',
+        topic: 'Food Safety',
+        reply: 'Sarah, please message us directly immediately. This is unacceptable and we have opened a priority P0 safety investigation with our culinary director.',
+        opsAction: 'alert',
+        roleTarget: 'store',
     },
     menu: {
-        user: "Tom W.",
-        avatar: "bg-orange-500",
+        user: 'Tom W.',
         rating: 3,
         text: "Atmosphere is great but the Truffle Pasta was inedible. Way too salty. I couldn't even finish half of it.",
-        sentiment: "NEGATIVE",
-        topic: "Dish Quality",
-        entity: "Truffle Pasta",
-        reply: "Hi Tom, thanks for the honest feedback. I've flagged this with our Head Chef immediately to check the seasoning on the Truffle Pasta. We hope you'll give us another try.",
-        opsAction: "kitchen_flag",
-        roleTarget: "kitchen"
+        sentiment: 'NEGATIVE',
+        topic: 'Dish Quality',
+        reply: "Hi Tom, thank you for the candid note. We've flagged the Truffle Pasta batch with our Head Chef immediately to recalibrate seasoning.",
+        opsAction: 'kitchen_flag',
+        roleTarget: 'kitchen',
     },
     comp: {
-        user: "Jessica L.",
-        avatar: "bg-blue-500",
+        user: 'Jessica L.',
         rating: 3,
         text: "It's decent food but honestly PizzaHut down the street has a way better lunch deal for half the price.",
-        sentiment: "NEUTRAL",
-        topic: "Price Sensitivity",
-        entity: "PizzaHut",
-        reply: "Hi Jessica, thanks for the feedback. We strive to use premium ingredients that differ from chains, but we hear you on the value. We'll pass this to our marketing team.",
-        opsAction: "market_intel",
-        roleTarget: "hq"
-    }
+        sentiment: 'NEUTRAL',
+        topic: 'Price Sensitivity',
+        reply: "Hi Jessica, thank you for sharing that perspective. While we source fresh artisan ingredients, we've shared your value feedback with our menu strategy team.",
+        opsAction: 'market_intel',
+        roleTarget: 'hq',
+    },
 };
 
 const ReviewFlowDemo = () => {
+    const reduced = usePrefersReducedMotion();
     const [role, setRole] = useState<RoleType>('store');
     const [activeScenario, setActiveScenario] = useState<ScenarioType | null>(null);
+    const [mobileTab, setMobileTab] = useState<'feed' | 'brain' | 'dash'>('brain');
     const [isRunning, setIsRunning] = useState(false);
-    const [feed, setFeed] = useState<any[]>([]);
+    const [feed, setFeed] = useState<FeedItem[]>([]);
 
-    // Node States
     const [nodeStatus, setNodeStatus] = useState({
-        ingest: 'idle', // idle, active
-        analyze: 'idle',
-        router: 'idle', // idle, active
-        reply: 'idle', // idle, active, typing
-        ops: 'idle' // idle, active, success, danger
+        ingest: 'idle' as 'idle' | 'active' | 'done',
+        analyze: 'idle' as 'idle' | 'active' | 'done',
+        router: 'idle' as 'idle' | 'active' | 'done',
+        reply: 'idle' as 'idle' | 'active' | 'done',
+        ops: 'idle' as 'idle' | 'active' | 'success' | 'danger',
     });
 
-    // Data Display States
-    const [analysisData, setAnalysisData] = useState<{ sentiment: string, topic: string } | null>(null);
-    const [replyText, setReplyText] = useState("");
-    const [opsText, setOpsText] = useState("Checking triggers...");
-    const [agentStatus, setAgentStatus] = useState("Idle");
+    const [analysisData, setAnalysisData] = useState<{ sentiment: ScenarioData['sentiment']; topic: string } | null>(null);
+    const [replyText, setReplyText] = useState('');
+    const [opsText, setOpsText] = useState('Awaiting routing trigger...');
+    const [agentStatus, setAgentStatus] = useState<'Idle' | 'Processing...' | 'Complete'>('Idle');
 
-    // Dashboard States
     const [sarahScore, setSarahScore] = useState(42);
     const [sarahHighlight, setSarahHighlight] = useState(false);
-    const [criticalTicket, setCriticalTicket] = useState<boolean>(false);
+    const [criticalTicket, setCriticalTicket] = useState(false);
     const [pastaScore, setPastaScore] = useState(82);
     const [pastaAlert, setPastaAlert] = useState(false);
     const [compIntel, setCompIntel] = useState(false);
 
-    const scrollRef = useRef<HTMLDivElement>(null);
+    const runIdRef = useRef(0);
 
-    const resetUI = () => {
-        setNodeStatus({
-            ingest: 'idle',
-            analyze: 'idle',
-            router: 'idle',
-            reply: 'idle',
-            ops: 'idle'
-        });
+    const runScenario = async (type: ScenarioType) => {
+        const myRun = runIdRef.current + 1;
+        runIdRef.current = myRun;
+        const cancelled = () => runIdRef.current !== myRun;
+        const wait = (ms: number) => new Promise((r) => setTimeout(r, reduced ? Math.min(ms, 80) : ms));
+
+        setIsRunning(true);
+        setActiveScenario(type);
+        setNodeStatus({ ingest: 'idle', analyze: 'idle', router: 'idle', reply: 'idle', ops: 'idle' });
         setAnalysisData(null);
-        setReplyText("");
-        setOpsText("Checking triggers...");
-        setAgentStatus("Idle");
+        setReplyText('');
+        setOpsText('Checking triggers...');
         setSarahHighlight(false);
         setCriticalTicket(false);
         setPastaScore(82);
         setPastaAlert(false);
         setCompIntel(false);
-    };
 
-    const typeText = async (text: string) => {
-        setReplyText("");
-        for (let i = 0; i < text.length; i++) {
-            setReplyText(prev => prev + text.charAt(i));
-            await new Promise(r => setTimeout(r, 20));
-        }
-    };
-
-    const runScenario = async (type: ScenarioType) => {
-        if (isRunning) return;
-        setIsRunning(true);
-        setActiveScenario(type);
-        resetUI();
-
-        const data = scenarios[type];
+        const data = SCENARIOS[type];
         setRole(data.roleTarget);
-        setAgentStatus("Processing...");
+        setAgentStatus('Processing...');
+        setFeed((prev) => [{ id: Date.now(), ...data }, ...prev].slice(0, 6));
 
-        // 1. New Review Enters
-        const newReview = {
-            id: Date.now(),
-            ...data
-        };
-        setFeed(prev => [newReview, ...prev]);
+        // 1. Ingest
+        await wait(350);
+        if (cancelled()) return;
+        setNodeStatus((p) => ({ ...p, ingest: 'active' }));
 
-        // 2. Ingest
-        await new Promise(r => setTimeout(r, 500));
-        setNodeStatus(prev => ({ ...prev, ingest: 'active' }));
-
-        // 3. Analyze
-        await new Promise(r => setTimeout(r, 1000));
-        setNodeStatus(prev => ({ ...prev, ingest: 'idle', analyze: 'active' }));
+        // 2. Analyze
+        await wait(650);
+        if (cancelled()) return;
+        setNodeStatus((p) => ({ ...p, ingest: 'done', analyze: 'active' }));
         setAnalysisData({ sentiment: data.sentiment, topic: data.topic });
 
-        // 4. Router
-        await new Promise(r => setTimeout(r, 1200));
-        setNodeStatus(prev => ({ ...prev, analyze: 'idle', router: 'active' }));
+        // 3. Router
+        await wait(700);
+        if (cancelled()) return;
+        setNodeStatus((p) => ({ ...p, analyze: 'done', router: 'active' }));
 
-        // 5. Actions
-        await new Promise(r => setTimeout(r, 800));
-        setNodeStatus(prev => ({ ...prev, router: 'idle', reply: 'active', ops: 'active' }));
+        // 4. Parallel Reply + Ops
+        await wait(550);
+        if (cancelled()) return;
+        setNodeStatus((p) => ({ ...p, router: 'done', reply: 'active', ops: 'active' }));
 
-        // Parallel execution
-        const replyPromise = typeText(data.reply);
+        const typePromise = (async () => {
+            if (reduced) {
+                setReplyText(data.reply);
+                return;
+            }
+            for (let i = 1; i <= data.reply.length; i += 2) {
+                if (cancelled()) return;
+                setReplyText(data.reply.slice(0, i + 1));
+                await new Promise((r) => setTimeout(r, 14));
+            }
+            if (!cancelled()) setReplyText(data.reply);
+        })();
 
         const opsPromise = (async () => {
-            if (data.opsAction === "leaderboard") {
-                setOpsText("Staff Identified: Sarah (+10 pts)");
-                setNodeStatus(prev => ({ ...prev, ops: 'success' }));
-                await new Promise(r => setTimeout(r, 500));
+            await wait(350);
+            if (cancelled()) return;
+            if (data.opsAction === 'leaderboard') {
+                setOpsText('Staff kudos logged: Sarah (+10 pts)');
+                setNodeStatus((p) => ({ ...p, ops: 'success' }));
                 setSarahHighlight(true);
                 setSarahScore(52);
-            } else if (data.opsAction === "alert") {
-                setOpsText("SAFETY HAZARD: SMS + Jira Sent");
-                setNodeStatus(prev => ({ ...prev, ops: 'danger' }));
-                await new Promise(r => setTimeout(r, 500));
+            } else if (data.opsAction === 'alert') {
+                setOpsText('P0 SAFETY ALERT: SMS + Jira dispatched');
+                setNodeStatus((p) => ({ ...p, ops: 'danger' }));
                 setCriticalTicket(true);
-            } else if (data.opsAction === "kitchen_flag") {
-                setOpsText("Quality Issue: Flagged in KDS");
-                setNodeStatus(prev => ({ ...prev, ops: 'danger' }));
-                await new Promise(r => setTimeout(r, 500));
+            } else if (data.opsAction === 'kitchen_flag') {
+                setOpsText('KDS Quality Flag: Truffle Pasta batch');
+                setNodeStatus((p) => ({ ...p, ops: 'danger' }));
                 setPastaScore(65);
                 setPastaAlert(true);
-            } else if (data.opsAction === "market_intel") {
-                setOpsText("Competitor Intel: Logged");
-                setNodeStatus(prev => ({ ...prev, ops: 'active' }));
-                await new Promise(r => setTimeout(r, 500));
+            } else {
+                setOpsText('Market Intel: Competitor promo indexed');
+                setNodeStatus((p) => ({ ...p, ops: 'active' }));
                 setCompIntel(true);
             }
         })();
 
-        await Promise.all([replyPromise, opsPromise]);
+        await Promise.all([typePromise, opsPromise]);
+        if (cancelled()) return;
 
-        setAgentStatus("Complete");
+        setNodeStatus((p) => ({ ...p, reply: 'done' }));
+        setAgentStatus('Complete');
         setIsRunning(false);
     };
 
     return (
-        <div className="h-[800px] flex flex-col font-sans bg-[#0F172A] text-slate-200 overflow-hidden border border-slate-700 rounded-xl shadow-2xl">
-
+        <div className="min-h-[660px] lg:h-[720px] flex flex-col font-sans bg-bg text-text overflow-hidden">
             {/* Header */}
-            <header className="h-16 border-b border-slate-700 bg-slate-900 flex items-center justify-between px-6 z-50 shadow-xl shrink-0">
+            <header className="border-b border-hairline bg-panel px-4 py-3 flex flex-wrap items-center justify-between gap-3 shrink-0">
                 <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-amber-500 rounded flex items-center justify-center text-white font-bold shadow-lg shadow-amber-500/20">
-                        <StarHalf className="w-5 h-5" />
+                    <div
+                        className="w-8 h-8 rounded-lg border flex items-center justify-center shrink-0"
+                        style={{ borderColor: `${ACCENT}44`, backgroundColor: `${ACCENT}14`, color: ACCENT }}
+                    >
+                        <StarHalf className="w-4 h-4" />
                     </div>
                     <div>
-                        <h1 className="font-bold text-lg leading-tight tracking-tight text-white">ReviewFlow <span className="text-amber-400">AI</span></h1>
-                        <div className="text-[10px] text-slate-400 font-mono tracking-widest uppercase">Reputation Engine</div>
+                        <div className="font-display font-medium text-sm leading-tight text-text-strong flex items-center gap-1.5">
+                            ReviewFlow <span className="font-serif italic" style={{ color: ACCENT }}>AI</span>
+                        </div>
+                        <div className="text-[10px] text-text-mute font-mono tracking-[0.18em] uppercase">
+                            Reputation Routing Engine
+                        </div>
                     </div>
                 </div>
 
                 {/* Scenario Selector */}
-                <div className="flex bg-slate-800/50 p-1 rounded-lg border border-slate-700/50 gap-2">
-                    <button onClick={() => runScenario('kudos')} className={`px-4 py-2 rounded-md text-xs font-bold transition-all flex items-center gap-2 border ${activeScenario === 'kudos' ? 'bg-yellow-600 text-white border-yellow-500 shadow-[0_0_15px_rgba(234,179,8,0.4)] scale-105' : 'bg-slate-800 text-slate-400 border-slate-700 hover:bg-slate-700 hover:text-white'}`}>
-                        <Trophy className="w-3.5 h-3.5" /> Kudos
-                    </button>
-                    <button onClick={() => runScenario('risk')} className={`px-4 py-2 rounded-md text-xs font-bold transition-all flex items-center gap-2 border ${activeScenario === 'risk' ? 'bg-red-600 text-white border-red-500 shadow-[0_0_15px_rgba(220,38,38,0.4)] scale-105' : 'bg-slate-800 text-slate-400 border-slate-700 hover:bg-slate-700 hover:text-white'}`}>
-                        <TriangleAlert className="w-3.5 h-3.5" /> Risk
-                    </button>
-                    <button onClick={() => runScenario('menu')} className={`px-4 py-2 rounded-md text-xs font-bold transition-all flex items-center gap-2 border ${activeScenario === 'menu' ? 'bg-orange-600 text-white border-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.4)] scale-105' : 'bg-slate-800 text-slate-400 border-slate-700 hover:bg-slate-700 hover:text-white'}`}>
-                        <Utensils className="w-3.5 h-3.5" /> Menu
-                    </button>
-                    <button onClick={() => runScenario('comp')} className={`px-4 py-2 rounded-md text-xs font-bold transition-all flex items-center gap-2 border ${activeScenario === 'comp' ? 'bg-blue-600 text-white border-blue-500 shadow-[0_0_15px_rgba(37,99,235,0.4)] scale-105' : 'bg-slate-800 text-slate-400 border-slate-700 hover:bg-slate-700 hover:text-white'}`}>
-                        <Store className="w-3.5 h-3.5" /> Competitor
-                    </button>
+                <div className="flex flex-wrap items-center bg-bg border border-hairline rounded-full p-0.5 gap-0.5">
+                    {(
+                        [
+                            { id: 'kudos', label: 'Kudos', Icon: Trophy },
+                            { id: 'risk', label: 'Safety', Icon: TriangleAlert },
+                            { id: 'menu', label: 'Menu', Icon: Utensils },
+                            { id: 'comp', label: 'Intel', Icon: Store },
+                        ] as const
+                    ).map(({ id, label, Icon }) => {
+                        const active = activeScenario === id;
+                        return (
+                            <button
+                                key={id}
+                                type="button"
+                                onClick={() => runScenario(id)}
+                                data-cursor="play"
+                                className={`relative px-3 py-1.5 rounded-full text-[11px] font-mono uppercase tracking-[0.1em] transition-colors flex items-center gap-1.5 ${
+                                    active ? 'text-text-strong font-medium' : 'text-text-mute hover:text-text-strong'
+                                }`}
+                            >
+                                {active && (
+                                    <motion.span
+                                        layoutId="reviewflow-scenario-pill"
+                                        transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+                                        className="absolute inset-0 rounded-full border"
+                                        style={{ backgroundColor: `${ACCENT}18`, borderColor: `${ACCENT}55` }}
+                                    />
+                                )}
+                                <Icon className="w-3.5 h-3.5 relative z-10" style={active ? { color: ACCENT } : undefined} />
+                                <span className="relative z-10">{label}</span>
+                            </button>
+                        );
+                    })}
                 </div>
 
                 {/* Role Switcher */}
-                <div className="hidden md:flex bg-slate-800 rounded-lg p-1 border border-slate-700 gap-1">
-                    <button onClick={() => setRole('store')} className={`role-btn px-3 py-1.5 rounded-md text-[10px] font-bold transition-all hover:text-white ${role === 'store' ? 'active' : 'text-slate-400'}`}>Store Mgr</button>
-                    <button onClick={() => setRole('kitchen')} className={`role-btn px-3 py-1.5 rounded-md text-[10px] font-bold transition-all hover:text-white ${role === 'kitchen' ? 'active' : 'text-slate-400'}`}>Kitchen</button>
-                    <button onClick={() => setRole('hq')} className={`role-btn px-3 py-1.5 rounded-md text-[10px] font-bold transition-all hover:text-white ${role === 'hq' ? 'active' : 'text-slate-400'}`}>HQ / Mktg</button>
+                <div className="hidden md:flex items-center bg-bg border border-hairline rounded-full p-0.5">
+                    {(
+                        [
+                            { id: 'store', label: 'Store' },
+                            { id: 'kitchen', label: 'Kitchen' },
+                            { id: 'hq', label: 'HQ' },
+                        ] as const
+                    ).map((r) => {
+                        const active = role === r.id;
+                        return (
+                            <button
+                                key={r.id}
+                                type="button"
+                                onClick={() => setRole(r.id)}
+                                className={`relative px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-[0.14em] transition-colors ${
+                                    active ? 'text-bg font-medium' : 'text-text-mute hover:text-text-strong'
+                                }`}
+                            >
+                                {active && (
+                                    <motion.span
+                                        layoutId="reviewflow-role-pill"
+                                        transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+                                        className="absolute inset-0 rounded-full bg-text-strong"
+                                    />
+                                )}
+                                <span className="relative z-10">{r.label}</span>
+                            </button>
+                        );
+                    })}
                 </div>
             </header>
 
             <main className="flex-1 flex overflow-hidden relative">
-
-                {/* LEFT: Review Feed */}
-                <section className="w-[350px] border-r border-slate-700 bg-[#0B1120] flex flex-col relative z-20 shadow-2xl">
-                    <div className="p-4 border-b border-slate-700 bg-slate-900/50 backdrop-blur shrink-0 flex justify-between items-center">
-                        <h2 className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2"><Globe className="w-3 h-3" /> Live Feed</h2>
-                        <div className="flex items-center gap-1.5">
-                            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                            <span className="text-[9px] text-green-500 font-mono">LISTENING</span>
-                        </div>
+                {/* LEFT: Live Review Feed */}
+                <section
+                    className={`w-full lg:w-[280px] border-r border-hairline bg-panel/40 flex-col shrink-0 ${
+                        mobileTab === 'feed' ? 'flex' : 'hidden lg:flex'
+                    }`}
+                >
+                    <div className="px-4 py-3 border-b border-hairline flex justify-between items-center shrink-0">
+                        <h3 className="text-[10px] font-mono uppercase tracking-[0.2em] text-text-strong flex items-center gap-2">
+                            <Globe className="w-3.5 h-3.5" style={{ color: ACCENT }} />
+                            Live Stream
+                        </h3>
+                        <span className="text-[9px] font-mono text-emerald-500 flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                            LISTENING
+                        </span>
                     </div>
 
-                    <div className="flex-1 overflow-y-auto p-4 space-y-4 review-flow-scroll">
+                    <div className="flex-1 overflow-y-auto p-4 space-y-3">
                         {feed.length === 0 && (
-                            <div className="text-center text-slate-600 mt-10 italic text-xs">Waiting for new reviews...</div>
-                        )}
-                        {feed.map((review) => (
-                            <div key={review.id} className="bg-slate-800 p-3 rounded-lg border border-slate-700 shadow-lg review-enter mb-3">
-                                <div className="flex justify-between items-start mb-2">
-                                    <div className="flex items-center gap-2">
-                                        <div className={`w-6 h-6 rounded-full ${review.avatar} flex items-center justify-center text-[10px] text-white font-bold`}>{review.user[0]}</div>
-                                        <span className="text-xs font-bold text-slate-200">{review.user}</span>
-                                    </div>
-                                    <div className="flex text-xs stars gap-0.5">
-                                        {Array(review.rating).fill(0).map((_, i) => <Star key={i} className="w-3 h-3 fill-current" />)}
-                                    </div>
-                                </div>
-                                <p className="text-xs text-slate-400 leading-snug">{review.text}</p>
-                                <div className="mt-2 text-[10px] text-slate-500 flex justify-between">
-                                    <span>Google Maps</span>
-                                    <span>Just Now</span>
-                                </div>
+                            <div className="text-center text-text-mute mt-10 font-mono text-xs">
+                                Pick a review scenario above to inject an incoming webhook.
                             </div>
-                        ))}
+                        )}
+                        <AnimatePresence initial={false}>
+                            {feed.map((review) => (
+                                <motion.div
+                                    key={review.id}
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="bg-bg p-3.5 rounded-xl border border-hairline"
+                                >
+                                    <div className="flex justify-between items-start mb-2">
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-6 h-6 rounded-full border border-hairline bg-panel flex items-center justify-center text-[10px] font-mono text-text-strong">
+                                                {review.user[0]}
+                                            </div>
+                                            <span className="text-xs font-medium text-text-strong">{review.user}</span>
+                                        </div>
+                                        <div className="flex text-amber-500 gap-0.5">
+                                            {Array.from({ length: review.rating }).map((_, i) => (
+                                                <Star key={i} className="w-3 h-3 fill-current" />
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <p className="text-xs text-text leading-relaxed">{review.text}</p>
+                                    <div className="mt-2 pt-2 border-t border-hairline/60 text-[10px] font-mono text-text-mute flex justify-between">
+                                        <span>Google Maps</span>
+                                        <span>Just Now</span>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </AnimatePresence>
                     </div>
                 </section>
 
-                {/* CENTER: Agent Brain */}
-                <section className="flex-1 bg-[#0F172A] relative flex flex-col items-center pt-8 overflow-hidden">
-                    <div className="absolute top-0 left-1/2 w-0.5 h-full bg-slate-800 transform -translate-x-1/2 z-0"></div>
-
-                    <div className="absolute top-4 left-4 z-10">
-                        <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Agent Workflow</div>
-                        <div className="flex items-center gap-2 text-slate-300 text-sm font-mono">
-                            {agentStatus === 'Idle' ? <div className="w-2 h-2 bg-slate-500 rounded-full"></div> : <Loader2 className="w-3 h-3 animate-spin text-amber-400" />}
+                {/* CENTER: Agent Routing Graph */}
+                <section
+                    className={`flex-1 bg-bg flex-col overflow-hidden ${
+                        mobileTab === 'brain' ? 'flex' : 'hidden lg:flex'
+                    }`}
+                >
+                    <div className="px-4 py-3 border-b border-hairline bg-panel/60 flex items-center justify-between shrink-0">
+                        <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-text-mute">
+                            Routing Graph
+                        </span>
+                        <span className="text-[11px] font-mono text-text-strong flex items-center gap-1.5">
+                            {isRunning ? (
+                                <Loader2 className="w-3 h-3 animate-spin text-amber-500" />
+                            ) : (
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                            )}
                             {agentStatus}
-                        </div>
+                        </span>
                     </div>
 
-                    <div className="relative w-full max-w-lg flex flex-col gap-6 items-center z-10 px-4 h-full overflow-y-auto review-flow-scroll pb-20" ref={scrollRef}>
-
-                        {/* Node 1: Ingest */}
-                        <div className={`node-card w-full p-4 rounded-xl relative ${nodeStatus.ingest === 'active' ? 'node-active' : ''}`}>
-                            <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-slate-800 border border-slate-600 rounded-full flex items-center justify-center text-slate-400">
-                                <Inbox className="w-3 h-3" />
-                            </div>
-                            <div className="flex justify-between">
-                                <h3 className="text-sm font-bold text-white">Ingestion</h3>
-                                <span className="text-[9px] font-mono text-slate-500">Google API</span>
-                            </div>
-                            <p className="text-xs text-slate-400 mt-1">Reading text & star rating.</p>
-                        </div>
-
-                        {/* Node 2: Analysis */}
-                        <div className={`node-card w-full p-4 rounded-xl relative ${nodeStatus.analyze === 'active' ? 'node-active' : ''}`}>
-                            <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-slate-800 border border-slate-600 rounded-full flex items-center justify-center text-slate-400">
-                                <Brain className="w-3 h-3" />
-                            </div>
-                            <h3 className="text-sm font-bold text-white">Sentiment & NLP</h3>
-                            <div className={`mt-2 grid grid-cols-2 gap-2 text-[10px] font-mono transition-opacity ${analysisData ? 'opacity-100' : 'opacity-50'}`}>
-                                <div className={`bg-slate-900 p-1 rounded border border-slate-700 ${analysisData?.sentiment === 'POSITIVE' ? 'text-green-400' : analysisData?.sentiment === 'NEGATIVE' ? 'text-amber-400' : analysisData?.sentiment === 'CRITICAL' ? 'text-red-500 font-bold animate-pulse' : 'text-blue-400'}`}>
-                                    Sentiment: {analysisData?.sentiment || '--'}
+                    <div className="flex-1 overflow-y-auto p-5">
+                        <div className="max-w-lg mx-auto flex flex-col items-center gap-4">
+                            {/* Node 1: Ingest */}
+                            <div
+                                className={`w-full p-3.5 rounded-xl border transition-colors ${
+                                    nodeStatus.ingest === 'active'
+                                        ? 'border-amber-500/60 bg-amber-500/[0.08]'
+                                        : 'border-hairline bg-panel/50'
+                                }`}
+                            >
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-2.5">
+                                        <Inbox className="w-4 h-4 text-amber-500" />
+                                        <span className="text-xs font-medium text-text-strong">Ingestion Webhook</span>
+                                    </div>
+                                    <span className="text-[10px] font-mono text-text-mute">Google Places API</span>
                                 </div>
-                                <div className="bg-slate-900 p-1 rounded border border-slate-700 text-slate-300">
-                                    Topic: {analysisData?.topic || '--'}
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Node 3: Router */}
-                        <div className={`w-12 h-12 bg-slate-800 border border-slate-600 rotate-45 flex items-center justify-center z-10 shadow-xl transition-all duration-300 ${nodeStatus.router === 'active' ? 'scale-125 bg-slate-700 border-amber-500' : ''}`}>
-                            <GitBranch className={`-rotate-45 w-5 h-5 ${nodeStatus.router === 'active' ? 'text-amber-400' : 'text-slate-500'}`} />
-                        </div>
-
-                        {/* Node 4: Action */}
-                        <div className="flex gap-4 w-full">
-                            {/* Reply Action */}
-                            <div className={`node-card flex-1 p-4 rounded-xl relative transition-all ${nodeStatus.reply === 'active' ? 'node-active opacity-100' : 'opacity-40'}`}>
-                                <div className="flex items-center gap-2 mb-1">
-                                    <MessageCircle className="w-3 h-3 text-blue-400" />
-                                    <h3 className="text-xs font-bold text-white">Draft Reply</h3>
-                                </div>
-                                <div className="text-xs text-slate-400 italic bg-slate-900/50 p-2 rounded min-h-[60px] typing-cursor">
-                                    {replyText}
-                                </div>
+                                <p className="text-[11px] text-text-mute mt-1">Normalizing review text, star rating, and branch ID.</p>
                             </div>
 
-                            {/* Ops Action */}
-                            <div className={`node-card flex-1 p-4 rounded-xl relative transition-all ${nodeStatus.ops === 'active' ? 'node-active opacity-100' : nodeStatus.ops === 'success' ? 'node-success opacity-100' : nodeStatus.ops === 'danger' ? 'node-danger opacity-100' : 'opacity-40'}`}>
-                                <div className="flex items-center gap-2 mb-1">
-                                    <Settings className="w-3 h-3 text-amber-400" />
-                                    <h3 className="text-xs font-bold text-white">Internal Ops</h3>
+                            {/* Node 2: Sentiment */}
+                            <div
+                                className={`w-full p-3.5 rounded-xl border transition-colors ${
+                                    nodeStatus.analyze === 'active'
+                                        ? 'border-amber-500/60 bg-amber-500/[0.08]'
+                                        : 'border-hairline bg-panel/50'
+                                }`}
+                            >
+                                <div className="flex items-center gap-2.5 mb-2">
+                                    <Brain className="w-4 h-4 text-amber-500" />
+                                    <span className="text-xs font-medium text-text-strong">Sentiment &amp; Entity NLP</span>
                                 </div>
-                                <div className="text-xs text-slate-400 font-mono">
-                                    {opsText}
+                                <div className="grid grid-cols-2 gap-2 text-[11px] font-mono">
+                                    <div
+                                        className={`bg-bg px-2.5 py-1.5 rounded-lg border border-hairline ${
+                                            analysisData?.sentiment === 'POSITIVE'
+                                                ? 'text-emerald-500'
+                                                : analysisData?.sentiment === 'CRITICAL'
+                                                  ? 'text-rose-500 font-semibold'
+                                                  : analysisData?.sentiment === 'NEGATIVE'
+                                                    ? 'text-amber-500'
+                                                    : 'text-text-mute'
+                                        }`}
+                                    >
+                                        Sentiment: {analysisData?.sentiment || '--'}
+                                    </div>
+                                    <div className="bg-bg px-2.5 py-1.5 rounded-lg border border-hairline text-text">
+                                        Topic: {analysisData?.topic || '--'}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Node 3: Diamond Router */}
+                            <motion.div
+                                animate={nodeStatus.router === 'active' && !reduced ? { scale: 1.15 } : { scale: 1 }}
+                                className={`w-11 h-11 rotate-45 rounded-lg border flex items-center justify-center transition-colors ${
+                                    nodeStatus.router === 'active'
+                                        ? 'border-amber-500 bg-amber-500/15 text-amber-500'
+                                        : 'border-hairline-strong bg-panel text-text-mute'
+                                }`}
+                            >
+                                <GitBranch className="-rotate-45 w-4 h-4" />
+                            </motion.div>
+
+                            {/* Node 4: Parallel Branches */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
+                                <div
+                                    className={`p-3.5 rounded-xl border transition-all ${
+                                        nodeStatus.reply !== 'idle'
+                                            ? 'border-sky-500/45 bg-sky-500/[0.06] opacity-100'
+                                            : 'border-hairline bg-panel/40 opacity-55'
+                                    }`}
+                                >
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <MessageCircle className="w-3.5 h-3.5 text-sky-500" />
+                                        <span className="text-xs font-medium text-text-strong">Brand-Voice Reply</span>
+                                    </div>
+                                    <div className="text-[11px] text-text leading-relaxed bg-bg border border-hairline rounded-lg p-2.5 min-h-[76px]">
+                                        {replyText || <span className="text-text-mute font-mono">Waiting for route...</span>}
+                                        {nodeStatus.reply === 'active' && <span className="inline-block w-1.5 h-3 bg-amber-500 ml-0.5 animate-pulse" />}
+                                    </div>
+                                </div>
+
+                                <div
+                                    className={`p-3.5 rounded-xl border transition-all ${
+                                        nodeStatus.ops === 'success'
+                                            ? 'border-emerald-500/50 bg-emerald-500/[0.07] opacity-100'
+                                            : nodeStatus.ops === 'danger'
+                                              ? 'border-rose-500/50 bg-rose-500/[0.07] opacity-100'
+                                              : nodeStatus.ops === 'active'
+                                                ? 'border-amber-500/50 bg-amber-500/[0.07] opacity-100'
+                                                : 'border-hairline bg-panel/40 opacity-55'
+                                    }`}
+                                >
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <Settings className="w-3.5 h-3.5 text-amber-500" />
+                                        <span className="text-xs font-medium text-text-strong">Internal Ops Trigger</span>
+                                    </div>
+                                    <div className="text-[11px] font-mono text-text bg-bg border border-hairline rounded-lg p-2.5 min-h-[76px] flex items-center">
+                                        {opsText}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {/* RIGHT: Dashboard */}
-                <section className="w-[350px] border-l border-slate-700 bg-[#0B1120] flex flex-col relative z-20 shadow-2xl">
-                    <div className="p-4 border-b border-slate-700 bg-slate-900/50 backdrop-blur shrink-0 flex justify-between items-center">
-                        <h2 className="text-xs font-bold text-amber-400 uppercase tracking-wider">
-                            {role === 'store' ? 'Store Dashboard' : role === 'kitchen' ? 'Kitchen Display' : 'Market Intel'}
-                        </h2>
-                        <span className="text-[9px] bg-slate-700 px-2 py-0.5 rounded text-slate-300 uppercase">{role} VIEW</span>
+                {/* RIGHT: Role Dashboard */}
+                <section
+                    className={`w-full lg:w-[290px] border-l border-hairline bg-panel/40 flex-col shrink-0 ${
+                        mobileTab === 'dash' ? 'flex' : 'hidden lg:flex'
+                    }`}
+                >
+                    <div className="px-4 py-3 border-b border-hairline flex justify-between items-center shrink-0">
+                        <h3 className="text-[10px] font-mono uppercase tracking-[0.2em] text-text-strong flex items-center gap-2">
+                            <BarChart3 className="w-3.5 h-3.5" style={{ color: ACCENT }} />
+                            {role === 'store' ? 'Store Ops' : role === 'kitchen' ? 'Kitchen KDS' : 'Market Intel'}
+                        </h3>
+                        <span className="text-[9px] font-mono uppercase tracking-[0.16em] px-2 py-0.5 rounded border border-hairline text-text-mute">
+                            {role}
+                        </span>
                     </div>
 
-                    <div className="flex-1 overflow-y-auto p-6 space-y-6 review-flow-scroll">
-
-                        {/* STORE MGR VIEW */}
+                    <div className="flex-1 overflow-y-auto p-4 space-y-4">
                         {role === 'store' && (
-                            <div className="role-view">
-                                <div className="bg-slate-800 rounded-xl p-4 border border-slate-700 mb-6">
+                            <>
+                                <div className="bg-bg rounded-xl p-4 border border-hairline">
                                     <div className="flex justify-between items-center mb-3">
-                                        <span className="text-[10px] font-bold text-slate-400 uppercase">Staff Kudos</span>
-                                        <Trophy className="w-3 h-3 text-yellow-500" />
+                                        <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-text-mute">
+                                            Staff Kudos
+                                        </span>
+                                        <Trophy className="w-3.5 h-3.5 text-amber-500" />
                                     </div>
                                     <div className="space-y-2">
-                                        <div className={`flex items-center gap-3 p-2 rounded transition-colors ${sarahHighlight ? 'bg-green-900/30 border border-green-500/50' : 'bg-slate-700/50'}`}>
-                                            <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-[10px] font-bold text-white">1</div>
-                                            <div className="flex-1 text-xs text-white">Sarah M.</div>
-                                            <div className="text-[10px] font-bold text-green-400 flex items-center gap-1">
-                                                {sarahScore} <Star className="w-2 h-2 fill-current" />
-                                            </div>
+                                        <div
+                                            className={`flex items-center gap-2.5 p-2.5 rounded-lg border transition-colors ${
+                                                sarahHighlight
+                                                    ? 'bg-emerald-500/12 border-emerald-500/45'
+                                                    : 'bg-panel border-hairline'
+                                            }`}
+                                        >
+                                            <span className="w-5 h-5 rounded-full bg-text-strong text-bg flex items-center justify-center text-[10px] font-mono">
+                                                1
+                                            </span>
+                                            <span className="flex-1 text-xs font-medium text-text-strong">Sarah M.</span>
+                                            <span className="text-xs font-mono text-emerald-500 flex items-center gap-1">
+                                                {sarahScore} <Star className="w-3 h-3 fill-current" />
+                                            </span>
                                         </div>
-                                        <div className="flex items-center gap-3 p-2 bg-slate-700/50 rounded">
-                                            <div className="w-6 h-6 rounded-full bg-slate-600 flex items-center justify-center text-[10px] font-bold text-white">2</div>
-                                            <div className="flex-1 text-xs text-white">Mike T.</div>
-                                            <div className="text-[10px] font-bold text-slate-400 flex items-center gap-1">
-                                                28 <Star className="w-2 h-2 fill-current" />
-                                            </div>
+                                        <div className="flex items-center gap-2.5 p-2.5 rounded-lg border border-hairline bg-panel">
+                                            <span className="w-5 h-5 rounded-full border border-hairline flex items-center justify-center text-[10px] font-mono text-text-mute">
+                                                2
+                                            </span>
+                                            <span className="flex-1 text-xs text-text">Mike T.</span>
+                                            <span className="text-xs font-mono text-text-mute flex items-center gap-1">
+                                                28 <Star className="w-3 h-3 fill-current" />
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
-                                    <div className="text-[10px] font-bold text-slate-400 uppercase mb-3">Critical Tickets</div>
-                                    <div className="space-y-2">
-                                        {!criticalTicket && <div className="text-[10px] text-slate-600 italic text-center py-2">No active alerts.</div>}
-                                        {criticalTicket && (
-                                            <div className="bg-red-900/20 border border-red-500/50 p-2 rounded flex items-center justify-between text-[10px] text-red-200 animate-pulse">
-                                                <div className="flex items-center gap-2"><TriangleAlert className="w-3 h-3" /> <span>TICKET-992: Food Safety</span></div>
-                                                <span className="font-bold">P0</span>
-                                            </div>
-                                        )}
+                                <div className="bg-bg rounded-xl p-4 border border-hairline">
+                                    <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-text-mute mb-3">
+                                        Critical Tickets
                                     </div>
+                                    {!criticalTicket ? (
+                                        <div className="text-xs font-mono text-text-mute text-center py-2">
+                                            No active P0 alerts.
+                                        </div>
+                                    ) : (
+                                        <motion.div
+                                            initial={{ opacity: 0, scale: 0.96 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            className="bg-rose-500/12 border border-rose-500/45 p-2.5 rounded-lg flex items-center justify-between text-xs font-mono text-rose-500"
+                                        >
+                                            <span className="flex items-center gap-1.5">
+                                                <TriangleAlert className="w-3.5 h-3.5" /> TICKET-992
+                                            </span>
+                                            <span className="font-semibold">P0</span>
+                                        </motion.div>
+                                    )}
                                 </div>
-                            </div>
+                            </>
                         )}
 
-                        {/* KITCHEN VIEW */}
                         {role === 'kitchen' && (
-                            <div className="role-view">
-                                <div className="bg-slate-800 rounded-xl p-4 border border-slate-700 mb-4">
-                                    <div className="text-[10px] font-bold text-slate-400 uppercase mb-3">Dish Feedback (24h)</div>
-                                    <div className="space-y-3">
-                                        <div>
-                                            <div className="flex justify-between text-xs text-slate-200 mb-1">
-                                                <span>Truffle Pasta</span>
-                                                <span className={`font-bold ${pastaAlert ? 'text-red-500 animate-pulse' : 'text-green-400'}`}>{pastaScore}%</span>
-                                            </div>
-                                            <div className="w-full h-1.5 bg-slate-700 rounded-full overflow-hidden">
-                                                <div className={`h-full ${pastaAlert ? 'bg-red-500' : 'bg-green-500'}`} style={{ width: `${pastaScore}%` }}></div>
-                                            </div>
-                                            {pastaAlert && <div className="text-[9px] text-slate-500 mt-1">Alert: "Too Salty" (3 mentions)</div>}
-                                        </div>
-                                        <div>
-                                            <div className="flex justify-between text-xs text-slate-200 mb-1">
-                                                <span>Ribeye Steak</span>
-                                                <span className="text-green-400 font-bold">96%</span>
-                                            </div>
-                                            <div className="w-full h-1.5 bg-slate-700 rounded-full overflow-hidden">
-                                                <div className="h-full bg-green-500 w-[96%]"></div>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <div className="bg-bg rounded-xl p-4 border border-hairline space-y-4">
+                                <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-text-mute">
+                                    Dish Sentiment (24h)
                                 </div>
-                            </div>
-                        )}
-
-                        {/* HQ VIEW */}
-                        {role === 'hq' && (
-                            <div className="role-view">
-                                <div className="bg-slate-800 rounded-xl p-4 border border-slate-700 mb-6">
-                                    <div className="text-[10px] font-bold text-slate-400 uppercase mb-3">Competitor Mentions</div>
-                                    <div className={`flex items-center gap-3 mb-2 ${compIntel ? 'bg-red-900/20 p-1 rounded' : ''}`}>
-                                        <div className="w-8 h-1 bg-red-500 rounded"></div>
-                                        <div className="flex-1 text-xs text-slate-300">PizzaHut</div>
-                                        <div className={`text-xs font-mono text-slate-400 ${compIntel ? 'text-white font-bold' : ''}`}>{compIntel ? '15%' : '12%'}</div>
+                                <div>
+                                    <div className="flex justify-between text-xs mb-1.5">
+                                        <span className="text-text-strong">Truffle Pasta</span>
+                                        <span className={`font-mono ${pastaAlert ? 'text-rose-500 font-semibold' : 'text-emerald-500'}`}>
+                                            {pastaScore}%
+                                        </span>
                                     </div>
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-4 h-1 bg-blue-500 rounded"></div>
-                                        <div className="flex-1 text-xs text-slate-300">Domino's</div>
-                                        <div className="text-xs font-mono text-slate-400">5%</div>
+                                    <div className="w-full h-1.5 bg-panel-strong rounded-full overflow-hidden">
+                                        <motion.div
+                                            animate={{ width: `${pastaScore}%` }}
+                                            className={`h-full rounded-full ${pastaAlert ? 'bg-rose-500' : 'bg-emerald-500'}`}
+                                        />
                                     </div>
-                                    {compIntel && (
-                                        <div className="mt-4 p-2 bg-slate-700/50 rounded border border-slate-600 animate-pulse">
-                                            <div className="text-[9px] text-blue-300 font-bold uppercase mb-1">Intel Alert</div>
-                                            <div className="text-[10px] text-slate-300">Customers citing "Cheaper Lunch Deal" at PizzaHut.</div>
+                                    {pastaAlert && (
+                                        <div className="text-[10px] font-mono text-rose-500 mt-1.5">
+                                            Flagged: &quot;Too Salty&quot; (3x in 24h)
                                         </div>
                                     )}
                                 </div>
+                                <div>
+                                    <div className="flex justify-between text-xs mb-1.5">
+                                        <span className="text-text-strong">Ribeye Steak</span>
+                                        <span className="font-mono text-emerald-500">96%</span>
+                                    </div>
+                                    <div className="w-full h-1.5 bg-panel-strong rounded-full overflow-hidden">
+                                        <div className="h-full bg-emerald-500 w-[96%] rounded-full" />
+                                    </div>
+                                </div>
                             </div>
                         )}
 
+                        {role === 'hq' && (
+                            <div className="bg-bg rounded-xl p-4 border border-hairline space-y-3">
+                                <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-text-mute">
+                                    Competitor Mentions
+                                </div>
+                                <div
+                                    className={`flex items-center gap-3 p-2 rounded-lg border transition-colors ${
+                                        compIntel ? 'bg-rose-500/10 border-rose-500/40' : 'border-transparent'
+                                    }`}
+                                >
+                                    <div className="w-6 h-1.5 bg-rose-500 rounded-full" />
+                                    <span className="flex-1 text-xs text-text-strong">PizzaHut</span>
+                                    <span className="text-xs font-mono text-text-strong">{compIntel ? '15%' : '12%'}</span>
+                                </div>
+                                <div className="flex items-center gap-3 p-2">
+                                    <div className="w-3.5 h-1.5 bg-sky-500 rounded-full" />
+                                    <span className="flex-1 text-xs text-text-mute">Domino&apos;s</span>
+                                    <span className="text-xs font-mono text-text-mute">5%</span>
+                                </div>
+                                {compIntel && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 6 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        className="p-3 rounded-lg bg-panel border border-hairline-strong"
+                                    >
+                                        <div className="text-[10px] font-mono uppercase tracking-[0.16em] text-amber-500 mb-1">
+                                            Intel Signal
+                                        </div>
+                                        <p className="text-xs text-text leading-relaxed">
+                                            Cluster of diners citing cheaper lunch combo down the street.
+                                        </p>
+                                    </motion.div>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </section>
             </main>
+
+            {/* Mobile Nav */}
+            <nav className="lg:hidden h-12 bg-panel border-t border-hairline flex justify-around items-center shrink-0">
+                {(
+                    [
+                        { id: 'feed', label: 'Feed', Icon: Globe },
+                        { id: 'brain', label: 'Router', Icon: GitBranch },
+                        { id: 'dash', label: 'Ops', Icon: BarChart3 },
+                    ] as const
+                ).map(({ id, label, Icon }) => (
+                    <button
+                        key={id}
+                        type="button"
+                        onClick={() => setMobileTab(id)}
+                        className={`flex-1 h-full flex flex-col items-center justify-center text-[10px] font-mono uppercase tracking-[0.14em] border-t-2 ${
+                            mobileTab === id ? 'border-amber-500 text-text-strong' : 'border-transparent text-text-mute'
+                        }`}
+                    >
+                        <Icon className="w-3.5 h-3.5 mb-0.5" />
+                        {label}
+                    </button>
+                ))}
+            </nav>
         </div>
     );
 };
