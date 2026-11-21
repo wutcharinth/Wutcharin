@@ -30,10 +30,11 @@ export function SimFrame({
     running,
     compact,
     pose,
+    sway,
     label,
     hud,
     children,
-}: SimProps & { pose: CameraPose; label: string; hud: ReactNode; children: ReactNode }) {
+}: SimProps & { pose: CameraPose; sway?: number; label: string; hud: ReactNode; children: ReactNode }) {
     const light = useTheme() === 'light';
     const palette = light ? LIGHT : DARK;
     return (
@@ -52,7 +53,7 @@ export function SimFrame({
                 >
                     {/* The context crosses into the canvas reconciler explicitly. */}
                     <PaletteContext.Provider value={palette}>
-                        <Rig pose={pose} sway={compact ? 0.3 : 0.8} />
+                        <Rig pose={pose} sway={sway ?? (compact ? 0.3 : 0.8)} />
                         <ambientLight intensity={light ? 1.4 : 0.7} />
                         <directionalLight position={[4, 9, 6]} intensity={light ? 1.2 : 1.6} />
                         <directionalLight position={[-6, 4, -4]} intensity={0.35} />
