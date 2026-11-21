@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Edges, Html } from '@react-three/drei';
 import * as THREE from 'three';
-import { ease, usePalette, type SimProps } from './kit';
+import { ease, useBeamTexture, useCanvasTexture, usePalette, useSurfaceMaps, type SimProps } from './kit';
 import { HudButton, HudLabel, SimFrame } from './frame';
 
 /**
@@ -141,7 +141,7 @@ function Hall({ seats, votes, voteStart, phase, correct }: { seats: THREE.Vector
             // The phone lights as its owner taps an answer.
             if (mesh) {
                 const glow = since > 0 && since < 0.6 ? 1 - since / 0.6 : 0;
-                tmp.c.copy(tmp.dim).lerp(tmp.lit, phase === 'ask' ? 0.08 + 0.12 * Math.max(0, Math.sin(now * 1.5 + i * 1.7)) : glow);
+                tmp.c.copy(tmp.dim).lerp(tmp.lit, phase === 'ask' ? 0.2 + 0.25 * Math.max(0, Math.sin(now * 1.5 + i * 1.7)) : glow);
                 mesh.setColorAt(i, tmp.c);
             }
             if (fly) {
@@ -183,7 +183,7 @@ function Hall({ seats, votes, voteStart, phase, correct }: { seats: THREE.Vector
             </instancedMesh>
             <instancedMesh ref={heads} args={[undefined, undefined, seats.length]} frustumCulled={false}>
                 <sphereGeometry args={[0.1, 10, 10]} />
-                <meshStandardMaterial color={p.faint} />
+                <meshStandardMaterial color={p.faint} roughness={0.52} metalness={0.22} />
             </instancedMesh>
             <instancedMesh ref={flyers} args={[undefined, undefined, seats.length]} frustumCulled={false}>
                 <boxGeometry args={[0.06, 0.06, 0.06]} />
@@ -191,17 +191,26 @@ function Hall({ seats, votes, voteStart, phase, correct }: { seats: THREE.Vector
             </instancedMesh>
             {COL_X.map((x, k) => (
                 <group key={k}>
-                    <mesh ref={(m) => (cols.current[k] = m)} position={[x, 0, COL_Z]}>
-                        <boxGeometry args={[1.0, 1, 0.6]} />
-                        <meshStandardMaterial ref={(m) => (colMats.current[k] = m)} color={p.soft} emissive={p.ink} emissiveIntensity={0} />
+                    {/* Brushed metallic result monolith with cast shadow */}
+                    <mesh ref={(m) => (cols.current[k] = m)} position={[x, 0, COL_Z]} castShadow receiveShadow>
+                        <boxGeometry args={[1.02, 1, 0.62]} />
+                        <meshStandardMaterial
+                            ref={(m) => (colMats.current[k] = m)}
+                            color={p.soft}
+                            roughness={0.28}
+                            metalness={0.35}
+                            emissive={p.ink}
+                            emissiveIntensity={0}
+                        />
                         <Edges color={p.ink} />
                     </mesh>
-                    <mesh position={[x, 0.005, COL_Z]}>
-                        <boxGeometry args={[1.04, 0.01, 0.64]} />
-                        <meshStandardMaterial color={p.fill} />
-                        <Edges color={p.mid} />
+                    {/* Grounded architectural plinth with subtle ring indicator */}
+                    <mesh position={[x, 0.02, COL_Z]} receiveShadow castShadow>
+                        <boxGeometry args={[1.14, 0.04, 0.74]} />
+                        <meshStandardMaterial color={p.fill} roughness={0.4} metalness={0.4} />
+                        <Edges color={phase === 'reveal' && k === correct ? p.ink : p.mid} />
                     </mesh>
-                    <Html position={[x, 0, COL_Z + 0.62]} center pointerEvents="none" zIndexRange={[10, 0]}>
+                    <Html position={[x, 0.04, COL_Z + 0.66]} center pointerEvents="none" zIndexRange={[10, 0]}>
                         <span className={`font-mono text-[11px] font-semibold ${phase === 'reveal' && k === correct ? 'text-text-strong' : 'text-text-mute'}`}>{LETTERS[k]}</span>
                     </Html>
                 </group>
@@ -210,28 +219,124 @@ function Hall({ seats, votes, voteStart, phase, correct }: { seats: THREE.Vector
     );
 }
 
-function Room() {
+function Room({ rows }: { rows: number }) {
     const p = usePalette();
+    const hallFloor = useSurfaceMaps('hall', p.light, [4, 3]);
+    const beamTex = useBeamTexture();
+    const risers = useMemo(() => {
+        const span = 1.32;
+        const startPhi = -Math.PI / 2 - span;
+        const endPhi = -Math.PI / 2 + span;
+        return Array.from({ length: rows }, (_, r) => {
+            const inner = 3.74 + r * 0.52;
+            const outer = inner + 0.52;
+            const h = 0.18 + r * 0.24;
+            const shape = new THREE.Shape();
+            shape.absarc(0, 0, outer, startPhi, endPhi, false);
+            shape.absarc(0, 0, inner, endPhi, startPhi, true);
+            shape.closePath();
+            return new THREE.ExtrudeGeometry(shape, { depth: h, bevelEnabled: false, curveSegments: 48 });
+        });
+    }, [rows]);
+
+    useEffect(() => () => risers.forEach((g) => g.dispose()), [risers]);
+
+    const screenTex = useCanvasTexture(
+        512,
+        216,
+        (c) => {
+            c.fillStyle = p.light ? '#101014' : '#0b0b0f';
+            c.fillRect(0, 0, 512, 216);
+            // Subtle LED scanlines
+            c.fillStyle = 'rgba(255,255,255,0.035)';
+            for (let y = 0; y < 216; y += 4) c.fillRect(0, y, 512, 1);
+            // Crisp top telemetry strip
+            c.fillStyle = 'rgba(255,255,255,0.5)';
+            c.font = '600 13px ui-monospace, Menlo, monospace';
+            c.textAlign = 'left';
+            c.fillText('● LIVE SESSION', 28, 34);
+            c.textAlign = 'right';
+            c.fillText('CODE 4821', 484, 34);
+            // Center brand mark
+            c.fillStyle = '#fafafa';
+            c.textAlign = 'center';
+            c.font = '600 54px ui-sans-serif, system-ui, sans-serif';
+            c.fillText('klikr', 256, 118);
+            c.fillStyle = 'rgba(255,255,255,0.58)';
+            c.font = '500 14px ui-monospace, Menlo, monospace';
+            c.fillText('JOIN AT KLIKRAPP.COM · REAL-TIME SCORING', 256, 162);
+            // Bottom accent rule
+            c.fillStyle = 'rgba(255,255,255,0.22)';
+            c.fillRect(140, 184, 232, 2);
+        },
+        [p.light],
+    );
+
     return (
-        <>
-            <mesh position={[0, -0.05, 0.6]}>
-                <boxGeometry args={[12, 0.1, 9]} />
-                <meshStandardMaterial color={p.fill} />
+        <group>
+            {/* Acoustic auditorium base floor */}
+            <mesh position={[0, -0.06, 0.8]} receiveShadow>
+                <boxGeometry args={[14.5, 0.12, 10.8]} />
+                <meshStandardMaterial map={hallFloor.map} roughnessMap={hallFloor.roughnessMap} roughness={0.85} metalness={0.08} />
                 <Edges color={p.faint} />
             </mesh>
-            {/* The screen at the front of the hall. */}
-            <mesh position={[0, 2.35, -3.25]}>
-                <boxGeometry args={[6.2, 2.6, 0.06]} />
-                <meshStandardMaterial color={p.fill} />
-                <Edges color={p.ink} />
+
+            {/* Stepped curved amphitheatre seating risers matching the audience rows */}
+            <group position={[0, 0, -2.9]}>
+                {risers.map((geo, r) => (
+                    <mesh key={r} geometry={geo} rotation={[-Math.PI / 2, 0, 0]} receiveShadow castShadow>
+                        <meshStandardMaterial color={p.fill} roughness={0.78} metalness={0.12} />
+                        <Edges color={p.faint} threshold={25} />
+                    </mesh>
+                ))}
+            </group>
+
+            {/* Raised stage apron at front of hall */}
+            <mesh position={[0, 0.05, -2.3]} receiveShadow castShadow>
+                <boxGeometry args={[7.4, 0.1, 2.4]} />
+                <meshStandardMaterial color={p.fill} roughness={0.48} metalness={0.28} />
+                <Edges color={p.mid} transparent opacity={0.55} />
             </mesh>
-            <Html position={[0, 2.35, -3.2]} center pointerEvents="none" zIndexRange={[10, 0]}>
-                <div className="whitespace-nowrap text-center">
-                    <p className="font-display text-lg font-semibold tracking-[-0.01em] text-text-strong">klikr</p>
-                    <p className="mt-1 font-mono text-[9px] uppercase tracking-[0.2em] text-text-mute">Join at klikrapp.com · code 4821</p>
-                </div>
-            </Html>
-        </>
+
+            {/* Cinema LED stage screen with bezel + overhead truss rig */}
+            <group position={[0, 2.38, -3.28]}>
+                <mesh castShadow receiveShadow>
+                    <boxGeometry args={[6.48, 2.78, 0.1]} />
+                    <meshStandardMaterial color={p.fill} roughness={0.32} metalness={0.5} />
+                    <Edges color={p.ink} transparent opacity={0.8} />
+                </mesh>
+                <mesh position={[0, 0, 0.056]}>
+                    <planeGeometry args={[6.24, 2.56]} />
+                    <meshBasicMaterial map={screenTex} toneMapped={false} />
+                </mesh>
+            </group>
+
+            {/* Overhead stage lighting truss + soft gradient volumetric beams */}
+            <mesh position={[0, 4.18, -1.82]} castShadow>
+                <boxGeometry args={[7.2, 0.08, 0.08]} />
+                <meshStandardMaterial color={p.mid} roughness={0.35} metalness={0.6} />
+            </mesh>
+            {[-2.4, -0.8, 0.8, 2.4].map((lx) => (
+                <group key={lx} position={[lx, 4.08, -1.82]}>
+                    <mesh>
+                        <cylinderGeometry args={[0.06, 0.09, 0.14, 12]} />
+                        <meshStandardMaterial color={p.fill} roughness={0.3} metalness={0.6} />
+                    </mesh>
+                    <mesh position={[0, -1.85, 0.12]} rotation={[0.06, 0, 0]}>
+                        <coneGeometry args={[0.78, 3.7, 24, 1, true]} />
+                        <meshBasicMaterial
+                            color={p.ink}
+                            alphaMap={beamTex}
+                            transparent
+                            opacity={p.light ? 0.05 : 0.11}
+                            side={THREE.DoubleSide}
+                            depthWrite={false}
+                            toneMapped={false}
+                        />
+                    </mesh>
+                </group>
+            ))}
+        </group>
     );
 }
 
@@ -406,7 +511,7 @@ export default function KlikrSim({ running, compact }: SimProps) {
             hud={hud}
         >
             <VoteClock phase={phase} onStart={setVoteStart} />
-            <Room />
+            <Room rows={compact ? 6 : 8} />
             <Hall key={qi} seats={seats} votes={votes} voteStart={phase === 'ask' ? null : voteStart} phase={phase} correct={q.correct} />
         </SimFrame>
     );

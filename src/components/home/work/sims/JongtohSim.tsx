@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Edges, Html, Line } from '@react-three/drei';
 import * as THREE from 'three';
-import { arc, useCanvasTexture, usePalette, type SimProps } from './kit';
+import { arc, useBeamTexture, useCanvasTexture, usePalette, useSurfaceMaps, type SimProps } from './kit';
 import { HudButton, HudLabel, SimFrame } from './frame';
 
 /**
@@ -61,45 +61,100 @@ const MENU = new THREE.Vector3(0.0, 1.35, -3.2);
 
 function Shell() {
     const p = usePalette();
+    const floor = useSurfaceMaps('terrazzo', p.light, [4, 3]);
+    const bottles = [-3.9, -3.55, -3.2, -2.85, -2.5, -2.15, -1.8, -1.45];
     return (
         <group>
-            <mesh position={[0, -0.05, 0]}>
-                <boxGeometry args={[9.4, 0.1, 7.2]} />
-                <meshStandardMaterial color={p.fill} />
+            {/* Architectural venue floor catching soft specular & candle reflections */}
+            <mesh position={[0, -0.06, 0]} receiveShadow>
+                <boxGeometry args={[9.6, 0.12, 7.4]} />
+                <meshStandardMaterial map={floor.map} roughnessMap={floor.roughnessMap} roughness={0.68} metalness={0.1} />
                 <Edges color={p.faint} />
             </mesh>
-            {/* Back and left walls, low enough to see over; windows on the right. */}
-            <mesh position={[0, 0.5, -3.55]}>
-                <boxGeometry args={[9.4, 1.0, 0.1]} />
-                <meshStandardMaterial color={p.fill} />
-                <Edges color={p.mid} />
+            {/* Back and left architectural walls */}
+            <mesh position={[0, 0.65, -3.65]} castShadow receiveShadow>
+                <boxGeometry args={[9.6, 1.3, 0.12]} />
+                <meshStandardMaterial color={p.fill} roughness={0.85} metalness={0.05} />
+                <Edges color={p.mid} transparent opacity={0.55} />
             </mesh>
-            <mesh position={[-4.65, 0.5, 0]}>
-                <boxGeometry args={[0.1, 1.0, 7.2]} />
-                <meshStandardMaterial color={p.fill} />
-                <Edges color={p.mid} />
+            <mesh position={[-4.75, 0.65, 0]} castShadow receiveShadow>
+                <boxGeometry args={[0.12, 1.3, 7.4]} />
+                <meshStandardMaterial color={p.fill} roughness={0.85} metalness={0.05} />
+                <Edges color={p.mid} transparent opacity={0.55} />
             </mesh>
+            {/* Tall right-side street windows */}
             {[-1.4, 0.6].map((z) => (
-                <mesh key={z} position={[4.7, 0.9, z]}>
-                    <boxGeometry args={[0.04, 1.0, 1.4]} />
-                    <meshBasicMaterial color={p.faint} transparent opacity={0.25} />
+                <mesh key={z} position={[4.78, 0.95, z]}>
+                    <boxGeometry args={[0.04, 1.15, 1.45]} />
+                    <meshStandardMaterial color={p.soft} roughness={0.12} metalness={0.1} transparent opacity={0.18} />
                     <Edges color={p.soft} />
                 </mesh>
             ))}
-            {/* The bar, with stools. */}
-            <mesh position={[-2.6, 0.45, -2.45]}>
-                <boxGeometry args={[3.2, 0.9, 0.6]} />
-                <meshStandardMaterial color={p.fill} />
-                <Edges color={p.ink} transparent opacity={0.6} />
-            </mesh>
-            {[-3.8, -3.0, -2.2, -1.4].map((x) => (
-                <mesh key={x} position={[x, 0.32, -1.85]}>
-                    <cylinderGeometry args={[0.14, 0.14, 0.64, 16]} />
-                    <meshStandardMaterial color={p.fill} />
-                    <Edges color={p.mid} threshold={30} />
+
+            {/* Backlit bar shelving + silhouette bottles */}
+            <group position={[-2.65, 0, -3.52]}>
+                <mesh position={[0, 0.72, 0.08]} castShadow>
+                    <boxGeometry args={[3.1, 0.04, 0.2]} />
+                    <meshStandardMaterial color={p.fill} roughness={0.35} metalness={0.3} />
+                    <Edges color={p.mid} />
                 </mesh>
+                <mesh position={[0, 0.75, 0.02]}>
+                    <boxGeometry args={[2.95, 0.02, 0.02]} />
+                    <meshBasicMaterial color={p.ink} transparent opacity={0.6} toneMapped={false} />
+                </mesh>
+                {bottles.map((x, idx) => (
+                    <mesh key={x} position={[x + 2.65, 0.89 + (idx % 3) * 0.02, 0.09]} castShadow>
+                        <cylinderGeometry args={[0.032, 0.042, 0.28 + (idx % 3) * 0.04, 10]} />
+                        <meshStandardMaterial color={p.soft} roughness={0.2} metalness={0.25} transparent opacity={0.78} />
+                    </mesh>
+                ))}
+            </group>
+
+            {/* The bar counter with glossy top slab, pendant shades & stools */}
+            <group position={[-2.6, 0, -2.45]}>
+                <mesh position={[0, 0.44, 0]} castShadow receiveShadow>
+                    <boxGeometry args={[3.2, 0.88, 0.56]} />
+                    <meshStandardMaterial color={p.fill} roughness={0.6} metalness={0.18} />
+                    <Edges color={p.ink} transparent opacity={0.5} />
+                </mesh>
+                <mesh position={[0, 0.9, 0.04]} castShadow receiveShadow>
+                    <boxGeometry args={[3.32, 0.06, 0.68]} />
+                    <meshStandardMaterial color={p.light ? '#e4e4e2' : '#202026'} roughness={0.25} metalness={0.15} />
+                    <Edges color={p.ink} transparent opacity={0.7} />
+                </mesh>
+                {/* Three minimalist pendant lamps over the bar */}
+                {[-1.0, 0, 1.0].map((lx) => (
+                    <group key={lx} position={[lx, 1.72, 0]}>
+                        <mesh position={[0, 0.25, 0]}>
+                            <cylinderGeometry args={[0.008, 0.008, 0.5, 6]} />
+                            <meshBasicMaterial color={p.mid} />
+                        </mesh>
+                        <mesh castShadow>
+                            <coneGeometry args={[0.14, 0.12, 16, 1, true]} />
+                            <meshStandardMaterial color={p.fill} roughness={0.3} metalness={0.5} side={THREE.DoubleSide} />
+                            <Edges color={p.soft} />
+                        </mesh>
+                        <mesh position={[0, -0.04, 0]}>
+                            <sphereGeometry args={[0.035, 10, 10]} />
+                            <meshBasicMaterial color={p.ink} toneMapped={false} />
+                        </mesh>
+                    </group>
+                ))}
+            </group>
+            {[-3.8, -3.0, -2.2, -1.4].map((x) => (
+                <group key={x} position={[x, 0, -1.82]}>
+                    <mesh position={[0, 0.31, 0]} castShadow>
+                        <cylinderGeometry args={[0.03, 0.04, 0.62, 10]} />
+                        <meshStandardMaterial color={p.mid} roughness={0.35} metalness={0.5} />
+                    </mesh>
+                    <mesh position={[0, 0.63, 0]} castShadow receiveShadow>
+                        <cylinderGeometry args={[0.16, 0.14, 0.06, 18]} />
+                        <meshStandardMaterial color={p.fill} roughness={0.45} metalness={0.2} />
+                        <Edges color={p.soft} threshold={30} />
+                    </mesh>
+                </group>
             ))}
-            <Html position={[-2.6, 1.05, -2.45]} center pointerEvents="none" zIndexRange={[10, 0]}>
+            <Html position={[-2.6, 0.44, -2.04]} center pointerEvents="none" zIndexRange={[10, 0]}>
                 <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-text-mute">Bar</span>
             </Html>
         </group>
@@ -110,48 +165,86 @@ function Tables({ booked }: { booked: boolean }) {
     const p = usePalette();
     const ring = useRef<THREE.MeshBasicMaterial>(null);
     const candles = useRef<Array<THREE.MeshBasicMaterial | null>>([]);
+    const pools = useRef<Array<THREE.MeshBasicMaterial | null>>([]);
     useFrame((state) => {
         const t = state.clock.elapsedTime;
         if (ring.current) ring.current.opacity = booked ? 0.55 + 0.35 * Math.sin(t * 3) : 0;
-        candles.current.forEach((m, i) => m && (m.opacity = 0.6 + 0.4 * Math.sin(t * 7 + i * 2.1) * Math.sin(t * 3.3 + i)));
+        candles.current.forEach((m, i) => {
+            const flicker = 0.65 + 0.35 * Math.sin(t * 6.5 + i * 2.1) * Math.sin(t * 3.1 + i);
+            if (m) m.opacity = flicker;
+            const pl = pools.current[i];
+            if (pl) pl.opacity = (p.light ? 0.08 : 0.16) * flicker;
+        });
     });
     return (
         <>
             {TABLES.map(([x, z], i) => (
                 <group key={i} position={[x, 0, z]}>
-                    <mesh position={[0, 0.55, 0]}>
-                        <cylinderGeometry args={[0.42, 0.42, 0.05, 32]} />
-                        <meshStandardMaterial color={i === BOOKED && booked ? p.soft : p.fill} />
-                        <Edges color={p.ink} transparent opacity={i === BOOKED && booked ? 1 : 0.5} threshold={30} />
+                    {/* Grounded cast-iron pedestal foot + column + glazed tabletop */}
+                    <mesh position={[0, 0.02, 0]} receiveShadow>
+                        <cylinderGeometry args={[0.2, 0.24, 0.04, 20]} />
+                        <meshStandardMaterial color={p.fill} roughness={0.4} metalness={0.5} />
                     </mesh>
-                    <mesh position={[0, 0.27, 0]}>
-                        <cylinderGeometry args={[0.04, 0.06, 0.54, 8]} />
-                        <meshStandardMaterial color={p.mid} />
+                    <mesh position={[0, 0.29, 0]} castShadow>
+                        <cylinderGeometry args={[0.036, 0.05, 0.54, 12]} />
+                        <meshStandardMaterial color={p.mid} roughness={0.35} metalness={0.55} />
                     </mesh>
+                    <mesh position={[0, 0.56, 0]} castShadow receiveShadow>
+                        <cylinderGeometry args={[0.44, 0.42, 0.05, 36]} />
+                        <meshStandardMaterial
+                            color={i === BOOKED && booked ? p.soft : p.fill}
+                            roughness={0.28}
+                            metalness={0.14}
+                        />
+                        <Edges color={p.ink} transparent opacity={i === BOOKED && booked ? 1 : 0.52} threshold={30} />
+                    </mesh>
+                    {/* Soft candle glow pool on the tabletop */}
+                    <mesh position={[0, 0.59, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+                        <circleGeometry args={[0.32, 24]} />
+                        <meshBasicMaterial ref={(m) => (pools.current[i] = m)} color={p.ink} transparent opacity={0.14} depthWrite={false} />
+                    </mesh>
+
+                    {/* Architectural bistro chairs (seat + slim backrest) */}
                     {[0, 1, 2, 3].map((k) => {
                         const a = (k / 4) * Math.PI * 2 + Math.PI / 4;
                         return (
-                            <group key={k} position={[Math.cos(a) * 0.62, 0, Math.sin(a) * 0.62]}>
-                                <mesh position={[0, 0.2, 0]}>
-                                    <boxGeometry args={[0.24, 0.4, 0.24]} />
-                                    <meshStandardMaterial color={p.fill} />
+                            <group key={k} position={[Math.cos(a) * 0.64, 0, Math.sin(a) * 0.64]} rotation={[0, -a + Math.PI / 2, 0]}>
+                                <mesh position={[0, 0.28, 0]} castShadow receiveShadow>
+                                    <cylinderGeometry args={[0.14, 0.13, 0.04, 16]} />
+                                    <meshStandardMaterial color={p.fill} roughness={0.5} metalness={0.15} />
+                                    <Edges color={p.mid} threshold={30} />
+                                </mesh>
+                                <mesh position={[0, 0.14, 0]} castShadow>
+                                    <cylinderGeometry args={[0.02, 0.03, 0.28, 8]} />
+                                    <meshStandardMaterial color={p.mid} roughness={0.4} metalness={0.45} />
+                                </mesh>
+                                {/* Chair backrest */}
+                                <mesh position={[0, 0.44, 0.12]} castShadow>
+                                    <boxGeometry args={[0.24, 0.24, 0.032]} />
+                                    <meshStandardMaterial color={p.fill} roughness={0.45} metalness={0.2} />
                                     <Edges color={p.mid} />
                                 </mesh>
                                 {SEATED.includes(i) && k % 2 === 0 && (
-                                    <mesh position={[0, 0.62, 0]}>
-                                        <capsuleGeometry args={[0.1, 0.22, 4, 8]} />
-                                        <meshStandardMaterial color={p.mid} />
+                                    <mesh position={[0, 0.54, -0.02]} castShadow>
+                                        <capsuleGeometry args={[0.095, 0.22, 6, 12]} />
+                                        <meshStandardMaterial color={p.mid} roughness={0.5} metalness={0.1} />
                                     </mesh>
                                 )}
                             </group>
                         );
                     })}
-                    <mesh position={[0, 0.62, 0]}>
-                        <sphereGeometry args={[0.035, 8, 8]} />
+
+                    {/* Table candle + subtle holder */}
+                    <mesh position={[0, 0.61, 0]}>
+                        <cylinderGeometry args={[0.03, 0.032, 0.05, 10]} />
+                        <meshStandardMaterial color={p.soft} roughness={0.3} />
+                    </mesh>
+                    <mesh position={[0, 0.655, 0]}>
+                        <sphereGeometry args={[0.032, 10, 10]} />
                         <meshBasicMaterial ref={(m) => (candles.current[i] = m)} color={p.ink} transparent toneMapped={false} />
                     </mesh>
                     {i === BOOKED && (
-                        <mesh position={[0, 0.02, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+                        <mesh position={[0, 0.015, 0]} rotation={[-Math.PI / 2, 0, 0]}>
                             <ringGeometry args={[0.92, 1.0, 48]} />
                             <meshBasicMaterial ref={ring} color={p.ink} transparent opacity={0} toneMapped={false} />
                         </mesh>
@@ -160,7 +253,7 @@ function Tables({ booked }: { booked: boolean }) {
                         <span className={`font-mono text-[9px] tracking-[0.16em] ${i === BOOKED && booked ? 'text-text-strong' : 'text-text-mute'}`}>T{i + 1}</span>
                     </Html>
                     {i === BOOKED && booked && (
-                        <Html position={[0, 1.15, 0]} center pointerEvents="none" zIndexRange={[10, 0]}>
+                        <Html position={[0, 1.18, 0]} center pointerEvents="none" zIndexRange={[10, 0]}>
                             <span className="whitespace-nowrap rounded-full bg-text-strong px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.16em] text-bg">
                                 Booked · 20:00 · 4
                             </span>
@@ -174,41 +267,60 @@ function Tables({ booked }: { booked: boolean }) {
 
 function Stage({ live }: { live: boolean }) {
     const p = usePalette();
+    const beamTex = useBeamTexture();
     const cone = useRef<THREE.MeshBasicMaterial>(null);
     const floor = useRef<THREE.MeshBasicMaterial>(null);
     useFrame((state, dt) => {
         const goal = live ? 1 : 0;
-        if (cone.current) cone.current.opacity = THREE.MathUtils.damp(cone.current.opacity, goal * (0.16 + 0.03 * Math.sin(state.clock.elapsedTime * 2)), 4, dt);
-        if (floor.current) floor.current.opacity = THREE.MathUtils.damp(floor.current.opacity, goal * 0.5, 4, dt);
+        if (cone.current) cone.current.opacity = THREE.MathUtils.damp(cone.current.opacity, goal * (0.28 + 0.05 * Math.sin(state.clock.elapsedTime * 2)), 4, dt);
+        if (floor.current) floor.current.opacity = THREE.MathUtils.damp(floor.current.opacity, goal * 0.42, 4, dt);
     });
     return (
         <group position={STAGE}>
-            <mesh position={[0, 0.12, 0]}>
-                <boxGeometry args={[2.8, 0.24, 1.7]} />
-                <meshStandardMaterial color={p.fill} />
+            {/* Two-tier acoustic stage plinth */}
+            <mesh position={[0, 0.12, 0]} castShadow receiveShadow>
+                <boxGeometry args={[2.9, 0.24, 1.75]} />
+                <meshStandardMaterial color={p.fill} roughness={0.55} metalness={0.2} />
                 <Edges color={p.ink} transparent opacity={0.7} />
             </mesh>
-            <mesh position={[0, 0.65, 0.1]}>
-                <cylinderGeometry args={[0.015, 0.015, 0.85, 6]} />
-                <meshStandardMaterial color={p.soft} />
+            {/* Stage front edge light bar */}
+            <mesh position={[0, 0.245, 0.86]}>
+                <boxGeometry args={[2.6, 0.015, 0.02]} />
+                <meshBasicMaterial color={p.ink} transparent opacity={live ? 0.9 : 0.25} toneMapped={false} />
             </mesh>
-            {[-1.15, 1.15].map((x) => (
-                <mesh key={x} position={[x, 0.55, -0.5]}>
-                    <boxGeometry args={[0.36, 0.62, 0.32]} />
-                    <meshStandardMaterial color={p.fill} />
-                    <Edges color={p.mid} />
-                </mesh>
+            {/* Mic stand + stool */}
+            <mesh position={[0, 0.66, 0.1]} castShadow>
+                <cylinderGeometry args={[0.014, 0.014, 0.86, 8]} />
+                <meshStandardMaterial color={p.soft} roughness={0.3} metalness={0.6} />
+            </mesh>
+            <mesh position={[0, 0.25, 0.1]}>
+                <cylinderGeometry args={[0.14, 0.15, 0.02, 16]} />
+                <meshStandardMaterial color={p.mid} roughness={0.4} metalness={0.5} />
+            </mesh>
+            {/* Dual stage speakers with driver detail */}
+            {[-1.18, 1.18].map((x) => (
+                <group key={x} position={[x, 0.56, -0.48]}>
+                    <mesh castShadow receiveShadow>
+                        <boxGeometry args={[0.38, 0.64, 0.34]} />
+                        <meshStandardMaterial color={p.fill} roughness={0.55} metalness={0.25} />
+                        <Edges color={p.mid} />
+                    </mesh>
+                    <mesh position={[0, -0.08, 0.175]} rotation={[Math.PI / 2, 0, 0]}>
+                        <cylinderGeometry args={[0.11, 0.11, 0.01, 18]} />
+                        <meshStandardMaterial color={p.mid} roughness={0.4} metalness={0.3} />
+                    </mesh>
+                </group>
             ))}
-            {/* The spotlight: a cone of light that is only there when the music is on. */}
+            {/* Volumetric spotlight cone + floor pool */}
             <mesh position={[0, 1.75, 0.1]}>
-                <coneGeometry args={[0.95, 3.0, 32, 1, true]} />
-                <meshBasicMaterial ref={cone} color={p.ink} transparent opacity={0} side={THREE.DoubleSide} depthWrite={false} toneMapped={false} />
+                <coneGeometry args={[0.98, 3.0, 32, 1, true]} />
+                <meshBasicMaterial ref={cone} color={p.ink} alphaMap={beamTex} transparent opacity={0} side={THREE.DoubleSide} depthWrite={false} toneMapped={false} />
             </mesh>
             <mesh position={[0, 0.25, 0.1]} rotation={[-Math.PI / 2, 0, 0]}>
-                <circleGeometry args={[0.95, 40]} />
+                <circleGeometry args={[0.98, 40]} />
                 <meshBasicMaterial ref={floor} color={p.ink} transparent opacity={0} depthWrite={false} toneMapped={false} />
             </mesh>
-            <Html position={[0, 0.02, 1.1]} center pointerEvents="none" zIndexRange={[10, 0]}>
+            <Html position={[0, 0.02, 1.12]} center pointerEvents="none" zIndexRange={[10, 0]}>
                 <span className={`whitespace-nowrap font-mono text-[9px] uppercase tracking-[0.22em] ${live ? 'text-text-strong' : 'text-text-mute'}`}>
                     {live ? 'Stage · acoustic 21:00' : 'Stage'}
                 </span>
@@ -234,7 +346,6 @@ function MenuBoard({ sent }: { sent: boolean }) {
                 c.fillRect(16, 52 + r * 18, 120 + ((r * 37) % 60), 4);
                 c.globalAlpha = 1;
                 if (r % 2 === 0) {
-                    // A small leaf: the menu's vegan mark.
                     c.beginPath();
                     c.ellipse(216, 54 + r * 18, 7, 4, -0.6, 0, Math.PI * 2);
                     c.fill();
@@ -245,18 +356,20 @@ function MenuBoard({ sent }: { sent: boolean }) {
     );
     return (
         <group position={MENU}>
-            <mesh>
-                <planeGeometry args={[1.3, 0.86]} />
-                <meshBasicMaterial map={tex} toneMapped={false} transparent opacity={sent ? 1 : 0.55} />
+            <mesh castShadow>
+                <boxGeometry args={[1.38, 0.94, 0.05]} />
+                <meshStandardMaterial color={p.fill} roughness={0.4} metalness={0.35} />
+                <Edges color={p.ink} transparent opacity={sent ? 1 : 0.4} />
             </mesh>
-            <mesh>
-                <planeGeometry args={[1.38, 0.94]} />
-                <meshBasicMaterial color={p.ink} transparent opacity={0} />
-                <Edges color={p.ink} transparent opacity={sent ? 1 : 0.3} />
+            <mesh position={[0, 0, 0.028]}>
+                <planeGeometry args={[1.3, 0.86]} />
+                <meshStandardMaterial map={tex} roughness={0.85} transparent opacity={sent ? 1 : 0.65} />
             </mesh>
             {sent && (
-                <Html position={[0, 0.65, 0]} center pointerEvents="none" zIndexRange={[10, 0]}>
-                    <span className="whitespace-nowrap rounded-full bg-text-strong px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.16em] text-bg">6 vegan · sent</span>
+                <Html position={[0, 0.68, 0]} center pointerEvents="none" zIndexRange={[10, 0]}>
+                    <span className="whitespace-nowrap rounded-full bg-text-strong px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.16em] text-bg">
+                        6 vegan · sent
+                    </span>
                 </Html>
             )}
         </group>
@@ -267,41 +380,51 @@ function People({ handoff, pulseAt }: { handoff: boolean; pulseAt: number | null
     const p = usePalette();
     const host = useRef<THREE.MeshBasicMaterial>(null);
     const halo = useRef<THREE.Mesh>(null);
+    const ringA = useRef<THREE.Mesh>(null);
     const staff = useRef<THREE.MeshStandardMaterial>(null);
     const bubble = useRef<THREE.Mesh>(null);
     const v = useMemo(() => ({ a: new THREE.Vector3(4.6, 1.6, 5.2), b: HOST.clone().add(new THREE.Vector3(0, 1.0, 0)), pos: new THREE.Vector3() }), []);
     useFrame((state) => {
         const t = state.clock.elapsedTime;
         const since = pulseAt === null ? 99 : t - pulseAt;
-        // A guest's message flies in from the street to the host.
         if (bubble.current) {
             bubble.current.visible = since < 0.8;
             if (since < 0.8) bubble.current.position.copy(arc(v.pos, v.a, v.b, 0.6, since / 0.8));
         }
         const thinking = since > 0.7 && since < 1.9;
-        if (host.current) host.current.opacity = 0.75 + (thinking ? 0.25 * Math.sin(t * 14) : 0.1 * Math.sin(t * 2));
+        if (host.current) host.current.opacity = 0.78 + (thinking ? 0.22 * Math.sin(t * 14) : 0.1 * Math.sin(t * 2));
         if (halo.current) halo.current.scale.setScalar(1 + (thinking ? 0.35 * (0.5 + 0.5 * Math.sin(t * 10)) : 0.08 * Math.sin(t * 2)));
+        if (ringA.current) {
+            ringA.current.rotation.z = t * (thinking ? 2.4 : 0.7);
+            ringA.current.rotation.x = Math.PI / 3 + Math.sin(t * 0.6) * 0.25;
+        }
         if (staff.current) staff.current.emissiveIntensity = handoff ? 0.6 + 0.4 * Math.sin(t * 4) : 0;
     });
     return (
         <>
-            {/* The AI host at the door. */}
+            {/* The AI host monolith at the door with orbiting telemetry ring */}
             <group position={HOST}>
-                <mesh position={[0, 0.4, 0]}>
-                    <cylinderGeometry args={[0.18, 0.24, 0.8, 24]} />
-                    <meshStandardMaterial color={p.fill} />
+                <mesh position={[0, 0.42, 0]} castShadow receiveShadow>
+                    <cylinderGeometry args={[0.18, 0.25, 0.84, 28]} />
+                    <meshStandardMaterial color={p.fill} roughness={0.32} metalness={0.48} />
                     <Edges color={p.ink} threshold={30} />
                 </mesh>
-                <mesh position={[0, 1.0, 0]}>
+                <mesh position={[0, 1.04, 0]}>
                     <sphereGeometry args={[0.16, 24, 24]} />
                     <meshBasicMaterial ref={host} color={p.ink} transparent toneMapped={false} />
                 </mesh>
-                <mesh ref={halo} position={[0, 1.0, 0]}>
-                    <sphereGeometry args={[0.26, 24, 24]} />
+                <mesh ref={ringA} position={[0, 1.04, 0]}>
+                    <torusGeometry args={[0.25, 0.008, 8, 40]} />
+                    <meshBasicMaterial color={p.ink} transparent opacity={0.55} toneMapped={false} />
+                </mesh>
+                <mesh ref={halo} position={[0, 1.04, 0]}>
+                    <sphereGeometry args={[0.28, 24, 24]} />
                     <meshBasicMaterial color={p.ink} transparent opacity={0.12} depthWrite={false} />
                 </mesh>
-                <Html position={[0, 1.45, 0]} center pointerEvents="none" zIndexRange={[10, 0]}>
-                    <span className="whitespace-nowrap font-mono text-[9px] uppercase tracking-[0.22em] text-text-strong">AI host</span>
+                <Html position={[0, 1.5, 0]} center pointerEvents="none" zIndexRange={[10, 0]}>
+                    <span className="whitespace-nowrap rounded-full border border-hairline bg-veil px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.22em] text-text-strong backdrop-blur-sm">
+                        AI host
+                    </span>
                 </Html>
             </group>
             <mesh ref={bubble} visible={false}>
@@ -310,9 +433,9 @@ function People({ handoff, pulseAt }: { handoff: boolean; pulseAt: number | null
             </mesh>
             {/* Ploy, behind the bar. */}
             <group position={STAFF}>
-                <mesh position={[0, 0.75, 0]}>
-                    <capsuleGeometry args={[0.16, 0.6, 4, 12]} />
-                    <meshStandardMaterial ref={staff} color={p.soft} emissive={p.ink} emissiveIntensity={0} />
+                <mesh position={[0, 0.75, 0]} castShadow>
+                    <capsuleGeometry args={[0.16, 0.6, 6, 14]} />
+                    <meshStandardMaterial ref={staff} color={p.soft} roughness={0.45} metalness={0.15} emissive={p.ink} emissiveIntensity={0} />
                 </mesh>
                 {handoff && (
                     <Html position={[0, 1.55, 0]} center pointerEvents="none" zIndexRange={[10, 0]}>

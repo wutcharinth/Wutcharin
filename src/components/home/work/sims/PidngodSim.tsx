@@ -4,7 +4,7 @@ import { Edges, Html, Line, type EdgesRef } from '@react-three/drei';
 import * as THREE from 'three';
 import { analyze, baht, type Analysis, type Severity } from '../../../pidngod/engine';
 import { ACCOUNT_NAME, TAX_MONTH, baseCtx, initialDocs, initialRules, type DemoDoc } from '../../../pidngod/data';
-import { arc, ease, useCanvasTexture, usePalette, type SimProps } from './kit';
+import { arc, ease, useCanvasTexture, usePalette, useSurfaceMaps, type SimProps } from './kit';
 import { HudButton, HudLabel, SimFrame } from './frame';
 
 /**
@@ -48,12 +48,14 @@ const SEV_MARK: Record<Severity, string> = { ok: '✓', info: 'i', warn: '!', bl
 
 function DocCard({
     item,
+    face,
     elapsed,
     approvedIndex,
     selected,
     onSelect,
 }: {
     item: Item;
+    face: THREE.CanvasTexture;
     elapsed: () => number;
     approvedIndex: number | null;
     selected: boolean;
@@ -63,21 +65,6 @@ function DocCard({
     const ref = useRef<THREE.Group>(null);
     const edges = useRef<EdgesRef>(null);
     const [hover, setHover] = useState(false);
-    const face = useCanvasTexture(
-        128,
-        176,
-        (c) => {
-            c.fillStyle = p.paper;
-            c.fillRect(0, 0, 128, 176);
-            c.fillStyle = p.print;
-            c.fillRect(12, 14, 46, 8);
-            c.globalAlpha = 0.55;
-            for (let y = 36; y < 140; y += 12) c.fillRect(12, y, 70 + ((y * 7) % 34), 3);
-            c.globalAlpha = 1;
-            c.fillRect(80, 150, 36, 6);
-        },
-        [p.paper, p.print],
-    );
     const v = useMemo(() => ({ pos: new THREE.Vector3(), a: new THREE.Vector3(), b: new THREE.Vector3(), gate: new THREE.Vector3(GATE_X, 0.45, GATE_Z) }), []);
 
     // Where this document rests once it has landed.
@@ -145,14 +132,14 @@ function DocCard({
                 document.body.style.cursor = '';
             }}
         >
-            <mesh castShadow>
-                <boxGeometry args={[0.62, 0.02, 0.86]} />
-                <meshStandardMaterial color={p.paper} roughness={0.9} />
+            <mesh castShadow receiveShadow>
+                <boxGeometry args={[0.64, 0.022, 0.88]} />
+                <meshStandardMaterial color={p.paper} roughness={0.85} metalness={0.04} />
                 <Edges ref={edges} color={p.ink} transparent opacity={0.35} />
             </mesh>
-            <mesh position={[0, 0.011, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-                <planeGeometry args={[0.58, 0.82]} />
-                <meshBasicMaterial map={face} toneMapped={false} />
+            <mesh position={[0, 0.012, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+                <planeGeometry args={[0.6, 0.84]} />
+                <meshStandardMaterial map={face} roughness={0.88} metalness={0.02} />
             </mesh>
         </group>
     );
@@ -161,36 +148,68 @@ function DocCard({
 function Gate({ elapsed }: { elapsed: () => number }) {
     const p = usePalette();
     const beam = useRef<THREE.MeshBasicMaterial>(null);
-    useFrame(() => {
-        // The scan plane flares as each document passes through it.
+    const floorGlow = useRef<THREE.MeshBasicMaterial>(null);
+    const scanLine = useRef<THREE.Mesh>(null);
+    useFrame((state) => {
+        // The optical scan plane & floor pool flare as each document passes through.
         const t = elapsed();
         let flare = 0;
         for (let i = 0; i < ITEMS.length; i++) {
             const d = t - i * STEP - TO_GATE;
             if (d > -0.12 && d < 0.25) flare = Math.max(flare, 1 - Math.abs(d - 0.05) / 0.2);
         }
-        if (beam.current) beam.current.opacity = 0.06 + 0.5 * Math.max(0, flare);
+        const f = Math.max(0, flare);
+        if (beam.current) beam.current.opacity = 0.07 + 0.45 * f;
+        if (floorGlow.current) floorGlow.current.opacity = 0.06 + 0.36 * f;
+        if (scanLine.current) {
+            scanLine.current.position.y = 0.8 + Math.sin(state.clock.elapsedTime * 5.2) * 0.62;
+        }
     });
     return (
         <group position={[GATE_X, 0, GATE_Z]}>
-            {[-0.95, 0.95].map((z) => (
-                <mesh key={z} position={[0, 0.8, z]}>
-                    <boxGeometry args={[0.08, 1.6, 0.08]} />
-                    <meshStandardMaterial color={p.fill} />
-                    <Edges color={p.ink} />
-                </mesh>
+            {/* Anodized twin scanner columns with grounded plinths */}
+            {[-0.98, 0.98].map((z) => (
+                <group key={z} position={[0, 0, z]}>
+                    <mesh position={[0, 0.04, 0]} castShadow receiveShadow>
+                        <boxGeometry args={[0.26, 0.08, 0.22]} />
+                        <meshStandardMaterial color={p.fill} roughness={0.38} metalness={0.45} />
+                        <Edges color={p.mid} />
+                    </mesh>
+                    <mesh position={[0, 0.88, 0]} castShadow receiveShadow>
+                        <boxGeometry args={[0.11, 1.68, 0.11]} />
+                        <meshStandardMaterial color={p.fill} roughness={0.32} metalness={0.5} />
+                        <Edges color={p.ink} transparent opacity={0.75} />
+                    </mesh>
+                </group>
             ))}
-            <mesh position={[0, 1.64, 0]}>
-                <boxGeometry args={[0.08, 0.08, 1.98]} />
-                <meshStandardMaterial color={p.fill} />
+            {/* Overhead optical bridge + luminous sensor strip */}
+            <mesh position={[0, 1.72, 0]} castShadow receiveShadow>
+                <boxGeometry args={[0.18, 0.11, 2.12]} />
+                <meshStandardMaterial color={p.fill} roughness={0.3} metalness={0.55} />
                 <Edges color={p.ink} />
             </mesh>
-            <mesh position={[0, 0.8, 0]}>
-                <boxGeometry args={[0.01, 1.52, 1.82]} />
+            <mesh position={[0, 1.655, 0]}>
+                <boxGeometry args={[0.04, 0.02, 1.84]} />
+                <meshBasicMaterial color={p.ink} toneMapped={false} />
+            </mesh>
+            {/* Volumetric scan sheet + animated laser sweep line */}
+            <mesh position={[0, 0.84, 0]}>
+                <boxGeometry args={[0.014, 1.56, 1.84]} />
                 <meshBasicMaterial ref={beam} color={p.ink} transparent opacity={0.08} depthWrite={false} />
             </mesh>
-            <Html position={[0, 1.95, 0]} center pointerEvents="none" zIndexRange={[10, 0]}>
-                <span className="whitespace-nowrap font-mono text-[9px] uppercase tracking-[0.22em] text-text-mute">Check gate</span>
+            <mesh ref={scanLine} position={[0, 0.8, 0]}>
+                <boxGeometry args={[0.025, 0.018, 1.86]} />
+                <meshBasicMaterial color={p.ink} transparent opacity={0.85} toneMapped={false} />
+            </mesh>
+            {/* Soft volumetric floor light pool beneath the scanner arch */}
+            <mesh position={[0, 0.008, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+                <planeGeometry args={[0.85, 2.1]} />
+                <meshBasicMaterial ref={floorGlow} color={p.ink} transparent opacity={0.08} depthWrite={false} />
+            </mesh>
+            <Html position={[0, 2.02, 0]} center pointerEvents="none" zIndexRange={[10, 0]}>
+                <span className="whitespace-nowrap rounded-full border border-hairline bg-veil px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.22em] text-text-mute backdrop-blur-sm">
+                    Check gate
+                </span>
             </Html>
         </group>
     );
@@ -198,28 +217,51 @@ function Gate({ elapsed }: { elapsed: () => number }) {
 
 function Floor() {
     const p = usePalette();
+    const surface = useSurfaceMaps('drafting', p.light, [5, 4]);
     return (
         <group>
-            <gridHelper args={[16, 32, p.faint, p.faint]} position={[0, -0.001, 0]} />
-            <mesh position={[INBOX.x, 0.0, INBOX.z]}>
-                <boxGeometry args={[1.0, 0.02, 1.2]} />
-                <meshStandardMaterial color={p.fill} />
-                <Edges color={p.mid} />
+            {/* Sculpted matte architectural drafting workbench receiving cast shadows */}
+            <mesh position={[-0.6, -0.06, -0.15]} receiveShadow>
+                <boxGeometry args={[15.6, 0.12, 11.4]} />
+                <meshStandardMaterial map={surface.map} roughnessMap={surface.roughnessMap} roughness={0.92} metalness={0.08} />
+                <Edges color={p.faint} />
             </mesh>
-            <Html position={[INBOX.x, 0, INBOX.z + 0.95]} center pointerEvents="none" zIndexRange={[10, 0]}>
+
+            {/* Recessed architectural Inbox tray */}
+            <group position={[INBOX.x, 0, INBOX.z]}>
+                <mesh position={[0, 0.025, 0]} castShadow receiveShadow>
+                    <boxGeometry args={[1.12, 0.05, 1.32]} />
+                    <meshStandardMaterial color={p.fill} roughness={0.45} metalness={0.35} />
+                    <Edges color={p.ink} transparent opacity={0.55} />
+                </mesh>
+                <mesh position={[0, 0.052, 0]} receiveShadow>
+                    <boxGeometry args={[0.92, 0.006, 1.12]} />
+                    <meshStandardMaterial color={p.faint} roughness={0.9} />
+                </mesh>
+            </group>
+            <Html position={[INBOX.x, 0.04, INBOX.z + 0.98]} center pointerEvents="none" zIndexRange={[10, 0]}>
                 <span className="whitespace-nowrap font-mono text-[9px] uppercase tracking-[0.22em] text-text-mute">Inbox · LINE, email, Drive</span>
             </Html>
+
+            {/* Subtle review mat marking the human-judgment zone */}
+            <mesh position={[-3.95, 0.006, 1.25]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+                <planeGeometry args={[2.75, 2.25]} />
+                <meshStandardMaterial color={p.fill} roughness={0.95} transparent opacity={0.55} />
+                <Edges color={p.mid} transparent opacity={0.4} />
+            </mesh>
+
+            {/* Account-code ledger bays */}
             {CODES.map((code) => {
                 const at = pileAt(code);
                 return (
                     <group key={code} position={at}>
-                        <mesh>
-                            <boxGeometry args={[0.8, 0.01, 1.02]} />
-                            <meshStandardMaterial color={p.fill} />
-                            <Edges color={p.faint} />
+                        <mesh position={[0, 0.015, 0]} receiveShadow castShadow>
+                            <boxGeometry args={[0.88, 0.03, 1.1]} />
+                            <meshStandardMaterial color={p.fill} roughness={0.55} metalness={0.25} />
+                            <Edges color={p.mid} transparent opacity={0.48} />
                         </mesh>
-                        <Html position={[0, 0, 0.66]} center pointerEvents="none" zIndexRange={[10, 0]}>
-                            <span className="whitespace-nowrap font-mono text-[9px] tracking-[0.12em] text-text-mute">{code}</span>
+                        <Html position={[0, 0.02, 0.7]} center pointerEvents="none" zIndexRange={[10, 0]}>
+                            <span className="whitespace-nowrap font-mono text-[9px] tracking-[0.14em] text-text-mute">{code}</span>
                         </Html>
                     </group>
                 );
@@ -270,6 +312,54 @@ function Scene({
     onSelect: (id: string) => void;
     onTick: (t: number) => void;
 }) {
+    const p = usePalette();
+    const face = useCanvasTexture(
+        256,
+        352,
+        (c) => {
+            c.fillStyle = p.paper;
+            c.fillRect(0, 0, 256, 352);
+            // Subtle inner margin border
+            c.strokeStyle = p.print;
+            c.globalAlpha = 0.14;
+            c.lineWidth = 2;
+            c.strokeRect(14, 14, 228, 324);
+            c.globalAlpha = 1;
+            // Header bar & tax invoice mark
+            c.fillStyle = p.print;
+            c.fillRect(24, 28, 92, 14);
+            c.globalAlpha = 0.45;
+            c.fillRect(24, 50, 62, 6);
+            // Mini QR / e-Tax stamp top-right
+            c.globalAlpha = 0.8;
+            c.strokeStyle = p.print;
+            c.lineWidth = 2;
+            c.strokeRect(190, 26, 38, 38);
+            c.fillRect(196, 32, 10, 10);
+            c.fillRect(212, 32, 10, 10);
+            c.fillRect(196, 48, 10, 10);
+            c.fillRect(212, 48, 6, 6);
+            // Divider rule
+            c.globalAlpha = 0.25;
+            c.fillRect(24, 78, 208, 2);
+            // Itemized table rows with right-aligned amounts
+            for (let y = 96; y < 248; y += 22) {
+                c.globalAlpha = 0.5;
+                c.fillRect(24, y, 96 + ((y * 11) % 44), 5);
+                c.globalAlpha = 0.35;
+                c.fillRect(184, y, 48, 5);
+            }
+            // VAT + Total footer block
+            c.globalAlpha = 0.22;
+            c.fillRect(24, 268, 208, 2);
+            c.globalAlpha = 0.55;
+            c.fillRect(130, 282, 40, 6);
+            c.fillRect(182, 282, 50, 6);
+            c.globalAlpha = 0.95;
+            c.fillRect(130, 304, 102, 12);
+        },
+        [p.paper, p.print],
+    );
     const start = useRef<number | null>(null);
     const clock = useRef(0);
     const last = useRef(-1);
@@ -296,6 +386,7 @@ function Scene({
                 <DocCard
                     key={`${run}-${item.doc.id}`}
                     item={item}
+                    face={face}
                     elapsed={elapsed}
                     approvedIndex={approved.includes(item.doc.id) ? approved.indexOf(item.doc.id) : null}
                     selected={selected === item.doc.id}

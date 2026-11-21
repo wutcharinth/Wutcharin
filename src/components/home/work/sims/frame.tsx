@@ -6,14 +6,25 @@ import { useTheme } from '../../../../lib/theme';
 import { DARK, LIGHT, PaletteContext, type SimProps } from './kit';
 
 /**
- * The frame every product simulation sits in: the canvas, a camera rig, the
- * lights, and the DOM controls on top. Every simulation is driven by real
- * buttons in its controls, so it works by tap as well as by pointer.
+ * The cinema-grade studio frame every product simulation sits in: ACESFilmic
+ * tone mapping, soft PCF shadows, seamless background depth fog, 3-point
+ * studio lighting, camera rig, and DOM controls on top.
  */
 
 type CameraPose = { position: [number, number, number]; target: [number, number, number]; fov?: number };
 
-/** The camera leans a little toward the pointer, and never further. */
+/** Keeps ACESFilmic exposure calibrated whenever the user switches dark/light themes. */
+function Exposure({ light }: { light: boolean }) {
+    useFrame((state) => {
+        const target = light ? 1.04 : 1.18;
+        if (state.gl.toneMappingExposure !== target) {
+            state.gl.toneMappingExposure = target;
+        }
+    });
+    return null;
+}
+
+/** The camera leans gently toward the pointer, and never further. */
 function Rig({ pose, sway }: { pose: CameraPose; sway: number }) {
     const { camera } = useThree();
     const look = useMemo(() => new THREE.Vector3(...pose.target), [pose.target]);
@@ -31,10 +42,18 @@ export function SimFrame({
     compact,
     pose,
     sway,
+    fog = [17, 34],
     label,
     hud,
     children,
-}: SimProps & { pose: CameraPose; sway?: number; label: string; hud: ReactNode; children: ReactNode }) {
+}: SimProps & {
+    pose: CameraPose;
+    sway?: number;
+    fog?: [number, number] | false;
+    label: string;
+    hud: ReactNode;
+    children: ReactNode;
+}) {
     const light = useTheme() === 'light';
     const palette = light ? LIGHT : DARK;
     return (
@@ -44,19 +63,47 @@ export function SimFrame({
                 className="frame-ticks relative h-full w-full overflow-hidden rounded-lg border border-hairline bg-bg transition-colors duration-300 hover:border-hairline-strong"
             >
                 <Canvas
+                    shadows
                     frameloop={running ? 'always' : 'never'}
                     dpr={[1, compact ? 1.5 : 1.75]}
-                    gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+                    gl={{
+                        antialias: true,
+                        alpha: true,
+                        powerPreference: 'high-performance',
+                        toneMapping: THREE.ACESFilmicToneMapping,
+                        toneMappingExposure: light ? 1.04 : 1.18,
+                    }}
                     camera={{ fov: pose.fov ?? 36, position: pose.position, near: 0.1, far: 80 }}
                     style={{ touchAction: 'pan-y' }}
                     aria-hidden="true"
                 >
                     {/* The context crosses into the canvas reconciler explicitly. */}
                     <PaletteContext.Provider value={palette}>
-                        <Rig pose={pose} sway={sway ?? (compact ? 0.3 : 0.8)} />
-                        <ambientLight intensity={light ? 1.4 : 0.7} />
-                        <directionalLight position={[4, 9, 6]} intensity={light ? 1.2 : 1.6} />
-                        <directionalLight position={[-6, 4, -4]} intensity={0.35} />
+                        <Exposure light={light} />
+                        {fog && <fog attach="fog" args={[palette.bg, fog[0], fog[1]]} />}
+                        <Rig pose={pose} sway={sway ?? (compact ? 0.3 : 0.72)} />
+
+                        {/* 3-point monochrome studio lighting with soft grounded key shadows */}
+                        <hemisphereLight args={[light ? '#ffffff' : '#d8d8e0', light ? '#c8c8cc' : '#08080c', light ? 1.0 : 0.65]} />
+                        <directionalLight
+                            castShadow
+                            position={[5.5, 11, 6.5]}
+                            intensity={light ? 1.45 : 2.1}
+                            color="#ffffff"
+                            shadow-mapSize-width={1024}
+                            shadow-mapSize-height={1024}
+                            shadow-camera-near={1}
+                            shadow-camera-far={30}
+                            shadow-camera-left={-9}
+                            shadow-camera-right={9}
+                            shadow-camera-top={9}
+                            shadow-camera-bottom={-9}
+                            shadow-bias={-0.0004}
+                            shadow-radius={3}
+                        />
+                        <directionalLight position={[-7, 5, -5]} intensity={light ? 0.45 : 0.75} color="#e5e5ee" />
+                        <directionalLight position={[0, 3, -9]} intensity={light ? 0.25 : 0.45} color="#ffffff" />
+
                         {children}
                     </PaletteContext.Provider>
                 </Canvas>
@@ -72,7 +119,19 @@ export function SimFrame({
 }
 
 /** HUD building blocks, in the site's own type. */
-export function HudButton({ children, onClick, primary = false, disabled = false, className = '' }: { children: ReactNode; onClick: () => void; primary?: boolean; disabled?: boolean; className?: string }) {
+export function HudButton({
+    children,
+    onClick,
+    primary = false,
+    disabled = false,
+    className = '',
+}: {
+    children: ReactNode;
+    onClick: () => void;
+    primary?: boolean;
+    disabled?: boolean;
+    className?: string;
+}) {
     return (
         <button
             type="button"

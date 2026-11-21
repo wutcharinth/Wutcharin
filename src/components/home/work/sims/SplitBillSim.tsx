@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useFrame, type ThreeEvent } from '@react-three/fiber';
 import { Edges, Html } from '@react-three/drei';
 import * as THREE from 'three';
-import { arc, ease, useCanvasTexture, usePalette, type SimProps } from './kit';
+import { arc, ease, useCanvasTexture, usePalette, useSurfaceMaps, type SimProps } from './kit';
 import { HudButton, HudLabel, SimFrame } from './frame';
 
 /**
@@ -81,40 +81,69 @@ function Receipt() {
             ];
             lines.forEach(([k, v], j) => {
                 c.textAlign = 'left';
-                c.fillText(k, 40, yEnd + 44 + j * 36);
+                c.fillText(k, 40, yEnd + 36 + j * 30);
                 c.textAlign = 'right';
-                c.fillText(v.toFixed(2), 472, yEnd + 44 + j * 36);
+                c.fillText(v.toFixed(2), 472, yEnd + 36 + j * 30);
             });
+            c.textAlign = 'center';
+            c.fillText('- - - - - - - - - - - - - - - - - - -', 256, yEnd + 124);
             c.font = '600 28px ui-monospace, Menlo, monospace';
             c.textAlign = 'left';
-            c.fillText('TOTAL', 40, yEnd + 170);
+            c.fillText('TOTAL', 40, yEnd + 154);
             c.textAlign = 'right';
-            c.fillText(gross(sub).toFixed(2), 472, yEnd + 170);
-            c.font = '18px ui-monospace, Menlo, monospace';
+            c.fillText(`THB ${gross(sub).toFixed(2)}`, 472, yEnd + 154);
+            c.font = '16px ui-monospace, Menlo, monospace';
             c.textAlign = 'center';
-            c.fillText('ขอบคุณค่ะ · thank you', 256, 860);
+            c.globalAlpha = 0.55;
+            c.fillText('THANK YOU · BANGKOK', 256, 884);
+            c.globalAlpha = 1;
         },
         [p.paper, p.print],
     );
     return (
         <group position={R_POS} rotation={[-0.1, 0, 0]}>
-            <mesh>
-                <boxGeometry args={[R_W, R_H, 0.02]} />
-                <meshStandardMaterial color={p.paper} roughness={0.95} />
-                <Edges color={p.ink} transparent opacity={0.6} />
+            {/* Grounded receipt stand base */}
+            <mesh position={[0, -R_H / 2 - 0.12, -0.06]} castShadow receiveShadow>
+                <boxGeometry args={[1.4, 0.06, 0.34]} />
+                <meshStandardMaterial color={p.fill} roughness={0.45} metalness={0.4} />
+                <Edges color={p.mid} />
             </mesh>
-            <mesh position={[0, 0, 0.011]}>
+            <mesh castShadow receiveShadow>
+                <boxGeometry args={[R_W, R_H, 0.028]} />
+                <meshStandardMaterial color={p.paper} roughness={0.86} metalness={0.02} />
+                <Edges color={p.ink} transparent opacity={0.55} />
+            </mesh>
+            <mesh position={[0, 0, 0.015]} receiveShadow>
                 <planeGeometry args={[R_W - 0.04, R_H - 0.04]} />
-                <meshBasicMaterial map={tex} toneMapped={false} />
+                <meshStandardMaterial map={tex} roughness={0.9} metalness={0.02} />
             </mesh>
+            {/* Camera OCR viewfinder brackets framing the receipt */}
+            {[
+                [-1, 1],
+                [1, 1],
+                [-1, -1],
+                [1, -1],
+            ].map(([sx, sy]) => (
+                <group key={`${sx}-${sy}`} position={[sx * (R_W / 2 + 0.14), sy * (R_H / 2 + 0.12), 0.04]}>
+                    <mesh position={[-sx * 0.08, 0, 0]}>
+                        <boxGeometry args={[0.18, 0.018, 0.01]} />
+                        <meshBasicMaterial color={p.ink} transparent opacity={0.65} />
+                    </mesh>
+                    <mesh position={[0, -sy * 0.08, 0]}>
+                        <boxGeometry args={[0.018, 0.18, 0.01]} />
+                        <meshBasicMaterial color={p.ink} transparent opacity={0.65} />
+                    </mesh>
+                </group>
+            ))}
         </group>
     );
 }
 
 function Beam({ elapsed }: { elapsed: () => number }) {
     const p = usePalette();
-    const ref = useRef<THREE.Mesh>(null);
+    const ref = useRef<THREE.Group>(null);
     const mat = useRef<THREE.MeshBasicMaterial>(null);
+    const apron = useRef<THREE.MeshBasicMaterial>(null);
     useFrame(() => {
         const u = (elapsed() - SCAN_START) / SCAN_DUR;
         const on = u > 0 && u < 1;
@@ -122,13 +151,20 @@ function Beam({ elapsed }: { elapsed: () => number }) {
             ref.current.visible = on;
             ref.current.position.y = R_POS.y + R_H / 2 - (0.05 + 0.9 * Math.min(1, Math.max(0, u))) * R_H;
         }
-        if (mat.current) mat.current.opacity = on ? 0.85 : 0;
+        if (mat.current) mat.current.opacity = on ? 0.92 : 0;
+        if (apron.current) apron.current.opacity = on ? 0.16 : 0;
     });
     return (
-        <mesh ref={ref} position={[0, R_POS.y, R_POS.z + 0.06]} rotation={[-0.1, 0, 0]}>
-            <boxGeometry args={[R_W + 0.5, 0.025, 0.02]} />
-            <meshBasicMaterial ref={mat} color={p.ink} transparent opacity={0} toneMapped={false} />
-        </mesh>
+        <group ref={ref} position={[0, R_POS.y, R_POS.z + 0.06]} rotation={[-0.1, 0, 0]}>
+            <mesh>
+                <boxGeometry args={[R_W + 0.56, 0.026, 0.024]} />
+                <meshBasicMaterial ref={mat} color={p.ink} transparent opacity={0} toneMapped={false} />
+            </mesh>
+            <mesh position={[0, 0.16, -0.01]}>
+                <planeGeometry args={[R_W + 0.42, 0.32]} />
+                <meshBasicMaterial ref={apron} color={p.ink} transparent opacity={0} depthWrite={false} />
+            </mesh>
+        </group>
     );
 }
 
@@ -176,7 +212,7 @@ function ItemTile({
         const g = ref.current;
         if (!g) return;
         const t = elapsed() - passAt(index);
-        v.rest.copy(plateAt(owner)).add(new THREE.Vector3(((slot % 2) - 0.5) * 0.08, 0.09 + slot * 0.075, ((slot * 13) % 5) * 0.02 - 0.04));
+        v.rest.copy(plateAt(owner)).add(new THREE.Vector3(((slot % 2) - 0.5) * 0.08, 0.095 + slot * 0.075, ((slot * 13) % 5) * 0.02 - 0.04));
         if (t <= 0) {
             g.visible = false;
             return;
@@ -208,7 +244,6 @@ function ItemTile({
     const onMove = (e: ThreeEvent<PointerEvent>) => {
         const d = drag.current;
         if (!d) return;
-        // Follow the pointer across the table plane.
         const hit = new THREE.Vector3();
         e.ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0, 1, 0), -0.75), hit);
         if (hit) {
@@ -243,14 +278,14 @@ function ItemTile({
                 document.body.style.cursor = '';
             }}
         >
-            <mesh>
-                <boxGeometry args={[0.96, 0.05, 0.36]} />
-                <meshStandardMaterial color={p.paper} roughness={0.9} />
-                <Edges color={p.ink} transparent opacity={picked || hover ? 1 : 0.45} />
+            <mesh castShadow receiveShadow>
+                <boxGeometry args={[0.96, 0.052, 0.36]} />
+                <meshStandardMaterial color={p.paper} roughness={0.65} metalness={0.05} />
+                <Edges color={p.ink} transparent opacity={picked || hover ? 1 : 0.48} />
             </mesh>
-            <mesh position={[0, 0.026, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+            <mesh position={[0, 0.027, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
                 <planeGeometry args={[0.92, 0.345]} />
-                <meshBasicMaterial map={label} toneMapped={false} />
+                <meshStandardMaterial map={label} roughness={0.78} metalness={0.02} />
             </mesh>
         </group>
     );
@@ -267,7 +302,7 @@ function SharedSlivers({ index, elapsed, base }: { index: number; elapsed: () =>
             if (!m) return;
             m.visible = t > 0;
             if (t <= 0) return;
-            v.rest.copy(plateAt(k)).add(new THREE.Vector3(0.42, 0.06 + base[k] * 0.045, -0.3 + base[k] * 0.02));
+            v.rest.copy(plateAt(k)).add(new THREE.Vector3(0.42, 0.07 + base[k] * 0.045, -0.3 + base[k] * 0.02));
             const u = (t - k * 0.06) / FLY;
             if (u < 1) {
                 arc(v.pos, rowWorld(index), v.rest, 1.2, Math.max(0, u));
@@ -278,10 +313,10 @@ function SharedSlivers({ index, elapsed, base }: { index: number; elapsed: () =>
     return (
         <>
             {PEOPLE.map((_, k) => (
-                <mesh key={k} ref={(m) => (refs.current[k] = m)} visible={false}>
-                    <boxGeometry args={[0.3, 0.035, 0.2]} />
-                    <meshStandardMaterial color={p.mid} />
-                    <Edges color={p.ink} transparent opacity={0.5} />
+                <mesh key={k} ref={(m) => (refs.current[k] = m)} visible={false} castShadow receiveShadow>
+                    <boxGeometry args={[0.3, 0.036, 0.2]} />
+                    <meshStandardMaterial color={p.mid} roughness={0.35} metalness={0.25} />
+                    <Edges color={p.ink} transparent opacity={0.55} />
                 </mesh>
             ))}
         </>
@@ -294,7 +329,10 @@ function Plates({ totals, picked, onPlate }: { totals: number[]; picked: boolean
         <>
             {PEOPLE.map((name, k) => (
                 <group key={name} position={plateAt(k)}>
+                    {/* Outer glazed stoneware dinner plate rim */}
                     <mesh
+                        castShadow
+                        receiveShadow
                         onClick={(e) => {
                             e.stopPropagation();
                             onPlate(k);
@@ -302,11 +340,37 @@ function Plates({ totals, picked, onPlate }: { totals: number[]; picked: boolean
                         onPointerOver={() => picked && (document.body.style.cursor = 'pointer')}
                         onPointerOut={() => (document.body.style.cursor = '')}
                     >
-                        <cylinderGeometry args={[0.72, 0.66, 0.06, 48]} />
-                        <meshStandardMaterial color={p.fill} />
-                        <Edges color={p.ink} transparent opacity={picked ? 0.9 : 0.4} threshold={30} />
+                        <cylinderGeometry args={[0.74, 0.64, 0.06, 48]} />
+                        <meshStandardMaterial color={p.fill} roughness={0.26} metalness={0.1} />
+                        <Edges color={p.ink} transparent opacity={picked ? 0.92 : 0.42} threshold={30} />
                     </mesh>
-                    <Html position={[0, 0, 0.98]} center pointerEvents="none" zIndexRange={[10, 0]}>
+                    {/* Inner recessed ceramic well catching crisp specular highlights */}
+                    <mesh position={[0, 0.032, 0]} receiveShadow>
+                        <cylinderGeometry args={[0.56, 0.54, 0.012, 40]} />
+                        <meshStandardMaterial color={p.light ? '#f2f2f0' : '#1c1c20'} roughness={0.22} metalness={0.08} />
+                        <Edges color={p.mid} transparent opacity={0.35} threshold={30} />
+                    </mesh>
+                    {/* Minimalist chopsticks + frosted water tumbler setting */}
+                    <group position={[0.78, 0.015, 0.04]}>
+                        <mesh position={[0, 0, -0.03]} castShadow>
+                            <boxGeometry args={[0.022, 0.018, 0.78]} />
+                            <meshStandardMaterial color={p.mid} roughness={0.55} />
+                        </mesh>
+                        <mesh position={[0.045, 0, -0.02]} castShadow>
+                            <boxGeometry args={[0.022, 0.018, 0.78]} />
+                            <meshStandardMaterial color={p.mid} roughness={0.55} />
+                        </mesh>
+                        <mesh position={[0.02, -0.008, 0.2]} castShadow>
+                            <boxGeometry args={[0.12, 0.022, 0.045]} />
+                            <meshStandardMaterial color={p.soft} roughness={0.3} metalness={0.2} />
+                        </mesh>
+                    </group>
+                    <mesh position={[0.64, 0.16, -0.62]} castShadow receiveShadow>
+                        <cylinderGeometry args={[0.14, 0.11, 0.34, 24]} />
+                        <meshStandardMaterial color={p.soft} roughness={0.18} metalness={0.12} transparent opacity={0.5} />
+                        <Edges color={p.ink} transparent opacity={0.35} threshold={35} />
+                    </mesh>
+                    <Html position={[0, 0.02, 1.02]} center pointerEvents="none" zIndexRange={[10, 0]}>
                         <div className="whitespace-nowrap text-center">
                             <p className="text-xs font-medium text-text-strong">{name}</p>
                             <p className="font-mono text-[10px] tabular-nums text-text-mute">{thb(totals[k])}</p>
@@ -320,12 +384,21 @@ function Plates({ totals, picked, onPlate }: { totals: number[]; picked: boolean
 
 function Table() {
     const p = usePalette();
+    const stone = useSurfaceMaps('stone', p.light, [3, 2]);
     return (
-        <mesh position={[0, -0.06, 0.2]}>
-            <boxGeometry args={[8.4, 0.1, 4.8]} />
-            <meshStandardMaterial color={p.fill} />
-            <Edges color={p.faint} />
-        </mesh>
+        <group>
+            {/* Honed architectural stone dining slab receiving soft cast shadows */}
+            <mesh position={[0, -0.08, 0.2]} receiveShadow castShadow>
+                <boxGeometry args={[9.0, 0.16, 5.2]} />
+                <meshStandardMaterial map={stone.map} roughnessMap={stone.roughnessMap} roughness={0.82} metalness={0.08} />
+                <Edges color={p.mid} transparent opacity={0.4} />
+            </mesh>
+            {/* Subtle recessed table apron */}
+            <mesh position={[0, -0.24, 0.2]} receiveShadow>
+                <boxGeometry args={[8.4, 0.16, 4.6]} />
+                <meshStandardMaterial color={p.fill} roughness={0.7} metalness={0.2} />
+            </mesh>
+        </group>
     );
 }
 
